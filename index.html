@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Map · 收藏库</title>
+<meta name="description" content="Knowledge Map 收藏库条目与阅读页索引——由 rebuild-homepage.mjs 自动生成。">
+<style>
+:root {
+  --paper: #f4f7f9; --card: #ffffff; --ink: #16232e; --ink2: #4a5b68; --ink3: #7b8a96;
+  --line: #d8e0e6; --accent: #0f5da8; --accent-soft: #e3eef8; --signal: #c94f1f;
+  --green: #1f6f57; --green-soft: #e3f1eb;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #101820; --card: #182430; --ink: #e8eef2; --ink2: #b8c6d2; --ink3: #7c8e9c; --line: #2a3a48; --accent: #8ab8e6; --accent-soft: #1d3346; --signal: #ff9a6b; --green: #8fd0b6; --green-soft: #1e3a32; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.65 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 48px 24px 64px; }
+header { border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 24px; }
+.kicker { font-size: 13px; letter-spacing: .18em; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+h1.site { font-size: 34px; margin: 8px 0 6px; letter-spacing: .01em; }
+.sub { color: var(--ink2); margin: 0; }
+.meta { margin-top: 14px; font-size: 13px; color: var(--ink3); }
+.meta b { color: var(--ink2); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toolbar { margin-bottom: 22px; }
+.toolbar-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.search-box { position: relative; flex: 1 1 280px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink3); pointer-events: none; }
+#q { width: 100%; padding: 10px 12px 10px 36px; font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+#q:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+#q::placeholder { color: var(--ink3); }
+.toolbar-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink2); cursor: pointer; user-select: none; }
+.toggle input { width: 16px; height: 16px; accent-color: var(--accent); }
+.sort-box select { font: inherit; font-size: 13.5px; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.filter-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink2); border-radius: 999px; padding: 5px 13px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .12s, border-color .12s, color .12s; }
+.filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+.filter-chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip-n { background: var(--accent-soft); color: var(--accent); border-radius: 999px; font-size: 11.5px; padding: 0 7px; font-weight: 700; }
+.filter-chip[aria-pressed="true"] .chip-n { background: rgba(255, 255, 255, .22); color: #fff; }
+.toolbar-status { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; min-height: 22px; }
+.result { margin: 0; color: var(--ink3); font-size: 13px; }
+.result b { color: var(--ink2); }
+.clear { border: 1px solid var(--line); background: transparent; color: var(--signal); border-radius: 999px; padding: 3px 12px; font-size: 12.5px; cursor: pointer; }
+.clear:hover { background: var(--signal); color: #fff; border-color: var(--signal); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.card { display: flex; flex-direction: column; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; transition: border-color .15s, transform .15s; }
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card-head { display: flex; justify-content: space-between; align-items: center; }
+.date { color: var(--ink3); font-size: 12.5px; }
+.chip { background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; padding: 1px 9px; border-radius: 999px; }
+.card h2 { margin: 0; font-size: 17px; line-height: 1.45; }
+.title-link { color: inherit; text-decoration: none; }
+.title-link:hover { color: var(--accent); text-decoration: underline; }
+.tagline { margin: 0; color: var(--ink2); font-size: 13.5px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 11.5px; color: var(--ink2); background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; }
+.actions { margin-top: auto; display: flex; gap: 8px; }
+.btn { display: inline-block; background: var(--green-soft); color: var(--green); border-radius: 999px; padding: 4px 13px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.btn:hover { background: var(--green); color: #fff; }
+.empty { text-align: center; padding: 48px 16px; color: var(--ink3); border: 1px dashed var(--line); border-radius: 14px; }
+.empty p { margin: 0 0 12px; }
+.btn-empty { background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 8px 16px; font-size: 13.5px; cursor: pointer; }
+.btn-empty:hover { filter: brightness(1.08); }
+footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink3); font-size: 12.5px; }
+footer code { color: var(--ink2); }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  .card:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Knowledge Map · Archive</div>
+    <h1 class="site">收藏库</h1>
+    <p class="sub">全部条目在线预览；支持搜索、按分类筛选、仅看阅读页与排序。</p>
+    <p class="meta">共 <b>53</b> 个条目 ｜ 其中阅读页 <b>2</b> 个 ｜ 更新于 <b>2026-10-30 21:01</b></p>
+  </header>
+
+  <section class="toolbar" aria-label="筛选与搜索">
+    <div class="toolbar-row">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line></svg>
+        <label class="sr-only" for="q">搜索标题、一句话定位或标签</label>
+        <input id="q" type="search" placeholder="搜索标题 / 定位 / 标签…（按 / 聚焦，Esc 清空）" autocomplete="off">
+      </div>
+      <div class="toolbar-right">
+        <label class="toggle"><input id="htmlOnly" type="checkbox"><span>仅看有阅读页</span></label>
+        <label class="sort-box"><span class="sr-only" for="sort">排序方式</span><select id="sort"><option value="date">最新收录</option><option value="category">按分类</option><option value="title">按标题</option></select></label>
+      </div>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="按分类筛选"></div>
+    <div class="toolbar-status">
+      <p class="result" id="result" aria-live="polite"></p>
+      <button class="clear" id="clearFilters" type="button" hidden>清除筛选</button>
+    </div>
+  </section>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>
+    <p>没有匹配的条目。</p>
+    <button class="btn-empty" id="emptyClear" type="button">清除筛选再看全部</button>
+  </div>
+
+  <footer>本页由 <code>.dsh/skills/url-archive/scripts/rebuild-homepage.mjs</code> 自动生成，请勿手工编辑。</footer>
+</div>
+<script id="archive-data" type="application/json">[{"t":"Android Reverse Engineering Skill","c":"安全工具","d":"2026-10-02","g":"一个给 Claude Code 用的 Android 逆向技能包，把 APK 反编译、网络接口挖掘和调用链梳理固化成智能体可执行的标准流程。","tags":["Android","逆向工程","Claude Code","Agent Skill","jadx"],"h":false,"rel":"收藏库/安全工具/Android-Reverse-Engineering-Skill.md","hr":"收藏库/阅读页/安全工具/Android-Reverse-Engineering-Skill.html"},{"t":"HackingTool","c":"安全工具","d":"2026-10-02","g":"一个用 Python 写的一体化安全工具集合，把 185 个以上开源攻防工具按 20 多个类别收进统一的交互式菜单，靠关键词搜索和批量安装省去逐个配置的麻烦。","tags":["渗透测试","安全工具","Python","Docker"],"h":false,"rel":"收藏库/安全工具/HackingTool.md","hr":"收藏库/阅读页/安全工具/HackingTool.html"},{"t":"Awesome OpenClaw Tutorial","c":"教程","d":"2026-10-02","g":"一本面向中文用户的开源 OpenClaw 实战教程，把安装部署、配置优化、Skills 扩展与实战案例串成从零到\"超级个体\"的学习路径。","tags":["OpenClaw","中文教程","部署","Skills","自动化"],"h":false,"rel":"收藏库/教程/Awesome-OpenClaw-Tutorial.md","hr":"收藏库/阅读页/教程/Awesome-OpenClaw-Tutorial.html"},{"t":"Awesome OpenClaw Usecases","c":"教程","d":"2026-10-02","g":"社区维护的 OpenClaw 真实用例合集，针对\"技能不缺、缺的是能改善生活的场景\"这一采用瓶颈，把可落地的玩法分类列出来。","tags":["OpenClaw","用例集合","多代理","工作流自动化","自托管"],"h":false,"rel":"收藏库/教程/Awesome-OpenClaw-Usecases.md","hr":"收藏库/阅读页/教程/Awesome-OpenClaw-Usecases.html"},{"t":"Build Your Own X","c":"教程","d":"2026-10-02","g":"一份把\"从零实现一门技术\"的教程汇总成清单的开源仓库，用动手复刻来替代只读文档式的学习。","tags":["从零构建","编译原理","操作系统","数据库","编程教程"],"h":false,"rel":"收藏库/教程/Build-Your-Own-X.md","hr":"收藏库/阅读页/教程/Build-Your-Own-X.html"},{"t":"Claude Code Best Practice","c":"教程","d":"2026-10-02","g":"一份把 Claude Code 从氛围编程（vibe coding）推进到智能体工程（agentic engineering）的系统化最佳实践指南，围绕 Subagents / Commands / Skills 三大组件展开。","tags":["Claude Code","Agentic Engineering","Subagents","MCP","上下文工程"],"h":false,"rel":"收藏库/教程/Claude-Code-Best-Practice.md","hr":"收藏库/阅读页/教程/Claude-Code-Best-Practice.html"},{"t":"Datawhale","c":"教程","d":"2026-10-11","g":"成立于 2018 年的中文 AI 开源学习社区组织主页，是它 223 个仓库（LLM、智能体、具身智能、机器学习教程）的总入口。","tags":["Datawhale","AI 开源社区","大模型教程","智能体","具身智能"],"h":false,"rel":"收藏库/教程/Datawhale.md","hr":"收藏库/阅读页/教程/Datawhale.html"},{"t":"Dive Into LLMs","c":"教程","d":"2026-10-02","g":"上海交通大学课程讲义扩展成的《动手学大模型》公益教程，用可运行的 Notebook 覆盖微调、对齐、安全攻防与智能体等 11 个主题。","tags":["大模型","LLM","RLHF","越狱攻击","上海交通大学"],"h":false,"rel":"收藏库/教程/Dive-Into-LLMs.md","hr":"收藏库/阅读页/教程/Dive-Into-LLMs.html"},{"t":"Easy-Vibe","c":"教程","d":"2026-10-02","g":"Datawhale 出品的「会说话就能编程」课程，从产品原型到全栈交付再到 Claude Code 高级工作流，分三个阶段递进。","tags":["Vibe Coding","Datawhale","Claude Code","MCP","全栈开发"],"h":false,"rel":"收藏库/教程/Easy-Vibe.md","hr":"收藏库/阅读页/教程/Easy-Vibe.html"},{"t":"Learn Claude Code","c":"教程","d":"2026-10-02","g":"通过逆向拆解 Claude Code 的 12 个机制，教「模型之外的工程基础设施（Harness）」该怎么造。","tags":["Claude Code","Agent Harness","Agent Loop","上下文压缩","Python"],"h":false,"rel":"收藏库/教程/Learn-Claude-Code.md","hr":"收藏库/阅读页/教程/Learn-Claude-Code.html"},{"t":"Stanford CS146S","c":"教程","d":"2026-10-02","g":"斯坦福大学 3 学分课程，讲 LLM 与编码智能体如何把软件开发从手写代码变成人与 Agent 协作的迭代工作流。","tags":["斯坦福大学","CS146S","AI 编程","软件开发","课程"],"h":false,"rel":"收藏库/教程/Stanford-CS146S.md","hr":"收藏库/阅读页/教程/Stanford-CS146S.html"},{"t":"Awesome-Selfhosted","c":"开发工具","d":"2026-10-15","g":"自托管领域最知名的精选清单，收录可在自己服务器上部署的自由/开源网络服务与 Web 应用。","tags":["自托管","Self-hosted","开源软件","Awesome List","DevOps"],"h":false,"rel":"收藏库/开发工具/Awesome-Selfhosted.md","hr":"收藏库/阅读页/开发工具/Awesome-Selfhosted.html"},{"t":"DeepGEMM","c":"开发工具","d":"2026-10-02","g":"DeepSeek 开源的 GPU 张量核心内核库，把大模型训练/推理里最吃性能的几种矩阵运算整合成一套干净高效的 CUDA 代码。","tags":["CUDA","FP8","MoE","JIT 编译","GPU 优化"],"h":false,"rel":"收藏库/开发工具/DeepGEMM.md","hr":"收藏库/阅读页/开发工具/DeepGEMM.html"},{"t":"Thunderbolt","c":"聊天工具","d":"2026-10-02","g":"Thunderbird 团队做的开源 AI 聊天客户端，自己选模型、自己掌握数据，避免被单一厂商锁定。","tags":["Tauri","Ollama","私有化部署","MCP","端到端加密"],"h":false,"rel":"收藏库/聊天工具/Thunderbolt.md","hr":"收藏库/阅读页/聊天工具/Thunderbolt.html"},{"t":"万字详解 10 道 AI Agent 高频面试题","c":"面试","d":"2026-10-28","g":"面向求职与面试复习的 AI Agent 高频考点串讲，用「是什么 → 怎么干 → 怎么变好」三层骨架，覆盖从 Agent 本质、范式选型到 Function Calling、MCP、记忆、上下文管理、RAG 与评估的完整知识面。","tags":["AI Agent","面试题","Function Calling","MCP","RAG"],"h":true,"rel":"收藏库/面试/万字详解-10-道-AI-Agent-高频面试题.md","hr":"收藏库/阅读页/面试/万字详解-10-道-AI-Agent-高频面试题.html"},{"t":"NewsNow","c":"其他","d":"2026-10-02","g":"一个可自托管的实时热点新闻聚合站，把微博、知乎、GitHub、Hacker News 等中英文信息源汇到无广告的统一阅读界面，并可作为 MCP 数据源接入 AI 工作流。","tags":["新闻聚合","Next.js","MCP","自托管"],"h":false,"rel":"收藏库/其他/NewsNow.md","hr":"收藏库/阅读页/其他/NewsNow.html"},{"t":"Trail Sense","c":"其他","d":"2026-10-02","g":"一款完全离线的 Android 户外助手，用手机自带的 GPS、气压计、磁力计等传感器支撑徒步导航、天气预测和野外生存工具。","tags":["Android","Kotlin","离线应用","户外导航","传感器"],"h":false,"rel":"收藏库/其他/Trail-Sense.md","hr":"收藏库/阅读页/其他/Trail-Sense.html"},{"t":"Zettlr","c":"其他","d":"2026-10-02","g":"一个本地优先的跨平台 Markdown 写作与出版工具，把学术论文写作、引用管理和 Zettelkasten 式笔记放进同一个编辑器。","tags":["Markdown","Zettelkasten","学术写作","知识管理","引用管理"],"h":false,"rel":"收藏库/其他/Zettlr.md","hr":"收藏库/阅读页/其他/Zettlr.html"},{"t":"Awesome DESIGN.md","c":"设计工具","d":"2026-10-02","g":"把各大知名品牌的视觉规范整理成一份份纯 Markdown 的 DESIGN.md，丢进项目里就能让 AI 编码智能体照着产出风格一致的 UI。","tags":["DESIGN.md","设计系统","Google Stitch","设计令牌","编码智能体"],"h":false,"rel":"收藏库/设计工具/Awesome-Design-MD.md","hr":"收藏库/阅读页/设计工具/Awesome-Design-MD.html"},{"t":"OpenDesign：首个协作式 AI 设计 Agent 工作台","c":"设计工具","d":"2026-10-29","g":"从需求描述出发、调用你已有的编码 Agent 按品牌规范渲染原型/Deck/图片/视频的开源协作式 AI 设计工作台。","tags":["OpenDesign","AI设计","Agent","MCP","设计系统"],"h":false,"rel":"收藏库/设计工具/OpenDesign-首个协作式-AI-设计-Agent-工作台.md","hr":"收藏库/阅读页/设计工具/OpenDesign-首个协作式-AI-设计-Agent-工作台.html"},{"t":"BaoCut","c":"生成工具","d":"2026-10-25","g":"以“可编辑时间线”为核心的 AI 视频智能体，把转写、字幕、翻译、配音、剪辑与动效都沉淀进同一个可继续编辑的视频工程。","tags":["AI视频","视频剪辑","MCP","Claude Code","智能体"],"h":false,"rel":"收藏库/生成工具/BaoCut.md","hr":"收藏库/阅读页/生成工具/BaoCut.html"},{"t":"Hypit","c":"生成工具","d":"2026-10-15","g":"给编码智能体（Claude Code、Codex 等）补上一套\"视频编程\"能力——投一条参考视频，让 Agent 克隆出可编辑、可重跑的完整合成工作流，而不是一份分镜脚本。","tags":["AI视频生成","SVML","Agent Skill","Claude Code","短视频生成"],"h":false,"rel":"收藏库/生成工具/Hypit.md","hr":"收藏库/阅读页/生成工具/Hypit.html"},{"t":"MarkItDown","c":"生成工具","d":"2026-10-02","g":"微软开源的 Python 库，把 PDF、Office、图片、音频等几十种格式统一转成 Markdown，专门喂给 LLM 和文本分析管道。","tags":["Markdown","文档转换","Python","LLM","OCR"],"h":false,"rel":"收藏库/生成工具/MarkItDown.md","hr":"收藏库/阅读页/生成工具/MarkItDown.html"},{"t":"MoneyPrinterTurbo","c":"生成工具","d":"2026-10-02","g":"给一个主题或关键词，自动写出文案、找素材、配音、上字幕、配背景音乐，直接合成一条高清短视频。","tags":["短视频生成","Python","文本转语音","字幕","自动化"],"h":false,"rel":"收藏库/生成工具/MoneyPrinterTurbo.md","hr":"收藏库/阅读页/生成工具/MoneyPrinterTurbo.html"},{"t":"Open Generative AI","c":"生成工具","d":"2026-10-02","g":"无内容过滤的开源 AI 图像与视频生成工作室，一个界面里切换数百个模型，可自托管、也可用官方 Web 版和桌面客户端。","tags":["图像生成","视频生成","唇形同步","本地推理","Flux"],"h":false,"rel":"收藏库/生成工具/Open-Generative-AI.md","hr":"收藏库/阅读页/生成工具/Open-Generative-AI.html"},{"t":"Remotion","c":"生成工具","d":"2026-10-30","g":"用 React 写代码来生成视频的开源框架——同一套视频代码既可以交给 Agent 自动产出，也能在编辑器里交互式剪辑，还能在自有基础设施上批量渲染。","tags":["React","视频生成","程序化视频","Agent Skills"],"h":false,"rel":"收藏库/生成工具/Remotion.md","hr":"收藏库/阅读页/生成工具/Remotion.html"},{"t":"GenericAgent","c":"Agent框架","d":"2026-10-02","g":"一个用约 3K 行种子代码和 9 个原子工具就让 LLM 接管整台电脑的极简 Agent 框架，核心主张是「不预加载技能，让技能自己进化出来」。","tags":["计算机控制","自我进化","技能树","分层记忆","TMWebdriver"],"h":false,"rel":"收藏库/Agent框架/GenericAgent.md","hr":"收藏库/阅读页/Agent框架/GenericAgent.html"},{"t":"Mem0","c":"Agent框架","d":"2026-10-02","g":"给 AI 助手和 Agent 用的可插拔长期记忆层，让应用记住用户偏好、跨会话延续上下文，并在多个记忆基准上明显超过旧版算法。","tags":["记忆层","Agent 记忆","多信号检索","实体链接","Python"],"h":false,"rel":"收藏库/Agent框架/Mem0.md","hr":"收藏库/阅读页/Agent框架/Mem0.html"},{"t":"OpenAI Agents SDK","c":"Agent框架","d":"2026-10-02","g":"OpenAI 官方开源的轻量级多 Agent 工作流框架，用 Agent、Handoff、Guardrails、Sessions 四个原语把多角色协作跑起来，且不绑定自家模型。","tags":["OpenAI Agents SDK","多 Agent 协作","Handoff","Guardrails","Python"],"h":false,"rel":"收藏库/Agent框架/OpenAI-Agents-SDK.md","hr":"收藏库/阅读页/Agent框架/OpenAI-Agents-SDK.html"},{"t":"OpenSRE","c":"Agent框架","d":"2026-10-02","g":"一个面向 SRE 场景的开源 AI Agent 工具包，把生产事故的上下文采集、关联分析、根因报告和通知推送串成一条自动链路。","tags":["SRE","事故响应","根因分析","可观测性","PagerDuty"],"h":false,"rel":"收藏库/Agent框架/OpenSRE.md","hr":"收藏库/阅读页/Agent框架/OpenSRE.html"},{"t":"一个人用AI像开挂，团队协作就打架？问题不在工具，在组织","c":"AI编程","d":"2026-10-29","g":"复盘三条 AI 编程路线的天花板，提出以项目事实与企业本体为核心的第四条路。","tags":["AI编程","研发体系","组织变革","企业本体","Agent"],"h":true,"rel":"收藏库/AI编程/一个人用AI像开挂，团队协作就打架？问题不在工具，在组织.md","hr":"收藏库/阅读页/AI编程/一个人用AI像开挂，团队协作就打架？问题不在工具，在组织.html"},{"t":"Andrej Karpathy Skills","c":"AI编程","d":"2026-10-02","g":"一份单文件 CLAUDE.md 规则集，把 Andrej Karpathy 对 LLM 编码缺陷的观察固化成四条行为准则，用来约束 Claude Code 等编码智能体的工作方式。","tags":["Claude Code","CLAUDE.md","提示工程","编码智能体","编码指南"],"h":false,"rel":"收藏库/AI编程/Andrej-Karpathy-Skills.md","hr":"收藏库/阅读页/AI编程/Andrej-Karpathy-Skills.html"},{"t":"Claude Context","c":"AI编程","d":"2026-10-02","g":"把整个代码库变成编码智能体可检索的上下文，用语义搜索替代\"把所有文件塞进窗口\"。","tags":["MCP","语义搜索","混合检索","BM25","Claude Code"],"h":false,"rel":"收藏库/AI编程/Claude-Context.md","hr":"收藏库/阅读页/AI编程/Claude-Context.html"},{"t":"Context Mode","c":"AI编程","d":"2026-10-02","g":"给编码智能体做上下文窗口优化——先把工具输出压缩再进上下文，同时把会话状态持久化下来，让长任务不会因压缩而失忆。","tags":["上下文压缩","MCP","SQLite","FTS5","Claude Code"],"h":false,"rel":"收藏库/AI编程/Context-Mode.md","hr":"收藏库/阅读页/AI编程/Context-Mode.html"},{"t":"DeepWiki-Open","c":"AI编程","d":"2026-10-02","g":"DeepWiki 的开源复现，输入仓库地址就自动生成带架构图的交互式 Wiki，并支持基于 RAG 的仓库问答。","tags":["RAG","Mermaid","Next.js","文档生成","代码分析"],"h":false,"rel":"收藏库/AI编程/DeepWiki-Open.md","hr":"收藏库/阅读页/AI编程/DeepWiki-Open.html"},{"t":"Everything OpenCode","c":"AI编程","d":"2026-10-02","g":"OpenCode CLI 的一站式配置套件，把 everything-claude-code 的 agent、命令、skill、规则与 hooks 移植过来，装完即可用。","tags":["OpenCode","Agent","Skills","TDD","LSP"],"h":false,"rel":"收藏库/AI编程/Everything-OpenCode.md","hr":"收藏库/阅读页/AI编程/Everything-OpenCode.html"},{"t":"Free Claude Code","c":"AI编程","d":"2026-10-02","g":"本地代理服务器，把 Claude Code 等编码 CLI 的请求路由到免费或低价模型上，并按模型档位分流、在故障时自动换模型。","tags":["Claude Code","代理服务器","多模型路由","NVIDIA NIM","OpenCode"],"h":false,"rel":"收藏库/AI编程/Free-Claude-Code.md","hr":"收藏库/阅读页/AI编程/Free-Claude-Code.html"},{"t":"MindsDB","c":"AI应用","d":"2026-10-02","g":"用统一 SQL 方言把分散的数据库、数据仓库与 SaaS 应用连成一片的 AI 数据平台，让代理和人都能用自然语言或 SQL 跨源取数。","tags":["SQL","语义搜索","MCP","数据平台","AI代理"],"h":false,"rel":"收藏库/AI应用/MindsDB.md","hr":"收藏库/阅读页/AI应用/MindsDB.html"},{"t":"NoteGen","c":"AI应用","d":"2026-10-02","g":"以\"先记录、后整理\"为理念的跨平台 Markdown 笔记应用，用 AI 把截图、链接、片段等碎片化输入逐步整理成可读笔记。","tags":["Markdown","知识管理","RAG","Tauri","MCP"],"h":false,"rel":"收藏库/AI应用/NoteGen.md","hr":"收藏库/阅读页/AI应用/NoteGen.html"},{"t":"OpenMAIC","c":"AI应用","d":"2026-10-02","g":"清华大学团队开源的多智能体互动课堂，把任意主题或文档一键转成由 AI 教师与 AI 同学讲授、含幻灯片与测验的完整课程。","tags":["多智能体","AI教育","课程生成","幻灯片","OpenClaw"],"h":false,"rel":"收藏库/AI应用/OpenMAIC.md","hr":"收藏库/阅读页/AI应用/OpenMAIC.html"},{"t":"Prompt Optimizer","c":"AI应用","d":"2026-10-02","g":"开源提示词优化工具，把「写好提示词」做成可迭代、可评估的流水线，并提供网页、桌面、Chrome 扩展与 Docker 四种使用形态。","tags":["提示工程","提示词优化","多模型","MCP","自我托管"],"h":false,"rel":"收藏库/AI应用/Prompt-Optimizer.md","hr":"收藏库/阅读页/AI应用/Prompt-Optimizer.html"},{"t":"PromptDirector","c":"AI应用","d":"2026-10-25","g":"开源、本地优先的 Chrome/Edge 扩展，一键收藏图片、视频与公开提示词为「案例」，以图墙形式管理，并可经本地 MCP 把素材库接入 Claude Code、Codex 等智能体。","tags":["Chrome扩展","提示词管理","MCP","本地优先","创意参考库"],"h":false,"rel":"收藏库/AI应用/PromptDirector.md","hr":"收藏库/阅读页/AI应用/PromptDirector.html"},{"t":"Prompts.chat","c":"AI应用","d":"2026-10-02","g":"原名 Awesome ChatGPT Prompts 的开源提示词库，既提供可直接取用的社区提示词，也支持企业自托管成私有提示词库。","tags":["提示工程","MCP","自托管","提示词库","开源"],"h":false,"rel":"收藏库/AI应用/Prompts.chat.md","hr":"收藏库/阅读页/AI应用/Prompts.chat.html"},{"t":"Agency Agents","c":"SKILL","d":"2026-10-25","g":"一个开源的「AI 代理机构」角色库，把 280+ 个带人格与交付标准的专家代理做成可直接装进 Claude Code 等编码工具的 Markdown 文件，并附原生桌面应用与多工具转换脚本。","tags":["Claude Code","AI 代理","Agent 角色","多工具集成","提示工程"],"h":false,"rel":"收藏库/SKILL/Agency-Agents.md","hr":"收藏库/阅读页/SKILL/Agency-Agents.html"},{"t":"Anthropic Skills","c":"SKILL","d":"2026-10-18","g":"Anthropic 官方的 Agent Skills 仓库，既收录可直接使用的 Skill 示例，也是编写自定义 Skill 的规范与最佳参考。","tags":["Claude Skills","Agent Skills","SKILL.md","MCP","Anthropic"],"h":false,"rel":"收藏库/SKILL/Anthropic-Skills.md","hr":"收藏库/阅读页/SKILL/Anthropic-Skills.html"},{"t":"ArcKit","c":"SKILL","d":"2026-10-02","g":"把企业架构治理从散落文档变成 AI 辅助的系统性工作流，用命令集和研究 Agent 覆盖战略、架构、交付与保障。","tags":["企业架构","治理","Wardley Mapping","GDPR","Claude Code"],"h":false,"rel":"收藏库/SKILL/ArcKit.md","hr":"收藏库/阅读页/SKILL/ArcKit.html"},{"t":"Effective HTML","c":"SKILL","d":"2026-10-18","g":"Plannotator 出品的编码智能体技能集，用 HTML 产出有用、自包含的可视化制品——从低保真线框图到可交互原型、计划与图表。","tags":["Agent Skills","HTML","线框图","原型","Claude Code"],"h":false,"rel":"收藏库/SKILL/Effective-HTML.md","hr":"收藏库/阅读页/SKILL/Effective-HTML.html"},{"t":"Follow Builders","c":"SKILL","d":"2026-10-07","g":"一个 Agent Skill（\"Follow Builders, Not Influencers\"），让智能体每天/每周把 6 档 AI 播客、26 位 AI builder 的 X 帖子与两家官方博客 remix 成带链接的摘要，推送到你常用的消息渠道。","tags":["Claude Code","OpenClaw","Agent Skills","AI 资讯","内容聚合"],"h":false,"rel":"收藏库/SKILL/Follow-Builders.md","hr":"收藏库/阅读页/SKILL/Follow-Builders.html"},{"t":"Frontend Slides","c":"SKILL","d":"2026-10-02","g":"一个给编码智能体（coding agent）用的技能包，让不懂 CSS/JS 的人也能做出好看的 HTML 网页演示文稿，还能把现成的 PPT 转成网页版。","tags":["Claude Code","Agent Skill","HTML 演示文稿","PPT 转换","渐进式披露"],"h":false,"rel":"收藏库/SKILL/Frontend-Slides.md","hr":"收藏库/阅读页/SKILL/Frontend-Slides.html"},{"t":"i-have-adhd","c":"SKILL","d":"2026-10-18","g":"一个让编程助手输出\"行动优先、对 ADHD 友好\"的技能包，把答案直接放到最前，而不是埋进寒暄和铺垫。","tags":["Claude Code","ADHD","编码智能体","提示词","工作流"],"h":false,"rel":"收藏库/SKILL/i-have-adhd.md","hr":"收藏库/阅读页/SKILL/i-have-adhd.html"},{"t":"Matt Pocock Skills - teach","c":"SKILL","d":"2026-10-07","g":"一个「让 Agent 当老师」的有状态教学技能，把当前目录变成长期教学工作区，用文件承载学习状态，把知识、技能与智慧分层推进。","tags":["Agent Skills","SKILL.md","教学","学习方法","Claude Code"],"h":false,"rel":"收藏库/SKILL/Matt-Pocock-Skills-teach.md","hr":"收藏库/阅读页/SKILL/Matt-Pocock-Skills-teach.html"},{"t":"Superpowers","c":"SKILL","d":"2026-10-02","g":"一套给编码代理用的技能框架兼软件开发方法论，用强制工作流把「先设计、再拆任务、TDD 执行、逐任务审查」固化下来。","tags":["Claude Code","TDD","子代理","技能框架","软件开发方法论"],"h":false,"rel":"收藏库/SKILL/Superpowers.md","hr":"收藏库/阅读页/SKILL/Superpowers.html"},{"t":"Zara Zhang 的 GitHub 主页（中文 README）","c":"SKILL","d":"2026-10-07","g":"Zara Zhang（@zarazhangrui）GitHub 主页的中文版 README——一个非工程背景创作者用 coding agent 做出来的 Agent Skills 与产品清单，按「HTML 与幻灯片 / 飞书 Lark / 内容与媒体」三条线组织。","tags":["Agent Skills","Claude Code","Zara Zhang","飞书 Lark","Chrome 扩展"],"h":false,"rel":"收藏库/SKILL/Zara-Zhang-的-GitHub-主页-中文-README.md","hr":"收藏库/阅读页/SKILL/Zara-Zhang-的-GitHub-主页-中文-README.html"}]</script>
+<script>
+(function () {
+  'use strict';
+  var dataEl = document.getElementById('archive-data');
+  if (!dataEl) return;
+  var DATA = JSON.parse(dataEl.textContent);
+  var grid = document.getElementById('grid');
+  var qInput = document.getElementById('q');
+  var chipsBox = document.getElementById('chips');
+  var htmlOnly = document.getElementById('htmlOnly');
+  var sortSel = document.getElementById('sort');
+  var resultEl = document.getElementById('result');
+  var clearBtn = document.getElementById('clearFilters');
+  var emptyBox = document.getElementById('empty');
+  var emptyClear = document.getElementById('emptyClear');
+  var state = { q: '', cat: '', htmlOnly: false, sort: 'date' };
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function norm(s) { return String(s || '').toLocaleLowerCase('zh-CN'); }
+  function encPath(rel) {
+    return String(rel).split('/').map(function (seg) { return encodeURIComponent(seg); }).join('/');
+  }
+
+  function catStats() {
+    var map = {};
+    DATA.forEach(function (p) { map[p.c] = (map[p.c] || 0) + 1; });
+    return Object.keys(map)
+      .map(function (name) { return { name: name, count: map[name] }; })
+      .sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name, 'zh-Hans-CN'); });
+  }
+
+  function matches(p) {
+    if (state.cat && p.c !== state.cat) return false;
+    if (state.htmlOnly && !p.h) return false;
+    if (state.q) {
+      var terms = norm(state.q).split(/\s+/).filter(Boolean);
+      var hay = norm([p.t, p.c, p.g, (p.tags || []).join(' ')].join(' '));
+      for (var i = 0; i < terms.length; i += 1) {
+        if (hay.indexOf(terms[i]) === -1) return false;
+      }
+    }
+    return true;
+  }
+
+  function sorted(list) {
+    var arr = list.slice();
+    if (state.sort === 'category') {
+      arr.sort(function (a, b) { return a.c.localeCompare(b.c, 'zh-Hans-CN') || (b.d || '').localeCompare(a.d || ''); });
+    } else if (state.sort === 'title') {
+      arr.sort(function (a, b) { return a.t.localeCompare(b.t, 'zh-Hans-CN'); });
+    } else {
+      arr.sort(function (a, b) { return (b.d || '').localeCompare(a.d || '') || a.c.localeCompare(b.c, 'zh-Hans-CN') || a.t.localeCompare(b.t, 'zh-Hans-CN'); });
+    }
+    return arr;
+  }
+
+  function cardHtml(p) {
+    var mdLink = 'md.html?p=' + encPath(p.rel);
+    var tagline = p.g ? '<p class="tagline">' + esc(p.g) + '</p>' : '';
+    var tags = (p.tags || []).slice(0, 5).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
+    var htmlBtn = p.h ? '<a class="btn" href="' + encPath(p.hr) + '">阅读页 →</a>' : '';
+    return '<article class="card">' +
+      '<div class="card-head"><span class="date">' + esc(p.d) + '</span><span class="chip">' + esc(p.c) + '</span></div>' +
+      '<h2><a class="title-link" href="' + mdLink + '">' + esc(p.t) + '</a></h2>' +
+      tagline +
+      (tags ? '<div class="tags">' + tags + '</div>' : '') +
+      '<div class="actions">' + htmlBtn + '</div>' +
+      '</article>';
+  }
+
+  function renderChips() {
+    var stats = catStats();
+    var html = '<button type="button" class="filter-chip" data-cat="" aria-pressed="true">全部<span class="chip-n">' + DATA.length + '</span></button>';
+    stats.forEach(function (s) {
+      html += '<button type="button" class="filter-chip" data-cat="' + esc(s.name) + '" aria-pressed="false">' + esc(s.name) + '<span class="chip-n">' + s.count + '</span></button>';
+    });
+    chipsBox.innerHTML = html;
+  }
+
+  function readHash() {
+    try {
+      var h = new URLSearchParams(window.location.hash.slice(1));
+      state.q = h.get('q') || '';
+      state.cat = h.get('cat') || '';
+      state.htmlOnly = h.get('html') === '1';
+      var s = h.get('sort');
+      state.sort = (s === 'category' || s === 'title') ? s : 'date';
+    } catch (e) { /* 非法 hash 时忽略 */ }
+  }
+
+  function writeHash() {
+    try {
+      var h = new URLSearchParams();
+      if (state.q) h.set('q', state.q);
+      if (state.cat) h.set('cat', state.cat);
+      if (state.htmlOnly) h.set('html', '1');
+      if (state.sort !== 'date') h.set('sort', state.sort);
+      var s = h.toString();
+      history.replaceState(null, '', s ? '#' + s : window.location.pathname + window.location.search);
+    } catch (e) { /* file:// 等环境下忽略 */ }
+  }
+
+  function apply() {
+    var list = sorted(DATA.filter(matches));
+    grid.innerHTML = list.map(cardHtml).join('');
+    var active = !!(state.q || state.cat || state.htmlOnly);
+    resultEl.innerHTML = active
+      ? '显示 <b>' + list.length + '</b> / ' + DATA.length + ' 条'
+      : '共 <b>' + DATA.length + '</b> 条';
+    clearBtn.hidden = !active;
+    emptyBox.hidden = list.length !== 0;
+    grid.hidden = list.length === 0;
+    if (qInput.value !== state.q) qInput.value = state.q;
+    if (sortSel.value !== state.sort) sortSel.value = state.sort;
+    if (htmlOnly.checked !== state.htmlOnly) htmlOnly.checked = state.htmlOnly;
+    var chips = chipsBox.querySelectorAll('.filter-chip');
+    for (var i = 0; i < chips.length; i += 1) {
+      chips[i].setAttribute('aria-pressed', String(chips[i].getAttribute('data-cat') === state.cat));
+    }
+    writeHash();
+  }
+
+  qInput.addEventListener('input', function () {
+    state.q = qInput.value;
+    apply();
+  });
+  chipsBox.addEventListener('click', function (ev) {
+    var btn = ev.target && ev.target.closest ? ev.target.closest('.filter-chip') : null;
+    if (!btn) return;
+    state.cat = btn.getAttribute('data-cat') || '';
+    apply();
+  });
+  htmlOnly.addEventListener('change', function () {
+    state.htmlOnly = htmlOnly.checked;
+    apply();
+  });
+  sortSel.addEventListener('change', function () {
+    state.sort = sortSel.value;
+    apply();
+  });
+  clearBtn.addEventListener('click', function () {
+    state.q = '';
+    state.cat = '';
+    state.htmlOnly = false;
+    apply();
+    qInput.focus();
+  });
+  emptyClear.addEventListener('click', function () {
+    state.q = '';
+    state.cat = '';
+    state.htmlOnly = false;
+    apply();
+    qInput.focus();
+  });
+  document.addEventListener('keydown', function (ev) {
+    var tag = document.activeElement ? document.activeElement.tagName : '';
+    if (ev.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+      ev.preventDefault();
+      qInput.focus();
+    } else if (ev.key === 'Escape' && document.activeElement === qInput) {
+      state.q = '';
+      qInput.value = '';
+      apply();
+      qInput.blur();
+    }
+  });
+
+  renderChips();
+  readHash();
+  apply();
+})();
+</script>
+</body>
+</html>

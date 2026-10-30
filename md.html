@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>收藏库 · 条目预览</title>
+<meta name="description" content="收藏库 markdown 条目在线预览，由 publish-site.sh 发布。">
+<script src="./marked.min.js"></script>
+<style>
+:root {
+  --paper: #f4f7f9; --card: #ffffff; --ink: #16232e; --ink2: #4a5b68; --ink3: #7b8a96;
+  --line: #d8e0e6; --accent: #0f5da8; --accent-soft: #e3eef8; --signal: #c94f1f;
+  --green: #1f6f57; --code-bg: #0f1b26; --code-ink: #dbe6ef;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #101820; --card: #182430; --ink: #e8eef2; --ink2: #b8c6d2; --ink3: #7c8e9c; --line: #2a3a48; --accent: #8ab8e6; --accent-soft: #1d3346; --signal: #ff9a6b; --green: #8fd0b6; --code-bg: #0b141c; --code-ink: #dbe6ef; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.7 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 72px; }
+.topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.back { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 14px; }
+.back:hover { text-decoration: underline; }
+.meta-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; margin-bottom: 20px; }
+h1.title { margin: 0 0 10px; font-size: 26px; line-height: 1.35; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.chip { background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 11px; }
+.chip.signal { background: transparent; color: var(--signal); border: 1px solid var(--signal); }
+.meta-lines { font-size: 13.5px; color: var(--ink2); }
+.meta-lines a { color: var(--accent); text-decoration: none; }
+.meta-lines a:hover { text-decoration: underline; }
+.meta-lines .row { margin: 3px 0; }
+article { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px 34px; }
+article h1, article h2, article h3, article h4 { line-height: 1.4; margin: 1.4em 0 .55em; }
+article h1 { font-size: 23px; } article h2 { font-size: 20px; } article h3 { font-size: 17px; } article h4 { font-size: 15.5px; }
+article h1:first-child, article h2:first-child, article h3:first-child { margin-top: 0; }
+article p { margin: .7em 0; }
+article a { color: var(--accent); }
+article blockquote { margin: 1em 0; padding: 10px 16px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 8px 8px 0; color: var(--ink2); }
+article blockquote p { margin: .35em 0; }
+article code { background: var(--accent-soft); color: var(--accent); padding: 1px 6px; border-radius: 5px; font-size: .9em; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+article pre { background: var(--code-bg); color: var(--code-ink); padding: 14px 16px; border-radius: 10px; overflow-x: auto; font-size: 13px; line-height: 1.55; }
+article pre code { background: transparent; color: inherit; padding: 0; }
+article ul, article ol { padding-left: 1.4em; margin: .7em 0; }
+article li { margin: .3em 0; }
+article hr { border: none; border-top: 1px solid var(--line); margin: 1.4em 0; }
+article table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 13.5px; display: block; overflow-x: auto; }
+article th, article td { border: 1px solid var(--line); padding: 7px 11px; text-align: left; vertical-align: top; }
+article th { background: var(--accent-soft); color: var(--ink); font-weight: 700; }
+article img { max-width: 100%; border-radius: 8px; }
+.error { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 40px 24px; text-align: center; color: var(--ink2); }
+.error b { color: var(--signal); }
+footer { margin-top: 26px; color: var(--ink3); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back" href="./">← 返回收藏库首页</a>
+  </div>
+  <div id="shell"></div>
+  <footer>条目由 <code>publish-site.sh</code> 自动发布 · markdown 渲染 by marked.js（MIT）。</footer>
+</div>
+<script>
+const params = new URLSearchParams(location.search);
+const p = params.get('p') || '';
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function parseFrontmatter(raw) {
+  const text = raw.replace(/^\uFEFF/, '');
+  const m = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/.exec(text);
+  if (!m) return { meta: {}, body: text };
+  const meta = {};
+  for (const line of m[1].split(/\r?\n/)) {
+    const row = /^([A-Za-z0-9_-]+)\s*:\s*(.*)$/.exec(line);
+    if (row) meta[row[1].toLowerCase()] = row[2].trim().replace(/^"(.*)"$/, '$1');
+  }
+  return { meta, body: text.slice(m[0].length) };
+}
+
+function metaChips(meta) {
+  const chips = [];
+  if (meta.category) chips.push(`<span class="chip">${esc(meta.category)}</span>`);
+  if (meta.lang) chips.push(`<span class="chip">${esc(meta.lang)}</span>`);
+  if (meta.tags) {
+    const tags = meta.tags.replace(/^\[|\]$/g, '').split(',').map((t) => t.trim()).filter(Boolean);
+    for (const t of tags.slice(0, 6)) chips.push(`<span class="chip signal">${esc(t)}</span>`);
+  }
+  return chips.join('');
+}
+
+function metaLines(meta) {
+  const rows = [];
+  const add = (label, value, href) => {
+    if (!value) return;
+    rows.push(`<div class="row">${label}：${href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(value)}</a>` : esc(value)}</div>`);
+  };
+  add('来源', meta.source || meta.url, meta.url);
+  add('收录', meta.archived || meta.published);
+  if (meta['阅读页']) add('阅读页', meta['阅读页'], '收藏库/' + meta['阅读页']);
+  return rows.join('');
+}
+
+async function load() {
+  const shell = document.getElementById('shell');
+  if (!p) {
+    shell.innerHTML = `<div class="error">缺少 <b>?p=</b> 参数，请从<a href="./">收藏库首页</a>进入。</div>`;
+    return;
+  }
+  try {
+    const res = await fetch(p);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const { meta, body } = parseFrontmatter(text);
+    document.title = (meta.title || '条目') + ' · 收藏库';
+    shell.innerHTML =
+      `<div class="meta-card">
+        <div class="chips">${metaChips(meta)}</div>
+        <h1 class="title">${esc(meta.title || '未命名条目')}</h1>
+        <div class="meta-lines">${metaLines(meta)}</div>
+      </div>
+      <article>${marked.parse(body)}</article>`;
+  } catch (e) {
+    shell.innerHTML = `<div class="error">加载失败：<b>${esc(e.message)}</b><br><code>${esc(p)}</code></div>`;
+  }
+}
+
+load();
+</script>
+</body>
+</html>
