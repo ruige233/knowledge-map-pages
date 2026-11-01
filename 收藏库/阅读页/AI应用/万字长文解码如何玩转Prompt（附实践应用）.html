@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>万字长文解码如何玩转Prompt（附实践应用） · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">万字长文解码如何玩转Prompt（附实践应用）</h1>
+  <p class="lede">从概念到框架系统拆解Prompt工程，以数科Agent与科研论文两案例落地</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI应用</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 40 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>引言：对话的艺术与科学</a>
+          <a href="#sec-02"><span class="n">02</span>基本概念</a>
+          <a href="#sec-03"><span class="n">03</span>构成要素</a>
+          <a href="#sec-04"><span class="n">04</span>设计原则</a>
+          <a href="#sec-05"><span class="n">05</span>高级技巧</a>
+          <a href="#sec-06"><span class="n">06</span>提示词框架</a>
+          <a href="#sec-07"><span class="n">07</span>数科Agent实践</a>
+          <a href="#sec-08"><span class="n">08</span>科研论文实践</a>
+          <a href="#sec-09"><span class="n">09</span>未来趋势</a>
+          <a href="#sec-10"><span class="n">10</span>结语</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 引言：对话的艺术与科学</a>
+          <a href="#sec-02">02 基本概念</a>
+          <a href="#sec-03">03 构成要素</a>
+          <a href="#sec-04">04 设计原则</a>
+          <a href="#sec-05">05 高级技巧</a>
+          <a href="#sec-06">06 提示词框架</a>
+          <a href="#sec-07">07 数科Agent实践</a>
+          <a href="#sec-08">08 科研论文实践</a>
+          <a href="#sec-09">09 未来趋势</a>
+          <a href="#sec-10">10 结语</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 01" width="1280" height="545" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 01</figcaption></figure>
+<p>在AI技术迅猛发展的今天，如何与大型语言模型高效“对话”已成为释放其潜力的关键。本文深入探讨了提示词工程（Prompt Engineering）这一新兴领域，系统解析了从基础概念到高级技巧的完整知识体系，并结合“淘宝XX业务数科Agent”和科研论文深度学习两大实战案例，揭示了高质量提示词如何将AI从“工具”升级为“智能协作者”。无论你是初学者还是实践者，都能从中掌握让AI真正为你所用的核心方法论。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>引言：对话的艺术与科学</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>提示词工程是融合语言学、计算机科学、认知心理学的交叉学科</li><li>提示词质量直接定义AI应用能力的上限</li></ul></div>
+<p>我们正身处一个由大型语言模型驱动的AI新纪元。从GPT-4到Deepseek、Qwen，这些模型的涌现，不仅是一场技术层面的革命性飞跃，更是一场深刻的生产力范式重塑。它们所展现出的强大的自然语言理解、逻辑推理与内容生成能力，正以前所未有的深度和广度渗透到科研、开发、商业乃至日常生活的每一个角落 。然而，如何有效驾驭这股磅礴如海的力量，使其精准地服务于特定的、复杂的目标，成为了决定AI应用成败的胜负手。在这场人与AI的共舞中，一门新兴的、至关重要的“人机对话”艺术与科学应运而生，它就是——提示词工程（Prompt Engineering）。</p>
+<p>提示词工程，远非大众眼中简单的“提问技巧”或“话术模板”。它是一门严谨的、融合了语言学、计算机科学、认知心理学乃至特定领域专业知识的交叉学科 。它的核心是通过精心设计、迭代优化与模型进行交互的指令序列（即提示词），来引导、约束和激发模型的潜在能力，使其输出的内容在准确性（Accuracy）、可靠性（Reliability）、安全性（Safety）和价值性（Value）上达到最优。可以说，提示词的质量，直接定义了AI应用能力的上限。</p>
+<p>接下来我们将系统性地剖析Prompt的基本概念、核心构成要素、黄金设计原则，并了解前沿的高级技巧与主流框架。以“XX业务数科Agent”、“深度学习科研论文”作为实战案例（实践爱好者可直接跳转至第七&amp;八部分）。详细拆解该Agent在解决电商营销业务中数据碎片化、SQL门槛高、洞察难度大等真实业务痛点时，其提示词设计的核心思路及实践。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>基本概念</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Prompt是引导LLM执行任务并生成回应的指令或输入</li><li>提示词工程是设计-测试-分析-优化的持续迭代闭环</li><li>相比嵌入与微调，提示词工程更轻量、低成本、低门槛</li></ul></div>
+<p>与AI沟通的语言</p>
+<p>两个最基本、最核心的概念：什么是提示词（Prompt），以及什么是提示词工程（Prompt Engineering）。</p>
+<p>▐  2.1 什么是提示词（Prompt）？</p>
+<p>提示词（Prompt），是用户向大型语言模型（LLM）发出的、用以引导其执行特定任务并生成相应回应的指令或输入。  它是一切人机交互的起点，是人类意图传递给AI心智的媒介。其形式千变万化，可以是一个简洁明了的问题，一段详尽周全的描述，一个不容置疑的命令，甚至可以是一组包含复杂上下文、多重约束条件和精确输出格式范例的结构化文本。</p>
+<p>我们可以将与LLM的交互，想象成与一位拥有人类全部知识、记忆力超群、计算速度惊人，但缺乏人类与生俱来的常识、直觉和价值判断的“超级专家”进行对话。这位“专家”的知识库浩如烟海，但其回答的质量、深度、风格和相关性，完全取决于您“提问”的方式。提示词，就是这门“提问的艺术”的最终载体。</p>
+<p>让我们来看一组从简单到复杂的提示词示例，以感受其内涵的广度：</p>
+<ul><li>简单的提示词（信息检索类） ：</li></ul>
+<p>“中国的首都是哪里？”</p>
+<ul><li>稍复杂的提示词（风格创作类） ：</li></ul>
+<p>“请模仿鲁迅先生的文风，写一篇关于当代社会‘内卷’现象的短篇杂文，要求笔锋犀利，带有批判性反思，字数在500字左右。”</p>
+<ul><li>包含复杂上下文与约束的提示词（数据处理类） ：</li></ul>
+<p>“你是一位智能数据科学小助手，专注于电子商务领域，特别是‘xx’业务，具有丰富的数据科学与数据挖掘知识。请根据我提供的用户问题：‘找xx当日成交GMV的表？’，在你的知识库${REFERENCE_DOC_1}中检索最相关的核心离线表。你的任务是：1. 对用户输入的‘xx’进行同义词扩展，理解其等同于‘xx’业务。2. 推荐不超过四张最相关的表。3. 推荐列表必须按照知识库中记录的‘权重’值降序排列。4. 对于每一张推荐的表，必须提供其表名、表说明文档、以及从其关联的高频SQL逻辑中提炼出的1-2个常用统计SQL示例。5. 最终输出请使用Markdown表格格式。”</p>
+<p>从本质上看，提示词是人与AI之间沟通的桥梁，是解锁并精确引导模型庞大认知能力的“钥匙”。一把粗糙的钥匙或许能勉强打开门锁，但一把精心打磨的万能钥匙，则能开启通往智慧宝库的无数扇大门。</p>
+<p>▐ 2.2 什么是提示词工程（Prompt Engineering）？</p>
+<p>提示词工程（Prompt Engineering），是一门关于如何设计、构建、测试、分析和迭代优化提示词的系统性方法论与实践学科，其最终目标是最大化提升大型语言模型在特定任务上的表现（Performance）、可靠性（Reliability）和安全性（Safety）。 它绝非一蹴而就的灵感迸发，而是一个遵循科学方法的、持续迭代的闭环流程（Design-Test-Analyze-Refine Cycle）：</p>
+<ul><li>设计 （Design） ：基于对任务目标、模型能力边界和可用资源的深刻理解，初步构思提示词的宏观结构、核心内容和实现策略。</li><li>测试 （Test） ：将设计好的提示词输入给目标模型，并系统性地收集其生成的输出结果。</li><li>分析 （Analyze） ：建立一套客观的评估标准（Evaluation Metrics），系统性地评估输出结果与预期目标之间的差距，并深入诊断问题根源（是指令不清晰？上下文缺失？还是模型本身的能力限制？）。</li><li>优化 （Refine） ：基于分析得出的洞见，对提示词进行针对性的修改和完善，例如调整措辞、增加示例、分解任务等，然后回到第二步，开始新一轮的测试。这个循环会一直持续，直到模型的表现达到预设的满意标准。</li></ul>
+<p>值得强调的是，提示词工程与另外两种常见的提升LLM能力的方法——嵌入（Embedding）和微调（Fine-tuning）——既有联系又有区别。嵌入和微调通常需要准备大量的专业数据，消耗可观的计算资源，并且存在一定的技术门槛。而提示词工程则提供了一种“轻量级”、低成本、低门槛的优化路径，它不改变模型本身的权重，而是通过优化输入来引导模型的行为，对于非技术背景的普通大众也相对友好 。在许多场景下，一个精心设计的提示词所带来的性能提升，甚至可以媲美经过微调的模型。</p>
+<p>在“淘宝XX业务数科Agent”中，提示词工程的价值被无限放大。它不再是简单的“用户输入”，而是整个Agent系统的“智能中枢”和“行为准则”。它直接决定了Agent能否准确理解业务人员的“黑话”与简称、能否高效调用数据库和外部API、能否执行复杂的多步分析流程，以及最终能否生成稳定、可靠且蕴含深刻商业洞见的解决方案。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>构成要素</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>背景信息预设角色与环境，聚焦知识调用范围</li><li>指令是灵魂，宜用动词开头、分解为可执行动作</li><li>输入数据可静态硬编码，也可经RAG动态注入</li><li>输出指示器规范格式、结构、长度、语言与风格</li></ul></div>
+<p>构建高质量指令的四大基石</p>
+<p>一个结构化、意图明确、信息完备的高质量提示词，通常由以下四个核心要素有机组合而成。</p>
+<p>▐  3.1 背景信息（Context）</p>
+<p>背景信息（Context）为模型提供了执行任务所需的环境、设定、角色或一般性约束。 它如同戏剧开演前的舞台布景和人物小传，帮助模型迅速“入戏”，将其庞大的通用知识网络激活并聚焦于一个特定的、相关的子集，从而引导其后续的思考视角、沟通口吻和知识调用范围。</p>
+<ul><li>作用 ： 建立对话的基础框架，减少歧义，预设模型的“世界观”，引导其调用最相关的知识领域，并设定其行为的基调。</li><li>通用示例 ：</li><li>角色设定 ：“假设你是一位有着20年从业经验的米其林三星主厨，同时也是一位精通分子料理的化学家。你现在正在为一位对麸质严重过敏且信奉纯素主义的顾客设计一份七道菜的品鉴菜单。”</li><li>环境设定 ：“我们正在进行一次头脑风暴会议，目标是为一款面向Z世代的社交App构思病毒式营销活动。这里的氛围是开放、创新、不设限的，任何疯狂的想法都值得被探讨。”</li><li>“数科Agent”实践 ：一句话就设定了至关重要的背景——“你是一位智能数据科学小助手，专注于电子商务领域，特别是‘XX’业务，具有丰富的数据科学与数据挖掘知识。” 这条指令聚焦到了“电商”、“数据科学”、“XX业务”这几个关键词上。这确保了Agent后续的所有回答都具备高度的领域相关性和专业性，避免了生成那些看似正确却毫无商业价值的宽泛之谈。</li></ul>
+<p>▐  3.2 指令（Instruction）</p>
+<p>指令（Instruction）是提示词的灵魂与核心，它明确、直接、无歧义地告知模型需要执行的具体任务。 理想的指令应当是行动导向的，多使用动词开头的祈使句，将宏观的目标分解为可执行的动作。</p>
+<ul><li>作用 ： 定义任务的核心目标，是模型行为的直接驱动力。</li><li>通用示例 ：</li><li>简单指令 ：“总结以下这篇关于量子计算的学术论文的核心论点、关键实验证据和未来研究方向。”</li><li>复杂指令链 ：“第一步，请分析附件中的销售数据，识别出销售额最高的三个产品类别。第二步，对这三个类别，分别计算它们的月度增长率。第三步，基于增长率和销售额，提出你对下个季度库存分配的建议。”</li><li>“数科Agent”实践 ： 例如，在处理SQL生成任务时，赋予模型简单直接的“Text-to-SQL”的指令：“ 根据 onedata 规范补充不规范字段的注释。 ”、“ 为表补充生命周期设置。 ”、“ 发现并修正 SQL 问题，并标注修改位置和原因。 ” 这些指令，将Agent的角色从一个被动的“代码翻译器”，提升为一个主动的、具备代码规范意识、资源优化能力和智能纠错能力的资深数据开发人工程师。</li></ul>
+<p>▐  3.3 输入数据（Input Data）</p>
+<p>输入数据（Input Data）是模型需要处理、分析、转换或作为参考依据的具体信息。  它是任务执行所必需的“原料”。其来源可以是静态的（直接硬编码在提示词中），也可以是动态的（在运行时通过外部系统，如RAG的检索模块，动态注入）。</p>
+<ul><li>作用 ：为任务的执行提供具体的操作对象和信息基础。</li><li>通用示例 ：</li><li>静态输入 ：“请将以下英文文本翻译成法文：&#x27;The quick brown fox jumps over the lazy dog.&#x27;。”</li><li>动态输入（模板变量） ：“用户问题是： {user_question} 。请根据此问题生成三个相关的追问。”</li><li>“数科Agent”实践 ：Agent的架构高度依赖于动态输入数据。例如，在执行报告检索任务时，其提示词中包含这样的结构：“ 以下是你的知识库 ${REFERENCE_DOC_1} 中文件名为‘数科分析报告合集’。请根据用户问题‘{user_question}’，从中找出最相关的报告。 ” 这里的 ${REFERENCE_DOC_1}  和 {user_question}  都是占位符。在实际运行时，系统会先通过向量检索找到最相关的知识库文档内容，填充到 ${REFERENCE_DOC_1} 中，同时将用户的实际问题填充到 {user_question} 中。这种将检索到的外部知识动态注入提示词作为输入数据的模式，正是检索增强生成（RAG）架构的核心机制，也是确保Agent回答准确、可信的关键。</li></ul>
+<p>▐  3.4 输出指示器（Output Indicator）</p>
+<p>输出指示器（Output Indicator）用于精确地定义模型输出的期望类型、格式、结构、长度、语言或风格。  它是确保模型回答不仅在内容上“正确”，更在形式上“可用”的关键环节，尤其是在需要机器进行后续自动化处理的场景中，其重要性无以复加。</p>
+<ul><li>作用 ：规范化输出，使其满足人类的阅读习惯、下游程序的处理要求，或特定的业务展示标准。</li><li>通用示例 ：</li><li>格式要求 ：“请以JSON格式返回结果，根对象必须包含‘id’ (string), ‘name’ (string), 和 ‘tags’ (array of strings)三个键。”</li><li>结构要求 ：“你的回答必须包含三个部分，分别以‘## 摘要’、‘## 优点’和‘## 缺点’作为标题。”</li><li>风格要求 ：“回答的语气应保持专业、客观、中立，避免使用任何感性的、主观的或推测性的词语。”</li><li>“数科Agent”实践 ：Agent的提示词中充满了对输出格式的严格规定，以确保交互体验的一致性和输出内容的可用性。例如：“ 务必使用表格等信息简化回复。 ”、“ 推荐不超过四张表，并结合因素进行排序，权重高的表优先展示。 ”、“ 表格输出字段： 行业（ind1_name）、一级类目（cate_level1_name）、一级类目本月订单量（ord_cnt_catelevel1）、TOP叶子类目及本月订单量（ cate_name(ord_cnt_cate） ”。 使得Agent的输出成为一种稳定的、可预测的“数据接口”，为未来可能的界面展示、自动化报告生成等下游应用奠定了坚实的基础。</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>设计原则</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>模糊输入导致模糊输出，语言须精确量化无歧义</li><li>设定专业角色高效调动领域知识并规范口吻</li><li>提供输入→输出范例，让模型通过上下文学习领悟模式</li><li>复杂任务分解子任务逐步推理，用分隔符厘清结构，以约束设护栏，靠迭代打磨</li></ul><div class="pit"><ul><li>避免使用“一些、大概、更好、分析一下”等模糊词</li><li>一步到位求解复杂任务易产生逻辑跳跃与事实错误</li></ul></div></div>
+<p>通往精通的七项修炼</p>
+<p>掌握了构成要素，我们还需要一套行之有效的设计原则来指导实践，实现从“能用”到“好用”再到“卓越”的跃迁。</p>
+<h3 class="sub">1. 清晰具体，杜绝模糊</h3>
+<p>这是提示词工程的第一法则，也是最根本的法则。AI模型的表现如同一面高清的镜子，模糊的输入必然导致模糊的输出。我们必须竭力使用精确、量化、无歧义的语言，避免使用“一些”、“大概”、“更好”、“分析一下”等含糊其词的词汇。研究表明，在大多数情况下，更长、更具体的提示词通常会比短而泛的提示词产生更高质量的输出。</p>
+<ul><li>反例（模糊） ：</li></ul>
+<p>“给我讲讲XX业务的情况。”（这会导致模型输出宽泛、无焦点的教科书式描述。）</p>
+<ul><li>正例（清晰具体） ：</li></ul>
+<p>“请以‘XX业务’数科同学的视角，撰写一份面向业务内部的季度业务复盘报告摘要。摘要需聚焦于三个核心方面：1. 用户增长（新客获取成本、活跃用户数同比变化）；2. GMV贡献（占大盘GMV比重、客单价变化趋势）；3. 品牌心智建立（用户调研中‘性价比’心智的提及率）。请为每个方面提供1-2个关键的、虚构但合理的量化数据作为支撑。摘要总字数严格控制在800字以内。”</p>
+<h3 class="sub">2. 赋予角色，引导视角</h3>
+<p>为模型设定一个具体、专业的角色，是最高效地调动其相关领域知识、并规范其输出口吻、深度和思考框架的方法。</p>
+<ul><li>反例（无角色） ：</li></ul>
+<p>“解释一下什么是‘用户留存率’以及如何分析它。”（可能会得到一个通用的、维基百科式的定义。）</p>
+<ul><li>正例（赋予角色） ：</li></ul>
+<p>“你是一位硅谷顶尖的增长黑客，曾成功将三款App的用户规模从零做到千万。现在，请向一位刚入行的产品经理，用最通俗易懂的语言解释什么是‘次日留存率’和‘七日留存率’。你的解释需要包含：1. 一个生动的比喻来解释其核心概念；2. 计算这两个指标需要哪些基础数据字段；3. 至少三种立即可行的、提升留存率的策略建议。”</p>
+<h3 class="sub">3. 提供示例，明确模式</h3>
+<p>当需要模型遵循特定的、非显而易见的格式或复杂逻辑时，“身教”远胜于“言传”。在提示词中提供一到两个（或更多）完整的“输入 -&gt; 输出”范例，能让模型通过上下文学习迅速“领悟”任务的内在模式，从而极大提升输出的准确性、一致性和可控性。</p>
+<ul><li>场景 ：需要从非结构化的用户反馈中，提取结构化的情感标签和问题关键词。</li><li>正例 ：</li></ul>
+<p>“你的任务是将非结构化的用户反馈，提取为结构化的情感标签（正面/负面/中性）和问题关键词列表。请严格按照以下格式进行：</p>
+<p>输入：“这个吸尘器的声音简直震耳欲聋，而且充满电只能用十分钟，太坑了！”输出：{ &quot;sentiment&quot;: &quot;负面&quot;, &quot;keywords&quot;: [&quot;噪音&quot;, &quot;续航&quot;] }</p>
+<p>输入：“物流速度超快，昨天下午下单今天上午就到了。包装也很精美，客服小姐姐回复问题特别有耐心。”输出：{ &quot;sentiment&quot;: &quot;正面&quot;, &quot;keywords&quot;: [&quot;物流&quot;, &quot;包装&quot;, &quot;客服&quot;] }</p>
+<p>输入：“手机壳的功能设计还行，就是感觉价格有点小贵。”输出：”</p>
+<p>（模型会根据范例，自动补全为 { &quot;sentiment&quot;: &quot;中性&quot;, &quot;keywords&quot;: [&quot;价格&quot;] }）</p>
+<h3 class="sub">4. 分解任务，循序渐进</h3>
+<p>对于任何需要多步推理的复杂任务（如数学计算、逻辑推理、复杂规划），强迫模型一步到位地给出最终答案，往往会导致其在中间环节出现逻辑跳跃和事实性错误。更有效、更可靠的方法是，将宏大的任务分解为一系列逻辑上连续的、更小、更简单的子任务，并明确要求模型“一步一步地思考”，先输出详细的推理过程，再给出最终答案。这种方法被称为“思维链”。</p>
+<ul><li>反例（一步到位） ：</li></ul>
+<p>“一个仓库原有存货1000件，本周入库两次，第一次入库数量是原存货的20%，第二次入库数量是第一次入库后总数的25%。同时，本周出库350件。请问仓库现在的最终存货是多少？”</p>
+<ul><li>正例（思维链） ：</li></ul>
+<p>“请解决以下库存计算问题。要求：必须清晰地列出每一步的计算过程，然后再给出最终答案。问题：一个仓库原有存货1000件，本周入库两次，第一次入库数量是原存货的20%，第二次入库后总数的25%。同时，本周出库350件。请问仓库现在的最终存货是多少？</p>
+<ul><li>让我们一步一步地思考：</li><li>计算第一次入库数量：...</li><li>计算第一次入库后的总存货：...</li><li>计算第二次入库数量：...</li><li>计算第二次入库后的总存货：...</li><li>计算出库后的最终存货：...</li><li>最终答案：...”</li></ul>
+<h3 class="sub">5. 使用分隔符，厘清结构</h3>
+<p>当提示词包含多个逻辑部分（如系统指令、上下文信息、用户问题、输出示例等）时，使用清晰、明确的分隔符（如三重引号&quot;&quot;&quot;、三重反引号```、XML标签&lt;tag&gt;&lt;/tag&gt;、或简单的###）来划分不同的区域，可以带来两大好处：</p>
+<ul><li>结构清晰 ：帮助模型更好地理解提示词的层次结构，避免将指令误认为上下文，或将用户输入误认为示例。</li><li>提升安全 ：在一定程度上可以抵御“提示词注入”攻击，即用户试图通过输入恶意指令来覆盖或篡改你的原始系统指令。</li></ul>
+<h3 class="sub">6. 明确约束，规避风险</h3>
+<p>对于企业级应用而言，输出的可靠性和安全性至关重要。通过在提示词中加入明确的约束条件，可以有效地为模型的行为划定“护栏”，规避不希望出现的输出内容。约束可以分为两类：</p>
+<ul><li>正向约束 （必须 做什么）： 你的回答必须包含... 、 最终结果必须四舍五入到小数点后两位 。</li><li>负向约束（绝不能做什么）： 绝对不要... 、 避免使用... 、 禁止包含任何...</li></ul>
+<h3 class="sub">7. 持续迭代，实验优化</h3>
+<p>最后，也是最重要的一点：完美的提示词是“打磨”出来的，而非一蹴而就。将提示词工程视为一个严谨的科学实验过程，建立一套可量化的评估体系，通过不断的A/B测试和分析，持续地对提示词进行优化和完善。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>高级技巧</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>思维链提供分步推理范例，激发深层逻辑思考</li><li>零样本思维链只需追加“让我们一步一步地思考”</li><li>自我一致性通过多次采样投票提升稳定性</li><li>ReAct以思考-行动-观察循环驱动外部工具交互</li></ul></div>
+<p>从能用到好用的进阶之路</p>
+<p>在掌握了基础的设计原则之后，我们可以进一步学习和运用一些业界公认的、能够显著提升模型性能的高级技巧。</p>
+<h3 class="sub">1. 思维链（Chain-of-Thought, CoT）</h3>
+<p>这是由Google在2022年提出，并被公认为提示词工程领域最具影响力的技巧之一。如上一节所述，其核心思想是在提示词中，不仅给出最终答案，还提供一个详细的、分步骤的推理过程作为范例。这能激发模型进行更深层次的、逻辑连贯的思考，而非仅仅依赖表层模式匹配。它迫使模型从直觉式的快速反应（System 1 thinking）切换到逻辑分析式的慢速思考（System 2 thinking），从而在算术、常识和符号推理等任务上取得惊人的性能提升。</p>
+<h3 class="sub">2. 零样本思维链（Zero-shot-CoT）</h3>
+<p>CoT虽然强大，但需要精心构造推理范例。而由东京大学和Google研究者提出的Zero-shot-CoT则大大简化了这一过程。它发现，我们无需在提示词中提供任何推理示例，只需在用户问题的末尾，简单地追加一句神奇的“咒语”：“让我们一步一步地思考”（Let&#x27;s think step-by-step），模型便会自动采用分步推理的模式来解决问题。这是一种成本极低但效果显著的技巧，是所有复杂问题分析的起点。</p>
+<h3 class="sub">3. 自我一致性（Self-Consistency）</h3>
+<p>这是CoT的进一步增强版，旨在通过“集体智慧”来提高结果的稳定性和鲁棒性。其核心思想是：对于同一个需要推理的问题，我们使用思维链提示，并故意将模型的“温度”（Temperature，一个控制输出随机性的参数）调高（例如设置为0.7），然后让模型对同一个问题进行多次（例如5-10次）独立的解答。因为随机性的存在，模型会产生多个不同的推理路径和最终答案。最后，我们通过“少数服从多数”的投票原则，选择在这些答案中出现次数最多的那一个作为最终的、最可信的输出。这种方法极大地降低了因单次推理过程中偶然的逻辑谬误而导致最终结果错误的的概率。</p>
+<h3 class="sub">4. ReAct（Reason and Act，思考与行动）</h3>
+<p>ReAct框架是构建能够与外部世界（如API、数据库、搜索引擎、代码执行器）进行动态交互的AI Agent的核心技术。它将模型的任务处理过程，从一个简单的“输入-&gt;输出”模式，转变为一个更加智能、更加动态的“思考（Thought） -&gt; 行动（Action） -&gt; 观察（Observation）”的交错循环。</p>
+<ul><li>工作流程拆解 ：</li><li>思考（Thought） : 模型首先分析当前的任务目标和已有的信息，然后用自然语言写下它的“内心独白”，即下一步的行动计划。例如：“用户的提问是‘苹果公司昨天的收盘价是多少？’。这是一个实时信息，我自身的知识库已经过时了，所以我需要使用外部工具来查询。”</li><li>行动（Action） : 基于思考，模型决定调用一个外部工具，并生成调用该工具所需的标准格式指令。例如， Tool: search_api[query=&#x27;Apple Inc. stock price yesterday&#x27;] 。</li><li>观察（Observation） : 系统执行该行动，并将工具返回的结果（例如，API的响应）作为“观察”结果反馈给模型。例如：“Tool response: $195.89”。</li><li>模型将这个新的观察结果融入到它的上下文中，然后开始下一轮的“思考”，判断任务是否已经完成。如果未完成，则继续规划下一步的行动；如果已完成，则整合所有信息，生成最终的答案。</li><li>“数科Agent”中的“淘外趋势洞察”功能，正是ReAct模式的体现 。  当被问及未来的选品趋势时，Agent会思考“我需要实时的、来自互联网的信息”，然后执行“调用搜索引擎”的行动，观察返回的搜索结果，再进行思考、总结和提炼，并最终给出包含运营建议的答案。</li></ul>
+<p>5. 生成知识提示（Generated Knowledge Prompting）</p>
+<p>对于需要特定、深入的领域背景知识才能准确回答的“知识密集型”问题，此技巧非常有效。它将一个复杂问题分解为两步：</p>
+<ul><li>知识生成 ：首先，让模型针对原始问题，生成一段相关的、它所知道的背景知识或事实。</li><li>知识整合回答 ：然后，将原始问题和第一步中刚刚生成的背景知识，一起作为新的、更丰富的提示词，再次向模型提问，让其基于这个更全面的上下文来进行最终的回答。</li><li>示例 ：</li><li>原始问题 ：“我应该在我的阳台上种植蓝莓吗？”</li><li>第一步：生成知识  -&gt; “请先生成一段关于蓝莓盆栽种植的专业知识，包括对光照、土壤酸碱度、授粉方式和根系空间的需求。”</li><li>第二步：整合回答  -&gt; “&lt;第一步生成的知识&gt;... 基于以上知识，请回答我最初的问题：我应该在我的阳T台上种植蓝莓吗？并给出具体的操作建议。”</li></ul>
+<h3 class="sub">6. 结构化提示（Structured Prompting）</h3>
+<p>除了使用分隔符，我们还可以使用更严格的结构化格式，如JSON或YAML，来定义提示词。这种方式虽然编写起来更繁琐，但能最大程度地消除歧义，使得提示词本身就如同一种“配置文件”，对于构建需要高度稳定性和可预测性的复杂Agent系统尤为重要。这些高级技巧并非互相排斥，而是可以相互组合，形成更强大的“组合拳”。例如，我们可以在一个ReAct的循环中，使用思维链来帮助模型更好地规划其“思考”步骤。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>提示词框架</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>RTF（角色-任务-格式）简洁高效，适合日常任务</li><li>CO-STAR侧重内容创作，细控风格、语气与受众</li><li>CRITIC覆盖背景、角色、指令、语气、输入、约束，适合企业级</li></ul></div>
+<p>结构化思维的助推器</p>
+<p>为了使提示词的设计更加系统化、标准化和可复用，避免每次都从零开始“拍脑袋”构思，社区和业界总结出了一些非常实用的、模板化的框架。它们如同我们写作时的“总-分-总”结构，为我们的思考提供了坚实的脚手架，帮助我们确保不会遗漏关键信息。</p>
+<ul><li>RTF 框架 (Role, Task, Format) ： 这是一个极其简洁但高效的基础框架，适用于绝大多数日常的、快速的任务。</li><li>R - Role (角色) ：明确定义模型的身份。 -&gt;  你是一个...</li><li>T - Task (任务) ：清晰描述需要完成的工作。 -&gt;  你的任务是...</li><li>F - Format (格式) ：指定输出的格式。 -&gt;  请以...格式输出。</li><li>示例 ： 角色 ：你是一个专业的社交媒体运营专家。 任务 ：为一款新上市的能量饮料，创作5条能吸引年轻人的微博文案。 格式 ：每条文案不超过140字，并包含至少3个相关的热门话题标签。</li><li>CO-STAR  框架 (Context, Objective, Style, Tone, Audience, Response) ： 这是一个更侧重于内容创作和人际沟通场景的框架，它额外强调了对风格、语气和受众的精细考量。</li><li>C - Context (背景) ：提供任务的宏观背景和相关信息。</li><li>O - Objective (目标) ：明确这次沟通或内容创作想要达成的最终目的。</li><li>S - Style (风格) ：定义写作的文体风格（如：学术论文风格、新闻报道风格、个人博客风格）。</li><li>T - Tone (语气) ：设定文字所要传达的情感基调（如：专业严谨、友好热情、幽默诙谐、紧急严肃）。</li><li>A - Audience (受众) ：明确内容的最终读者是谁，这决定了语言的复杂度和切入角度。</li><li>R - Response (响应格式) ：期望的输出形式（如：一封正式的电子邮件、一份PPT大纲、一段代码片段）。</li><li>示例 ： 背景 ：公司上个季度的销售额未达预期，我们需要向全体销售团队发送一封邮件，进行复盘并激励大家。 目标 ：既要坦诚地承认问题，分析原因，又要重新点燃团队的斗志，让他们对下个季度充满信心。 风格 ：商业信函风格。 语气 ：开头部分应诚恳、严肃，分析部分应客观、理性，结尾部分应充满激情和鼓舞性。 受众 ：全体销售团队成员。 响应格式 ：一封完整的电子邮件草稿，由CEO署名。</li><li>CRITIC 框 架 (Context, Role, Instruction, Tone, Input, Constraints) ： 这是一个非常全面、细致且强大的框架，它几乎涵盖了我们第二部分所介绍的所有核心要素，非常适合用于构建复杂的、企业级的、对可靠性和确定性要求极高的提示词系统。</li><li>C - Context (背景) ：任务的宏观环境。</li><li>R - Role (角色) ：模型的身份。</li><li>I - Instruction (指令) ：具体的、分步骤的任务指令。</li><li>T - Tone (语气) ：输出的语调。</li><li>I - Input (输入) ：需要处理的数据。</li><li>C - Constraints (约束) ：必须遵守的规则和限制。</li></ul>
+<p>选择并熟练运用一个适合当前场景的框架，可以极大地提升构建高质量提示词的效率和成功率。</p>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 02" width="247" height="78" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 02</figcaption></figure>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>数科Agent实践</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>数科Agent解决数据碎片化、SQL门槛高、洞察难三大痛点</li><li>RAG先检索知识库再注入提示词，缓解幻觉</li><li>工具使用与流程编排实现外部交互和多步任务拆解</li><li>提示词承担智能中枢、行为准则、知识引擎与价值放大器角色</li></ul><div class="pit"><ul><li>选品/圈人需求必须引导到内部产品，禁止自由发挥</li></ul></div></div>
+<p>“淘宝XX业务数科Agent”的Prompt体系</p>
+<p>理论的最终价值在于指导实践，而实践是检验理论的唯一标准。以“淘宝XX业务数科Agent”为例，拆解剖析内部提示词工程体系。可以直观地感受到，这些理论在解决真实、棘手的商业问题时，是切实有效且能创造出价值的。</p>
+<p>▐  7.1 从业务痛点到AI Agent的诞生</p>
+<p>理解Agent诞生的“初心”：“XX”业务，作为一个高速运转、竞争激烈的核心营销场景，其日常运营面临着三大核心痛点：1. 数据碎片化，拔剑四顾心茫然 2. SQL语法复杂，易学难精 3. 数据洞察难度大，跨平台趋势整合成本高。“淘宝XX业务数科Agent”提供从数据资产检索、SQL自动生成到内外趋势洞察的一站式、自助式、智能化的数据服务。而这一切的背后，正是提示词工程体系在默默驱动。</p>
+<p>▐  7.2 Agent的提示词工程架构：RAG + Tool Use + Orchestration 的三位一体</p>
+<ul><li>检索增强生成 (RAG) ：这是Agent的“长期记忆”和“知识中枢”。Agent的核心知识，来源于一个经过精心设计和向量化的、包含五大模块的私有知识库（核心离线表、高频SQL、分析报告、选品模型、实时爬虫数据）。当用户提问时，系统并非直接将问题抛给LLM，而是首先通过向量检索技术，从这个庞大的知识库中，精准地找到与问题最相关的若干信息片段。然后，这些被检索出的、高度可信的信息片段，会作为上下文（Context），与用户的原始问题一起，通过提示词注入LLM。这种“先查资料再回答”的模式，极大地缓解了LLM的“幻觉”问题，保证了Agent回答的专业性、时效性和准确性，使其说的每一句话都有据可查。</li><li>工具使用 (Tool Use) ：这是Agent的“手臂和腿脚”，使其具备了与外部世界交互和执行具体操作的能力。对于知识库无法覆盖的动态任务（例如，执行一次数据库查询、调用一个实时爬虫API、进行一次复杂的计算），Agent被赋予了调用外部“工具”的能力。这背后，正是通过提示词工程，让模型学会了在何种场景下（Reason）、应该调用何种工具（Act）、以及如何解析工具返回的结果（Observe）。这正是我们在第四部分讨论的ReAct框架的经典应用。</li><li>流程编排 (Flow Orchestration) ：这是Agent的“小脑和神经系统”，负责协调和执行复杂的多步骤任务。面对“淘内行业洞察”这类需要多个步骤才能完成的复杂分析任务，Agent并不会试图“一步到位”，而是会将其拆解为一系列逻辑上相互关联的子任务，并按照预设在提示词中的逻辑流程，依次执行（例如，先查A，再查B，最后将A和B的结果合并分析）。这种通过提示词实现的任务分解和流程编排，确保了Agent在处理复杂问题时的逻辑严谨性、过程透明性和结果可靠性。</li></ul>
+<p>▐  7.3 核心功能提示词深度拆解</p>
+<p>场景一：数据资产检索与SQL生成（使命：极致降低数据使用门槛）</p>
+<p>功能：精品表极速推荐 &amp; 高效SQL生成。</p>
+<p>这是Agent最基础，也是使用频率最高的能力。它旨在让每一位业务同学，无论是否懂技术，都能轻松、准确地找到并使用他们需要的数据。</p>
+<ul><li>用户问题示例 ：“找XX成交GMV的表？”</li><li>相关提示词片段分析 ：</li></ul>
+<p>1. 用户输入词可能是一些简写或者缩写，比如XX业务和XX是同义词，你需要对用户的输入词进行同义词的翻译。</p>
+<ul><li>解析（意图理解的鲁棒性）：要求其具备处理业务“黑话”（如“XX”）和口语化表达的能力。这确保了Agent能听懂用户的真实意图，而不是因为一个简称就无法工作。这是构建流畅人机交互体验的第一道关卡，极大地提升了系统的鲁棒性和用户友好度。</li></ul>
+<p>2. 内容当中我存储了使用该表的SQL逻辑，请帮我根据SQL逻辑提炼出常用的一些统计SQL，方便用户进行快速开发。</p>
+<ul><li>是一个典型的“主动赋能”型指令。它要求Agent不只是一个被动的“信息查找器”，更是一个主动的“效率助推器”。它不仅告诉用户“鱼”（数据表）在哪里，还直接把最高效的“渔具”（常用SQL示例）递到用户手上。</li></ul>
+<p>3. 推荐不超过四张表，并结合因素进行排序，权重高的表优先展示。</p>
+<ul><li>解 析（信息过载的解决方案）：这条指令直接解决了“选择困难症”的问题。它通过限制数量（不超过四张）和明确排序规则（按权重），避免了向用户倾泻大量不相关的结果，保证了输出的简洁性和相关性，让用户可以一眼就看到最重要、最可能需要的信息。</li></ul>
+<p>1. 开发的表通常是分区表，分区名为 ds。2. 为表补充生命周期设置。3. 发现并修正 SQL 问题，并标注修改位置和原因。</p>
+<ul><li>将Agent的角色，从一个简单的“代码生成器”，一举提升到了一个具备代码审查能力和遵循最佳实践意识的“资深数据开发工程师”。确保Agent输出的SQL代码，不仅在功能上是正确的，在性能、规范和安全性上也是高质量的。</li></ul>
+<p>场景二：趋势洞察（使命：实现从数据到洞察的智能飞跃）</p>
+<p>功能：淘外趋势洞察</p>
+<ul><li>用户问题示例 ：“我想选品，2025年6月食品生鲜有哪些新趋势？”</li><li>相关提示词片段分析 ：</li></ul>
+<p>1. 时间推理：当用户的问题没有包含具体时间时，你需要使用日期推理工具获取当前年份和月份...当用户的问题里包含时间信息时，你需要使用日期推理工具获取具体时间；</p>
+<ul><li>解析（ReAct - 行动规划与工具调用）：这是一条非常明确的工具调用指令，是ReAct框架中“Action”的体现。它为模型设定了一个清晰的条件分支：如果问题中时间信息模糊或缺失，就必须调用一个名为“日期推理工具”的API来补全或解析时间信息。这使得Agent能够处理“近期”、“下个月”等模糊的时间表达，智能化地将其转换为机器可理解的精确时间窗口。</li></ul>
+<p>2. 回答问题：使用搜索引擎获取电商领域选品相关的热点/热词...务必使用图表的形式返回结果...</p>
+<ul><li>解析（ReAct - 外部信息获取与格式化输出）：这是另一个核心的“ Action ”指令，授权Agent通过调用“搜索引擎”这一外部工具，来获取其内部知识库所不具备的、动态变化的、实时的互联网信息。同时，它还通过“务必使用图表”这一输出指示器，要求Agent对获取到的信息进行二次加工和可视化，将杂乱的文本转化为直观的商业洞察。</li></ul>
+<p>限制：当用户表达自己有选品或者圈品或者圈人群的需求，引导名称为“用户运营中心”的产品，一定不要进行额外发挥...</p>
+<ul><li>解析（强负向约束与业务流程引导）：它为Agent的行为划定了一条清晰的“红线”。在识别到特定的用户意图（选品、圈人）时，即引流到公司内部产品，并严格禁止其自由发挥、提供可能不准确或有风险的建议。</li></ul>
+<p>功能：淘内趋势洞察</p>
+<ul><li>相关提示词片段分析 ：</li></ul>
+<p>## 技能1 行业洞察...1. 分析用户需求选择相应“淘内趋势标签”，标签名称和查询条件如下 （1）爆款驱动”标签：is_top_lead = &#x27;爆款导向&#x27; ...</p>
+<ul><li>解析（语义到逻辑的精确映射层） ：这一部分构建了一张从业务术语，如“爆款驱动”到机器可执行语言（SQL查询的WHERE子句条件，如 is_top_lead = &#x27;爆款导向&#x27; 的“高级翻译词典”。这是Agent能够听懂业务语言，并将其准确无误地转化为可执行的数据查询的核心所在。这样的标记，也暗示了系统内部可能存在一个基于关键词的“技能路由”机制，能快速定位并激活处理特定任务的提示词模块。</li></ul>
+<p>2. SQL查询： 根据用户需求，调用ODPS查询工具...分别执行两个查询：一是计算每个行业、一级类目的总订单量...二是不同行业/一级类目 指定“淘内趋势标签”TOP20叶子类目集...然后，将这两个结果合并到一个表格中...将订单量转化为以“万”为单位，按行业、一级类目的总订单量降序排列...</p>
+<ul><li>解析（复杂工作流的自然语言编排） ：完整地描述了一个复杂的数据处理与分析流程（ETL+Analysis）。拆解一下这个流程： [Action: 调用ODPS查询工具] -&gt; [Step 1: 执行查询1（计算总订单量）]  -&gt;  [Step 2: 执行查询2（获取TOP20叶子类目）] -&gt; [Step 3: 合并查询1和查询2的结果] -&gt;  [Step 4: 对订单量字段进行单位换算]  -&gt; [Step 5: 按特定字段对最终结果进行排序] 。将一个模糊的分析任务（“给我行业洞察”），分解为一系列原子化的、逻辑清晰的、机器可执行的步骤，引导着模型一步步地、有条不紊地走向正确的、可信的终点。</li></ul>
+<p>3. 洞察商机与预警：针对关键类目，提炼出潜在的机会窗口、面临的挑战和可能的风险因素，助力战略规划。</p>
+<ul><li>解析（从数据呈现到智慧升维） ：如果说第二步是让Agent成为一个高效的“数据分析师”，那么这第三步指令，则是要求Agent更进一步，成为一个具备商业敏锐度的“策略顾问”。它要求Agent在呈现了数据之后，必须对数据进行解读，提炼出更高层次的商业洞察（机会、挑战、风险）。这是连接数据与决策的“最后一公里”，也是Agent创造核心价值的关键所在。</li></ul>
+<p>▐  7.4 总结：提示词工程在“数科Agent”中的核心价值</p>
+<p>通过对“淘宝XX业务数科Agent”提示词工程的深度剖析，可以清晰地看到，提示词工程在现代企业级AI应用中，早已超越了“提问技巧”的范畴，而是扮演着“智能中枢”、“行为准则”、“知识引擎”和“价值放大器”的多重、核心、不可替代的角色。它使得Agent能够：</p>
+<ul><li>精准理解复杂意图 ：通过同义词扩展、领域术语映射，跨越人机之间因语言习惯和知识背景差异而产生的“沟通鸿沟”。</li><li>高效整合内外部资源 ：通过RAG和工具使用（ReAct），将静态、可信的内部知识库与动态、瞬息万变的外部世界无缝连接，实现了“秀才不出门，便知天下事”。</li><li>自动化执行复杂工作流 ：通过任务分解和流程编排，将过去需要数据分析师、数据开发工程师等多个角色协同数小时甚至数天才能完成的复杂分析流程，压缩到分钟乃至秒级，实现了生产力的指数级提升。</li><li>产出高价值、可信赖的决策支持内容 ：通过注入领域专家知识、设定最佳实践、要求提炼商业洞察和严格控制输出格式，确保了Agent的产出内容不仅在数据层面是正确的，更在商业层面是规范、可读、可信、可落地、有价值的。</li><li>确保业务流程的安全与合规 ：通过设置明确的、不可逾越的正负向约束和业务边界，为Agent的行为戴上了“紧箍咒”，划定了清晰的“安全护栏”，确保其在任何时候都在预设的、安全的轨道上运行。</li></ul>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,UklGRgIOAABXRUJQVlA4IPYNAACQOQCdASr3AE4APpVAm0ilpCKhLBd8ALASiWwIcrGEKID9G6xqm3VPx+/pP7hfLbWX7T/SP1P+Unxp7F+ff1V9Q3xv9I/5X93/Nb6Df2n1E/R58AH61f8XqAfQB8Bf2T/cr3Z/9T+xnuU/tvqAfzP+sf/nsHP3T9g39xvTK/c/4Qv7b/zf3A9tL1AP//sIH+v7Wf9Zy60kruswG8//8j3m8AL2Nuk+n+YFgV/H+YnGN3rX071APJK/xfEj+d/7P2CvLM9df7nf//3M/2wClA3Gg8OmLl+xuhm/tRGQsqzcHb+OTwgwBBONCr42jxDyr8ynKFOLhzLLIbHmPV9m5DZjqQzfn3e7n+E9kLgOMJyVdBnw0WGg1nMPPFtvsCfgyy7yBtqaYrV/d9o8J4yTD1ewe6srkP9xB0ozCy6HQHgycviKnYQxcJC6wJHty+eTBIZvOkZA5DOb2PfSv2BfB0axCVudbxT2GLqzeeCDRKcCZ5qauV2NsVSj82BZId7ndW6os4j11iawnYNuSyHBSt9ziHr9AUshIrg6Yd93LpVOimBs7TTbPph5V4HmJPQW7sNZ8TfahXzh5mwDp5buJqTXEWHg+bBingkFGmbkDNldT5PP0hgAAP67pSuOypuLnssyOodk6OPX1oyPYI70X4TRVeZHodlQqrnrXeqhfUFLZqzO5JM/l2A5tYGGOFYrjTBDjTZz+fbKZYlgOuJBWUBkfsOmadxe4qKc+Cwyg9uioZ8lDoC6kCxuz6PAAEq5Q2MF713xHsCh/1OgOrUqkGFxRAA33N3/Bv8KIKc5Ue2H73pakMqhjL/sgN75nTpa2dYpDan6hF2mXF6TB8/rWIccIrYeFiZdQB2Rg7aa9KBNAeHiW3li7gx8ZgcBBWbgzCuQk8BECW2JJfdS5y5lWVSXarcPcgqjUPMhdk7RPD7qDVEeFBgpei8jwD4Yu2JrEnMmq+o46DC6IoLvTL0wv+rx2+VoGgpUrJfE0/1sxmgZtwhzLJQuNs1Z8JEyBuV7JL8uiYp7w4wP/zEbEGPM8KrBjO7L6Apy8UurAC0+HduhSIFfUjuw7iLg0svvvGI5C4AKC5slSd4qKyq71v1F2ITBrTrgRKN7JQ9I4rI2Y07gFmJS5nmbs7Q7Jj4AkksZsxcNX7wbbeFk8wIXoKsOpUDBP0RAB1GMcsRGJCH5orobrmfgtRqfxp+TCLkAAjchF1zLNTwenCNsEGNuq7P6qXc1/O1wdgeuITdpVloHDssT9EesUhkkM5eqjU9OpZbKr20dhONPbGFaKwPfj2+pUYf2aF4WZ4tB7uNyWeJHh2y6RcRCvQhPki/8SFsWDx3FQkTFsgPt+juMCv4KoNRb8aiNekX3Ni8rQ/N96vPcBCZvGqlLU4vmR5TJeA9eG/6vJ7CNO7JFpI/de0xSxmQKo2U7M5g8DhpkoNzgIe69D4ZPv7o/qXQ/kv7mCDxdPCx+/9bK+/yT7oeRM250jMryggrLkiY0C98xHQo3mdhaOr8fSOIOyXsxVvBKHzdzM60nT3SC+bV7fjPNbEGbyHD3bjOtaDFKLvf9ywbzTqD+kUVTpra16m4biB76IhURfvVkzMbIfsNOTPoVRhAbi1JgLE1sJkE6ASAZRi5kqJXALe30UFLEIJKpEDW2F8YrFR0VyZ5aMKHGUQT344sBJdQYMrXQIk92O77nQULmJMH5RMxlh2FF7g8SHoZXdNZEPB6APEnBMGHAyRVMuppWkMRXNpj0wrf69UkBda5gPErhRisurWDR1NcxyHjjRV2ij2o7ynP02gHAe1tqXjarp7bUCSecf/KRx2VOByCqTYExrMt97GxY1nnzspggj97bcKc1yDPmjakvHeRKg5sZ13LIniBHNJPCi+IqptPdBkrqlBJRW1qgb7+nb//wKtZl6wbDpEryRzzBoAGZqEl+WILPYtibhDFmobZL2yQdi1s8kMQF+nwcWQcFsuX6kfMlh7VplF6IxeX08bm062ojbU55H5iT/UYsKKvhJHw3B+ZJB/qyj5J+SS17vlkzPtYN4jKD8glq9luCjfHsvanKNLglbhMKhDQEzPOibW2/fkKB8qIpS4kJvcKSey16b75w8MuUH3jwPtPDpqvNVvf1M1cu//1T1zXz7ywlmgfAMpZCrgASeAGZzW9O6bhnzlW1euLf4tpH/G2DqUhGla/enBM+imebQEw1o2NdGwpdefMkp1/GX4588z3T1piYjYN+j91xV68lBFoB/3H6x0R6aCRQusjFoSQzf3VPbTHvCzIvRAgcIur1CijcYfxOyWEZjXllS6wAahFx1VxMrJoKLMYjhVu8YxWgOQRbQsBsWuh/WrzlYadYxuk3tXgPG5ZFAG7CH2WAVVP7MuuXDyx/Lnm86o1ZxAsmejG4kInT9ARZCk7vZ0IRCcMlnSJiG6n9cBsSzQhyPob+cZKwF0cSTH2y/mNiN+qUGaeR59ep0moSlbaqYT6xtT2G0e+8agOfeZN/PuR0U1mzUyMFM2vsXTH8IZ0L0huRsuzib8HVWMN4v6YGr0LdIMOEm1ITsYT4mXtQpeMWrP7ri6vi30EKkkXcNc4GYWOAt2xi+7Oy5+GUG7aLBMoQOrbQxpH1aekWw5sLIMHMtpGDqc37EeK9fglabrusXWhM6C7W12bU1s5ikhRfAlrH9v0kKb3iv/qP45SbR1e2aT7R30oZhA3d3oXjAnbK3u6H11yUoLmSLqC/Z/KWG6WZHdytbmZpObAsML6zoHNq5yB5gjJpWMtyx2XqA9pq9/M4Kj+lDhlWV85C9I5RbTDQw/JmvH3j1a9xF4TygnXzFVNHmHoqR/m2kGuHQv3TkZEnN7D9Op3b+lWLpwx8IbmIA7cAAAHny1h7OqghgiwDCM6tanLOZ5pymfKulrtDncFCMIEHlh/kT5xahfXw/LS63qL9xRLQIRVZVilV/2W6T/JfmLNaPrYtYyvFQNYc3V00KhFKL7Td9oQi+9VqneMj9FoelRh9W45zPUtPOs15NGu4M8KPBZLl283PfwYjm7rkJgBnoZ1svQQqGKY8rX7lz/wUsB0LLNSHD2F/EaeS6qQC8FEaHyWYXkC8XRFSKfIk5Xr8QeUQWxRU2S/HBrU2xwMjq1ulbowbtwSKi2BsbXYtab1sdx8Qih2CSegOf7xnd635Vuu20VoXiH6jfA86Ie/433g/pnIOJrkQ/g48YPx0uRG9vhNet+QoeWeFkGM3sviz7q5BW1+NsNMdbQOTJUWUUmrK+0UGdTnIlg+pSIqVuiu6tCkNLWVhZ9kzdkWJ2BFF4/fDO8QzCL+4eYy0fgawegk7MfvwBYc0grt65hHwiDeljV3tSP9heo+cImMcV5qwU2B9+RzOOT04lQtk3dQ3iuj/uEsZSvODcZeK09fseJokxzlYGlW1WmcIHdyBBnge30Jetjtcsgh7YBURbG7VTmz5xCtNtdIZjlGKuLel3mGiXM2fa1LpEDmELmSsW/7dxjPwW82OCGaurPtfI5UZzZYgq6bnVWaG1T5UyHoHGrFQ3hxXd3f0AHKC6Md2TrHeVCJoib9Uve0kX4n5z14PnS8AhCpG72QzyyFRYfoCbszGVu+lTdf0LLo+9Fd9Wsi7TQX6vpJDemehZJPHkQNxMsMK4kMyVQLIgucgsJU7b1fYFZCeM16orQgYCJGno4gNw2XO38r9dTswjDCoLSBTKUv5Nr1R9zZL6a4y/NJYKeb2XLbeIVHV+po4tieHAGrwdHO7F9+/Jt5o35g4e2Xv8H5XUSibRal5vfxDc3M6ofVg+jKGBOLMF49apkEoCaDFYPiIko2CKhkIwiAIZab9ujL1UuoIgig46RJrAB85EKlJ1LBjEaKJJJY9+ebqbMOR4QhyhhtDqowfn1wuAAPU2yYt1CCd0ONX704f9BmznHcL3Frw08RANhtOSor+bWCLdp4B3IRyTWNT0lJEIcAoCOFhqJA22iJCF1q9FZ4Ml64Tnl3pBCsaa+6X8ji/82+Tr/mx0idPrCTm4X6nYkt5eEqLJ+3XVK2ymsfNHuaLOosJUWrZT3gJcNCNduBcl6mmmyEDZc2JiY2XeM1+dkuq6CvlmGBbfH5ejyf7QtQorM5g3iFA0YSImKkxKtOq9wpdL4IiEjT+yZ2RMiKoHLH98M7J1VfAz39b07yreu+Z7BCaG0FP5aptedqE+nIj65W/TkXXtTtTTCbzwzWyVxr9lBSih7u2J2WO9VG9HRmCA/NZ+2SM1uiu8h8TLSWznl2xXDfNP+wXPFBpimqwiT3SQYEqGMlcKIVh6ELDFxm3ngqcZbeyhKJlefT23KjBLaJONa5gGHF0XaU3+ZmioR+gTA3mttR/sMa2rkK7E36qLqyL9KLDca1Uk/QRRYy4/XQyJGtsBsqxY97LJJKuIbgJIUfhTDHhovd9R8eA/bMmoqoJZuHbKRDCuaeMe0vNdYBdCrS9pzT9YbkCB2FWzb7xEFu4EjIgzR+YuocDcduGF2YU56mZI1UPWPrWIi/fbp5FJmTRhtgiZP3N7V2CDdx9UQe60wUSr3Abo7Qb/A8Qs9fP3w0d5tnkV6ybw+0h10N4sPyVGXLuO0BYoOcx4CAIUb24BQmxn1WS6yO8/6+tdj5osydYIuyhTVJbSWJVDZEZBlIMUR+uB5bXL8f7MqXqScol8CEflPNcCkin8L2EWD9amvE5B0N4kgXrK9lge8QIYuAkgaig4WOs8l394Fqkl9PBc8M625Eip5w0skaEeFu51aBnoRRGJBQknGhYAAAA" alt="图 03" width="247" height="78" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 03</figcaption></figure>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>科研论文实践</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>简单总结丢失论证细节、助长思维惰性、有幻觉风险</li><li>DEAR四阶段：分解→阐明→分析→重构</li><li>用审稿人角色批判审视论文，促进批判性思维</li><li>技巧：给足上下文、迭代追问、交叉验证、建立Prompt库</li></ul><div class="pit"><ul><li>不要100%相信大模型，关键定义、数据、公式须核对原文</li></ul></div></div>
+<p>Prompt深度学习科研论文</p>
+<p>在当今学术界，我们面临的不再是信息匮乏，而是信息过载。一篇前沿领域的论文，往往包含着密集的专业术语、复杂的数学推导、精巧的实验设计以及对前人工作的微妙批判与继承。传统的阅读方式耗时费力，且容易陷入“只见树木，不见森林”的困境。</p>
+<p>大型语言模型（如GPT-4、Claude等）的出现为我们提供了强大的工具。它们能够快速处理和整合海量文本信息。当我们向模型输入“请总结这篇论文”时，我们得到的往往是一个去除了上下文、丢失了关键细节、甚至可能存在“模型幻觉”的扁平化摘要。这种被动的学习方式无法激发批判性思维，也难以将论文的知识真正内化为自己的能力。</p>
+<p>▐  8.1 总结式提问局限性</p>
+<ul><li>细节与逻辑的丢失 ：  论文的价值不仅在于结论，更在于其论证过程。一个好的摘要或许能告诉你作者“做了什么”，但无法解释他们“为什么这么做”以及“是如何做的”。方法的巧妙之处、实验的控制变量、结果讨论的微妙之处，都在“总结”二字中被无情地磨平了。</li><li>被动接受与思维惰性 ：  当我们请求总结时，我们将认知负荷完全交给了机器。我们只是信息的被动接收者，大脑并未进行主动的建构和批判。这与深度学习所要求的积极参与背道而驰。</li><li>无法暴露知识盲区 ：  一个好的学习过程应该能帮助我们发现自己知识体系中的漏洞。简单的总结无法实现这一点，因为它不会挑战我们的既有认知。</li><li>模型幻觉的风险 ：  对于高度专业的领域，如果LLM的训练数据不够充分，它在总结时可能会自行“脑补”或曲解关键概念，产生误导性的信息。</li></ul>
+<p>▐  8.2 “DEAR”框架构建深度学习</p>
+<p>“DEAR”是一个迭代的、循序渐进的流程，将阅读过程结构化为分解、阐明、分析、重构四个阶段，并为每个阶段设计精准的提示词，我们可以将大型语言模型的能力发挥到极致。这不仅能极大地提升我们学习科研论文的效率和深度。</p>
+<p>第一步：D - Deconstruct（分解）：建立全局视野</p>
+<p>在深入细节之前，首要任务是掌握论文的宏观结构和核心主张。</p>
+<p>Prompt 模板示例：</p>
+<p>角色扮演： 你是一位资深的领域专家，正在指导我阅读这篇论文。</p>
+<p>任务： 请为我分解这篇论文的核心框架。请不要进行大段总结，而是以结构化的、要点化的形式回答以下问题：</p>
+<p>效果分析： 这个Prompt迫使LLM从“叙述者”转变为“结构分析师”。它提供的不再是模糊的摘要，而是一个清晰的路线图，让我们对接下来的深度阅读有了明确的预期和方向。</p>
+<p>第二步：E - Elucidate（阐明）：逐点击破关键概念</p>
+<p>掌握了宏观框架后，下一步就是深入到论文的“血肉”之中，理解那些支撑起整个研究的关键技术细节、算法步骤和数学原理。</p>
+<p>Prompt 模板示例：</p>
+<p>针对特定概念：“请用一个通俗易懂的比喻，向一个该领域的初学者解释 [论文中的关键术语] 的核心思想。然后，再用更精确的技术语言描述其工作原理。”</p>
+<p>针对算法流程：“请根据论文第三节描述的 [算法名称]，将其分解为伪代码或步骤列表。在每一步旁边，请用一句话解释该步骤的目标是什么。”</p>
+<p>针对数学公式：“关于公式（5），请解释其中每一个符号（如 α, β, Σ）的具体含义。这个公式的整体数学直觉是什么？它在整个模型中起到了什么作用？”</p>
+<p>效果分析： 这一步强调的是“精确打击”和“多角度解释”。通过要求LLM使用比喻、技术语言和分步拆解，将复杂、抽象的概念具体化、形象化，极大地降低认知门槛。</p>
+<p>第三步：A - Analyze（分析）：进行批判性审视</p>
+<p>真正的学习始于批判。在理解了论文“是什么”和“怎么做”之后，我们需要探究“为什么这样”以及“好在哪里，不好在哪里”。</p>
+<p>Prompt 模板示例：</p>
+<p>角色扮演： 你现在是这篇论文的一位持怀疑态度的审稿人。</p>
+<p>任务： 请从以下几个批判性角度审视这篇论文：</p>
+<p>效果分析： 这种角色扮演式的Prompt将大模型从一个“合作者”变为一个“挑战者”，迫使其从对立面思考问题。</p>
+<p>第四步：R - Reconstruct（重构）：知识的内化与应用</p>
+<p>学习的最终目的是应用。这一阶段的目标是通过各种形式的知识重构，将从论文中学到的内容转化为自己可以调用的知识和技能。</p>
+<p>Prompt 模板示例：</p>
+<p>知识迁移与应用：“假设我要将这篇论文的核心思想应用到 [另一个不同的领域或问题，如“电商人群分层”]，可能会遇到哪些挑战？我应该如何调整原始方法？”</p>
+<p>教学式输出：“请为这篇论文创建一个N页的PPT大纲，包括标题页、问题定义、方法讲解、实验结果和未来展望。每一页需要列出关键要点和建议配图。”</p>
+<p>代码实现导向：“请基于论文描述的核心算法，用Python和伪代码写一个简化的实现框架。请重点关注数据流和关键计算步骤，可以省略具体的底层库调用。”苏格拉底式提问：</p>
+<p>效果分析： 重构是检验理解的最终标准。无论是尝试将知识迁移、构思教学材料，还是通过被提问的方式进行自我检测，都能有效地将零散的知识点组织成一个连贯的、可应用的知识体系。特别是“苏格拉底式提问”，是一种极佳的主动回忆练习。</p>
+<p>▐  8.3 技巧总结</p>
+<ul><li>提供充足的上下文 ：将论文的全文（或至少是摘要、引言和方法部分）作为上下文提供给LLM。</li><li>迭代式对话 ：  在LLM回答后，随时可以追问：“能再详细解释一下第二点吗？”“你提到的这个局限性，论文中有数据支持吗？”“这个比喻不太好，能换一个吗？”</li><li>交叉验证与事实核查 ：  大模型是理论来源，永远不要100%相信大。在涉及关键定义、数据和公式时，对照原始论文进行核查。</li><li>建立个人Prompt库 ：  将认为高效的、针对不同类型论文（如综述、理论、实验性）的Prompt模板保存下来，形成自己的“学术研讨工具箱”。</li></ul>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 04" width="247" height="78" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 04</figcaption></figure>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>未来趋势</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>APE等研究探索用LLM自动生成并优化提示词</li><li>多模态提示将突破文本，融合图像、音频与视频</li><li>提示词注入、越狱、数据泄露等安全威胁加剧</li><li>人机关系将从主仆式单向指令走向伙伴式共同创造</li></ul></div>
+<p>提示词工程作为一个与大模型技术本身共同进化、相互成就的新兴领域，其发展速度日新月异，未来的图景更是充满了无限的想象空间。展望未来，我们可以预见以下几个至关重要的发展趋势：</p>
+<p>1. 自动化与自适应提示（Automated &amp; Adaptive Prompts）</p>
+<p>未来，我们将更多地“用魔法打败魔法”——利用AI来优化与AI的沟通。目前已经出现了诸如APE这样的研究，探索如何让LLM根据简单的任务描述和少量范例，自动地生成并迭代优化出高性能的提示词。更进一步，未来的Agent将具备高度的自适应能力。它可以根据与某位用户的长期历史交互数据，学习该用户的语言习惯、关注重点和知识盲区，从而动态地、个性化地调整与其交互的提示词，真正实现“千人千面”的、越用越懂你的智能服务。甚至可以想象，Agent能够通过分析大量成功的交互记录，自我微调和优化其核心的提示词模板 。</p>
+<h3 class="sub">2. 多模态提示（Multimodal Prompts）</h3>
+<p>随着像GPT-4o这类原生多模态大模型的成熟与普及，提示词的载体将彻底突破文本的限制，进入一个更加丰富、更加直观的多维世界。用户可以通过上传一张竞品的宣传海报、一段市场分析会议的图表、一小段用户访谈的音频，甚至是一段操作演示的视频，来发出指令。届时，提示词工程将扩展到如何设计和解析这些融合了图像、声音、表格和数据的跨模态输入，从而开启全新的交互维度。例如，未来的业务同学可以直接对Agent说：“（上传一张销售额下降的图表）分析一下这张图里销售额下降的核心原因，并结合我们（上传一份最新的行业分析报告PDF）这份报告，提出三个应对策略。”</p>
+<p>3. 提示词攻击与安全防御（Prompt Hacking &amp; Security）</p>
+<p>有光的地方，必然存在影子。随着提示词工程的普及，针对其安全性的攻击手段也层出不穷。提示词注入（用户通过输入诱导性文本，试图劫持Agent的原始指令）、越狱（诱导模型绕过其安全护栏，生成有害或违规内容）、数据泄露（通过巧妙的提问，套取Agent提示词中或其能访问到的敏感信息）等安全威胁正变得日益复杂和隐蔽。未来的提示词工程将更加关注安全性和鲁棒性。研究重点将包括：如何从提示词层面构建更强大的防御机制（如使用更严格的结构化输入、对用户输入进行预处理和过滤）、如何训练模型识别和抵抗恶意指令、以及如何设计更完善的权限控制和审计日志系统。</p>
+<h3 class="sub">4. 人机协同的深度演进：从“主仆”到“伙伴”</h3>
+<p>提示词工程的终极目标，并非是创造一个完美的、单向的、人类下达指令、AI被动执行的“主仆”关系，而是要构建一个高效的、双向的、共同创造的“伙伴”关系。未来的交互将更像是一场自然的对话、一次共同的探索。AI将不再仅仅是执行者，更会成为启发者、建议者和批判者。它可能会在你提出一个分析需求时，反过来向你提问：“我注意到你只关注了GMV，但从用户活跃度来看，我们可能面临着一个潜在的风险，你希望我深入分析一下吗？”或者在你提供一个分析框架时，它会建议：“你的这个框架很全面，但业界最新的分析范式还包含了XX维度，加入它可能会让我们的洞察更深刻。”</p>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 05" width="240" height="78" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 05</figcaption></figure>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>提示词工程的魅力在于与“非人智慧”高效协作</li><li>它是通往人机共荣智能时代的起点</li></ul></div>
+<p>AI Agent的浪潮已然席卷而来，它正在以前所未有的力量，深刻地重塑着我们的工作模式。我们所获得的，将远不止是个人效率的提升。更重要的是，我们将学会如何与一个全新的、强大的“非人智慧”进行有效的沟通与协作，从而形成优势互补的强大共生体，共同去探索和解决那些在过去仅凭人力无法企及的、更宏大、更复杂的挑战。这，就是提示词工程的真正魅力所在。它不是终点，而是通往一个全新的人机共荣的智能时代的起点。</p>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,UklGRpoJAABXRUJQVlA4II4JAACQKwCdASrwAE4APpVEnEmlpCKhJniMqLASiWwAyu4Tftf5JeDZt3lv5B/ll1lPHvgr1q+VnJ3ly+Rfmn/C/rv5ke8/+q+wjzAP1u6QHmA/a/9qveW/t37Ae439nPYA/nH9D/93YDegf+33pg/tD8Gf9p/3X7bf//31PUA/+uwhf5bq1dKX7fko2G/t5+09kHYDtW7rX4rzE4w+9M+1+oB5J/+L+zPmU/QP9n7BvR2/d72Iv2AEtVBP9okY00+4zkfUvbDgijslupYKfyUXOVBeTBQko5AMxIR7XD+5bjBsf+wL5i184eFbjUznnZDwnioLXCl+jF6dTCOHTSpwJh3XRy903RlqpbNOYm4h242szNKOx4PtveARf8oQ616/xWfEyvRZsBTY6wpdqdxBqoIwBRN89zG3jsdmporVkqMtfpJf2seFBKZOr8KQJ8C4WUTOFgzFcj11sn6awSqZrWN4SyqhoAAA/r2kM9u2wkWV3GvsDSCpU9LxAJWQNiOzgbRpsXUNaawDU0vF0PWosDs3w9XG3VXlEy0BKMZCbSK6VJWZawU+hDlvkK3D1m5ppO4OuIcBXVnD2k7PS+o/GLxVgeHzh1J6n/EmlmsIxpE0jJ8WSudr/6FOb1infYhEYzIpT3Daja6T2Yla/Uy+jK04UuUuJV4G1QKUze+7O/3+71SEMFcXxT0oXs/+w8kh4cAjwdwWL6t8x0Bmz3+77B/l5eUFSVCzOdYHn16gbYK/XE96QEl4Po9PCfdJMrIp5m82BHWuoltTwwWtXvzwbc2/MMpByD4tU22/K7qhfA2pI5w1F8myiLJF8YICeXx1YUmuS9FLFJNMV1s8+O5i8htO7mM6bqVMb0a1uHeqtrh70CTGd9GD8H0Y5VgmhOyqG4X6y40Q5fdI8z+ZSGE0QiPTrT3ZA4ypguNdNZILZMCIJA4VkTlYvHYwzoHJq9aIJ1OmYPsgncHtsmvUzdvAh1i7+w/jsfubjYU4z3s3BtzKmKPWs5UwnYjLvPc4rimCCSA1IypG3nvoJpyP+rHAnUR6nQGnsrdFkKQfm9ny96V0dU8Mc+C0lb3kRPjg2DwrUo68xtBMQpVesb2EVNaVH64WRDZMt7k3fYd854teu/le4A2J2OtkHZ3IMQebeli8Cx8yMvA3Yqu2ETXI0pp4PWUEztDtruWbCSCbe9ru5UtvA4QK1DLoPzHaik1i7QfRY4VUJ7AA7X31YKBb0zMBcY7cnZVdaVaWRBo5zFOAD2XdWzF1A2+x32VFuvbZFRHAuBxO/500/wDu+B2YKfxTGntsRm0cGBth2U5KofohX0MbW6Npy1LQx9C2mCjl9i5TbTmozhw93Ea3rwrbd0Apg1CFn81NRtcseOvZXuajhKptwxnjqPlj9VuXEY4gcdF9+2QNKBalNBGYtwTfDc2lP3xTZxTIKrDS8oj1AvadnKAXu3kWJlt+4oO8NVx55DUTJR/rzGhZojf3nYbCTdYlkbfeEgjkjUwFZK22Iaidwg16kN0vpuVOJqBYUfnXNy7MHW6Cq+1WgBZiAcB9+SxcYfjqHd97zyPiMcG7avvEAv2n9IjhbSTXFJwzGMSpghFSIkMputo/sv2qAGEfNiAkKyWgs8bj6y3to3nPZOGxlFsJsVHpeQPCNsScy/DQjch2gyWsxcBLSSvi/zjRh8tI301k24oPXQhG9IVgHKMhFBKEerb6Mclb+FwdYowF9dmpyonsfEiZyRblPuRtYGiYUU7uUkwT0rpGf9Vi4N6Gy8QAMWZPfnbqEy5lePZAJAm/Mk6wgBigoXA1pmr5V607zuEns2WIR9apfzd277tXVomG5+5zLfDtTBBXeIqembnRLtASag9DkXM90ytqq8/5G+wBp98cCxxwzMJobWVv/7RnOixDpa1NOofEPr80nO2xQXhx1OWHjsI2E99hXJ5acL4V+KHfa+p8AA4fzGYv7/5aH0zo2NoKsSZjEeNx+RpVFr59K0JcHvRgDVTGmFC/KEvH5cqA9XGJ26kpfpPh2BGMsA8AG9zRORrXXPcfMppDhg4GbRRwQ60rQBd6l9EuByD/5hU9fO7mHDLCXjwUUn7Zq8G3cvpeCNmlE0DGaSfrYVTmCCatki3fcBGsEZ+HUPe5t1T4uFq+7Apsxoyc5DaYHdrn1Y5q/z5gcEBFD/KMXelRWcdik1vY2YTe3ZCCWNAXIZFKOJZbvGGms9rv3HYRBUbh//aaZL4kws1X5/KTWbH5Z0j6TIbj8OsiTWd7vqniw9WaD5SsyqlMlEM0EPXLg+AcUaOBNbn5lbKwxoNsFdMrsts2RO2OZ5M/4Qnn+w3fkBT6NrxGWZQVqNMx/qPIZCDgX0mXDFAgQCjwhi75kFtXzC67De2NNW14kXO/e29I9bTesC8Cuv50icgl+TiBvGpEhX21mWX+PfNFue90I0982+MYNxlIOQgMoB3OHwWLem6/NB5k5Oe81e8Q2T/Cyjno35QeoiQ8wmUycSCssoPqQCkAA4tJ3MDVQoJ7Se89lTaW/N9Z4X3Zf238lkMBV77/DxaOZB4vXexlHpkmFY6XRSFLUh8rnxj1vyEgkpILUifCvvWadmHp/eVkEcy/fiAZWwmn3kTFoq/c+X6OZVwinUtaHMTvRUTIXJwoj58H8qAaHO32nnSp3Sl7Gv3OXa2cVySqZhhGi8qBQbIwnJ+uLkU9upALV/tizvOry75ivF0WJfEu+R0HzZ65hD0LDMAuFk2HBs6QU3lwbpg9COr4uJ5mj5peWf/HYzMNC8TqgLriGVL5eOBNhxPCi+//zHtmez+4hKYYlmjqWe4ayxOUhPsJga3hSIgHCCvpMLJHd8hkeqYrzDKI9mCLfjmj7zyZTI6bNf+rj3JT+OndAKi5mdP9ju8HI3MGnJ3q7nvQlX0CMk1KEUrcUJKMDw+hFu2+MlL/PRwYnLRFU6RoUEPCDg+2kODGtWriQ8YuGNYDlZqi3+4xFV2T/VeU+ZTL5DVs3h/exssbkQC0vRAbdWVOqSQacpfMabHLtPv1uLT3dGEAQp2/FPauV2LarvrW+rR/aHYD+4B/0GTiCmrrAgpuBxAE0sYMPy7+AqvobDRurWJK0gcAtk5gYIs9JqZqvhXWzDScS5az00UHchMmU4BHMFARviKrYQAdesvPHQI4mZaSDDfqpQXrc/0YNXSgQo108zFSd9Y+ieE3NoVPPvGR92bAUCpjTrAVoCG0Q6rAufwEGp8VntFDZpmvkOQyJTjlb0JaQVuBSONQAAAA" alt="图 06" width="240" height="78" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 06</figcaption></figure>
+<p>团队介绍</p>
+<p>本文作者之溪，来自淘天集团-百补&amp;聚划算团队。本团队负责支持百亿补贴、聚划算等业务，聚焦优惠和选购体验，通过数据洞察，挖掘数据价值，建立面向营销场、服务供需两端的消费者运营和供给运营解决方案。</p>
+<p>本文部分资料来源网络</p>
+<p>¤ 拓展阅读 ¤</p>
+<p>3DXR技术 | 终端技术 | 音视频技术</p>
+<p>服务端技术 | 技术质量 | 数据算法</p>
+<p>大淘宝技术</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Prompt与提示词工程</h4><p>Prompt是发给LLM的任务指令；提示词工程是设计、测试、分析、优化提示词的系统方法论与闭环流程。</p><a class="src-link" href="#sec-02">原文 → 基本概念</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>提示词工程与嵌入/微调</h4><p>嵌入与微调需大量数据与算力、有技术门槛；提示词工程不改模型权重，轻量、低成本、低门槛。</p><a class="src-link" href="#sec-02">原文 → 基本概念</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>提示词质量决定应用上限</h4><p>提示词的质量，直接定义了AI应用能力的上限。</p><a class="src-link" href="#sec-01">原文 → 引言：对话的艺术与科学</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>模糊输入导致模糊输出</h4><p>避免“一些、大概、更好、分析一下”等含糊词，精确量化无歧义的语言才能得到高质量输出。</p><a class="src-link" href="#sec-04">原文 → 设计原则</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>JSON格式输出指示器</h4><p>要求返回JSON并指定键类型：id(string)、name(string)、tags(array of strings)，保证机器可处理。</p><a class="src-link" href="#sec-03">原文 → 构成要素</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>RAG动态输入占位符</h4><p>用${REFERENCE_DOC_1}与{user_question}占位符，运行时注入检索文档与用户问题。</p><a class="src-link" href="#sec-03">原文 → 构成要素</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>自我一致性采样投票</h4><p>温度调至0.7，对同一问题独立解答5-10次，按少数服从多数取最可信答案。</p><a class="src-link" href="#sec-05">原文 → 高级技巧</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>思维链与零样本思维链</h4><p>CoT需构造推理范例；Zero-shot-CoT无需示例，追加“让我们一步一步地思考”即可。</p><a class="src-link" href="#sec-05">原文 → 高级技巧</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>ReAct循环</h4><p>思考(Thought)→行动(Action)→观察(Observation)交错循环，如调用search_api查询实时价格。</p><a class="src-link" href="#sec-05">原文 → 高级技巧</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>DEAR框架深度学习论文</h4><p>分解→阐明→分析→重构四阶段，把被动总结变为主动建构与批判性学习。</p><a class="src-link" href="#sec-08">原文 → 科研论文实践</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>选品需求禁止自由发挥</h4><p>识别到选品、圈品、圈人群意图时，必须引导至内部产品“用户运营中心”，不得额外发挥。</p><a class="src-link" href="#sec-07">原文 → 数科Agent实践</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>提示词工程是智能中枢</h4><p>在数科Agent中，提示词承担智能中枢、行为准则、知识引擎与价值放大器多重核心角色。</p><a class="src-link" href="#sec-07">原文 → 数科Agent实践</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把提示词当产品打磨：先给背景、指令、输入与输出格式，再持续迭代优化。</li>
+          <li>复杂任务用思维链或ReAct拆步执行，并以分隔符和正负约束加固输出。</li>
+          <li>企业级Agent用RAG+工具使用+流程编排，让提示词成为智能中枢而非简单提问。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzAxNDEwNjk5OQ==&amp;mid=2650541246&amp;idx=1&amp;sn=7b3f30ecd25140e2e43708c79f0d813d" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxNDEwNjk5OQ==&amp;mid=2650541246&amp;idx=1&amp;sn=7b3f30ecd25140e2e43708c79f0d813d</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI应用 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
