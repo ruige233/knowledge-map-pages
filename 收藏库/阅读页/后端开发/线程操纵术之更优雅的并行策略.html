@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">线程操纵术之更优雅的并行策略</h1>
+  <p class="lede">从家务奥数题讲透Fork/Join与并行流，真实案例前置长调用提速近3倍</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 46 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>并行编程基础</a>
+          <a href="#sec-02"><span class="n">02</span>真实业务优化案例</a>
+          <a href="#sec-03"><span class="n">03</span>总结与风险</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 并行编程基础</a>
+          <a href="#sec-02">02 真实业务优化案例</a>
+          <a href="#sec-03">03 总结与风险</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>我们采取类似贪婪的思想，两个人在任一空闲时刻，永远做占用时间最大的任务，这样就把更多小任务留到了最后，总体可以节省更多时间。 Fork/Join 框架通过使用分而治之和工作窃取机制来实现更高程度的并行性。 fork/join 池以递归方式划分较大的任务，直到可以按顺序计算子任务而不会进一步分解。在任务完成执行后，它们返回结果，这些结果被连接回来，然后返回最终结果。 在使用fork-join框架中，需要注意： Fork/Join 本身不能分割任务，也不能自行合并结果。需要我们指定一种划分任务和合并结果的方法。 Fork/Join 框架无法决定一项任务是否可以进一步划分。我们必须指定一种识别它的方法，例如设置一个特定的阈值，当达到该阈值时，将按顺序计算任务。 ForkJoinPool是ExecutorService的实现，需要将创建的ForkJoinTask任务，使用invoke()方法提交到ForkJoinPool中，需要注意的是，子任务不需要提交到Pool中，RecursiveTask本身是一个自分裂任务。换言之，只需要提交作为根任务的大任务，框架就会完成剩下的工作。 ForkJoinTask 可以使用 execute() 、 invoke() 和 submit() 来提交任务。 ForkJoinPool 维护一个全局共享队列，所有工作线程都可以访问。所有提交的任务都会在这个Shared Queue中排队。 Pool中有 工作线程 ，每个工作线程都有自己的队列，称为 工作窃取队列 （该特定工作线程的 本地 队列）工作线程从共享队列中获取任务，并将它们存储在本地工作窃取队列中。 （目标： 通过保持所有工作线程始终尽可能繁忙来最大化 CPU 利用率） fork-join 池中的每个工作线程都运行一个循环来检查要执行的任务。 这些工作线程为了让自己始终尽可能忙碌，会检查来自多个输入源的任务： 全局共享队列 ： 工作线程最初获取任务的地方。 本地工作窃取队列 ： 线程从全局共享队列获取主任务后，工作线程在拆分子任务时，会将这些子任务推送到自己的本地工作窃取队列中。 其他线程的工作窃取队列 ： 这是实际的工作窃取机制出现的地方。 线程从其他线程的工作窃取队列中窃取任务。 工作线程以 LIFO 顺序访问 自己的 工作窃取队列，并以 FIFO 顺序访问 其他线程 的 工作窃取队列。 工作线程在拆分任务并派生子任务时，将派生的子任务 添加到队列的前面 。 而且 取的时候是从队列前面取 。 如果某个特定线程是空闲的（它自己的队列是空的），那么就可以从其他线程队列的 末尾窃取 。 如何决定从哪个其他线程队列中选择任务？ 随机 。 总体广义上，窃取符合 FIFO 。 为什么这样设计？ 减少工作线程之间的争用。 为了在工作窃取队列上提供轻量级锁定机制。 提供更好的Locality of Reference——缓存性能。 位于队列末尾的任务较旧（最先添加），代表较大的工作单元，位于队列前面的任务较年轻（最近添加），代表较小的工作单元。 如果一个线程在自己的队列上运行，它首先完成较小的任务，然后再完成较大的任务。 如果一个线程从其他线程的队列中窃取工作，则需要更大的任务，以便通过进一步拆分来单独解决它。 【回顾一下文章开头的引子？ 】 1.4.2 并行流的最佳实践 确定规模：并行流适用于对大型数据集进行密集计算的场景。如果数据集较小或计算量较小，则串行流可能更合适。并行流的创建和维护涉及到线程调度和数据划分的开销，如果任务过于简单，可能会导致性能下降。 合适的数据结构：在使用并行流时，应该选择适合并行处理的数据结构。使用并发集合（如ConcurrentHashMap）可以在并行流中实现更好的性能。 数据共享和竞态条件：并行流中的操作是并发执行的，因此需要特别注意数据共享和竞态条件的问题。确保操作是线程安全的，可以使用同步块或并发集合来保护共享数据。 避免有状态的操作：在并行流中，应尽量避免有状态的操作，即操作的结果依赖于前面的操作或全局状态。这种操作可能导致竞争和不确定的结果。应使用无状态的操作，如map和filter。 调整并行度：默认情况下，并行流使用的线程数是根据可用的处理器核心数来决定的。有时可能需要手动调整并行度以获得更好的性能。 parallelStream()方法默认使用的是ForkJoinPool.commonPool()作为并行执行的线程池。 由于commonPool()是一个共享的线程池，其他部分的代码也可能使用这个线程池来执行任务，因此在使用parallelStream()时需要注意线程池资源的竞争和并发性。在这个场景下，需要精细控制并行执行的线程池，考虑使用ForkJoinPool类自行创建和管理。 3.1 如何写出更优雅的并行程序 吃透业务逻辑，洞察优化点。程序不能脱离业务而谈，必须清楚业务特点和规律之后，针对性地进行优化。本文中，大前提是每个调用节点中，先长调用，然后中短调用，且有先后依赖关系的特点。 贪婪策略调度工作线程。在本文中，有两个地方体现了这个思想，其一是JDK源码中工作窃取机制，从队列后端获取较大任务。其二是代码优化部分，前置长调用的fork。主旨都是让确定性的大任务前置的思路，以获得更高的工作线程并行度。 有所为，有所不为。并行程序不是银弹，更好地发挥出并行的力量需要遵循其最佳实践，即确定规模、采用合适的数据结构、数据共享和竞态条件、避免有状态的操作、分场景调整并行度。最好还要对所处机器的配置、负载做调查。 3.2 一些风险和注意事项 3.2.1 parallelStream与deadlock 并非每一个独立调用parallelStream的代码都会独立维护运行一个多线程的策略，而是JDK默认会调用同一个由运行环境维护的ForkJoinPool线程池，也就是说，无论在哪个地方写了list.parallelStream().forEach()这样一段代码，底层实际都会由一套ForkJoinPool的线程池进行运行，一般线程池运行会遇到的冲突、排队等问题，这里同样会遇到，且会被隐藏在代码逻辑中。一旦发生deadlock，所有调用parallelStream的地方都会被阻塞，无论你是否知道其他人是否这样书写了代码。 为了避免这些问题，可以考虑创建一个独立的ForkJoinPool线程池，而不是使用默认的公共线程池。这样可以更好地控制并行操作的执行环境，并避免与其他任务共享线程池带来的问题。</th></tr></thead><tbody></tbody></table>
+<p>阿里妹导读</p>
+<p>本文详细介绍了并行编程以及一些并行问题案例中的真实业务场景。如何写出更优雅的并行程序？有哪些风险和注意事项？本文来为你解答。</p>
+<h3 class="sub">0.1 从一道小学奥数题说起……</h3>
+<p>星期天小明和妈妈两个人要做好多家务。他们的任务总共分为两部分，分别是卫生间和厨房的工作。</p>
+<ul><li>在卫生间的工作包括： 擦镜子要7分钟，手洗衣服要30分钟，晾衣服要5分钟，刷厕所要10分钟。</li><li>在厨房的工作包括： 洗菜要5分钟，做饭要20分钟，倒垃圾要5分钟。</li></ul>
+<p>其中晾衣服必须在手洗衣服完成后才能做，做饭必须在洗菜完成后才能做。并且同一项工作最多只能一个人操作。</p>
+<p>问题：小明和妈妈干完所有这些事情最少用多长时间？</p>
+<h3 class="sub">0.2 问题解析</h3>
+<p>首先我们画出两部分的工作示意图：</p>
+<p>答案比较显而易见，我们只要努力让两个人做家务的时间尽量相等，那么总体时间就是最少。简单排列组合后，不难得出答案为42min（任务的最小排列组合方式不止1种）</p>
+<h3 class="sub">0.3 进一步思考</h3>
+<p>得出答案非常容易，在这个问题上，对我们在并行编程上有什么启示呢？</p>
+<p>首先看一组错误的任务调度策略：</p>
+<p>这一组策略第二个人先把小任务几乎做完，然后才开始大任务，导致第一个人完成任务后，长达12分钟没有其他事情做了。而在有任务时长的先验知识后，我们采取类似贪婪的思想，两个人在任一空闲时刻，永远做占用时间最大的任务，这样就把更多小任务留到了最后，总体可以节省更多时间。</p>
+<p>带着这个思考，开始尝试书写更优雅的并行编程策略……</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>并行编程基础</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>并发是交替执行、并行是同时执行；并行需要多处理器或资源支持。</li><li>Fork/Join 不自行分割与合并任务，需自定划分方法、合并方法与拆分阈值。</li><li>只提交根任务 invoke()，子任务无需提交，RecursiveTask 自分裂。</li><li>工作窃取：自己队列 LIFO 取小任务，窃取他人队列 FIFO 取大任务，随机选队。</li></ul><div class="pit"><ul><li>parallelStream() 默认用共享 commonPool()，易与他处代码争抢资源。</li></ul></div></div>
+<p>并行编程是一种利用多个处理器或计算资源同时执行多个任务的编程方式，以提高计算效率和性能。它涉及任务划分、同步与互斥、通信与通信开销等概念和技术。并行编程的正确实现需要解决数据竞争、负载平衡、同步与互斥等挑战，并借助调试和性能分析工具来提高开发效率和程序性能。</p>
+<h3 class="sub">1.1 并发与并行</h3>
+<p>并发是指多个任务交替执行的能力，而并行是指多个任务同时执行的能力。并发可以在单个处理器上通过快速切换任务的上下文来实现，而并行需要多个处理器或计算资源的支持。</p>
+<table><thead><tr><th>并发：2 个队列，1 台自动售货机</th><th>并行：2 个队列，2 台自动售货机</th></tr></thead><tbody></tbody></table>
+<p>并行编程无疑是一个广阔的领域，旨在通过同时执行多个任务或操作来提高程序的性能和效率。与传统的串行编程相比，它允许多个任务在同一时间段内并行执行，从而加快计算速度和提高系统的吞吐量。</p>
+<p>并行编程广泛应用于需要处理大量数据或执行复杂计算的领域，如科学计算、数据分析、图像处理和机器学习等。它可以利用多核处理器、分布式系统或GPU等硬件资源，通过将问题划分为多个子任务，使用多个执行单元同时处理任务，从而实现性能的提升。</p>
+<h3 class="sub">1.2 Java与并行编程</h3>
+<p>有许多编程语言提供了良好的支持和工具来完成并行编程，而Java 是开发并行应用程序的理想语言之一。它的原生线程库java.lang.Thread 允许任务并行、异步运行，可以总体上提高应用程序的执行速度，并允许在更短的时间内完成更复杂的任务。此外，Java 还提供了广泛的库和框架，可用于快速高效地开发应用程序，Java自身的语言特性也使开发人员能够创建安全可靠的跨平台应用程序。</p>
+<h3 class="sub">1.2.1 Java线程与任务</h3>
+<p>Java线程与任务是Java编程语言中用于并发编程的重要组件。它们允许开发人员在程序中同时执行多个任务，提高程序的并发性和性能。</p>
+<ul><li>线程（Thread）：线程是操作系统能够进行运算调度的最小单位。在Java中，线程是通过Thread类来表示的。每个线程都有自己的执行路径，并且可以独立执行，有自己的程序计数器、栈和本地存储等。通过创建线程对象并调用其start()方法，可以启动一个新的线程。Java中的线程有两种方式创建：继承Thread类和实现Runnable接口。</li><li>任务（Task）：任务是需要在线程中执行的具体工作单元。在Java中，任务通常是通过实现Runnable接口或者Callable接口来定义的。Runnable接口定义了一个run()方法，该方法中包含了任务的具体逻辑。Callable接口类似于Runnable接口，但它可以返回执行结果，并且可以抛出异常。任务通常由线程池来管理和调度。</li><li>线程池（ThreadPool）：线程池是一种管理和复用线程的机制，它可以提高线程的利用率。Java中的线程池是通过ThreadPoolExecutor类来实现的。线程池维护一个线程的集合，可以根据需要创建新的线程，也可以复用空闲的线程。通过将任务提交给线程池，线程池会自动调度线程来执行任务。</li></ul>
+<h3 class="sub">1.2.2 使用 Java 库进行并行编程</h3>
+<ul><li>并行流（Parallel Stream）：Java 8引入了并行流的概念，它是一种针对集合数据的高级抽象，可以在多个线程上并行地执行流操作。通过将集合转换为并行流，可以自动将任务分割为多个子任务，并在多个处理器上并行处理。并行流使用Fork/Join框架来实现任务的划分和合并。</li><li>任务执行器（Executor）：是一个接口，位于java.util.concurrent包下，它的作用主要是为我们提供任务与执行机制（包括线程使用和调度细节）之间的解耦。执行器对于管理线程和确保线程安全非常有用。</li><li>Fork/Join框架：它是Java提供的一个用于并行编程的框架，它基于“分而治之”（divide and conquer）的思想，用于实现任务的划分和合并。Fork/Join框架在Java 7中被引入，通过提供一种简单且高效的方式来利用多核处理器和多线程执行任务。</li></ul>
+<h3 class="sub">1.3 “分而治之”的哲学</h3>
+<p>在使用 Java 进行并行编程中，本文重点介绍Fork/Join框架，该框架也是作为Java 并行流 API的实现。</p>
+<h3 class="sub">1.3.1 Fork-Join 框架</h3>
+<p>在实际应用场景中，我们可能有多个任务，也可能有一个非常艰巨的任务，而这个大任务可以拆分为较小的子任务，并且，这些子任务可能会被拆分为更小的任务。在这些情况下，Fork/Join 池会派上用场。概括来说，Fork/Join 框架通过使用分而治之和工作窃取机制来实现更高程度的并行性。</p>
+<p>fork/join 池以递归方式划分较大的任务，直到可以按顺序计算子任务而不会进一步分解。在任务完成执行后，它们返回结果，这些结果被连接回来，然后返回最终结果。下图是并行计算0~100000的fork-join示意图。</p>
+<p>在使用fork-join框架中，需要注意：</p>
+<ul><li>Fork/Join 本身不能分割任务，也不能自行合并结果。需要我们指定一种划分任务和合并结果的方法。</li><li>Fork/Join 框架无法决定一项任务是否可以进一步划分。我们必须指定一种识别它的方法，例如设置一个特定的阈值，当达到该阈值时，将按顺序计算任务。</li></ul>
+<h3 class="sub">1.3.2 使用 Fork/Join 框架实现并行算法</h3>
+<h3 class="sub">1.3.2.1 创建ForkJoinTask任务</h3>
+<p>在实践中，使用ForkJoin框架，必须首先创建一个ForkJoinTask任务。它提供在任务中执行fork()和join()操作的机制。通常情况下我们不需要直接继承ForkJoinTask类，而只需要继承它的子类，Fork/Join框架提供了以下两个子类：</p>
+<ul><li>RecursiveAction 用于没有返回结果的任务</li><li>RecursiveTask 用于有返回结果的任务。</li></ul>
+<p>创建任务唯一需要做的是重写compute()方法并实现逻辑。该方法规定了程序Fork、Computation和Join操作的具体位置。</p>
+<h3 class="sub">1.3.2.2 提交到ForkJoinPool</h3>
+<p>ForkJoinPool是ExecutorService的实现，需要将创建的ForkJoinTask任务，使用invoke()方法提交到ForkJoinPool中，需要注意的是，子任务不需要提交到Pool中，RecursiveTask本身是一个自分裂任务。换言之，只需要提交作为根任务的大任务，框架就会完成剩下的工作。</p>
+<h3 class="sub">1.3.2.3 示例完整代码</h3>
+<ul><li>package learning.multithreading;</li><li>import java.util.Random;</li><li>import java.util.concurrent.ExecutionException;</li><li>import java.util.concurrent.ForkJoinPool;</li><li>import java.util.concurrent.RecursiveTask;</li><li>public class ParallelSumComputationUsingForkJoin {</li><li>private static final int[] LARGE_ARR = largeArr();</li><li>private static final int LENGTH = LARGE_ARR.length;</li><li>public static void main(String[] args) throws ExecutionException, InterruptedException {</li><li>RecursiveSumTask recursiveTask = new RecursiveSumTask(0, LENGTH, LARGE_ARR);</li><li>ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();</li><li>long start = System.currentTimeMillis();</li><li>long sum = forkJoinPool.invoke(recursiveTask);</li><li>System.out.println(&quot;The sum is : &quot;</li><li>+ sum</li><li>+ &quot;, Time Taken by Parallel(Fork/Join) Execution: &quot;</li><li>+ (System.currentTimeMillis() - start) + &quot; millis&quot;);</li><li>private static int[] largeArr() {</li><li>return new Random().ints(500000000, 10, 1000).toArray();</li><li>static class RecursiveSumTask extends RecursiveTask&lt;Long&gt; {</li><li>private static final int SEQUENTIAL_COMPUTE_THRESHOLD = 4000;</li><li>private final int startIndex;</li><li>private final int endIndex;</li><li>private final int[] data;</li><li>RecursiveSumTask(int startIndex, int endIndex, int[] data) {</li><li>this.startIndex = startIndex;</li><li>this.endIndex = endIndex;</li><li>this.data = data;</li><li>@Override</li><li>protected Long compute() {</li><li>if (SEQUENTIAL_COMPUTE_THRESHOLD &gt;= (endIndex - startIndex)) {</li><li>long sum = 0;</li><li>for (int i = startIndex; i &lt; endIndex; i++) {</li><li>sum += data[i];</li><li>return sum;</li><li>int mid = startIndex + (endIndex - startIndex) / 2;</li><li>RecursiveSumTask leftSumTask = new RecursiveSumTask(startIndex, mid, data);</li><li>RecursiveSumTask rightSumTask = new RecursiveSumTask(mid, endIndex, data);</li><li>leftSumTask.fork(); // Fork the Left Task in a Separate Execution</li><li>long rightSum = rightSumTask.compute(); // Compute the Right Part</li><li>long leftSum = leftSumTask.join(); // Wait for the results from the Left Part</li><li>return leftSum + rightSum; // Return Both</li><li>/**</li><li>* Output:</li><li>* The sum is : 252235235953, Time Taken by Parallel(Fork/Join) Execution: 139 millis</li></ul>
+<p>在示例代码中，创建ForkJoinTask任务流程如下：</p>
+<ul><li>首先，设定一个阈值。如果要计算总和的数组的大小小于阈值，则我们按顺序计算总和，而无需进一步细分。这充当递归的基本条件。</li><li>如果不满足基本条件，则将任务分成两部分来处理。如何将任务拆分取决于业务场景。在本文的例子中，将任务分成两个相等的子任务，有的业务场景子任务的比例也可能不相等。示例代码中创建了两个子任务：leftSumTask和rightSumTask，分别处理数组的左半部分和右半部分。</li><li>之后让leftSumTask进行fork()操作，这意味着它被添加到工作窃取队列中，在ForkJoinPool队列中的任何线程都可以拾取并执行它。关于工作窃取机制在后文进行详细阐述。</li><li>在fork之后，将在当前线程上下文中计算rightSumTask。当然，当前线程作为右半部分计算的一部分，将进一步将任务再次分为两部分，并再次fork左部分，一直持续到满足基本条件为止。</li><li>接着，使用join()来获取执行左侧部分的结果。join操作是阻塞调用，调用线程会等待任务完成。</li><li>最后，将左和和右和相结合并返回结果。</li></ul>
+<h3 class="sub">1.3.3 工作窃取</h3>
+<p>接下来，深入探讨一下fork和join方法，以及ForkJoinPool背后的工作窃取机制。</p>
+<ul><li>ForkJoinTask 可以使用 execute() 、 invoke() 和 submit() 来提交任务。</li><li>ForkJoinPool 维护一个全局共享队列，所有工作线程都可以访问。所有提交的任务都会在这个Shared Queue中排队。</li><li>Pool中有 工作线程 ，每个工作线程都有自己的队列，称为 工作窃取队列 （该特定工作线程的 本地 队列）工作线程从共享队列中获取任务，并将它们存储在本地工作窃取队列中。 （目标： 通过保持所有工作线程始终尽可能繁忙来最大化 CPU 利用率）</li><li>fork-join 池中的每个工作线程都运行一个循环来检查要执行的任务。 这些工作线程为了让自己始终尽可能忙碌，会检查来自多个输入源的任务：</li><li>全局共享队列 ： 工作线程最初获取任务的地方。</li><li>本地工作窃取队列 ： 线程从全局共享队列获取主任务后，工作线程在拆分子任务时，会将这些子任务推送到自己的本地工作窃取队列中。</li><li>其他线程的工作窃取队列 ： 这是实际的工作窃取机制出现的地方。 线程从其他线程的工作窃取队列中窃取任务。</li><li>工作线程以 LIFO 顺序访问 自己的 工作窃取队列，并以 FIFO 顺序访问 其他线程 的 工作窃取队列。</li><li>工作线程在拆分任务并派生子任务时，将派生的子任务 添加到队列的前面 。 而且 取的时候是从队列前面取 。</li><li>如果某个特定线程是空闲的（它自己的队列是空的），那么就可以从其他线程队列的 末尾窃取 。</li><li>如何决定从哪个其他线程队列中选择任务？ 随机 。 总体广义上，窃取符合 FIFO 。</li><li>为什么这样设计？</li><li>减少工作线程之间的争用。 为了在工作窃取队列上提供轻量级锁定机制。</li><li>提供更好的Locality of Reference——缓存性能。</li><li>位于队列末尾的任务较旧（最先添加），代表较大的工作单元，位于队列前面的任务较年轻（最近添加），代表较小的工作单元。 如果一个线程在自己的队列上运行，它首先完成较小的任务，然后再完成较大的任务。 如果一个线程从其他线程的队列中窃取工作，则需要更大的任务，以便通过进一步拆分来单独解决它。 【回顾一下文章开头的引子？ 】</li></ul>
+<p>1.3.4 Fork/Join Framework 和 ExecutorService 之间的区别</p>
+<table><thead><tr><th>ork/Join Framework</th><th>ExecutorService</th></tr></thead><tbody><tr><td>Fork/Join 框架是分而治之算法的实现，中央 ForkJoinPool 执行分支 ForkJoinTasks。</td><td>ExecutorService 是一个 Executor，它提供用于管理异步任务的进度跟踪和终止的方法。</td></tr><tr><td>Fork/Join 框架利用了工作窃取算法。 在 Fork/Join 框架中，当一个任务等待它使用联接操作创建的子任务完成时，执行该任务的工作线程会查找另一个尚未执行的任务，并窃取它们以开始执行。</td><td>与 Fork/Join 框架不同，当任务等待它使用联接操作创建的子任务完成时，执行该等待任务的工作线程不会查找其他任务。</td></tr><tr><td>fork-join 非常适合递归问题，其中任务涉及运行子任务，然后处理其结果。</td><td>如果使用 ExecutorService 解决此类递归问题，则最终会导致线程被捆绑，等待其他线程向它们传递结果。</td></tr><tr><td>Fork Join 是 ExecuterService 的实现。主要区别在于，此实现创建了一个 DEQUE 工作线程池。</td><td>Executor 服务创建请求数量的线程，并应用阻塞队列来存储所有剩余的等待任务。</td></tr></tbody></table>
+<p>关于二者的区别，感兴趣的读者可以访问Geeksforgeeks[12]的文章查看二者的对比程序示例，会有更好的体感。</p>
+<h3 class="sub">1.4 并行流</h3>
+<h3 class="sub">1.4.1 在流中的并行与Fork-Join</h3>
+<p>从 Java 8 开始，流的方面也使并行性成为惯用语，在深入了解过Fork-Join框架后，并行流的运转方式也就不再神秘了。用一个简单的示例程序演示并行流的执行过程：</p>
+<ul><li>public long sumUsingParallel() {</li><li>return LongStream.rangeClosed(1L, 10L)</li><li>.parallel()</li><li>.peek(this::printThreadName)</li><li>.reduce(0L, this::printSum);</li><li>public void printThreadName(long l) {</li><li>String tName = currentThread().getName();</li><li>System.out.println(tName + &quot; offers:&quot; + l);</li><li>public long printSum(long i, long j) {</li><li>long sum = i + j;</li><li>String tName = currentThread().getName();</li><li>System.out.printf(</li><li>&quot;%s has: %d; plus: %d; result: %d\n&quot;,</li><li>tName, i, j, sum</li><li>return sum;</li></ul>
+<p>调用会触发数字流上的fork-join机制，将流拆分为在四个线程中运行。每个线程都有一个流，每个线程以并行方式运行。</p>
+<h3 class="sub">1.4.2 并行流的最佳实践</h3>
+<ul><li>确定规模：并行流适用于对大型数据集进行密集计算的场景。如果数据集较小或计算量较小，则串行流可能更合适。并行流的创建和维护涉及到线程调度和数据划分的开销，如果任务过于简单，可能会导致性能下降。</li><li>合适的数据结构：在使用并行流时，应该选择适合并行处理的数据结构。使用并发集合（如ConcurrentHashMap）可以在并行流中实现更好的性能。</li><li>数据共享和竞态条件：并行流中的操作是并发执行的，因此需要特别注意数据共享和竞态条件的问题。确保操作是线程安全的，可以使用同步块或并发集合来保护共享数据。</li><li>避免有状态的操作：在并行流中，应尽量避免有状态的操作，即操作的结果依赖于前面的操作或全局状态。这种操作可能导致竞争和不确定的结果。应使用无状态的操作，如map和filter。</li><li>调整并行度：默认情况下，并行流使用的线程数是根据可用的处理器核心数来决定的。有时可能需要手动调整并行度以获得更好的性能。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>真实业务优化案例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>问题抽象为树遍历找特定节点：先长调用，再执行依赖其结果的中短调用。</li><li>初始 parallelStream 写法体感无并行，Trace 显示长调用未能理想并行。</li><li>自定义 ForkJoinTask 后长调用可并行，但中短调用先占满 CPU，大任务未前置。</li><li>前置长调用 fork 后长调用永远最先并行，总耗时由 4.85s 降到 1.65s。</li></ul><div class="pit"><ul><li>中短调用先占满 16 个 CPU、大任务未前置，像先擦玻璃再做饭，整体效率低。</li><li>&#x27;possibly parallel&#x27;：数据量小于阈值或硬件受限时，并行流可能退回串行。</li></ul></div></div>
+<p>本节介绍一个并行问题的案例，该案例来自真实的业务场景并隐去业务信息，通过针对业务场景优化并行策略，带来了显著的效率提升。</p>
+<h3 class="sub">2.1 问题模型</h3>
+<p>问题可以被抽象为树模型，遍历树结构，找到某些特定的节点（不会超过10个），在这些节点中将会首先执行一次长时间的调用，然后再执行一系列中短时间的调用（可并行调用，但均依赖长时间调用的结果）。短调用的数量等于长调用返回的结果数量，而中调用的数量和节点本身有关，但需要长调用的结果作为参数。当长调用返回是空时，则无需执行中短调用。最后返回这些节点的所有相关调用信息。下图就是该问题模型的可视化展示。</p>
+<h3 class="sub">2.2 优化过程</h3>
+<h3 class="sub">2.2.1 初始流并行写法</h3>
+<p>拿到问题，很快就写了一个树遍历+流并行的计算方式：</p>
+<ul><li>private void traverseRecursive(TreePath path, List&lt;Node&gt; queryList, Result result){</li><li>if (checkCurrentPathInQuery(path, queryList)) {</li><li>LongResult longRes = longInvoke(path);</li><li>result.addLongData(longRes);</li><li>List&lt;String&gt; parallelOp = Arrays.asList(&quot;mid&quot;, &quot;short&quot;);</li><li>List&lt;String&gt; midQueryNameList = path.getMidQueryNameList();</li><li>parallelOp.parallelStream().forEach(op -&gt; {</li><li>if (&quot;mid&quot;.equals(op)) {</li><li>midQueryNameList.parallelStream().forEach(midQueryName -&gt; {</li><li>MidResult midRes = midInvoke(midQueryName, longRes);</li><li>result.addMidData(midQueryName, midRes);</li><li>if (&quot;short&quot;.equals(op)) {</li><li>longRes.getIdList().parallelStream().forEach(longId -&gt; {</li><li>ShortResult shortRes = shortInvoke(longId);</li><li>result.addShortData(longId, midRes);</li><li>path.getChildren().entrySet().parallelStream().forEach(entry -&gt; {</li><li>TreePath childPath = entry.getValue();</li><li>traverseRecursive(childPath, queryList, result);</li></ul>
+<p>理论上没什么问题，但是体感上并没有并行的速度。于是在Trace中查看调用情况。</p>
+<p>本文所有Trace截图均来源于SLS全栈可观测应用。它是日志服务提供的一站式IT系统可观测方案，包含IT系统监控、全链路Trace、智能告警等功能。Trace记录系统中的请求路径和执行过程，帮助了解请求的处理情况和性能指标，在本文查看并行调用情况也非常好用。</p>
+<p>SLS全栈可观测文档传送门。SLS Trace文档传送门[13]。</p>
+<p>在这份Trace详情中，可以发现有问题：</p>
+<ul><li>长调用并没有比较理想地并行，只有长调用2和3是并行的，而理想情况是长调用12 34并行调用。</li></ul>
+<h3 class="sub">2.2.2 优化为自定义ForkJoinTask</h3>
+<p>首先解决第一个问题，理论上都是可以并行的，为什么实际会无法并行呢？尝试在源码中找到答案。</p>
+<h3 class="sub">2.2.2.1 parallelStream源码浅析</h3>
+<ul><li>/**</li><li>* Returns a possibly parallel {@code Stream} with this collection as its</li><li>* source.  It is allowable for this method to return a sequential stream.</li><li>* &lt;p&gt;This method should be overridden when the {@link #spliterator()}</li><li>* method cannot return a spliterator that is {@code IMMUTABLE},</li><li>* {@code CONCURRENT}, or &lt;em&gt;late-binding&lt;/em&gt;. (See {@link #spliterator()}</li><li>* for details.)</li><li>* @implSpec</li><li>* The default implementation creates a parallel {@code Stream} from the</li><li>* collection&#x27;s {@code Spliterator}.</li><li>* @return a possibly parallel {@code Stream} over the elements in this</li><li>* collection</li><li>* @since 1.8</li><li>default Stream&lt;E&gt; parallelStream() {</li><li>return StreamSupport.stream(spliterator(), true);</li></ul>
+<p>源码注释中有个迷惑的说法：Returns a possibly parallel这是怎么回事呢？</p>
+<p>以下情况下是可能无法并行执行的原因：</p>
+<p>1.数据量较小：数据量较小的这个判断在java.util.stream.AbstractPipeline类的sourceStageSpliterator方法中进行。源码中会根据数据量的大小，判断是否小于一个阈值（默认为ForkJoinPool的并行度）。如果数据量小于阈值，则不会并行化处理，而是直接返回一个串行的Stream。</p>
+<p>2.硬件资源限制：如果可用的处理线程数有限，可能无法实现真正的并行执行。处理操作的复杂度和硬件资源限制的判断涉及到ForkJoinPool的实现策略。ForkJoinPool是JDK提供的用于支持并行计算的线程池，它会根据可用的处理线程数、硬件资源等因素来决定是否真正并行执行任务。具体的判断逻辑在java.util.concurrent.ForkJoinPool类中。</p>
+<p>可以通过调用parallelStream()方法后链式调用isParallel()方法来检查流是否并行化处理。事实上，当实际调用isParallel()后返回的是开启并行的结果。（Trace中长调用2、3实际上已经是并行的）。因此可以排除流本身无法并行的情况。</p>
+<p>那么我们把问题聚焦到并行执行的线程池。</p>
+<p>parallelStream()方法默认使用的是ForkJoinPool.commonPool()作为并行执行的线程池。commonPool()是一个共享的ForkJoinPool实例，它是在JDK中按需创建的，用于支持并行计算任务。commonPool()的线程数默认是根据可用的CPU核心数来确定的，可以通过Java系统属性java.util.concurrent.ForkJoinPool.common.parallelism来调整。一般情况下，它会创建一个与CPU核心数相当的线程数，以充分利用可用的硬件资源。</p>
+<p>由于commonPool()是一个共享的线程池，其他部分的代码也可能使用这个线程池来执行任务，因此在使用parallelStream()时需要注意线程池资源的竞争和并发性。在这个场景下，需要精细控制并行执行的线程池，考虑使用ForkJoinPool类自行创建和管理。</p>
+<h3 class="sub">2.2.2.2 ForkJoinPool改造</h3>
+<ul><li>public class Solution {</li><li>ForkJoinPool pool;</li><li>public Solution() {</li><li>pool = new ForkJoinPool();</li><li>public execute(TreePath path, List&lt;Node&gt; queryList, Result result) {</li><li>TraverseRecursiveTask firstLayerTask = new TraverseRecursiveTask(path, queryList, result);</li><li>pool.invoke(firstLayerTask);</li><li>// pool.shutdown();</li><li>private class TraverseRecursiveTask extends RecursiveAction {</li><li>private TreePath path;</li><li>private List&lt;Node&gt; queryList;</li><li>public Result result;</li><li>public TraverseRecursiveTask(TreePath path, List&lt;Node&gt; queryList, Result result) {</li><li>this.path = path;</li><li>this.queryList = queryList;</li><li>this.result = result;</li><li>@Override</li><li>protected void compute() {</li><li>if (checkCurrentPathInQuery(path, queryList)) {</li><li>LongResult longRes = longInvoke(path);</li><li>result.addLongData(longRes);</li><li>List&lt;String&gt; parallelOp = Arrays.asList(&quot;mid&quot;, &quot;short&quot;);</li><li>List&lt;String&gt; midQueryNameList = path.getMidQueryNameList();</li><li>parallelOp.parallelStream().forEach(op -&gt; {</li><li>if (&quot;mid&quot;.equals(op)) {</li><li>midQueryNameList.parallelStream().forEach(midQueryName -&gt; {</li><li>MidResult midRes = midInvoke(midQueryName, longRes);</li><li>result.addMidData(midQueryName, midRes);</li><li>if (&quot;short&quot;.equals(op)) {</li><li>longRes.getIdList().parallelStream().forEach(longId -&gt; {</li><li>ShortResult shortRes = shortInvoke(longId);</li><li>result.addShortData(longId, midRes);</li><li>ArrayList&lt;TraverseRecursiveTask&gt; subTasks = new ArrayList&lt;&gt;();</li><li>for (Map.Entry&lt;Link, TreePath&gt; entry : path.getChildren().entrySet()) {</li><li>TraverseRecursiveTask subTask = new TraverseRecursiveTask(path, queryList, result);</li><li>subTasks.add(subTask);</li><li>for (TraverseRecursiveTask subTask : subTasks) {</li><li>subTask.fork();</li><li>for (TraverseRecursiveTask subTask : subTasks) {</li><li>subTask.join();</li></ul>
+<p>运行，并查看调用Trace情况：</p>
+<p>有效果了！长调用2、3、4都正常并行执行了。但是仍然有问题：</p>
+<ul><li>长短调用的顺序有问题。 看上去每一个长调用执行完就执行它的中短调用了。 应该首先执行所有长调用然后再执行各个长调用下属的中短调用。</li><li>图中可见，中短调用前期占满了16个CPU，而并没有把大任务前置。 就像先擦玻璃再最后做饭，会整体造成效率低下【回顾一下文章开头的引子？ 】</li></ul>
+<h3 class="sub">2.2.3 前置长调用的fork</h3>
+<ul><li>public class Solution {</li><li>ForkJoinPool pool;</li><li>public Solution() {</li><li>pool = new ForkJoinPool();</li><li>public execute(TreePath path, List&lt;Node&gt; queryList, Result result) {</li><li>TraverseRecursiveTask firstLayerTask = new TraverseRecursiveTask(path, queryList, result);</li><li>pool.invoke(firstLayerTask);</li><li>// pool.shutdown();</li><li>private class TraverseRecursiveTask extends RecursiveAction {</li><li>private TreePath path;</li><li>private List&lt;Node&gt; queryList;</li><li>public Result result;</li><li>public TraverseRecursiveTask(TreePath path, List&lt;Node&gt; queryList, Result result) {</li><li>this.path = path;</li><li>this.queryList = queryList;</li><li>this.result = result;</li><li>@Override</li><li>protected void compute() {</li><li>ArrayList&lt;TraverseRecursiveTask&gt; subTasks = new ArrayList&lt;&gt;();</li><li>for (Map.Entry&lt;Link, TreePath&gt; entry : path.getChildren().entrySet()) {</li><li>TraverseRecursiveTask subTask = new TraverseRecursiveTask(path, queryList, result);</li><li>subTasks.add(subTask);</li><li>for (TraverseRecursiveTask subTask : subTasks) {</li><li>subTask.fork();</li><li>if (checkCurrentPathInQuery(path, queryList)) {</li><li>LongResult longRes = longInvoke(path);</li><li>result.addLongData(longRes);</li><li>List&lt;String&gt; parallelOp = Arrays.asList(&quot;mid&quot;, &quot;short&quot;);</li><li>List&lt;String&gt; midQueryNameList = path.getMidQueryNameList();</li><li>parallelOp.parallelStream().forEach(op -&gt; {</li><li>if (&quot;mid&quot;.equals(op)) {</li><li>midQueryNameList.parallelStream().forEach(midQueryName -&gt; {</li><li>MidResult midRes = midInvoke(midQueryName, longRes);</li><li>result.addMidData(midQueryName, midRes);</li><li>if (&quot;short&quot;.equals(op)) {</li><li>longRes.getIdList().parallelStream().forEach(longId -&gt; {</li><li>ShortResult shortRes = shortInvoke(longId);</li><li>result.addShortData(longId, midRes);</li><li>for (TraverseRecursiveTask subTask : subTasks) {</li><li>subTask.join();</li></ul>
+<p>实际操作非常简单：就是先遍历树，再判断path是否是需要的树节点。这样在遇到2.1节的问题模型示意图的情况时，会将遍历树的子任务最先fork，也就是永远先fork大调用，而不是在父节点判断为需要调用的节点后，直接开始小调用的fork。</p>
+<p>Trace详情也说明了其有效性，长调用永远最先并行执行，且当第一个长调用执行完毕后（恰好有中短调用），即开始以CPU最大数执行长调用的中短调用，总体上达到了最优调度策略。</p>
+<p>未优化 4.85s→ ForkJoin改造 3.3s→ 前置长调用fork 1.65s</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>总结与风险</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>更优雅的并行程序：吃透业务逻辑、贪婪策略调度线程、遵循最佳实践。</li><li>并行不是银弹，需确定规模、合适数据结构、避免有状态操作并分场景调并行度。</li><li>所有 parallelStream 共用一套 commonPool，deadlock 全局阻塞。</li><li>建议创建独立 ForkJoinPool 替代默认公共线程池，以控制并行执行环境。</li></ul><div class="pit"><ul><li>static 代码块中执行 parallelStream 迭代，会因类初始化互锁而卡住。</li><li>迭代过程中修改 list 长度，可能导致 join 操作无法完成。</li></ul></div></div>
+<h3 class="sub">3.1 如何写出更优雅的并行程序</h3>
+<ul><li>吃透业务逻辑，洞察优化点。程序不能脱离业务而谈，必须清楚业务特点和规律之后，针对性地进行优化。本文中，大前提是每个调用节点中，先长调用，然后中短调用，且有先后依赖关系的特点。</li><li>贪婪策略调度工作线程。在本文中，有两个地方体现了这个思想，其一是JDK源码中工作窃取机制，从队列后端获取较大任务。其二是代码优化部分，前置长调用的fork。主旨都是让确定性的大任务前置的思路，以获得更高的工作线程并行度。</li><li>有所为，有所不为。并行程序不是银弹，更好地发挥出并行的力量需要遵循其最佳实践，即确定规模、采用合适的数据结构、数据共享和竞态条件、避免有状态的操作、分场景调整并行度。最好还要对所处机器的配置、负载做调查。</li></ul>
+<h3 class="sub">3.2 一些风险和注意事项</h3>
+<h3 class="sub">3.2.1 parallelStream与deadlock</h3>
+<p>并非每一个独立调用parallelStream的代码都会独立维护运行一个多线程的策略，而是JDK默认会调用同一个由运行环境维护的ForkJoinPool线程池，也就是说，无论在哪个地方写了list.parallelStream().forEach()这样一段代码，底层实际都会由一套ForkJoinPool的线程池进行运行，一般线程池运行会遇到的冲突、排队等问题，这里同样会遇到，且会被隐藏在代码逻辑中。一旦发生deadlock，所有调用parallelStream的地方都会被阻塞，无论你是否知道其他人是否这样书写了代码。</p>
+<p>常见deadlock：</p>
+<ul><li>线程池内部阻塞</li><li>list.parallelStream().forEach(o -&gt; {</li><li>o.doSomething();  // 此步骤导致线程被wait，锁，循环锁，外部操作卡住</li><li>});</li><li>static代码块中执行迭代</li><li>class A {</li><li>static {</li><li>list.parallelStream().forEach(n -&gt; {</li><li>n.doSomething();</li><li>// 执行lambda表达式的前提是当前类A必须完成类初始化，但初始化又由于static代码块无法执行，而导致程序互锁，最终导致卡住</li><li>迭代时对象被修改。</li></ul>
+<p>执行list.parallelStream().forEach()过程中时，如果不慎修改了list对象的长度，则也有可能导致join操作无法完成。</p>
+<p>为了避免这些问题，可以考虑创建一个独立的ForkJoinPool线程池，而不是使用默认的公共线程池。这样可以更好地控制并行操作的执行环境，并避免与其他任务共享线程池带来的问题。</p>
+<ul><li>ForkJoinPool forkJoinPool = new ForkJoinPool(20);</li><li>ForkJoinTask&lt;?&gt; fs = forkJoinPool.submit(() -&gt; list.parallelStream().forEach((n) -&gt; {</li><li>n.doSomething();</li><li>}));</li></ul>
+<h3 class="sub">3.3 工欲善其事，必先利其器</h3>
+<p>本文所有Trace截图均来源于日志服务SLS全栈可观测应用。服务接入Trace后，无需任何特殊设置，即可查看本文截图涉及的并行调用情况，非常方便。不单单是并行情况，Trace记录系统中整体的请求路径和执行过程，帮助了解请求的处理情况和性能指标，能帮助您观测复杂调用情况，能力强大。</p>
+<p>相关导航：【SLS Trace Demo[14]】【SLS Trace文档[15]】【SLS控制台[16]】</p>
+<p>SLS全栈可观测应用除了全链路Trace，还包含IT系统监控、性能监控、用户体验监控、智能告警等功能，它是日志服务提供的一站式IT系统可观测方案。现在就开始探索全栈可观测Demo吧！</p>
+<p>相关导航：【SLS全栈可观测Demo[17]】【SLS全栈可观测文档[18]】</p>
+<ul><li>Overview Of Fork-Join Framework — Core of Parallelism in Java：https://medium.com/@cs.vivekgupta/overview-of-fork-join-framework-core-of-parallelism-in-java-35f4a4cc8c3b</li><li>Java 8 Streams: Definitive Guide to Parallel Streaming with parallel() ：https://stackabuse.com/java-8-streams-guide-to-parallel-streaming-with-parallel/</li><li>Parallel Programming Java: Java Explained ：https://bito.ai/resources/parallel-programming-java-java-explained/#3</li><li>parallelStream和ForkJoinPool的使用风险 ：https://www.jianshu.com/p/27d4e33d9f6d</li><li>Stream流与parallelStream原理分析 ：https://juejin.cn/post/7274149231366995987</li><li>深入理解 ForkJoinPool：入门、使用、原理 ：https://juejin.cn/post/7150836399234236430</li><li>Introduction to the Fork/Join Framework ：https://www.pluralsight.com/guides/introduction-to-the-fork-join-framework</li><li>Difference Between Fork/Join Framework and ExecutorService in Java ：https://www.geeksforgeeks.org/difference-between-fork-join-framework-and-executorservice-in-java/</li><li>Wikipedia: Work Stealing ：https://en.wikipedia.org/wiki/Work_stealing</li><li>Lecture 10: Parallel Streams ：https://nus-cs2030.github.io/1718-s2/lec10/index.html#learning-objectives</li><li>Parallel Programming Basics with the Fork/Join Framework in Java</li><li>https://www.geeksforgeeks.org/difference-between-fork-join-framework-and-executorservice-in-java/</li><li>https://help.aliyun.com/zh/sls/user-guide/trace-app/</li><li>https://sls.aliyun.com/doc/playground/demo.html?dest=/lognext/app/observability/trace/sls-mall/sls-mall?resource=%2Ftrace%2Fsls-mall%2Fexplorer</li><li>https://help.aliyun.com/zh/sls/user-guide/trace-app/</li><li>https://sls.console.aliyun.com/lognext/profile</li><li>https://sls.aliyun.com/doc/playground/demo.html?dest=/lognext/app/observability/home</li><li>https://help.aliyun.com/zh/sls/user-guide/usage-notes-39</li></ul>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>并发 vs 并行</h4><p>并发是 2 个队列 1 台售货机，任务交替执行；并行是 2 个队列 2 台售货机，任务同时执行。</p><a class="src-link" href="#sec-01">原文 → 并行编程基础</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>自己队列 LIFO vs 窃取 FIFO</h4><p>工作线程以 LIFO 取自己队列前面的新小任务，以 FIFO 从他人队列末尾窃取旧大任务。</p><a class="src-link" href="#sec-01">原文 → 并行编程基础</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Fork/Join vs ExecutorService</h4><p>Fork/Join 靠工作窃取适合递归问题；ExecutorService 等待子任务时不窃取，易致线程捆绑。</p><a class="src-link" href="#sec-01">原文 → 并行编程基础</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>ForkJoinTask 阈值求和</h4><p>设阈值 4000，小于阈值顺序求和；否则二分任务，fork 左半、compute 右半、join 合并。</p><a class="src-link" href="#sec-01">原文 → 并行编程基础</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>优化耗时对比</h4><p>未优化 4.85s → ForkJoin 改造 3.3s → 前置长调用 fork 1.65s，提速约 3 倍。</p><a class="src-link" href="#sec-02">原文 → 真实业务优化案例</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>parallelStream 可能不并行</h4><p>源码注释 &#x27;possibly parallel&#x27;：数据量小于阈值或硬件受限时可能退回串行。</p><a class="src-link" href="#sec-02">原文 → 真实业务优化案例</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>贪婪调度思想</h4><p>空闲时永远先做（先 fork）占用时间最大的任务，把更多小任务留到最后，总体更省时间。</p><a class="src-link" href="#sec-03">原文 → 总结与风险</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>commonPool 的 deadlock</h4><p>所有 parallelStream 共用一套 commonPool，一处 deadlock 会阻塞所有调用方。</p><a class="src-link" href="#sec-03">原文 → 总结与风险</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>独立 ForkJoinPool 规避风险</h4><p>new ForkJoinPool(20) 后 submit(() -&gt; list.parallelStream()...)，避免共享线程池问题。</p><a class="src-link" href="#sec-03">原文 → 总结与风险</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>空闲时先做/先 fork 耗时最大的任务，把更多小任务留到最后，是并行调度的核心贪心思想。</li>
+          <li>并行流默认共享 commonPool，有资源竞争与 deadlock 风险，关键场景应自建 ForkJoinPool。</li>
+          <li>并行不是银弹：确定规模、选对数据结构、避免有状态操作，并前置大任务才能发挥并行价值。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247536096&amp;idx=1&amp;sn=620e73a0ecab2e8605fd06024378347b" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247536096&amp;idx=1&amp;sn=620e73a0ecab2e8605fd06024378347b</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

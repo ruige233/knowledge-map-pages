@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">奇淫巧技，CompletableFuture 异步多线程是真的优雅</h1>
+  <p class="lede">一文讲透 CompletableFuture 的创建、回调、组合与结果获取</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 34 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>4种创建方式</a>
+          <a href="#sec-02"><span class="n">02</span>4种结果获取</a>
+          <a href="#sec-03"><span class="n">03</span>thenRun 回调</a>
+          <a href="#sec-04"><span class="n">04</span>thenAccept 回调</a>
+          <a href="#sec-05"><span class="n">05</span>thenApply 回调</a>
+          <a href="#sec-06"><span class="n">06</span>whenComplete 回调</a>
+          <a href="#sec-07"><span class="n">07</span>whenComplete+exceptionally</a>
+          <a href="#sec-08"><span class="n">08</span>AND 组合</a>
+          <a href="#sec-09"><span class="n">09</span>OR 组合</a>
+          <a href="#sec-10"><span class="n">10</span>allOf/anyOf</a>
+          <a href="#sec-11"><span class="n">11</span>异常须靠 get 暴露</a>
+          <a href="#sec-12"><span class="n">12</span>get 阻塞注意</a>
+          <a href="#sec-13"><span class="n">13</span>慎用默认线程池</a>
+          <a href="#sec-14"><span class="n">14</span>线程池饱和策略</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 4种创建方式</a>
+          <a href="#sec-02">02 4种结果获取</a>
+          <a href="#sec-03">03 thenRun 回调</a>
+          <a href="#sec-04">04 thenAccept 回调</a>
+          <a href="#sec-05">05 thenApply 回调</a>
+          <a href="#sec-06">06 whenComplete 回调</a>
+          <a href="#sec-07">07 whenComplete+exceptionally</a>
+          <a href="#sec-08">08 AND 组合</a>
+          <a href="#sec-09">09 OR 组合</a>
+          <a href="#sec-10">10 allOf/anyOf</a>
+          <a href="#sec-11">11 异常须靠 get 暴露</a>
+          <a href="#sec-12">12 get 阻塞注意</a>
+          <a href="#sec-13">13 慎用默认线程池</a>
+          <a href="#sec-14">14 线程池饱和策略</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>这篇文章主要介绍了Java并发编程中的Future和CompletableFuture的使用。Future用于表示一个异步计算的结果，而CompletableFuture是Java 8引入的一个功能更强大的异步计算框架。</p>
+<p>首先，文章介绍了Future的基本使用，包括如何创建、提交任务以及获取结果。接着，文章介绍了CompletableFuture的四种创建方式：runAsync、supplyAsync、thenApply和thenApplyAsync。</p>
+<p>然后，文章详细讲解了CompletableFuture的异步任务组合，包括allOf和anyOf的使用。allOf用于等待所有任务完成，而anyOf用于只要有一个任务完成。</p>
+<p>最后，文章介绍了CompletableFuture的四种结果获取方式：get、get(long timeout, TimeUnit unit)、getNow和join。get用于阻塞获取结果，get(long timeout, TimeUnit unit)用于设置超时时间获取结果，getNow用于立即获取结果，join用于非阻塞获取结果。</p>
+<p>总结，这篇文章详细介绍了Java并发编程中的Future和CompletableFuture的使用，包括创建、提交任务、组合任务以及获取结果等。</p>
+<p>一个示例回顾Future</p>
+<p>一些业务场景我们需要使用多线程异步执行任务，加快任务执行速度。</p>
+<p>JDK5新增了Future接口，用于描述一个异步计算的结果。</p>
+<p>虽然 Future 以及相关使用方法提供了异步执行任务的能力，但是对于结果的获取却是很不方便，我们必须使用Future.get()的方式阻塞调用线程，或者使用轮询方式判断 Future.isDone 任务是否结束，再获取结果。</p>
+<p>这两种处理方式都不是很优雅，相关代码如下:</p>
+<ul><li>@Test</li><li>public void testFuture() throws ExecutionException, InterruptedException {</li><li>ExecutorService executorService = Executors.newFixedThreadPool(5);</li><li>Future&lt;String&gt; future = executorService.submit(() -&gt; {</li><li>Thread.sleep(2000);</li><li>return &quot;hello&quot;;</li><li>});</li><li>System.out.println(future.get());</li><li>System.out.println(&quot;end&quot;);</li></ul>
+<p>与此同时，Future无法解决多个异步任务需要相互依赖的场景，简单点说就是，主线程需要等待子线程任务执行完毕之后在进行执行，这个时候你可能想到了CountDownLatch，没错确实可以解决，代码如下。</p>
+<p>这里定义两个Future，第一个通过用户id获取用户信息，第二个通过商品id获取商品信息。</p>
+<ul><li>@Test</li><li>public void testCountDownLatch() throws InterruptedException, ExecutionException {</li><li>ExecutorService executorService = Executors.newFixedThreadPool(5);</li><li>CountDownLatch downLatch = new CountDownLatch(2);</li><li>long startTime = System.currentTimeMillis();</li><li>Future&lt;String&gt; userFuture = executorService.submit(() -&gt; {</li><li>//模拟查询商品耗时500毫秒</li><li>Thread.sleep(500);</li><li>downLatch.countDown();</li><li>return &quot;用户A&quot;;</li><li>});</li><li>Future&lt;String&gt; goodsFuture = executorService.submit(() -&gt; {</li><li>//模拟查询商品耗时500毫秒</li><li>Thread.sleep(400);</li><li>downLatch.countDown();</li><li>return &quot;商品A&quot;;</li><li>});</li><li>downLatch.await();</li><li>//模拟主程序耗时时间</li><li>Thread.sleep(600);</li><li>System.out.println(&quot;获取用户信息:&quot; + userFuture.get());</li><li>System.out.println(&quot;获取商品信息:&quot; + goodsFuture.get());</li><li>System.out.println(&quot;总共用时&quot; + (System.currentTimeMillis() - startTime) + &quot;ms&quot;);</li></ul>
+<p>「运行结果」</p>
+<ul><li>获取用户信息:用户A</li><li>获取商品信息:商品A</li><li>总共用时1110ms</li></ul>
+<p>从运行结果可以看出结果都已经获取，而且如果我们不用异步操作，执行时间应该是:500+400+600 = 1500，用异步操作后实际只用1110。</p>
+<p>但是Java8以后我不在认为这是一种优雅的解决方式，接下来来了解下CompletableFuture的使用。</p>
+<p>通过CompletableFuture实现上面示例</p>
+<ul><li>@Test</li><li>public void testCompletableInfo() throws InterruptedException, ExecutionException {</li><li>long startTime = System.currentTimeMillis();</li><li>//调用用户服务获取用户基本信息</li><li>CompletableFuture&lt;String&gt; userFuture = CompletableFuture.supplyAsync(() -&gt;</li><li>//模拟查询商品耗时500毫秒</li><li>try {</li><li>Thread.sleep(500);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>return &quot;用户A&quot;;</li><li>});</li><li>//调用商品服务获取商品基本信息</li><li>CompletableFuture&lt;String&gt; goodsFuture = CompletableFuture.supplyAsync(() -&gt;</li><li>//模拟查询商品耗时500毫秒</li><li>try {</li><li>Thread.sleep(400);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>return &quot;商品A&quot;;</li><li>});</li><li>System.out.println(&quot;获取用户信息:&quot; + userFuture.get());</li><li>System.out.println(&quot;获取商品信息:&quot; + goodsFuture.get());</li><li>//模拟主程序耗时时间</li><li>Thread.sleep(600);</li><li>System.out.println(&quot;总共用时&quot; + (System.currentTimeMillis() - startTime) + &quot;ms&quot;);</li></ul>
+<p>运行结果</p>
+<ul><li>获取用户信息:用户A</li><li>获取商品信息:商品A</li><li>总共用时1112ms</li></ul>
+<p>通过CompletableFuture可以很轻松的实现CountDownLatch的功能，你以为这就结束了，远远不止，CompletableFuture比这要强多了。</p>
+<p>比如可以实现：任务1执行完了再执行任务2,甚至任务1执行的结果，作为任务2的入参数等等强大功能，下面就来学学CompletableFuture的API。</p>
+<p>CompletableFuture创建方式</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>4种创建方式</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>supplyAsync 执行 Supplier 任务，支持返回值；runAsync 执行 Runnable，无返回值</li><li>两种方法都有重载：不传 Executor 用默认 ForkJoinPool.commonPool()，传则用自定义线程池</li></ul></div>
+<p>CompletableFuture源码中有四个静态方法用来执行异步任务</p>
+<ul><li>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier){..}</li><li>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier,Executor executor){..}</li><li>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable){..}</li><li>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable,Executor executor){..}</li></ul>
+<p>一般我们用上面的静态方法来创建CompletableFuture，这里也解释下他们的区别:</p>
+<ul><li>「supplyAsync」 执行任务，支持返回值。</li><li>「runAsync」 执行任务，没有返回值。</li></ul>
+<p>「supplyAsync方法」</p>
+<ul><li>//使用默认内置线程池ForkJoinPool.commonPool()，根据supplier构建执行任务</li><li>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier)</li><li>//自定义线程，根据supplier构建执行任务</li><li>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier, Executor executor)</li></ul>
+<p>「runAsync方法」</p>
+<ul><li>//使用默认内置线程池ForkJoinPool.commonPool()，根据runnable构建执行任务</li><li>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable)</li><li>//自定义线程，根据runnable构建执行任务</li><li>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable,  Executor executor)</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>4种结果获取</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>get() 与 get(timeout, unit) 来自 Future，后者超时抛异常</li><li>getNow(valueIfAbsent) 立即返回：已完成返回结果，未完成返回默认值</li><li>join() 方法内不抛异常，但结果异常抛 CompletionException；get() 抛 ExecutionException</li></ul></div>
+<p>对于结果的获取CompltableFuture类提供了四种方式</p>
+<ul><li>//方式一</li><li>public T get()</li><li>//方式二</li><li>public T get(long timeout, TimeUnit unit)</li><li>//方式三</li><li>public T getNow(T valueIfAbsent)</li><li>//方式四</li><li>public T join()</li></ul>
+<p>说明：</p>
+<ul><li>「get()和get(long timeout, TimeUnit unit)」  =&gt; 在Future中就已经提供了，后者提供超时处理，如果在指定时间内未获取结果将抛出超时异常</li><li>「getNow」  =&gt; 立即获取结果不阻塞，结果计算已完成将返回结果或计算过程中的异常，如果未计算完成将返回设定的valueIfAbsent值</li><li>「join」  =&gt; 方法里不会抛出异常</li></ul>
+<p>示例：</p>
+<ul><li>@Test</li><li>public void testCompletableGet() throws InterruptedException, ExecutionException {</li><li>CompletableFuture&lt;String&gt; cp1 = CompletableFuture.supplyAsync(() -&gt; {</li><li>try {</li><li>Thread.sleep(1000);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>return &quot;商品A&quot;;</li><li>});</li><li>// getNow方法测试</li><li>System.out.println(cp1.getNow(&quot;商品B&quot;));</li><li>//join方法测试</li><li>CompletableFuture&lt;Integer&gt; cp2 = CompletableFuture.supplyAsync((() -&gt; 1 / 0));</li><li>System.out.println(cp2.join());</li><li>System.out.println(&quot;-----------------------------------------------------&quot;);</li><li>//get方法测试</li><li>CompletableFuture&lt;Integer&gt; cp3 = CompletableFuture.supplyAsync((() -&gt; 1 / 0));</li><li>System.out.println(cp3.get());</li></ul>
+<p>「运行结果」：</p>
+<ul><li>第一个执行结果为  「商品B」 ，因为要先睡上1秒结果不能立即获取</li><li>join方法获取结果方法里不会抛异常，但是执行结果会抛异常，抛出的异常为 CompletionException</li><li>get方法获取结果方法里将抛出异常，执行结果抛出的异常为 ExecutionException</li></ul>
+<p>异步回调方法</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>thenRun 回调</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>thenRun：前一任务完成后执行第二任务，第二任务无入参、无返回值</li><li>传入自定义线程池时：thenRun 与第一任务共用线程池；thenRunAsync 第二任务用 ForkJoin 池</li></ul></div>
+<p>通俗点讲就是，「做完第一个任务后，再做第二个任务,第二个任务也没有返回值」。</p>
+<ul><li>@Test</li><li>public void testCompletableThenRunAsync() throws InterruptedException, ExecutionException {</li><li>long startTime = System.currentTimeMillis();</li><li>CompletableFuture&lt;Void&gt; cp1 = CompletableFuture.runAsync(() -&gt; {</li><li>try {</li><li>//执行任务A</li><li>Thread.sleep(600);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>});</li><li>CompletableFuture&lt;Void&gt; cp2 =  cp1.thenRun(() -&gt; {</li><li>try {</li><li>//执行任务B</li><li>Thread.sleep(400);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>});</li><li>// get方法测试</li><li>System.out.println(cp2.get());</li><li>//模拟主程序耗时时间</li><li>Thread.sleep(600);</li><li>System.out.println(&quot;总共用时&quot; + (System.currentTimeMillis() - startTime) + &quot;ms&quot;);</li><li>//运行结果</li><li>/**</li><li>*  null</li><li>*  总共用时1610ms</li></ul>
+<p>「thenRun 和thenRunAsync有什么区别呢？」</p>
+<p>如果你执行第一个任务的时候，传入了一个自定义线程池：</p>
+<ul><li>调用thenRun方法执行第二个任务时，则第二个任务和第一个任务是共用同一个线程池。</li><li>调用 thenRunAsync 执行第二个任务时，则第一个任务使用的是你自己传入的线程池，第二个任务使用的是ForkJoin线程池。</li></ul>
+<p>说明: 后面介绍的thenAccept和thenAcceptAsync，thenApply和thenApplyAsync等，它们之间的区别也是这个。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>thenAccept 回调</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>thenAccept 将上一任务结果作为入参传入回调，回调无返回值</li><li>thenAccept 与 thenAcceptAsync 的区别同 thenRun 系列：线程池选择不同</li></ul></div>
+<p>第一个任务执行完成后，执行第二个回调方法任务，会将该任务的执行结果，作为入参，传递到回调方法中，但是回调方法是没有返回值的。</p>
+<ul><li>@Test</li><li>public void testCompletableThenAccept() throws ExecutionException, InterruptedException {</li><li>long startTime = System.currentTimeMillis();</li><li>CompletableFuture&lt;String&gt; cp1 = CompletableFuture.supplyAsync(() -&gt; {</li><li>return &quot;dev&quot;;</li><li>});</li><li>CompletableFuture&lt;Void&gt; cp2 =  cp1.thenAccept((a) -&gt; {</li><li>System.out.println(&quot;上一个任务的返回结果为: &quot; + a);</li><li>});</li><li>cp2.get();</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>thenApply 回调</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>thenApply 将上一任务结果作为入参，回调有返回值，可链式转换结果</li><li>thenApply 与 thenApplyAsync 的区别同 thenRun 系列</li></ul></div>
+<p>表示第一个任务执行完成后，执行第二个回调方法任务，会将该任务的执行结果，作为入参，传递到回调方法中，并且回调方法是有返回值的。</p>
+<ul><li>@Test</li><li>public void testCompletableThenApply() throws ExecutionException, InterruptedException {</li><li>CompletableFuture&lt;String&gt; cp1 = CompletableFuture.supplyAsync(() -&gt; {</li><li>return &quot;dev&quot;;</li><li>}).thenApply((a) -&gt; {</li><li>if(Objects.equals(a,&quot;dev&quot;)){</li><li>return &quot;dev&quot;;</li><li>return &quot;prod&quot;;</li><li>});</li><li>System.out.println(&quot;当前环境为:&quot; + cp1.get());</li><li>//输出: 当前环境为:dev</li></ul>
+<p>异常回调</p>
+<p>当CompletableFuture的任务不论是正常完成还是出现异常它都会调用「whenComplete」这回调函数。</p>
+<ul><li>「正常完成」 ：whenComplete返回结果和上级任务一致，异常为null；</li><li>「出现异常」 ：whenComplete返回结果为null，异常为上级任务的异常；</li></ul>
+<p>即调用get()时，正常完成时就获取到结果，出现异常时就会抛出异常，需要你处理该异常。</p>
+<p>下面来看看示例</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>whenComplete 回调</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>whenComplete 无论正常完成还是出现异常都会被调用</li><li>正常完成：结果为上级任务结果、异常为 null；出现异常：结果为 null、异常为上级异常</li></ul><div class="pit"><ul><li>只用 whenComplete 时异常最终仍由 get() 抛出，需自行处理</li></ul></div></div>
+<ul><li>@Test</li><li>public void testCompletableWhenComplete() throws ExecutionException, InterruptedException {</li><li>CompletableFuture&lt;Double&gt; future = CompletableFuture.supplyAsync(() -&gt; {</li><li>if (Math.random() &lt; 0.5) {</li><li>throw new RuntimeException(&quot;出错了&quot;);</li><li>System.out.println(&quot;正常结束&quot;);</li><li>return 0.11;</li><li>}).whenComplete((aDouble, throwable) -&gt; {</li><li>if (aDouble == null) {</li><li>System.out.println(&quot;whenComplete aDouble is null&quot;);</li><li>} else {</li><li>System.out.println(&quot;whenComplete aDouble is &quot; + aDouble);</li><li>if (throwable == null) {</li><li>System.out.println(&quot;whenComplete throwable is null&quot;);</li><li>} else {</li><li>System.out.println(&quot;whenComplete throwable is &quot; + throwable.getMessage());</li><li>});</li><li>System.out.println(&quot;最终返回的结果 = &quot; + future.get());</li></ul>
+<p>正常完成，没有异常时：</p>
+<ul><li>正常结束</li><li>whenComplete aDouble is 0.11</li><li>whenComplete throwable is null</li><li>最终返回的结果 = 0.11</li></ul>
+<p>出现异常时：get()会抛出异常</p>
+<ul><li>whenComplete aDouble is null</li><li>whenComplete throwable is java.lang.RuntimeException: 出错了</li><li>java.util.concurrent.ExecutionException: java.lang.RuntimeException: 出错了</li><li>at java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:357)</li><li>at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:1895)</li></ul>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>whenComplete+exceptionally</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>exceptionally 可捕获上游异常并返回默认值，避免 get() 抛异常</li><li>组合使用时出现异常：whenComplete 打印 null 结果与异常，exceptionally 兜底返回 0.0</li></ul></div>
+<ul><li>@Test</li><li>public void testWhenCompleteExceptionally() throws ExecutionException, InterruptedException {</li><li>CompletableFuture&lt;Double&gt; future = CompletableFuture.supplyAsync(() -&gt; {</li><li>if (Math.random() &lt; 0.5) {</li><li>throw new RuntimeException(&quot;出错了&quot;);</li><li>System.out.println(&quot;正常结束&quot;);</li><li>return 0.11;</li><li>}).whenComplete((aDouble, throwable) -&gt; {</li><li>if (aDouble == null) {</li><li>System.out.println(&quot;whenComplete aDouble is null&quot;);</li><li>} else {</li><li>System.out.println(&quot;whenComplete aDouble is &quot; + aDouble);</li><li>if (throwable == null) {</li><li>System.out.println(&quot;whenComplete throwable is null&quot;);</li><li>} else {</li><li>System.out.println(&quot;whenComplete throwable is &quot; + throwable.getMessage());</li><li>}).exceptionally((throwable) -&gt; {</li><li>System.out.println(&quot;exceptionally中异常：&quot; + throwable.getMessage());</li><li>return 0.0;</li><li>});</li><li>System.out.println(&quot;最终返回的结果 = &quot; + future.get());</li></ul>
+<p>当出现异常时，exceptionally中会捕获该异常，给出默认返回值0.0。</p>
+<ul><li>whenComplete aDouble is null</li><li>whenComplete throwable is java.lang.RuntimeException: 出错了</li><li>exceptionally中异常：java.lang.RuntimeException: 出错了</li><li>最终返回的结果 = 0.0</li></ul>
+<p>多任务组合回调</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>AND 组合</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>thenCombine/thenAcceptBoth/runAfterBoth 都是两任务都完成再执行任务三</li><li>runAfterBoth 无入参无返回值；thenAcceptBoth 传入两结果无返回值；thenCombine 传入两结果有返回值</li></ul></div>
+<p>thenCombine/thenAcceptBoth/runAfterBoth都表示：「当任务一和任务二都完成再执行任务三」。</p>
+<p>区别在于：</p>
+<ul><li>「runAfterBoth」  不会把执行结果当做方法入参，且没有返回值</li><li>「thenAcceptBoth」 : 会将两个任务的执行结果作为方法入参，传递到指定方法中，且无返回值</li><li>「thenCombine」 ：会将两个任务的执行结果作为方法入参，传递到指定方法中，且有返回值</li></ul>
+<ul><li>@Test</li><li>public void testCompletableThenCombine() throws ExecutionException, InterruptedException {</li><li>//创建线程池</li><li>ExecutorService executorService = Executors.newFixedThreadPool(10);</li><li>//开启异步任务1</li><li>CompletableFuture&lt;Integer&gt; task = CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;异步任务1，当前线程是：&quot; + Thread.currentThread().getId());</li><li>int result = 1 + 1;</li><li>System.out.println(&quot;异步任务1结束&quot;);</li><li>return result;</li><li>}, executorService);</li><li>//开启异步任务2</li><li>CompletableFuture&lt;Integer&gt; task2 = CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;异步任务2，当前线程是：&quot; + Thread.currentThread().getId());</li><li>int result = 1 + 1;</li><li>System.out.println(&quot;异步任务2结束&quot;);</li><li>return result;</li><li>}, executorService);</li><li>//任务组合</li><li>CompletableFuture&lt;Integer&gt; task3 = task.thenCombineAsync(task2, (f1, f2) -&gt; {</li><li>System.out.println(&quot;执行任务3，当前线程是：&quot; + Thread.currentThread().getId());</li><li>System.out.println(&quot;任务1返回值：&quot; + f1);</li><li>System.out.println(&quot;任务2返回值：&quot; + f2);</li><li>return f1 + f2;</li><li>}, executorService);</li><li>Integer res = task3.get();</li><li>System.out.println(&quot;最终结果：&quot; + res);</li></ul>
+<p>「运行结果」</p>
+<ul><li>异步任务1，当前线程是：17</li><li>异步任务1结束</li><li>异步任务2，当前线程是：18</li><li>异步任务2结束</li><li>执行任务3，当前线程是：19</li><li>任务1返回值：2</li><li>任务2返回值：2</li><li>最终结果：4</li></ul>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>OR 组合</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>applyToEither/acceptEither/runAfterEither 都是任一任务完成即执行任务三</li><li>三者区别同 AND 系：是否传入已完成任务结果、是否有返回值</li><li>线程池核心线程数设为 1 时，任务三可能被直接丢弃不执行</li></ul><div class="pit"><ul><li>核心线程数为 1 时任务三可能被丢弃（示例验证）</li></ul></div></div>
+<p>applyToEither/acceptEither/runAfterEither都表示：「两个任务，只要有一个任务完成，就执行任务三」。</p>
+<p>区别在于：</p>
+<ul><li>「runAfterEither」 ：不会把执行结果当做方法入参，且没有返回值</li><li>「acceptEither」 : 会将已经执行完成的任务，作为方法入参，传递到指定方法中，且无返回值</li><li>「applyToEither」 ：会将已经执行完成的任务，作为方法入参，传递到指定方法中，且有返回值</li></ul>
+<ul><li>@Test</li><li>public void testCompletableEitherAsync() {</li><li>//创建线程池</li><li>ExecutorService executorService = Executors.newFixedThreadPool(10);</li><li>//开启异步任务1</li><li>CompletableFuture&lt;Integer&gt; task = CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;异步任务1，当前线程是：&quot; + Thread.currentThread().getId());</li><li>int result = 1 + 1;</li><li>System.out.println(&quot;异步任务1结束&quot;);</li><li>return result;</li><li>}, executorService);</li><li>//开启异步任务2</li><li>CompletableFuture&lt;Integer&gt; task2 = CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;异步任务2，当前线程是：&quot; + Thread.currentThread().getId());</li><li>int result = 1 + 2;</li><li>try {</li><li>Thread.sleep(3000);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>System.out.println(&quot;异步任务2结束&quot;);</li><li>return result;</li><li>}, executorService);</li><li>//任务组合</li><li>task.acceptEitherAsync(task2, (res) -&gt; {</li><li>System.out.println(&quot;执行任务3，当前线程是：&quot; + Thread.currentThread().getId());</li><li>System.out.println(&quot;上一个任务的结果为：&quot;+res);</li><li>}, executorService);</li></ul>
+<p>运行结果</p>
+<ul><li>//通过结果可以看出，异步任务2都没有执行结束，任务3获取的也是1的执行结果</li><li>异步任务1，当前线程是：17</li><li>异步任务1结束</li><li>异步任务2，当前线程是：18</li><li>执行任务3，当前线程是：19</li><li>上一个任务的结果为：2</li></ul>
+<p>如果把上面的核心线程数改为1也就是</p>
+<ul><li>ExecutorService executorService = Executors.newFixedThreadPool(1);</li></ul>
+<p>运行结果就是下面的了，会发现根本没有执行任务3，显然是任务3直接被丢弃了。</p>
+<ul><li>异步任务1，当前线程是：17</li><li>异步任务1结束</li><li>异步任务2，当前线程是：17</li></ul>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>allOf/anyOf</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>allOf 等待所有任务完成；anyOf 只要有一个任务完成即返回</li><li>allOf 返回 Void，需再对各任务 get() 取结果；anyOf 返回完成任务的 Object 结果</li></ul></div>
+<ul><li>「allOf」 ：等待所有任务完成</li><li>「anyOf」 ：只要有一个任务完成</li></ul>
+<p>allOf：等待所有任务完成</p>
+<ul><li>@Test</li><li>public void testCompletableAallOf() throws ExecutionException, InterruptedException {</li><li>//创建线程池</li><li>ExecutorService executorService = Executors.newFixedThreadPool(10);</li><li>//开启异步任务1</li><li>CompletableFuture&lt;Integer&gt; task = CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;异步任务1，当前线程是：&quot; + Thread.currentThread().getId());</li><li>int result = 1 + 1;</li><li>System.out.println(&quot;异步任务1结束&quot;);</li><li>return result;</li><li>}, executorService);</li><li>//开启异步任务2</li><li>CompletableFuture&lt;Integer&gt; task2 = CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;异步任务2，当前线程是：&quot; + Thread.currentThread().getId());</li><li>int result = 1 + 2;</li><li>try {</li><li>Thread.sleep(3000);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>System.out.println(&quot;异步任务2结束&quot;);</li><li>return result;</li><li>}, executorService);</li><li>//开启异步任务3</li><li>CompletableFuture&lt;Integer&gt; task3 = CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;异步任务3，当前线程是：&quot; + Thread.currentThread().getId());</li><li>int result = 1 + 3;</li><li>try {</li><li>Thread.sleep(4000);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>System.out.println(&quot;异步任务3结束&quot;);</li><li>return result;</li><li>}, executorService);</li><li>//任务组合</li><li>CompletableFuture&lt;Void&gt; allOf = CompletableFuture.allOf(task, task2, task3);</li><li>//等待所有任务完成</li><li>allOf.get();</li><li>//获取任务的返回结果</li><li>System.out.println(&quot;task结果为：&quot; + task.get());</li><li>System.out.println(&quot;task2结果为：&quot; + task2.get());</li><li>System.out.println(&quot;task3结果为：&quot; + task3.get());</li></ul>
+<p>anyOf: 只要有一个任务完成</p>
+<ul><li>@Test</li><li>public void testCompletableAnyOf() throws ExecutionException, InterruptedException {</li><li>//创建线程池</li><li>ExecutorService executorService = Executors.newFixedThreadPool(10);</li><li>//开启异步任务1</li><li>CompletableFuture&lt;Integer&gt; task = CompletableFuture.supplyAsync(() -&gt; {</li><li>int result = 1 + 1;</li><li>return result;</li><li>}, executorService);</li><li>//开启异步任务2</li><li>CompletableFuture&lt;Integer&gt; task2 = CompletableFuture.supplyAsync(() -&gt; {</li><li>int result = 1 + 2;</li><li>return result;</li><li>}, executorService);</li><li>//开启异步任务3</li><li>CompletableFuture&lt;Integer&gt; task3 = CompletableFuture.supplyAsync(() -&gt; {</li><li>int result = 1 + 3;</li><li>return result;</li><li>}, executorService);</li><li>//任务组合</li><li>CompletableFuture&lt;Object&gt; anyOf = CompletableFuture.anyOf(task, task2, task3);</li><li>//只要有一个有任务完成</li><li>Object o = anyOf.get();</li><li>System.out.println(&quot;完成的任务的结果：&quot; + o);</li></ul>
+<p>CompletableFuture使用有哪些注意点</p>
+<p>CompletableFuture使我们的异步编程更加便利的、代码更加优雅的同时，我们也要关注下它，使用的一些注意点。</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>异常须靠 get 暴露</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>不调用 get()/join() 获取返回值，异步任务中的异常不会被看到</li><li>建议加 try...catch 或使用 exceptionally 处理异常</li></ul><div class="pit"><ul><li>忘记 get()/join() 会吞掉异常信息</li></ul></div></div>
+<ul><li>@Test</li><li>public void testWhenCompleteExceptionally() {</li><li>CompletableFuture&lt;Double&gt; future = CompletableFuture.supplyAsync(() -&gt; {</li><li>if (1 == 1) {</li><li>throw new RuntimeException(&quot;出错了&quot;);</li><li>return 0.11;</li><li>});</li><li>//如果不加 get()方法这一行，看不到异常信息</li><li>//future.get();</li></ul>
+<p>Future需要获取返回值，才能获取到异常信息。如果不加get()/join()方法，看不到异常信息。</p>
+<p>小伙伴们使用的时候，注意一下哈,考虑是否加try...catch...或者使用exceptionally方法。</p>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>get 阻塞注意</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>get() 阻塞获取结果，应添加超时时间如 get(5, TimeUnit.SECONDS)</li></ul><div class="pit"><ul><li>反例 CompletableFuture.get() 无超时</li></ul></div></div>
+<p>CompletableFuture的get()方法是阻塞的，如果使用它来获取异步调用的返回值，需要添加超时时间。</p>
+<ul><li>//反例</li><li>CompletableFuture.get();</li><li>//正例</li><li>CompletableFuture.get(5, TimeUnit.SECONDS);</li></ul>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>慎用默认线程池</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>默认 ForkJoin 线程池线程数为 CPU 核数-1，高并发复杂逻辑响应慢</li><li>建议使用自定义线程池并优化配置参数</li></ul><div class="pit"><ul><li>默认线程池线程数少，大量请求下响应慢</li></ul></div></div>
+<p>CompletableFuture代码中又使用了默认的「ForkJoin线程池」，处理的线程个数是电脑「CPU核数-1」。在大量请求过来的时候，处理逻辑复杂的话，响应会很慢。一般建议使用自定义线程池，优化线程池配置参数。</p>
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>线程池饱和策略</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>建议线程池拒绝策略使用 AbortPolicy</li><li>DiscardPolicy/DiscardOldestPolicy 饱和时会直接丢任务且不抛异常</li><li>耗时的异步线程要做好线程池隔离</li></ul><div class="pit"><ul><li>使用 Discard 类策略饱和时静默丢任务</li></ul></div></div>
+<p>CompletableFuture的get()方法是阻塞的，我们一般建议使用future.get(5, TimeUnit.SECONDS)。并且一般建议使用自定义线程池。</p>
+<p>但是如果线程池拒绝策略是DiscardPolicy或者DiscardOldestPolicy，当线程池饱和时，会直接丢弃任务，不会抛弃异常。因此建议，CompletableFuture线程池策略最好使用AbortPolicy，然后耗时的异步线程，做好线程池隔离哈。</p>
+<p>来源｜后端元宇宙</p>
+<p>程序汪资料链接</p>
+<p>程序汪接的7个私活都在这里，经验整理</p>
+<p>Java项目分享  最新整理全集，找项目不累啦 07版</p>
+<p>堪称神级的Spring Boot手册，从基础入门到实战进阶</p>
+<p>卧槽！字节跳动《算法中文手册》火了，完整版 PDF 开放下载！</p>
+<p>卧槽！阿里大佬总结的《图解Java》火了，完整版PDF开放下载！</p>
+<p>字节跳动总结的设计模式 PDF 火了，完整版开放下载！</p>
+<p>欢迎添加程序汪个人微信 itwang007  进粉丝群或围观朋友圈</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 13 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>Future 获取结果不优雅</h4><p>Future 需 get() 阻塞或轮询 isDone，多任务依赖还要靠 CountDownLatch，Java 8 后不推荐。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>supplyAsync vs runAsync</h4><p>supplyAsync 执行 Supplier 有返回值；runAsync 执行 Runnable 无返回值，二者均支持自定义 Executor。</p><a class="src-link" href="#sec-01">原文 → 4种创建方式</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>getNow vs join vs get</h4><p>getNow 立即取、未完成返回默认值；join 不抛受检异常但结果异常抛 CompletionException；get 抛 ExecutionException。</p><a class="src-link" href="#sec-02">原文 → 4种结果获取</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>thenRun 链式回调</h4><p>cp1.thenRun(() -&gt; {...})：前任务完成后执行无入参、无返回值的第二任务。</p><a class="src-link" href="#sec-03">原文 → thenRun 回调</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>thenAccept vs thenApply</h4><p>thenAccept 接收上游结果、无返回值；thenApply 接收上游结果并返回新结果，可链式转换。</p><a class="src-link" href="#sec-05">原文 → thenApply 回调</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>whenComplete 单独用</h4><p>whenComplete 正常/异常都回调，但异常最终仍由 get() 抛出，需 catch 或配 exceptionally。</p><a class="src-link" href="#sec-06">原文 → whenComplete 回调</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>whenComplete + exceptionally</h4><p>whenComplete(...).exceptionally(e -&gt; 默认值)：异常时兜底返回默认值，get() 不再抛异常。</p><a class="src-link" href="#sec-07">原文 → whenComplete+exceptionally</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>AND 组合三方法</h4><p>runAfterBoth 无入参无返回；thenAcceptBoth 传两结果无返回；thenCombine 传两结果有返回。</p><a class="src-link" href="#sec-08">原文 → AND 组合</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>OR 组合三方法</h4><p>runAfterEither 无入参无返回；acceptEither 传结果无返回；applyToEither 传结果有返回。</p><a class="src-link" href="#sec-09">原文 → OR 组合</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>allOf/anyOf 结果</h4><p>allOf 等全部完成返回 Void，需逐任务 get；anyOf 任一完成返回该任务 Object 结果。</p><a class="src-link" href="#sec-10">原文 → allOf/anyOf</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>get() 阻塞</h4><p>get() 应加超时：反例 CompletableFuture.get()；正例 get(5, TimeUnit.SECONDS)。</p><a class="src-link" href="#sec-12">原文 → get 阻塞注意</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>默认线程池</h4><p>默认 ForkJoin 池线程数为 CPU 核数-1，大量请求且逻辑复杂时响应慢，建议自定义。</p><a class="src-link" href="#sec-13">原文 → 慎用默认线程池</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>线程池饱和策略</h4><p>DiscardPolicy/DiscardOldestPolicy 饱和时直接丢任务不抛异常，建议用 AbortPolicy。</p><a class="src-link" href="#sec-14">原文 → 线程池饱和策略</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>用 supplyAsync/runAsync 创建异步任务，链式 thenApply/thenAccept/thenRun 串起依赖，告别 CountDownLatch。</li>
+          <li>获取结果优先 get(超时) 或 join；异常处理用 whenComplete + exceptionally 兜底。</li>
+          <li>生产环境自定义线程池并选 AbortPolicy，避免默认 ForkJoin 池与静默丢任务。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzA4NzQ0Njc4Ng==&amp;mid=2247506966&amp;idx=1&amp;sn=8651f469cf20b8f25fdc4e636cbca366" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA4NzQ0Njc4Ng==&amp;mid=2247506966&amp;idx=1&amp;sn=8651f469cf20b8f25fdc4e636cbca366</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

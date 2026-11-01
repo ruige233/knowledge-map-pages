@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">在 IDEA 中的各种调试技巧，轻松定位 Bug（超级全面）</h1>
+  <p class="lede">系统梳理 IDEA 各调试按钮、快捷键、断点、多线程与回退技巧</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 12 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>Debug 界面概览</a>
+          <a href="#sec-02"><span class="n">02</span>基本用法与快捷键</a>
+          <a href="#sec-03"><span class="n">03</span>第一组调试按钮</a>
+          <a href="#sec-04"><span class="n">04</span>第二组调试按钮</a>
+          <a href="#sec-05"><span class="n">05</span>变量查看</a>
+          <a href="#sec-06"><span class="n">06</span>行内显示变量值</a>
+          <a href="#sec-07"><span class="n">07</span>计算表达式</a>
+          <a href="#sec-08"><span class="n">08</span>智能步入</a>
+          <a href="#sec-09"><span class="n">09</span>断点条件设置</a>
+          <a href="#sec-10"><span class="n">10</span>多线程调试</a>
+          <a href="#sec-11"><span class="n">11</span>回退断点</a>
+          <a href="#sec-12"><span class="n">12</span>断点回退操作</a>
+          <a href="#sec-13"><span class="n">13</span>中断 Debug</a>
+          <a href="#sec-14"><span class="n">14</span>JRebel 激活</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 Debug 界面概览</a>
+          <a href="#sec-02">02 基本用法与快捷键</a>
+          <a href="#sec-03">03 第一组调试按钮</a>
+          <a href="#sec-04">04 第二组调试按钮</a>
+          <a href="#sec-05">05 变量查看</a>
+          <a href="#sec-06">06 行内显示变量值</a>
+          <a href="#sec-07">07 计算表达式</a>
+          <a href="#sec-08">08 智能步入</a>
+          <a href="#sec-09">09 断点条件设置</a>
+          <a href="#sec-10">10 多线程调试</a>
+          <a href="#sec-11">11 回退断点</a>
+          <a href="#sec-12">12 断点回退操作</a>
+          <a href="#sec-13">13 中断 Debug</a>
+          <a href="#sec-14">14 JRebel 激活</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>您好，我是路人，更多优质文章见个人博客：http://itsoku.com</p>
+<p>在现在的开发中，我们经常采用Debug来追踪代码的运行流程，通常在程序运行过程中出现异常，启用Debug模式可以分析定位异常发生的位置，以及在运行过程中参数的变化。通常我们也可以启用Debug模式来跟踪代码的运行流程去学习三方框架的源码。</p>
+<p>所以学习下如何在Intellij IDEA中使用好Debug，主要包括如下内容：</p>
+<ul><li>Debug开篇</li><li>基本用法&amp;快捷键</li><li>变量查看</li><li>计算表达式</li><li>智能步入</li><li>断点条件设置</li><li>多线程调试</li><li>回退断点</li><li>中断Debug</li><li>附：JRebel激活</li></ul>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>Debug 界面概览</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Debug 界面可分为启动、断点、Debug 窗口、调试按钮、服务按钮、调用栈、Variables、Watches 八个区域</li><li>勾选 Show debug window on breakpoint 可让断点命中时自动激活 Debug 窗口</li><li>勾选 Show All Frames 可只显示本线程调用链，隐藏其它类库方法</li></ul></div>
+<p>首先看下IDEA中Debug模式下的界面。</p>
+<p>如下是在IDEA中启动Debug模式，进入断点后的界面，我这里是Windows，可能和Mac的图标等会有些不一样。就简单说下图中标注的8个地方：</p>
+<ul><li>以Debug模式启动服务，左边的一个按钮则是以Run模式启动。在开发中，我一般会直接启动Debug模式，方便随时调试代码。</li><li>断点：在左边行号栏单击左键，或者快捷键Ctrl+F8 打上/取消断点，断点行的颜色可自己去设置。</li><li>Debug窗口：访问请求到达第一个断点后，会自动激活Debug窗口。如果没有自动激活，可以去设置里设置，如图1.2。</li><li>调试按钮：一共有8个按钮，调试的主要功能就对应着这几个按钮，鼠标悬停在按钮上可以查看对应的快捷键。在菜单栏Run里可以找到同样的对应的功能，如图1.4。</li><li>服务按钮：可以在这里关闭/启动服务，设置断点等。</li><li>方法调用栈：这里显示了该线程调试所经过的所有方法，勾选右上角的[Show All Frames]按钮，就不会显示其它类库的方法了，否则这里会有一大堆的方法。</li><li>Variables：在变量区可以查看当前断点之前的当前方法内的变量。</li><li>Watches：查看变量，可以将Variables区中的变量拖到Watches中查看</li></ul>
+<p>[图1.1]</p>
+<p>[图1.2]：在设置里勾选Show debug window on breakpoint，则请求进入到断点后自动激活Debug窗口</p>
+<p>[图1.3]：如果你的IDEA底部没有显示工具栏或状态栏，可以在View里打开，显示出工具栏会方便我们使用。可以自己去尝试下这四个选项。</p>
+<p>[图1.4]：在菜单栏Run里有调试对应的功能，同时可以查看对应的快捷键。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>基本用法与快捷键</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>调试功能主要对应两组按钮，悬停按钮可查看快捷键</li><li>Run 菜单里有相同的调试功能</li></ul></div>
+<p>Debug调试的功能主要对应着图一中4和5两组按钮：</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>第一组调试按钮</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Step Over 步过不进方法；Step Into 只进自定义方法，不进官方类库</li><li>Force Step Into 可进任何方法，适合看底层源码</li><li>Run to Cursor 运行到光标行，无需打断点</li></ul></div>
+<p>[图2.1]</p>
+<p>Show Execution Point (Alt + F10)：如果你的光标在其它行或其它页面，点击这个按钮可跳转到当前代码执行的行。</p>
+<p>&gt; Step Over (F8)：步过，一行一行地往下走，如果这一行上有方法不会进入方法。</p>
+<p>&gt; Step Into (F7)：步入，如果当前行有方法，可以进入方法内部，一般用于进入自定义方法内，不会进入官方类库的方法，如第25行的put方法。</p>
+<p>&gt; Force Step Into (Alt + Shift + F7)：强制步入，能进入任何方法，查看底层源码的时候可以用这个进入官方类库的方法。</p>
+<p>&gt; Step Out (Shift + F8)：步出，从步入的方法内退出到方法调用处，此时方法已执行完毕，只是还没有完成赋值。</p>
+<p>&gt; Drop Frame (默认无)：回退断点，后面章节详细说明。</p>
+<p>&gt; Run to Cursor (Alt + F9)：运行到光标处，你可以将光标定位到你需要查看的那一行，然后使用这个功能，代码会运行至光标行，而不需要打断点。</p>
+<p>&gt; Evaluate Expression (Alt + F8)：计算表达式，后面章节详细说明。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>第二组调试按钮</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Resume Program 跳到下一断点，无断点则跑完整流程</li><li>Mute Breakpoints 让所有断点变灰失效，单个断点可右键取消 Enabled</li><li>On frame deactivation 建议设为 Do nothing，避免频繁切换窗口消耗资源</li></ul><div class="pit"><ul><li>关闭服务再启动报端口被占用，常因未完全关闭，需查杀所有 JVM 进程</li></ul></div></div>
+<p>[图2.2]</p>
+<p>Rerun &#x27;xxxx&#x27;：重新运行程序，会关闭服务后重新启动程序。</p>
+<p>&gt; Update &#x27;tech&#x27; application (Ctrl + F5)：更新程序，一般在你的代码有改动后可执行这个功能。而这个功能对应的操作则是在服务配置里，如图2.3。</p>
+<p>&gt; Resume Program (F9)：恢复程序，比如，你在第20行和25行有两个断点，当前运行至第20行，按F9，则运行到下一个断点(即第25行)，再按F9，则运行完整个流程，因为后面已经没有断点了。</p>
+<p>&gt; Pause Program：暂停程序，启用Debug。目前没发现具体用法。</p>
+<p>&gt; Stop &#x27;xxx&#x27; (Ctrl + F2)：连续按两下，关闭程序。有时候你会发现关闭服务再启动时，报端口被占用，这是因为没完全关闭服务的原因，你就需要查杀所有JVM进程了。</p>
+<p>&gt; View Breakpoints (Ctrl + Shift + F8)：查看所有断点，后面章节会涉及到。</p>
+<p>&gt; Mute Breakpoints：哑的断点，选择这个后，所有断点变为灰色，断点失效，按F9则可以直接运行完程序。再次点击，断点变为红色，有效。如果只想使某一个断点失效，可以在断点上右键取消Enabled，如图2.4，则该行断点失效。</p>
+<p>[图2.3]：更新程序，On &#x27;Update&#x27; actions，执行更新操作时所做的事情，一般选择&#x27;Update classes and resources&#x27;，即更新类和资源文件。</p>
+<p>一般配合热部署插件会更好用，如JRebel，这样就不用每次更改代码后还要去重新启动服务。如何激活JRebel，在最后章节附上。</p>
+<p>下面的On frame deactivation，在IDEA窗口失去焦点时触发，即一般你从idea切换到浏览器的时候，idea会自动帮你做的事情，一般可以设置Do nothing，频繁切换会比较消耗资源的。</p>
+<p>[图2.4]</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>变量查看</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>四种查看方式：参数行后值、光标悬停详情、Variables 区、Watches 监视</li><li>Watches 可 New Watch 新建，或从 Variables 拖入变量</li></ul></div>
+<p>在Debug过程中，跟踪查看变量的变化是非常必要的，这里就简单说下IDEA中可以查看变量的几个地方，相信大部分人都了解。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>行内显示变量值</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>参数行后直接显示变量值，悬停可展开详情</li></ul></div>
+<p>[图3.1]</p>
+<p>2、光标悬停到参数上，显示当前变量信息。点击打开详情如图3.3。我一般会使用这种方式，快捷方便。</p>
+<p>[图3.2]</p>
+<p>[图3.3]</p>
+<p>3、在Variables里查看，这里显示当前方法里的所有变量。</p>
+<p>[图3.4]</p>
+<p>4、在Watches里，点击New Watch，输入需要查看的变量。或者可以从Variables里拖到Watche里查看。</p>
+<p>[图3.5]</p>
+<p>如果你发现你没有Watches，可能在下图所在的地方。</p>
+<p>[图3.6]</p>
+<p>[图3.7]</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>计算表达式</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>选中表达式按 Alt+F8 可计算值，也能算某方法的返回值</li><li>在计算框里可改变量值，方便测试不同取值</li></ul></div>
+<p>在前面提到的计算表达式如图4.1的按钮，Evaluate Expression (Alt + F8) 。可以使用这个操作在调试过程中计算某个表达式的值，而不用再去打印信息。</p>
+<p>[图4.1]</p>
+<p>1、按Alt + F8或按钮，或者，你可以选中某个表达式再Alt + F8，弹出计算表达式的窗口，如下，回车或点击Evaluate计算表达式的值。</p>
+<p>这个表达式不仅可以是一般变量或参数，也可以是方法，当你的一行代码中调用了几个方法时，就可以通过这种方式查看查看某个方法的返回值。</p>
+<p>[图4.2]</p>
+<p>2、设置变量，在计算表达式的框里，可以改变变量的值，这样有时候就能很方便我们去调试各种值的情况了不是。</p>
+<p>[图4.3]</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>智能步入</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Smart Step Into（Shift+F7）会列出当前行所有方法供选择</li><li>只有一个方法时直接进入，类似 Force Step Into</li></ul></div>
+<p>想想，一行代码里有好几个方法，怎么只选择某一个方法进入。之前提到过使用Step Into (Alt + F7) 或者 Force Step Into (Alt + Shift + F7)进入到方法内部，但这两个操作会根据方法调用顺序依次进入，这比较麻烦。</p>
+<p>那么智能步入就很方便了，智能步入，这个功能在Run里可以看到，Smart Step Into (Shift + F7)，如图5.1</p>
+<p>[图5.1]</p>
+<p>按Shift + F7，会自动定位到当前断点行，并列出需要进入的方法，如图5.2，点击方法进入方法内部。</p>
+<p>如果只有一个方法，则直接进入，类似Force Step Into。</p>
+<p>[图5.2]</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>断点条件设置</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>右键断点或 View Breakpoints 设置 Condition，满足条件才暂停</li><li>勾选 Log message to console 与 Evaluate and log 可把断点信息输出到控制台</li><li>添加 Java Exception Breakpoints 可自动定位到异常行</li></ul><div class="pit"><ul><li>Instance filters 与 Class filters 按实例/类名过滤，作者实测未成功</li></ul></div></div>
+<p>通过设置断点条件，在满足条件时，才停在断点处，否则直接运行。</p>
+<p>通常，当我们在遍历一个比较大的集合或数组时，在循环内设置了一个断点，难道我们要一个一个去看变量的值？那肯定很累，说不定你还错过这个值得重新来一次。</p>
+<p>1、在断点上右键直接设置当前断点的条件，如图6.1，我设置exist为true时断点才生效。</p>
+<p>[图6.1]</p>
+<p>2、点击View Breakpoints (Ctrl + Shift + F8)，查看所有断点。</p>
+<pre><code>Java Line Breakpoints 显示了所有的断点，在右边勾选Condition，设置断点的条件。</code></pre>
+<p>勾选Log message to console，则会将当前断点行输出到控制台，如图6.3</p>
+<p>勾选Evaluate and log，可以在执行这行代码是计算表达式的值，并将结果输出到控制台。</p>
+<p>[图6.2]</p>
+<p>[图6.3]</p>
+<p>3、再说说右边的Filters过滤，这些一般情况下不常用，简单说下意思。</p>
+<p>Instance filters：实例过滤，输入实例ID(如图6.5中的实例ID)，但是我这里没有成功，不知道什么原因，知道的朋友留个言。</p>
+<pre><code>Class filters：类过滤，根据类名过滤，同样没有成功....</code></pre>
+<p>Pass count：用于循环中，如果断点在循环中，可以设置该值，循环多少次后停在断点处，之后的循环都会停在断点处。</p>
+<p>[图6.4]</p>
+<p>[图6.5]</p>
+<p>4、异常断点，通过设置异常断点，在程序中出现需要拦截的异常时，会自动定位到异常行。</p>
+<p>如图6.6，点击+号添加Java Exception Breakpoints，添加异常断点。然后输入需要断点的异常类，如图6.7，之后可以在Java Exception Breakpoints里看到添加的异常断点。</p>
+<p>我这里添加了一个NullPointerException异常断点，如图6.8，出现空指针异常后，自动定位在空指针异常行。</p>
+<p>[图6.6]</p>
+<p>[图6.7]</p>
+<p>[图6.8]</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>多线程调试</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Debug 默认 Suspend=ALL 会阻塞其它线程，改为 Thread 并 Make Default</li><li>Frames 下拉列表里可切换当前调试线程</li></ul></div>
+<p>一般情况下我们调试的时候是在一个线程中的，一步一步往下走。但有时候你会发现在Debug的时候，想发起另外一个请求都无法进行了？</p>
+<p>那是因为IDEA在Debug时默认阻塞级别是ALL，会阻塞其它线程，只有在当前调试线程走完时才会走其它线程。可以在View Breakpoints里选择Thread，如图7.1，然后点击Make Default设置为默认选项。</p>
+<p>[图7.1]</p>
+<p>切换线程，在图7.2中Frames的下拉列表里，可以切换当前的线程，如下我这里有两个Debug的线程，切换另外一个则进入另一个Debug的线程。</p>
+<p>[图7.2]</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>回退断点</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>方法调用栈最上面是当前断点所在方法，往下是被逐层调用的方法</li></ul></div>
+<p>在调试的时候，想要重新走一下流程而不用再次发起一个请求？</p>
+<p>1、首先认识下这个方法调用栈，如图8.1，首先请求进入DemoController的insertDemo方法，然后调用insert方法，其它的invoke我们且先不管，最上面的方法是当前断点所在的方法。</p>
+<p>[图8.1]</p>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>断点回退操作</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Drop Frame 只能回退到上一个方法调用开始处，不能逐行回退</li><li>可在调用栈方法上右键 Drop Frame，再按 F9 重新进入断点</li></ul><div class="pit"><ul><li>断点回退只能重走流程，已改动的对象、集合、数据库状态无法回滚</li></ul></div></div>
+<p>所谓的断点回退，其实就是回退到上一个方法调用的开始处，在IDEA里测试无法一行一行地回退或回到到上一个断点处，而是回到上一个方法。</p>
+<p>回退的方式有两种，一种是Drop Frame按钮(图8.2)，按调用的方法逐步回退，包括三方类库的其它方法(取消Show All Frames按钮会显示三方类库的方法，如图8.3)。</p>
+<p>第二种方式，在调用栈方法上选择要回退的方法，右键选择Drop Frame(图8.4)，回退到该方法的上一个方法调用处，此时再按F9(Resume Program)，可以看到程序进入到该方法的断点处了。</p>
+<p>但有一点需要注意，断点回退只能重新走一下流程，之前的某些参数/数据的状态已经改变了的是无法回退到之前的状态的，如对象、集合、更新了数据库数据等等。</p>
+<p>图[8.2]</p>
+<p>图[8.3]</p>
+<p>图[8.4]</p>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>中断 Debug</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>除关闭服务外没有直接中断请求的方式，可用 Force Return 强制返回</li><li>Force Return 按返回类型返回结果或 new 实例，跳过后续流程</li></ul></div>
+<p>想要在Debug的时候，中断请求，不要再走剩余的流程了？</p>
+<p>有些时候，我们看到传入的参数有误后，不想走后面的流程了，怎么中断这次请求呢(后面的流程要删除数据库数据呢....)，难道要关闭服务重新启动程序？嗯，我以前也是这么干的。</p>
+<p>确切的说，我也没发现可以直接中断请求的方式(除了关闭服务)，但可以通过Force Return，即强制返回来避免后续的流程，如图9.1。</p>
+<p>点击Force Return，弹出Return Value的窗口，我这个方法的返回类型为Map，所以，我这里直接返回 results，来强制返回，从而不再进行后续的流程。或者你可以new HashMap&lt;&gt;()。</p>
+<p>[图9.1]</p>
+<p>[图9.2]</p>
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>JRebel 激活</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>JRebel 可热更新 Java 代码与 xml 配置，改动多时偶发失效需重启</li><li>文中介绍通过 my.jrebel.com 登录获取永久激活码，稳定性不定</li></ul></div>
+<p>目前本人一直使用JRebel做热部署工具，效果还算理想，修改Java代码或者xml等配置文件都能热更新。偶尔服务开久了，或更改的文件较多时，热更新没有生效，需要重新启动服务。</p>
+<p>这里只是简单说下我在网上看到的一种免费获得永久使用权的方式(非破解)，不确定这种方式什么时候不能用。</p>
+<ul><li>首先你需要一个Facebook或Twitter的账号(最好Twitter)</li><li>进入这个网址：https://my.jrebel.com/，并登录，如图10.1</li><li>然后在Install and Acticate里可以得到你的永久激活码。</li><li>在设置里Jrebel里设置激活码，如图10.3，如果没有安装JRebel插件，先在Plugins里安装搜索安装JRebel插件。</li></ul>
+<p>[图10.1]</p>
+<p>[图10.2]</p>
+<p>[图10.3]</p>
+<p>更多好文章</p>
+<ul><li>Java高并发系列（共34篇）</li><li>MySql高手系列（共27篇）</li><li>Maven高手系列（共10篇）</li><li>Mybatis系列（共12篇）</li><li>聊聊db和缓存一致性常见的实现方式</li><li>接口幂等性这么重要，它是什么？怎么实现？</li><li>泛型，有点难度，会让很多人懵逼，那是因为你没有看这篇文章！</li></ul>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>Debug 界面八大区域</h4><p>启动、断点、Debug 窗口、调试按钮、服务按钮、方法调用栈、Variables、Watches 共 8 处。</p><a class="src-link" href="#sec-01">原文 → Debug 界面概览</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>步过 / 步入 / 强制步入</h4><p>步过不进方法；步入只进自定义方法；强制步入可进官方类库方法查看底层源码。</p><a class="src-link" href="#sec-03">原文 → 第一组调试按钮</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>第一组调试快捷键</h4><p>步过 F8、步入 F7、强制步入 Alt+Shift+F7、步出 Shift+F8、运行到光标 Alt+F9、计算表达式 Alt+F8。</p><a class="src-link" href="#sec-03">原文 → 第一组调试按钮</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>停止需连按两下</h4><p>Stop 要连续按两下才完全关闭；否则再启动会报端口被占用，需查杀 JVM 进程。</p><a class="src-link" href="#sec-04">原文 → 第二组调试按钮</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>四种变量查看途径</h4><p>参数行后值、光标悬停详情、Variables 区、Watches 监视，按需选用。</p><a class="src-link" href="#sec-05">原文 → 变量查看</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>计算表达式代替打印</h4><p>选中表达式按 Alt+F8 求值，也可算某方法返回值，并可改变量值，避免加打印语句。</p><a class="src-link" href="#sec-07">原文 → 计算表达式</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>多方法同行用智能步入</h4><p>Step Into/Force Step Into 会按调用顺序依次进入；Shift+F7 智能步入可选择目标方法。</p><a class="src-link" href="#sec-08">原文 → 智能步入</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>条件断点省力</h4><p>大集合循环内设 Condition，满足条件才暂停，避免逐个查看变量值。</p><a class="src-link" href="#sec-09">原文 → 断点条件设置</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>默认 ALL 阻塞其它线程</h4><p>Debug 默认 Suspend=ALL 会阻塞其它线程，改为 Thread 并 Make Default 后其它线程可继续。</p><a class="src-link" href="#sec-10">原文 → 多线程调试</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>回退不回滚状态</h4><p>Drop Frame 只回退到上一个方法调用开始处，已改动的对象、集合、数据库状态无法回滚。</p><a class="src-link" href="#sec-12">原文 → 断点回退操作</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Force Return 中断</h4><p>参数有误时用 Force Return 按返回类型返回结果，跳过后续流程，不必重启服务。</p><a class="src-link" href="#sec-13">原文 → 中断 Debug</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>JRebel 热更新</h4><p>JRebel 可热更新 Java 代码与 xml 配置；改动多时偶发失效需重启服务。</p><a class="src-link" href="#sec-14">原文 → JRebel 激活</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先记住两组调试按钮与快捷键：步过/步入控制逐行执行，恢复/停止/静音断点控制整体运行。</li>
+          <li>善用条件断点、异常断点和 Thread 模式，在遍历大集合、定位异常、多线程场景能少走很多弯路。</li>
+          <li>回退断点只回退流程不回滚数据状态；想提前终止用 Force Return 强制返回，不必重启服务。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkwOTAyMTY2NA==&amp;mid=2247493550&amp;idx=2&amp;sn=55930f647be50a54dcf3edd2c3bd1b5d" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkwOTAyMTY2NA==&amp;mid=2247493550&amp;idx=2&amp;sn=55930f647be50a54dcf3edd2c3bd1b5d</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

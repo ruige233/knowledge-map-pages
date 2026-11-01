@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Java如何绑定线程到指定CPU上执行</h1>
+  <p class="lede">Java 绑核只能套皮：靠 JNA 调 DLL 实现线程绑核</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 13 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>Java 线程模型</a>
+          <a href="#sec-02"><span class="n">02</span>绑核库用法演示</a>
+          <a href="#sec-03"><span class="n">03</span>实现原理分析</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 Java 线程模型</a>
+          <a href="#sec-02">02 绑核库用法演示</a>
+          <a href="#sec-03">03 实现原理分析</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>绑定线程到某个 CPU 上去执行都像是操作系统层面干的事儿。Java 作为高级开发语言，肯定是直接干不了的。就算能做，肯定也是套了皮而已。 这个开源项目其实就是面试题的答案。https://github.com/OpenHFT/Java-Thread-Affinity 首先第一个点：JNA 对于 Java-Thread-Affinity 非常重要：可以说其实 Java-Thread-Affinity 就是套了个 Java 皮，这种应该让操作系统来做的事，其实编写更加底层的 C++ 或者 C 语言来实现的。所以这个项目实质上是基于 JNA 调用了 DLL 文件，从而实现绑核的需求。</th></tr></thead><tbody></tbody></table>
+<p>不知道你是啥感觉，但是我第一次看到这个问题的时候，我是懵逼的。</p>
+<p>而且它还是一个面试题。</p>
+<p>我懵逼倒不是因为我不知道答案，而是恰好我之前在非常机缘巧合的情况下知道了答案。</p>
+<p>我感觉非常的冷门，作为一个考察候选者的知识点出现在面试环节中不太合适，除非是候选者主动提起做过这样的优化。</p>
+<p>而且怕就怕面试官也是恰巧在某个书上或者博客中知道这个东西，稍微的看了一下，以为自己学到了绝世武功，然后拿出去考别人。</p>
+<p>这样不合适。</p>
+<p>说回这个题目。</p>
+<p>正常来说，其实应该是属于考察操作系统的知识点范畴。</p>
+<p>但是呢，和这位同学聊的时候，他说面试官呢又特定的加了“在 Java 中如何实现”，似乎没想着从操作系统的角度去</p>
+<p>那我们就聊聊这个问题。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>Java 线程模型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Thread 类大部分方法是 native，说明操作已脱离 Java 语言层面。</li><li>线程实现有 1:1、1:N、N:M 三种；HotSpot 用 1:1 直接映射 OS 原生线程。</li><li>线程挂起、唤醒、时间片、跑哪个核心全由操作系统调度，Java 只能给优先级建议。</li><li>1:1 模型局限：线程操作需系统调用且消耗内核资源，LWP 数量有限。</li></ul></div>
+<p>在聊如何绑定之前，先铺垫一个相关的背景知识：Java线程的实现。</p>
+<p>其实我们都知道 Thread 类的大部分方法都是 native 方法：</p>
+<p>在 Java 中一个方法被声明为 native 方法，绝大部分情况下说明这个方法没有或者不能使用平台无关的手段来实现。</p>
+<p>说明需要操作的是很底层的东西了，已经脱离了 Java 语言层面的范畴。</p>
+<p>抛开 Java 语言这个大前提，实现线程主要是有三种方式：</p>
+<p>1.使用内核线程实现（1:1实现） 2.使用用户线程实现（1:N实现） 3.使用用户线程加轻量级进程混合实现（N:M实现）</p>
+<p>这三种实现方案，在《深入理解Java虚拟机》的 12.4 小节有详细的描述，有兴趣的同学可以去仔细的翻阅一下。</p>
+<p>总之，你要知道的是虽然有这三种不同的线程模型，但是 Java 作为上层应用，其实是感知不到这三种模型之间的区别的。</p>
+<p>JVM 规范里面也没有规定，必须使用哪一种模型。</p>
+<p>因为操作系统支持是怎样的线程模型，很大程度上决定了运行在上面的 Java 虚拟机的线程怎样去映射，但是这一点在不同的平台上很难达成一致。</p>
+<p>所以JVM 规范里面没有、也不好去规定 Java 线程需要使用哪种线程模型来实现。</p>
+<p>同时关于本文要讨论的话题，我在知乎上也找到了类似的问题：</p>
+<p>https://www.zhihu.com/question/64072646/answer/216184631</p>
+<p>这里面有一个R大的回答，大家可以看看一下。</p>
+<p>他也是先从线程模型的角度铺垫了一下。</p>
+<p>我这里主要说一下使用内核线程实现（1:1实现）的这个模型。</p>
+<p>因为我们用的最多的 HotSpot 虚拟机，就是采用 1:1 模型来实现 Java 线程的。</p>
+<p>这是个啥意思呢？</p>
+<p>说人话就是一个 Java 线程是直接映射为一个操作系统原生线程的，中间没有额外的间接结构。HotSpot 虚拟机也不干涉线程的调度，这事全权交给底下的操作系统去做。</p>
+<p>顶多就是设置一个线程优先级，操作系统来调度的时候给个建议。</p>
+<p>但是何时挂起、唤醒、分配时间片、让那个处理器核心去执行等等这些关于线程生命周期、执行的东西都是操作系统干的。</p>
+<p>这话不是我说的，是R大和周佬都说过这样的话。</p>
+<p>https://www.zhihu.com/question/64072646/answer/216184631</p>
+<p>关于 1:1 的线程模型，大家记住书上的这幅图就行：</p>
+<ul><li>LWP：Light Weight Process 轻量级进程</li><li>KLT：Kernal-Level Thread 内核线程</li><li>UT：User Thread 用户线程</li></ul>
+<p>内核线程就是直接由操作系统内核支持的线程，这种线程由内核来完成线程切换，内核通过操纵调度器对线程进行调度，并负责将线程的任务映射到各个处理器上。</p>
+<p>然后你看上面的图片，KLT 线程上面都有一个 LWP 与之对应。</p>
+<p>啥是 LWP 呢？</p>
+<p>程序一般来说不会直接使用内核线程，而是使用内核线程的一种高级接口，即轻量级进程（LWP），轻量级进程就是我们通常意义上说的线程。</p>
+<p>然后大家记住书上的下面这段话，可以说是 Java 多线程实现的基石理论之一：</p>
+<p>由于内核线程的支持，每个轻量级进程都成为一个独立的调度单元，即使其中某一个轻量级进程在系统调用中被阻塞了，也不会影响整个进程继续工作。</p>
+<p>但是，轻量级进程也具有它的局限性。</p>
+<p>首先，由于是基于内核线程实现的，所以各种线程操作，如创建、析构及同步，都需要进行系统调用。而系统调用的代价相对较高，需要在用户态（User Mode）和内核态（Kernel Mode）中来回切换。</p>
+<p>其次，每个轻量级进程都需要一个内核线程的支持，因此轻量级进程要消耗一定的内核资源（如内核线程的栈空间），因此一个系统支持轻量级进程的数量是有限的。</p>
+<p>好的，终于铺垫完成了。</p>
+<p>前面说了这么多，其实就是为了表达一个观点：</p>
+<p>绑定线程到某个 CPU 上去执行都像是操作系统层面干的事儿。Java 作为高级开发语言，肯定是直接干不了的。就算能做，肯定也是套了皮而已。</p>
+<p>那么到底怎么做呢？</p>
+<p>在R大的回答中也提到了解决方案：</p>
+<ul><li>在Linux上的话，可以用taskset来把线程绑在某个指定的核上。</li><li>在Java层面上，有大大写了个现成的库来利用taskset绑核：OpenHFT/Java-Thread-Affinity 有兴趣的话可以参考一下。</li></ul>
+<p>Linux上的 taskset就是个绑定线程的命令，我们发出这样的指令后还是操作系统帮我们搞的：</p>
+<p>我们主要聊聊 Java 层面上怎么搞。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>绑核库用法演示</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Linux 可用 taskset 绑核；Java 用现成库 Java-Thread-Affinity</li><li>依赖 net.openhft:affinity:3.2.3，acquireLock(5) 绑核。</li><li>绑核能更好利用缓存、减少上下文切换，属极致性能优化手段。</li><li>天池大赛、disruptor 的 BusySpinWaitStrategy 注释都印证绑核场景。</li></ul><div class="pit"><ul><li>Maven 版本高于 3.2.3 时，作者机器上出现版本冲突异常。</li></ul></div></div>
+<p>这个开源项目其实就是面试题的答案。</p>
+<p>https://github.com/OpenHFT/Java-Thread-Affinity</p>
+<p>项目里面有个问答，解答了如何使用它去做绑核的操作：</p>
+<p>话不多说，直接上效果演示吧。</p>
+<p>先把依赖搞到项目里面去：</p>
+<ul><li>&lt;dependency&gt;</li><li>&lt;groupId&gt;net.openhft&lt;/groupId&gt;</li><li>&lt;artifactId&gt;affinity&lt;/artifactId&gt;</li><li>&lt;version&gt;3.2.3&lt;/version&gt;</li><li>&lt;/dependency&gt;</li></ul>
+<p>然后来个 main 方法：</p>
+<ul><li>public static void main(String[] args) {</li><li>try (AffinityLock affinityLock = AffinityLock.acquireLock(5)) {</li><li>// do some work while locked to a CPU.</li><li>while(true) {}</li></ul>
+<p>按照 git 上的描述，我在方法里面写了一个死循环，为的是更好的演示效果。</p>
+<p>上面的意思就是我要在第 5 个 CPU 线程执行死循环，把 CPU 利用率打到 100%。</p>
+<p>来看一下效果。</p>
+<p>这是没有程序启动之前，我搞的动图：</p>
+<p>这是启动起来之后，再来个动图：</p>
+<p>立竿见影，CUP 5 马上就被打满了。</p>
+<p>同时还有两行日志输出，我截出来给你看一下：</p>
+<p>另外，说明一下这个项目对应的 Maven 版本还是有好多个的：</p>
+<p>在我的机器上，如果用高于 3.2.3 的版本就会出现这样的异常信息：</p>
+<p>感觉是版本冲突了，反正没去深究，如果你也想跑一下，可以注意一下，我就提醒一下而已。</p>
+<p>效果我们现在是看到了，可以说这个项目非常的溜，可以实现把线程绑定到指定核心上去。</p>
+<p>该功能也是有实际应用场景的，属于一直非常极致的性能优化手段吧。</p>
+<p>绑定核心之后就可以更好的利用缓存以及减少线程的上下文切换。</p>
+<p>说到这就不得不提起我第一次知道“绑核”这个骚操作的场景了。</p>
+<p>那是举行于 2018 年的首届数据库性能大赛，或者更加出名一点的名字叫做天池大赛。</p>
+<p>那一届比赛，我去打了个酱油，成绩非常拉胯就不提了。</p>
+<p>但是我去仔细的看了前几名的赛后分享，大家的思路都是大同小异的。</p>
+<p>我又不得不小声的叨叨一句：那一届比赛打到最后已经变成了开发语言层面上、参数配置上的差距了。C++ 天然优势，所以可以看到排在前面的清一色的 C++ 选手。</p>
+<p>很多支队伍都提到了一个小细节，那就是绑核。</p>
+<p>而我第一次知道这个开源项目，就是通过这篇文章《PolarDB数据库性能大赛Java选手分享》</p>
+<p>当时把他的参赛代码拉下来看了一下，对于绑核操作有了一个基础认识，但是其实也没有深究实现。</p>
+<p>只是这样写就对了，就能绑上就完事了。</p>
+<p>再后来，我看 disruptor 这个框架的时候，看到它有一个这样的等待策略：</p>
+<p>com.lmax.disruptor.BusySpinWaitStrategy</p>
+<p>这个策略上有这样的一个注释：</p>
+<p>It is best used when threads can be bound to specific CPU cores.</p>
+<p>如果你要用这个策略，最好是线程可以被绑定到特定的 CPU 核心上。</p>
+<p>就这样，奇怪的知识又被唤醒了。</p>
+<p>我知道怎么绑定啊，Java-Thread-Affinity 这个开源项目就做了。</p>
+<p>于是问题就变成了：它是怎么做呢？</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>实现原理分析</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>项目套 Java 皮，本质基于 JNA 调 DLL（Windows 下 kernel32.dll）</li><li>acquireLock(int) 入参为第几个 CPU，最终用 BitSet 标记目标核心。</li><li>Windows 平台最终调用 SetThreadAffinityMask 限制线程运行在指定核心。</li><li>Solaris 同时支持 1:1 与 N:M，项目直接不实现；Netty、SOFAJRaft 也用。</li></ul><div class="pit"><ul><li>acquireLock 的 CPU 编号从 0 开始，0 不建议使用，程序会控制禁止。</li></ul></div></div>
+<p>具体怎么做的，只写几个关键的点，简单的分析一下，大家有兴趣的可以把源码拉下看。</p>
+<p>首先第一个点：JNA 对于 Java-Thread-Affinity 非常重要：</p>
+<p>可以说其实 Java-Thread-Affinity 就是套了个 Java 皮，这种应该让操作系统来做的事，其实编写更加底层的 C++ 或者 C 语言来实现的。</p>
+<p>所以这个项目实质上是基于 JNA 调用了 DLL 文件，从而实现绑核的需求。</p>
+<p>具体对应的代码是这样的：</p>
+<p>net.openhft.affinity.Affinity</p>
+<p>首先在这个类的静态代码块判断操作系统的类型：</p>
+<p>我这里是 win 操作系统。</p>
+<p>net.openhft.affinity.IAffinity</p>
+<p>是一个接口，有各个平台的线程亲和性实现：</p>
+<p>比如，在实现类 WindowsJNAAffinity 里面，你可以看到在它的静态代码块里面调用了这样的逻辑：</p>
+<p>net.openhft.affinity.impl.WindowsJNAAffinity.CLibrary</p>
+<p>这里就是通过前面说的，通过 JNA 调用 kernel32.dll 文件。</p>
+<p>在 windows 平台上能使用该功能的一些的基石就是在此。</p>
+<p>第二个点：怎么绑定到指定核心上？</p>
+<p>在其核心类里面有这样的一个方法：</p>
+<p>net.openhft.affinity.AffinityLock#acquireLock(int)</p>
+<p>这里的入参，就是第几个 CPU 的意思，记得 CPU 编号是从 0 开始。</p>
+<p>但 0 不建议使用：</p>
+<p>所以程序里面也控制了不能绑定到 0 号 CPU 上。</p>
+<p>最终会走到这个方法中：</p>
+<p>net.openhft.affinity.AffinityLock#bind(boolean)</p>
+<p>这里采用的是 BitSet，想绑定到第几个 CPU 就把第几个 CPU 的位置设置为 true。</p>
+<p>在 win 平台上会调用这个方法：</p>
+<p>net.openhft.affinity.impl.WindowsJNAAffinity.CLibrary#SetThreadAffinityMask</p>
+<p>这个方法，就是限制线程在哪个 CPU 上运行的 API。</p>
+<p>https://docs.microsoft.com/zh-cn/windows/win32/api/winbase/nf-winbase-setthreadaffinitymask?redirectedfrom=MSDN</p>
+<p>第三个点：Solaris 平台怎么实现的？</p>
+<p>因为我们知道，在 Solaris 平台上的 HotSpot 虚拟机，同时支持 1:1 和 N:M 的线程模型。</p>
+<p>那么按理来说得提供两套绑定方案，于是我点进去一看，好家伙：</p>
+<p>大道至简，直接来一个不实现。</p>
+<p>第四个点：有谁用了？</p>
+<p>Netty 里面用到了这个库：</p>
+<p>https://ifeve.com/thread-affinity/</p>
+<p>SOFAJRaft 里面也依赖了这个包：</p>
+<p>https://github.com/sofastack/sofa-jraft/blob/master/README_zh_CN.md</p>
+<p>然后我前面说到的比赛中也有这样的使用场景，在知乎也看到了这样的一个场景：</p>
+<p>好了，文章写到这里也就可以收尾了。</p>
+<p>你再想想这个面试题，如果面试官想要的真的是这个回答，你说合适吗？</p>
+<p>而且你说你问这干啥，自己家啥业务场景啊，掂量掂量，需要优化到这个级别？</p>
+<p>人招进来后，可能线程池都看不到几个，你说是吧？</p>
+<p>好了，手动保命，收工。</p>
+<p>请自行脑补表情包：战术后仰.gif</p>
+<p>荒腔走板</p>
+<p>上周有一场项目聚餐，喝的那叫一个天昏地暗。</p>
+<p>不知道怎么回事，就喝的不省人事了。</p>
+<p>前一秒的画面还是站着喝着一大杯啤酒，啤酒滑过喉咙的感觉都异常清楚，甚至还记得由于喝得太猛，有一些来不及倒入嘴巴的啤酒从嘴角溢出来了。</p>
+<p>下一秒就躺在了家里的沙发上，拿着手机看里面很多的未读消息，甚至还到微信群里和别人讨论了几句技术问题。</p>
+<p>中间的一些画面就比较零碎了：昏暗的灯光、大声的喧哗、飞驰的汽车、冰凉的酸奶、微风的街头...</p>
+<p>是的，应该是宿醉了。</p>
+<p>真的好久好久没喝这么多酒了，上一次宿醉应该得追溯到还在北京的时候了。</p>
+<p>后来我想了一下，那天喝多的直接原因是把握不到自己喝了多少了。因为那天晚上喝的不是一瓶瓶的啤酒，而是那种一炮炮的。</p>
+<p>一杯一杯又一杯，很快就过量而不自知了。</p>
+<p>宿醉是一种很神奇的感觉，记忆变成了碎片，需要靠别人的讲述自己才能勉强把碎片拼接起来。</p>
+<p>但是这样不好，不好。</p>
+<p>酒是狂药，适量饮用。</p>
+<p>但是，对于已经发生了的宿醉，不管是高中、大学、北京、成都，都没有关系了。</p>
+<p>毕竟：</p>
+<p>最后说一句</p>
+<p>感谢您的阅读，我坚持原创，十分欢迎并感谢您的关注。</p>
+<p>推荐👍 ：妙啊，这份问题排查工具清单！</p>
+<p>推荐👍 ：又长脸了。</p>
+<p>推荐👍 ：就这？一个没啥卵用的知识点。</p>
+<p>推荐👍 ：我不服！这开源项目居然才888个星！？</p>
+<p>推荐👍 ：曝光一个网站，我周末就耗在上面了。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>Java 无法直接绑核</h4><p>线程绑定到指定 CPU 属操作系统层面能力，Java 无法直接实现，只能套皮调用底层。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>三种线程模型</h4><p>1:1 内核线程、1:N 用户线程、N:M 混合；HotSpot 采用 1:1，Java 线程直接映射 OS 原生线程。</p><a class="src-link" href="#sec-01">原文 → Java 线程模型</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>LWP 独立调度</h4><p>每个轻量级进程是独立调度单元，某个 LWP 在系统调用中阻塞也不影响整个进程继续工作。</p><a class="src-link" href="#sec-01">原文 → Java 线程模型</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>1:1 模型局限</h4><p>线程操作需系统调用、在用户态与内核态间切换；每个 LWP 消耗内核资源，数量有限。</p><a class="src-link" href="#sec-01">原文 → Java 线程模型</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>acquireLock 绑核</h4><p>AffinityLock.acquireLock(5) 在 try-with-resources 内循环执行，把线程绑到第 5 个 CPU。</p><a class="src-link" href="#sec-02">原文 → 绑核库用法演示</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>绑核效果</h4><p>执行 acquireLock(5) 死循环后，第 5 个 CPU 利用率立刻被打到 100%。</p><a class="src-link" href="#sec-02">原文 → 绑核库用法演示</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>版本冲突</h4><p>Maven 依赖 net.openhft:affinity:3.2.3；高于 3.2.3 的版本出现异常。</p><a class="src-link" href="#sec-02">原文 → 绑核库用法演示</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>绑核收益</h4><p>绑定核心后可更好利用缓存、减少线程上下文切换，属极致性能优化。</p><a class="src-link" href="#sec-02">原文 → 绑核库用法演示</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>JNA 调 DLL</h4><p>静态代码块判断 OS 类型，WindowsJNAAffinity 通过 JNA 调用 kernel32.dll 完成绑核。</p><a class="src-link" href="#sec-03">原文 → 实现原理分析</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>CPU 编号从 0 开始</h4><p>acquireLock 入参按 CPU 编号，从 0 开始；0 不建议使用，程序禁止绑定。</p><a class="src-link" href="#sec-03">原文 → 实现原理分析</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>平台实现差异</h4><p>Windows 走 SetThreadAffinityMask；Solaris 同时支持 1:1/N:M，项目直接不实现。</p><a class="src-link" href="#sec-03">原文 → 实现原理分析</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>Java 线程绑核只能套皮：HotSpot 用 1:1 模型，调度全交给操作系统，Java 无法直接干预。</li>
+          <li>想绑核用 Java-Thread-Affinity：JNA 调 DLL，acquireLock 绑核，注意版本与编号。</li>
+          <li>绑核是极致优化手段，能更好利用缓存、减少上下文切换，Netty 与 SOFAJRaft 也在用。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247515262&amp;idx=1&amp;sn=9f2314cffc3cca3744f63b418654a9c0" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247515262&amp;idx=1&amp;sn=9f2314cffc3cca3744f63b418654a9c0</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

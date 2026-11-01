@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Spring Boot 实现各种参数校验，写得太好了，建议收藏！</h1>
+  <p class="lede">Spring Validation 参数校验实战与底层实现原理全解</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 32 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>简单使用</a>
+          <a href="#sec-02"><span class="n">02</span>进阶使用</a>
+          <a href="#sec-03"><span class="n">03</span>实现原理</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 简单使用</a>
+          <a href="#sec-02">02 进阶使用</a>
+          <a href="#sec-03">03 实现原理</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>Spring、参数校验、底层原理</p>
+<table><thead><tr><th>如果spring-boot版本小于2.3.x，spring-boot-starter-web会自动传入hibernate-validator依赖。如果spring-boot版本大于2.3.x，则需要手动引入依赖： 只要给DTO对象加上@Validated注解就能实现自动参数校验。 如果校验失败，会抛出MethodArgumentNotValidException异常，Spring默认会将其转为400（Bad Request）请求。 GET请求一般会使用requestParam/PathVariable传参。如果参数比较多(比如超过6个)，还是推荐使用DTO对象接收。否则，推荐将一个个参数平铺到方法入参中。在这种情况下，必须在Controller类上标注@Validated注解，并在入参上声明约束注解(如@Min等)。如果校验失败，会抛出ConstraintViolationException异常。 前面说过，如果校验失败，会抛出MethodArgumentNotValidException或者ConstraintViolationException异常。在实际项目开发中，通常会用统一异常处理来返回一个更友好的提示。比如我们系统要求无论发送什么异常，http的状态码必须返回200，由业务码去区分系统的异常情况。 在实际项目中，可能多个方法需要使用同一个DTO类来接收参数，而不同方法的校验规则很可能是不一样的。这个时候，简单地在DTO类的字段上加约束注解无法解决这个问题。因此，spring-validation支持了分组校验的功能，专门用来解决这类问题。约束注解上声明适用的分组信息groups 实际场景中，有可能某个字段也是一个对象，这种情况可以使用嵌套校验。比如，上面保存User信息的时候同时还带有Job信息。需要注意的是，此时DTO类的对应字段必须标记@Valid注解。 如果请求体直接传递了json数组给后台，并希望对数组中的每一项都进行参数校验。此时，如果我们直接使用java.util.Collection下的list或者set来接收数据，参数校验并不会生效！我们可以使用自定义list集合来接收参数：包装List类型，并声明@Valid注解 业务需求总是比框架提供的这些简单校验要复杂的多，我们可以自定义校验来满足我们的需求。 自定义约束注解 实现ConstraintValidator接口编写约束校验器 上面的示例都是基于注解来实现自动校验的，在某些情况下，我们可能希望以编程方式调用验证。这个时候可以注入javax.validation.Validator对象，然后再调用其api。 Spring Validation默认会校验完所有字段，然后才抛出异常。可以通过一些简单的配置，开启Fali Fast模式，一旦校验失败就立即返回。 @Valid和@Validated区别 方法级别的参数校验实现原理 上面提到的将参数一个个平铺到方法参数中，然后在每个参数前面声明约束注解的校验方式，就是方法级别的参数校验。 实际上，这种方式可用于任何Spring Bean的方法上，比如Controller/Service等。其底层实现原理就是AOP，具体来说是通过MethodValidationPostProcessor动态注册AOP切面，然后使用MethodValidationInterceptor对切点方法织入增强。 实际上，不管是requestBody参数校验还是方法级别的校验，最终都是调用Hibernate Validator执行校验，Spring Validation只是做了一层封装。</th></tr></thead><tbody></tbody></table>
+<p>之前也写过一篇关于Spring Validation使用的文章，不过自我感觉还是浮于表面，本次打算彻底搞懂Spring Validation。本文会详细介绍Spring Validation各种场景下的最佳实践及其实现原理，死磕到底！</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>简单使用</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Spring Validation 是 hibernate-validation 的二次封装，底层由 Hibernate Validator 执行校验。</li><li>spring-boot 2.3.x 起需手动引入 hibernate-validator 依赖。</li><li>requestBody 用 DTO+@Validated/@Valid；GET 平铺参数需类上加 @Validated 且入参声明约束注解。</li><li>校验失败分别抛 MethodArgumentNotValidException 与 ConstraintViolationException，用 @RestControllerAdvice 统一处理。</li></ul><div class="pit"><ul><li>spring-boot 2.3.x 以上忘记手动引入 hibernate-validator 依赖会导致校验不生效。</li></ul></div></div>
+<pre><code>Java API规范(JSR303)定义了Bean校验的标准validation-api，但没有提供实现。hibernate validation是对这个规范的实现，并增加了校验注解如@Email、@Length等。</code></pre>
+<p>Spring Validation是对hibernate validation的二次封装，用于支持spring mvc参数自动校验。接下来，我们以spring-boot项目为例，介绍Spring Validation的使用。</p>
+<p>引入依赖</p>
+<p>如果spring-boot版本小于2.3.x，spring-boot-starter-web会自动传入hibernate-validator依赖。如果spring-boot版本大于2.3.x，则需要手动引入依赖：</p>
+<ul><li>&lt;dependency&gt;</li><li>&lt;groupId&gt;org.hibernate&lt;/groupId&gt;</li><li>&lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;</li><li>&lt;version&gt;6.0.1.Final&lt;/version&gt;</li><li>&lt;/dependency&gt;</li></ul>
+<p>对于web服务来说，为防止非法参数对业务造成影响，在Controller层一定要做参数校验的！大部分情况下，请求参数分为如下两种形式：</p>
+<ul><li>POST、PUT请求，使用requestBody传递参数；</li><li>GET请求，使用requestParam/PathVariable传递参数。</li></ul>
+<p>下面我们简单介绍下requestBody和requestParam/PathVariable的参数校验实战！</p>
+<p>requestBody参数校验</p>
+<p>POST、PUT请求一般会使用requestBody传递参数，这种情况下，后端使用DTO对象进行接收。只要给DTO对象加上@Validated注解就能实现自动参数校验。比如，有一个保存User的接口，要求userName长度是2-10，account和password字段长度是6-20。</p>
+<p>如果校验失败，会抛出MethodArgumentNotValidException异常，Spring默认会将其转为400（Bad Request）请求。</p>
+<p>DTO表示数据传输对象（Data Transfer Object），用于服务器和客户端之间交互传输使用的。在spring-web项目中可以表示用于接收请求参数的Bean对象。</p>
+<p>在DTO字段上声明约束注解</p>
+<ul><li>@Data</li><li>public class UserDTO {</li><li>private Long userId;</li><li>@NotNull</li><li>@Length(min = 2, max = 10)</li><li>private String userName;</li><li>@NotNull</li><li>@Length(min = 6, max = 20)</li><li>private String account;</li><li>@NotNull</li><li>@Length(min = 6, max = 20)</li><li>private String password;</li></ul>
+<p>在方法参数上声明校验注解</p>
+<ul><li>@PostMapping(&quot;/save&quot;)</li><li>public Result saveUser(@RequestBody @Validated UserDTO userDTO) {</li><li>// 校验通过，才会执行业务逻辑处理</li><li>return Result.ok();</li></ul>
+<p>这种情况下，使用@Valid和@Validated都可以。</p>
+<p>requestParam/PathVariable参数校验</p>
+<p>GET请求一般会使用requestParam/PathVariable传参。如果参数比较多(比如超过6个)，还是推荐使用DTO对象接收。</p>
+<p>否则，推荐将一个个参数平铺到方法入参中。在这种情况下，必须在Controller类上标注@Validated注解，并在入参上声明约束注解(如@Min等)。如果校验失败，会抛出ConstraintViolationException异常。</p>
+<p>代码示例如下：</p>
+<ul><li>@RequestMapping(&quot;/api/user&quot;)</li><li>@RestController</li><li>@Validated</li><li>public class UserController {</li><li>// 路径变量</li><li>@GetMapping(&quot;{userId}&quot;)</li><li>public Result detail(@PathVariable(&quot;userId&quot;) @Min(10000000000000000L) Long userId) {</li><li>// 校验通过，才会执行业务逻辑处理</li><li>UserDTO userDTO = new UserDTO();</li><li>userDTO.setUserId(userId);</li><li>userDTO.setAccount(&quot;11111111111111111&quot;);</li><li>userDTO.setUserName(&quot;xixi&quot;);</li><li>userDTO.setAccount(&quot;11111111111111111&quot;);</li><li>return Result.ok(userDTO);</li><li>// 查询参数</li><li>@GetMapping(&quot;getByAccount&quot;)</li><li>public Result getByAccount(@Length(min = 6, max = 20) @NotNull String  account) {</li><li>// 校验通过，才会执行业务逻辑处理</li><li>UserDTO userDTO = new UserDTO();</li><li>userDTO.setUserId(10000000000000003L);</li><li>userDTO.setAccount(account);</li><li>userDTO.setUserName(&quot;xixi&quot;);</li><li>userDTO.setAccount(&quot;11111111111111111&quot;);</li><li>return Result.ok(userDTO);</li></ul>
+<p>统一异常处理</p>
+<p>前面说过，如果校验失败，会抛出MethodArgumentNotValidException或者ConstraintViolationException异常。在实际项目开发中，通常会用统一异常处理来返回一个更友好的提示。</p>
+<p>比如我们系统要求无论发送什么异常，http的状态码必须返回200，由业务码去区分系统的异常情况。</p>
+<ul><li>@RestControllerAdvice</li><li>public class CommonExceptionHandler {</li><li>@ExceptionHandler({MethodArgumentNotValidException.class})</li><li>@ResponseStatus(HttpStatus.OK)</li><li>@ResponseBody</li><li>public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {</li><li>BindingResult bindingResult = ex.getBindingResult();</li><li>StringBuilder sb = new StringBuilder(&quot;校验失败:&quot;);</li><li>for (FieldError fieldError : bindingResult.getFieldErrors()) {</li><li>sb.append(fieldError.getField()).append(&quot;：&quot;).append(fieldError.getDefaultMessage()).append(&quot;, &quot;);</li><li>String msg = sb.toString();</li><li>return Result.fail(BusinessCode.参数校验失败, msg);</li><li>@ExceptionHandler({ConstraintViolationException.class})</li><li>@ResponseStatus(HttpStatus.OK)</li><li>@ResponseBody</li><li>public Result handleConstraintViolationException(ConstraintViolationException ex) {</li><li>return Result.fail(BusinessCode.参数校验失败, ex.getMessage());</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>进阶使用</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>同一 DTO 多个方法校验规则不同，用分组校验 groups 区分。</li><li>嵌套校验时对象字段必须加 @Valid，且可与分组校验结合。</li><li>直接 List/Set 接收 JSON 数组校验不生效，需包装 List 并加 @Valid。</li><li>自定义校验分两步：自定义约束注解 + 实现 ConstraintValidator；可注入 Validator 编程式校验，配置 failFast(true) 开启快速失败。</li></ul><div class="pit"><ul><li>JSON 数组直接用 List/Set 接收时参数校验不会生效。</li><li>@Delegate 注解受 lombok 版本限制，需 1.18.6 以上版本。</li></ul></div></div>
+<p>分组校验</p>
+<p>在实际项目中，可能多个方法需要使用同一个DTO类来接收参数，而不同方法的校验规则很可能是不一样的。这个时候，简单地在DTO类的字段上加约束注解无法解决这个问题。因此，spring-validation支持了分组校验的功能，专门用来解决这类问题。</p>
+<p>还是上面的例子，比如保存User的时候，UserId是可空的，但是更新User的时候，UserId的值必须&gt;=10000000000000000L；其它字段的校验规则在两种情况下一样。这个时候使用分组校验的代码示例如下：</p>
+<p>约束注解上声明适用的分组信息groups</p>
+<ul><li>@Data</li><li>public class UserDTO {</li><li>@Min(value = 10000000000000000L, groups = Update.class)</li><li>private Long userId;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 2, max = 10, groups = {Save.class, Update.class})</li><li>private String userName;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 6, max = 20, groups = {Save.class, Update.class})</li><li>private String account;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 6, max = 20, groups = {Save.class, Update.class})</li><li>private String password;</li><li>/**</li><li>* 保存的时候校验分组</li><li>public interface Save {</li><li>/**</li><li>* 更新的时候校验分组</li><li>public interface Update {</li></ul>
+<p>@Validated注解上指定校验分组</p>
+<ul><li>@PostMapping(&quot;/save&quot;)</li><li>public Result saveUser(@RequestBody @Validated(UserDTO.Save.class) UserDTO userDTO) {</li><li>// 校验通过，才会执行业务逻辑处理</li><li>return Result.ok();</li><li>@PostMapping(&quot;/update&quot;)</li><li>public Result updateUser(@RequestBody @Validated(UserDTO.Update.class) UserDTO userDTO) {</li><li>// 校验通过，才会执行业务逻辑处理</li><li>return Result.ok();</li></ul>
+<p>嵌套校验</p>
+<p>前面的示例中，DTO类里面的字段都是基本数据类型和String类型。但是实际场景中，有可能某个字段也是一个对象，这种情况可以使用嵌套校验。</p>
+<p>比如，上面保存User信息的时候同时还带有Job信息。需要注意的是，此时DTO类的对应字段必须标记@Valid注解。</p>
+<ul><li>@Data</li><li>public class UserDTO {</li><li>@Min(value = 10000000000000000L, groups = Update.class)</li><li>private Long userId;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 2, max = 10, groups = {Save.class, Update.class})</li><li>private String userName;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 6, max = 20, groups = {Save.class, Update.class})</li><li>private String account;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 6, max = 20, groups = {Save.class, Update.class})</li><li>private String password;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Valid</li><li>private Job job;</li><li>@Data</li><li>public static class Job {</li><li>@Min(value = 1, groups = Update.class)</li><li>private Long jobId;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 2, max = 10, groups = {Save.class, Update.class})</li><li>private String jobName;</li><li>@NotNull(groups = {Save.class, Update.class})</li><li>@Length(min = 2, max = 10, groups = {Save.class, Update.class})</li><li>private String position;</li><li>/**</li><li>* 保存的时候校验分组</li><li>public interface Save {</li><li>/**</li><li>* 更新的时候校验分组</li><li>public interface Update {</li></ul>
+<p>嵌套校验可以结合分组校验一起使用。还有就是嵌套集合校验会对集合里面的每一项都进行校验，例如List&lt;Job&gt;字段会对这个list里面的每一个Job对象都进行校验</p>
+<p>集合校验</p>
+<p>如果请求体直接传递了json数组给后台，并希望对数组中的每一项都进行参数校验。此时，如果我们直接使用java.util.Collection下的list或者set来接收数据，参数校验并不会生效！我们可以使用自定义list集合来接收参数：</p>
+<p>包装List类型，并声明@Valid注解</p>
+<ul><li>public class ValidationList&lt;E&gt; implements List&lt;E&gt; {</li><li>@Delegate // @Delegate是lombok注解</li><li>@Valid // 一定要加@Valid注解</li><li>public List&lt;E&gt; list = new ArrayList&lt;&gt;();</li><li>// 一定要记得重写toString方法</li><li>@Override</li><li>public String toString() {</li><li>return list.toString();</li></ul>
+<p>@Delegate注解受lombok版本限制，1.18.6以上版本可支持。如果校验不通过，会抛出NotReadablePropertyException，同样可以使用统一异常进行处理。</p>
+<p>比如，我们需要一次性保存多个User对象，Controller层的方法可以这么写：</p>
+<ul><li>@PostMapping(&quot;/saveList&quot;)</li><li>public Result saveList(@RequestBody @Validated(UserDTO.Save.class) ValidationList&lt;UserDTO&gt; userList) {</li><li>// 校验通过，才会执行业务逻辑处理</li><li>return Result.ok();</li></ul>
+<p>自定义校验</p>
+<p>业务需求总是比框架提供的这些简单校验要复杂的多，我们可以自定义校验来满足我们的需求。</p>
+<p>自定义spring validation非常简单，假设我们自定义加密id（由数字或者a-f的字母组成，32-256长度）校验，主要分为两步：</p>
+<p>自定义约束注解</p>
+<ul><li>@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})</li><li>@Retention(RUNTIME)</li><li>@Documented</li><li>@Constraint(validatedBy = {EncryptIdValidator.class})</li><li>public @interface EncryptId {</li><li>// 默认错误消息</li><li>String message() default &quot;加密id格式错误&quot;;</li><li>// 分组</li><li>Class&lt;?&gt;[] groups() default {};</li><li>// 负载</li><li>Class&lt;? extends Payload&gt;[] payload() default {};</li></ul>
+<p>实现ConstraintValidator接口编写约束校验器</p>
+<ul><li>public class EncryptIdValidator implements ConstraintValidator&lt;EncryptId, String&gt; {</li><li>private static final Pattern PATTERN = Pattern.compile(&quot;^[a-f\\d]{32,256}$&quot;);</li><li>@Override</li><li>public boolean isValid(String value, ConstraintValidatorContext context) {</li><li>// 不为null才进行校验</li><li>if (value != null) {</li><li>Matcher matcher = PATTERN.matcher(value);</li><li>return matcher.find();</li><li>return true;</li></ul>
+<p>这样我们就可以使用@EncryptId进行参数校验了！</p>
+<p>编程式校验</p>
+<p>上面的示例都是基于注解来实现自动校验的，在某些情况下，我们可能希望以编程方式调用验证。这个时候可以注入javax.validation.Validator对象，然后再调用其api。</p>
+<ul><li>@Autowired</li><li>private javax.validation.Validator globalValidator;</li><li>// 编程式校验</li><li>@PostMapping(&quot;/saveWithCodingValidate&quot;)</li><li>public Result saveWithCodingValidate(@RequestBody UserDTO userDTO) {</li><li>Set&lt;ConstraintViolation&lt;UserDTO&gt;&gt; validate = globalValidator.validate(userDTO, UserDTO.Save.class);</li><li>// 如果校验通过，validate为空；否则，validate包含未校验通过项</li><li>if (validate.isEmpty()) {</li><li>// 校验通过，才会执行业务逻辑处理</li><li>} else {</li><li>for (ConstraintViolation&lt;UserDTO&gt; userDTOConstraintViolation : validate) {</li><li>// 校验失败，做其它逻辑</li><li>System.out.println(userDTOConstraintViolation);</li><li>return Result.ok();</li></ul>
+<p>快速失败(Fail Fast)</p>
+<p>Spring Validation默认会校验完所有字段，然后才抛出异常。可以通过一些简单的配置，开启Fali Fast模式，一旦校验失败就立即返回。</p>
+<ul><li>@Bean</li><li>public Validator validator() {</li><li>ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)</li><li>.configure()</li><li>// 快速失败模式</li><li>.failFast(true)</li><li>.buildValidatorFactory();</li><li>return validatorFactory.getValidator();</li></ul>
+<p>@Valid和@Validated区别</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>实现原理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>requestBody 校验在 RequestResponseBodyMethodProcessor.resolveArgument() 的 validateIfApplicable() 中触发。</li><li>方法级校验基于 AOP：MethodValidationPostProcessor 注册切面、MethodValidationInterceptor 织入增强。</li><li>两类校验最终都委托 Hibernate Validator 执行，Spring Validation 只是封装。</li></ul></div>
+<p>requestBody参数校验实现原理</p>
+<p>在spring-mvc中，RequestResponseBodyMethodProcessor是用于解析@RequestBody标注的参数以及处理@ResponseBody标注方法的返回值的。显然，执行参数校验的逻辑肯定就在解析参数的方法resolveArgument()中：</p>
+<ul><li>public class RequestResponseBodyMethodProcessor extends AbstractMessageConverterMethodProcessor {</li><li>@Override</li><li>public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,</li><li>NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {</li><li>parameter = parameter.nestedIfOptional();</li><li>//将请求数据封装到DTO对象中</li><li>Object arg = readWithMessageConverters(webRequest, parameter, parameter.getNestedGenericParameterType());</li><li>String name = Conventions.getVariableNameForParameter(parameter);</li><li>if (binderFactory != null) {</li><li>WebDataBinder binder = binderFactory.createBinder(webRequest, arg, name);</li><li>if (arg != null) {</li><li>// 执行数据校验</li><li>validateIfApplicable(binder, parameter);</li><li>if (binder.getBindingResult().hasErrors() &amp;&amp; isBindExceptionRequired(binder, parameter)) {</li><li>throw new MethodArgumentNotValidException(parameter, binder.getBindingResult());</li><li>if (mavContainer != null) {</li><li>mavContainer.addAttribute(BindingResult.MODEL_KEY_PREFIX + name, binder.getBindingResult());</li><li>return adaptArgumentIfNecessary(arg, parameter);</li></ul>
+<p>可以看到，resolveArgument()调用了validateIfApplicable()进行参数校验。</p>
+<ul><li>protected void validateIfApplicable(WebDataBinder binder, MethodParameter parameter) {</li><li>// 获取参数注解，比如@RequestBody、@Valid、@Validated</li><li>Annotation[] annotations = parameter.getParameterAnnotations();</li><li>for (Annotation ann : annotations) {</li><li>// 先尝试获取@Validated注解</li><li>Validated validatedAnn = AnnotationUtils.getAnnotation(ann, Validated.class);</li><li>//如果直接标注了@Validated，那么直接开启校验。</li><li>//如果没有，那么判断参数前是否有Valid起头的注解。</li><li>if (validatedAnn != null || ann.annotationType().getSimpleName().startsWith(&quot;Valid&quot;)) {</li><li>Object hints = (validatedAnn != null ? validatedAnn.value() : AnnotationUtils.getValue(ann));</li><li>Object[] validationHints = (hints instanceof Object[] ? (Object[]) hints : new Object[] {hints});</li><li>//执行校验</li><li>binder.validate(validationHints);</li><li>break;</li></ul>
+<p>看到这里，大家应该能明白为什么这种场景下@Validated、@Valid两个注解可以混用。我们接下来继续看WebDataBinder.validate()实现。</p>
+<ul><li>@Override</li><li>public void validate(Object target, Errors errors, Object... validationHints) {</li><li>if (this.targetValidator != null) {</li><li>processConstraintViolations(</li><li>//此处调用Hibernate Validator执行真正的校验</li><li>this.targetValidator.validate(target, asValidationGroups(validationHints)), errors);</li></ul>
+<p>最终发现底层最终还是调用了Hibernate Validator进行真正的校验处理。</p>
+<p>方法级别的参数校验实现原理</p>
+<p>上面提到的将参数一个个平铺到方法参数中，然后在每个参数前面声明约束注解的校验方式，就是方法级别的参数校验。</p>
+<p>实际上，这种方式可用于任何Spring Bean的方法上，比如Controller/Service等。其底层实现原理就是AOP，具体来说是通过MethodValidationPostProcessor动态注册AOP切面，然后使用MethodValidationInterceptor对切点方法织入增强。</p>
+<ul><li>public class MethodValidationPostProcessor extends AbstractBeanFactoryAwareAdvisingPostProcessorimplements InitializingBean {</li><li>@Override</li><li>public void afterPropertiesSet() {</li><li>//为所有`@Validated`标注的Bean创建切面</li><li>Pointcut pointcut = new AnnotationMatchingPointcut(this.validatedAnnotationType, true);</li><li>//创建Advisor进行增强</li><li>this.advisor = new DefaultPointcutAdvisor(pointcut, createMethodValidationAdvice(this.validator));</li><li>//创建Advice，本质就是一个方法拦截器</li><li>protected Advice createMethodValidationAdvice(@Nullable Validator validator) {</li><li>return (validator != null ? new MethodValidationInterceptor(validator) : new MethodValidationInterceptor());</li></ul>
+<p>接着看一下MethodValidationInterceptor：</p>
+<ul><li>public class MethodValidationInterceptor implements MethodInterceptor {</li><li>@Override</li><li>public Object invoke(MethodInvocation invocation) throws Throwable {</li><li>//无需增强的方法，直接跳过</li><li>if (isFactoryBeanMetadataMethod(invocation.getMethod())) {</li><li>return invocation.proceed();</li><li>//获取分组信息</li><li>Class&lt;?&gt;[] groups = determineValidationGroups(invocation);</li><li>ExecutableValidator execVal = this.validator.forExecutables();</li><li>Method methodToValidate = invocation.getMethod();</li><li>Set&lt;ConstraintViolation&lt;Object&gt;&gt; result;</li><li>try {</li><li>//方法入参校验，最终还是委托给Hibernate Validator来校验</li><li>result = execVal.validateParameters(</li><li>invocation.getThis(), methodToValidate, invocation.getArguments(), groups);</li><li>catch (IllegalArgumentException ex) {</li><li>//有异常直接抛出</li><li>if (!result.isEmpty()) {</li><li>throw new ConstraintViolationException(result);</li><li>//真正的方法调用</li><li>Object returnValue = invocation.proceed();</li><li>//对返回值做校验，最终还是委托给Hibernate Validator来校验</li><li>result = execVal.validateReturnValue(invocation.getThis(), methodToValidate, returnValue, groups);</li><li>//有异常直接抛出</li><li>if (!result.isEmpty()) {</li><li>throw new ConstraintViolationException(result);</li><li>return returnValue;</li></ul>
+<p>实际上，不管是requestBody参数校验还是方法级别的校验，最终都是调用Hibernate Validator执行校验，Spring Validation只是做了一层封装。</p>
+<p>更多好文章</p>
+<ul><li>Java高并发系列（共34篇）</li><li>MySql高手系列（共27篇）</li><li>Maven高手系列（共10篇）</li><li>Mybatis系列（共12篇）</li><li>聊聊db和缓存一致性常见的实现方式</li><li>接口幂等性这么重要，它是什么？怎么实现？</li><li>泛型，有点难度，会让很多人懵逼，那是因为你没有看这篇文章！</li></ul>
+<p>↓↓↓ 点击阅读原文，直达个人博客</p>
+<p>继续滑动看下一个</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>@Valid 与 @Validated</h4><p>requestBody 场景二者可混用：源码中校验注解以 Valid 开头或直接标注 @Validated 即触发校验。</p></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>两类校验异常</h4><p>requestBody 抛MethodArgumentNotValidException，GET参数抛ConstraintViolationException</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>GET 参数个数阈值</h4><p>GET 参数超过 6 个推荐改用 DTO 接收，否则平铺到方法入参并逐个声明约束注解。</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>spring-boot 2.3.x 分界</h4><p>spring-boot 小于 2.3.x 自动带 hibernate-validator；大于 2.3.x 需手动引入依赖。</p></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>DTO+@Validated 校验</h4><p>DTO 字段加 @NotNull/@Length，方法参数加 @Validated，失败抛 MethodArgumentNotValidException。</p></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>自定义校验注解</h4><p>自定义注解标 @Constraint(validatedBy=EncryptIdValidator.class)，校验器实现 isValid。</p></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>ValidationList 包装集合</h4><p>包装 List 实现 List&lt;E&gt;，字段加 @Delegate @Valid 并重写 toString，JSON 数组才能逐项校验。</p></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Fail Fast 配置</h4><p>注入 Validator Bean 时 .failFast(true)，一旦校验失败立即返回而非校验完所有字段。</p></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>嵌套对象忘加 @Valid</h4><p>嵌套校验时 DTO 对应对象字段必须标记 @Valid，否则子对象约束不生效。</p></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>直接 List 接收 JSON 数组</h4><p>直接 Collection 的 List/Set 接收 JSON 数组，参数校验不会生效。</p></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>分组校验 Save/Update</h4><p>同一 DTO 不同方法规则不同，约束注解 groups 区分：userId 仅 Update 组要求 @Min。</p></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>底层统一结论</h4><p>requestBody 校验与方法级校验最终都调用 Hibernate Validator，Spring Validation 仅做封装。</p><a class="src-link" href="#sec-03">原文 → 实现原理</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>Spring Validation 只是封装，真正校验由 Hibernate Validator 执行，看注解与校验器。</li>
+          <li>按传参选姿势：requestBody 用 DTO+@Validated，GET 平铺参数在类上加 @Validated。</li>
+          <li>复杂场景记三点：嵌套字段加 @Valid、JSON 数组用包装 List、多规则用分组校验。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzA5MTkxMDQ4MQ==&amp;mid=2648947501&amp;idx=1&amp;sn=f865ecb295e39c29121d6938b2c78383" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5MTkxMDQ4MQ==&amp;mid=2648947501&amp;idx=1&amp;sn=f865ecb295e39c29121d6938b2c78383</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

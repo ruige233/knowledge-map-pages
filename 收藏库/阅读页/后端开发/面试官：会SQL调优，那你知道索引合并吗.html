@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">面试官：会SQL调优，那你知道索引合并吗</h1>
+  <p class="lede">MySQL 索引合并：explain 识别 index_merge 与三种算法</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 9 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>算法总览与限制</a>
+          <a href="#sec-02"><span class="n">02</span>交集算法</a>
+          <a href="#sec-03"><span class="n">03</span>并集算法</a>
+          <a href="#sec-04"><span class="n">04</span>排序并集算法</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 算法总览与限制</a>
+          <a href="#sec-02">02 交集算法</a>
+          <a href="#sec-03">03 并集算法</a>
+          <a href="#sec-04">04 排序并集算法</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>在使用 explain 命令分析 SQL 执行情况的时候，type列会描述了表如何被连接，这个列的内容直接反映了 SQL 执行的效率。当里面的内容展示为index_merge时表示使用了索引合并优化,在这种情况下输出行中的key列包含具体使用的索引。 MySQL 的索引合并优化是一种查询优化技术，它利用多个索引来加速查询的执行。当一个查询中包含多个条件，并且这些条件分别适用于不同的索引时，MySQL 可以将这些索引合并起来使用，减少了回表的次数，以加速查询的执行。 简单来说过程是这样： 查询条件同时包含 index1 和 index2。 在根据 index1 和 index2 查询到主键后并没有直接分别去聚簇索引中查询，而是先对他们查到的主键做处理，合并到一起。 根据处理后的主键去聚簇索引执行查询，只需一次回表就可以拿到结果。 Index Merge 通过多次range扫描检索行并将它们的结果合并为一个。仅限合并来自单个表的索引扫描，而不是跨多个表的扫描。合并可以产生其底层扫描的并集、交集或交集并集，所以产生了三种算法。 Index Merge 访问方法有几种算法，显示在输出Extra字段 中EXPLAIN： 交集算法 Using intersect(...) 并集算法 Using union(...) 排序并集算法 Using sort_union(...) 如果您的查询有一个复杂的WHERE子句，带有深度AND/OR嵌套，而 MySQL 没有选择最佳执行计划，请尝试使用以下恒等变换。 (x AND y) OR z =&gt; (x OR z) AND (y OR z) (x OR y) AND z =&gt; (x AND z) OR (y AND z)</th></tr></thead><tbody></tbody></table>
+<p>以下文章来源于后端开发技术，作者阿笠在健身</p>
+<p>JavaGuide 官方网站：javaguide</p>
+<p>本文详细介绍了 merge index 优化的原理和三种对应的算法。</p>
+<p>什么是索引合优化</p>
+<p>在使用 explain 命令分析 SQL 执行情况的时候，type列会描述了表如何被连接，这个列的内容直接反映了 SQL 执行的效率。当里面的内容展示为index_merge时表示使用了索引合并优化,在这种情况下输出行中的key列包含具体使用的索引。</p>
+<p>MySQL 的索引合并优化是一种查询优化技术，它利用多个索引来加速查询的执行。当一个查询中包含多个条件，并且这些条件分别适用于不同的索引时，MySQL 可以将这些索引合并起来使用，减少了回表的次数，以加速查询的执行。</p>
+<p>简单来说过程是这样：</p>
+<ul><li>查询条件同时包含 index1 和 index2。</li><li>在根据 index1 和 index2 查询到主键后并没有直接分别去聚簇索引中查询，而是先对他们查到的主键做处理，合并到一起。</li><li>根据处理后的主键去聚簇索引执行查询，只需一次回表就可以拿到结果。</li></ul>
+<p>下面我们探究一下索引合并的几种情况。</p>
+<p>我们使用如下数据做测试，并且建立了三个索引。</p>
+<ul><li>CREATE TABLE `test_table` (</li><li>`id` bigint(20) NOT NULL AUTO_INCREMENT,</li><li>`user_id` bigint(20) NOT NULL,</li><li>`name` varchar(255) DEFAULT &#x27;&#x27;,</li><li>`merchant_id` bigint(20) NOT NULL,</li><li>`area` int(11) DEFAULT NULL,</li><li>PRIMARY KEY (`id`),</li><li>UNIQUE KEY `uq_user_id` (`user_id`) USING BTREE,</li><li>KEY `idx_merchant_id` (`merchant_id`) USING BTREE,</li><li>KEY `idx_area` (`area`) USING BTREE</li><li>) ENGINE=InnoDB AUTO_INCREMENT=410 DEFAULT CHARSET=utf8mb4</li></ul>
+<p>在表中，我初始化了 100 多条数据用于测试。</p>
+<p>基本用法</p>
+<p>Index Merge 通过多次range扫描检索行并将它们的结果合并为一个。仅限合并来自单个表的索引扫描，而不是跨多个表的扫描。合并可以产生其底层扫描的并集、交集或交集并集，所以产生了三种算法。</p>
+<p>可以使用索引合并的示例查询：</p>
+<ul><li>SELECT * FROM test_table WHERE merchant_id = 3 OR area = 3;</li><li>SELECT * FROM test_table WHERE (merchant_id = 3 OR area = 3) AND name = &#x27;daniel&#x27;;</li><li>SELECT * FROM t1, t2</li><li>WHERE (t1.key1 IN (1,2) OR t1.key2 LIKE &#x27;value%&#x27;)</li><li>AND t2.key1 = t1.some_col;</li><li>SELECT * FROM t1, t2</li><li>WHERE t1.key1 = 1</li><li>AND (t2.key1 = t1.some_col OR t2.key2 = t1.some_col2);</li></ul>
+<p>索引合并优化算法注意事项如下：</p>
+<p>1、如果您的查询有一个复杂的WHERE子句，带有深度AND/OR嵌套，而 MySQL 没有选择最佳执行计划，请尝试使用以下恒等变换。</p>
+<ul><li>(x AND y) OR z =&gt; (x OR z) AND (y OR z)</li><li>(x OR y) AND z =&gt; (x AND z) OR (y AND z)</li></ul>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>算法总览与限制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Index Merge 不适用于全文索引（FULLTEXT）。</li><li>Extra 字段展示具体算法：intersect / union / sort_union。</li><li>三种算法受 optimizer_switch 的 index_merge_* 标志控制，默认全部开启。</li><li>优化器根据成本估算在三种算法间选择。</li></ul><div class="pit"><ul><li>全文索引无法使用 Index Merge。</li></ul></div></div>
+<p>三种算法</p>
+<p>Index Merge 访问方法有几种算法，显示在输出Extra字段 中EXPLAIN：</p>
+<ul><li>交集算法 Using intersect(...)</li><li>并集算法 Using union(...)</li><li>排序并集算法 Using sort_union(...)</li></ul>
+<p>下面我们详细介绍这些算法，优化器根据各种可用选项的成本估算，在不同的索引合并算法之间进行选择。</p>
+<p>Index Merge 的使用受制于 系统变量的index_merge、index_merge_intersection、index_merge_union和index_merge_sort_unionflags 的值optimizer_switch。默认情况下，所有这些标志都是on. 要仅启用某些算法，请设置index_merge为off，并仅启用应允许的其他算法。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>交集算法</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>多条 AND 条件分别命中不同索引时可走 intersect，对主键取交集。</li><li>需满足 key_part1=const1 AND … AND key_partN=constN 等条件之一。</li><li>InnoDB 主键范围条件不用于行检索，只用于过滤其他条件检出的行。</li><li>若查询列全被索引覆盖，则不回表取完整表行。</li></ul><div class="pit"><ul><li>主键范围条件不参与行检索，仅用于过滤结果。</li></ul></div></div>
+<p>当查询条件是多个查询的时候，并且条件用 and 关联，这种情况会使用交集(intersect)算法，满足以下条件之一都可以。</p>
+<ul><li>这种形式的 -part 表达式* N *，其中索引具有精确的 * N *部分（即，所有索引部分都被覆盖）：</li><li>key_part1 = const1 AND key_part2 = const2 ... AND key_partN = constN</li><li>InnoDB 引擎下使用主键范围条件查询。如果其中一个 merge 条件是对表主键的范围查询，则它不用于行检索，而是用于过滤掉使用其他条件检索的行。</li><li>explain select * from test_table where id&lt;  100   and area=3;</li></ul>
+<p>索引合并交集算法对所有使用的索引执行同时扫描，并生成它从合并索引扫描中接收到的主键的交集。如果查询中使用的所有列都被使用的索引覆盖，则不会检索完整的表行（具体使用的算法输出在Extra字段中）。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>并集算法</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>不同索引列用 OR 关联时走 union，对结果取并集。</li><li>适用条件之一：key_part1=const1 OR … OR key_partN=constN。</li><li>InnoDB 主键范围查询也可触发 union。</li><li>示例：merchant_id=3 OR area=3。</li></ul></div>
+<p>并集（union）算法适用于将表的WHERE子句转换为不同索引列组合的多个范围条件，并且使用OR关联，且每个条件为以下之一：</p>
+<ul><li>不同普通索引列使用 or 关联</li><li>key_part1 = const1 OR key_part2 = const2 ... OR key_partN = constN</li><li>InnoDB 引擎下主键使用范围查询</li></ul>
+<p>例子：</p>
+<ul><li>explain select * from test_table where merchant_id = 3 or area=3;</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>排序并集算法</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>OR 组合的多个范围查询走 sort_union。</li><li>先获取所有行的行 ID 并排序，再回表。</li><li>与 union 的区别在于增加了排序步骤。</li><li>示例：merchant_id&lt;3 OR area&lt;3。</li></ul></div>
+<p>排序并集（sort_union）算法适用于由 or 关键词组合的多个范围查询。</p>
+<p>例子：</p>
+<ul><li>explain select * from test_table where merchant_id &lt; 3 or area&lt;3;</li></ul>
+<p>sort-union 算法和 union 算法之间的区别在于，sort-union 算法必须首先获取所有行的行 ID ，然后在回表之前它们进行排序。</p>
+<p>··············  END  ··············</p>
+<p>👉专属面试小册/一对一提问/简历修改/专属求职指南/学习打卡，欢迎加入 JavaGuide 官方知识星球 （内附星球专属优惠券）。</p>
+<p>目前，已经有 2.3w+ 的朋友加入星球一起学习了（点击图片查看星球详细介绍），一群人才能走的更远。</p>
+<p>👉星球提供的部分技术专栏（持续更新完善）：</p>
+<ul><li>《Java面试指北》 (准备 Java 面试的小伙伴可以看看，原创内容，质量很高)</li><li>《后端面试高频系统设计&amp;场景题》 (包含了常见的系统设计案例比如短链系统、秒杀系统以及高频的场景题比如海量数据去重、第三方授权登录)</li><li>《Java 必读源码系列》 (目前已经整理了 Dubbo 2.6.x、Netty 4.x、SpringBoot 2.1 等框架/中间件的源码)</li></ul>
+<p>👉星球提供的部分服务（点击图片查看星球详细介绍）：</p>
+<p>👉 近期文章精选：</p>
+<ul><li>我坚持四年了！</li><li>拿到快手意向了！</li><li>阿里淘天一面，秒挂！</li><li>拒绝入职央企软开岗，薪资太低！</li><li>23届普二本Java的求职历程（已秋招成功）</li><li>快手Java一面，全是基础！</li><li>面试被挂，项目太简单！</li><li>拿了两个 offer，怎么选？</li></ul>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>type=index_merge 的含义</h4><p>explain 的 type 列为 index_merge 时表示使用了索引合并优化，key 列列出具体使用的索引。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>先合并主键再一次回表</h4><p>先用各索引查到主键并合并，再按合并后的主键一次回表取结果，减少回表次数。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>三种算法区别</h4><p>intersect 对 AND 条件取主键交集；union 对 OR 条件取并集；sort_union 先对行 ID 排序再回表。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>交集算法示例</h4><p>explain select * from test_table where id&lt;100 and area=3;</p><a class="src-link" href="#sec-02">原文 → 交集算法</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>主键范围只过滤不检索</h4><p>交集合并中，主键范围条件不用于行检索，只用于过滤其他条件检出的行。</p><a class="src-link" href="#sec-02">原文 → 交集算法</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>并集算法示例</h4><p>explain select * from test_table where merchant_id = 3 or area=3;</p><a class="src-link" href="#sec-03">原文 → 并集算法</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>排序并集算法示例</h4><p>explain select * from test_table where merchant_id &lt; 3 or area&lt;3;</p><a class="src-link" href="#sec-04">原文 → 排序并集算法</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>optimizer_switch 开关</h4><p>index_merge_intersection/union/sort_union 标志默认开启，可关闭 index_merge 后按需单独启用。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>全文索引不支持 Index Merge</h4><p>Index Merge 不适用于全文索引（FULLTEXT）。</p><a class="src-link" href="#sec-01">原文 → 算法总览与限制</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>explain 看到 type=index_merge，说明走了多索引合并，key 列可确认具体索引。</li>
+          <li>AND 走 intersect、OR 等值或主键范围走 union、OR 范围走 sort_union，后者先排序再回表。</li>
+          <li>算法开关在 optimizer_switch，默认全开；全文索引不适用 Index Merge。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&amp;mid=2247538364&amp;idx=1&amp;sn=18d3231f98be1ed090d7822541993240" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&amp;mid=2247538364&amp;idx=1&amp;sn=18d3231f98be1ed090d7822541993240</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

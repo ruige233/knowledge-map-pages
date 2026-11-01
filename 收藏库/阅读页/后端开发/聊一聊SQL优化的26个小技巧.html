@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">聊一聊SQL优化的26个小技巧</h1>
+  <p class="lede">26个SQL优化小技巧，覆盖字段选择、SQL写法与索引使用</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 19 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>select具体字段</a>
+          <a href="#sec-02"><span class="n">02</span>where避免or连接</a>
+          <a href="#sec-03"><span class="n">03</span>limit限制返回</a>
+          <a href="#sec-04"><span class="n">04</span>优先数值类型</a>
+          <a href="#sec-05"><span class="n">05</span>批量操作</a>
+          <a href="#sec-06"><span class="n">06</span>union all替换union</a>
+          <a href="#sec-07"><span class="n">07</span>字段尽量not null</a>
+          <a href="#sec-08"><span class="n">08</span>索引列不用函数</a>
+          <a href="#sec-09"><span class="n">09</span>where不写表达式</a>
+          <a href="#sec-10"><span class="n">10</span>group by先过滤</a>
+          <a href="#sec-11"><span class="n">11</span>优化like语句</a>
+          <a href="#sec-12"><span class="n">12</span>小表驱动大表</a>
+          <a href="#sec-13"><span class="n">13</span>in元素不宜过多</a>
+          <a href="#sec-14"><span class="n">14</span>优化limit分页</a>
+          <a href="#sec-15"><span class="n">15</span>连接查询优先</a>
+          <a href="#sec-16"><span class="n">16</span>join类型选择</a>
+          <a href="#sec-17"><span class="n">17</span>避免!=和&lt;&gt;</a>
+          <a href="#sec-18"><span class="n">18</span>联合索引最左匹配</a>
+          <a href="#sec-19"><span class="n">19</span>where/order by建索引</a>
+          <a href="#sec-20"><span class="n">20</span>使用覆盖索引</a>
+          <a href="#sec-21"><span class="n">21</span>删除冗余重复索引</a>
+          <a href="#sec-22"><span class="n">22</span>表连接不超过3个</a>
+          <a href="#sec-23"><span class="n">23</span>索引不超过5个</a>
+          <a href="#sec-24"><span class="n">24</span>低区分度不建索引</a>
+          <a href="#sec-25"><span class="n">25</span>字符串加引号</a>
+          <a href="#sec-26"><span class="n">26</span>控制返回数据量</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 select具体字段</a>
+          <a href="#sec-02">02 where避免or连接</a>
+          <a href="#sec-03">03 limit限制返回</a>
+          <a href="#sec-04">04 优先数值类型</a>
+          <a href="#sec-05">05 批量操作</a>
+          <a href="#sec-06">06 union all替换union</a>
+          <a href="#sec-07">07 字段尽量not null</a>
+          <a href="#sec-08">08 索引列不用函数</a>
+          <a href="#sec-09">09 where不写表达式</a>
+          <a href="#sec-10">10 group by先过滤</a>
+          <a href="#sec-11">11 优化like语句</a>
+          <a href="#sec-12">12 小表驱动大表</a>
+          <a href="#sec-13">13 in元素不宜过多</a>
+          <a href="#sec-14">14 优化limit分页</a>
+          <a href="#sec-15">15 连接查询优先</a>
+          <a href="#sec-16">16 join类型选择</a>
+          <a href="#sec-17">17 避免!=和&lt;&gt;</a>
+          <a href="#sec-18">18 联合索引最左匹配</a>
+          <a href="#sec-19">19 where/order by建索引</a>
+          <a href="#sec-20">20 使用覆盖索引</a>
+          <a href="#sec-21">21 删除冗余重复索引</a>
+          <a href="#sec-22">22 表连接不超过3个</a>
+          <a href="#sec-23">23 索引不超过5个</a>
+          <a href="#sec-24">24 低区分度不建索引</a>
+          <a href="#sec-25">25 字符串加引号</a>
+          <a href="#sec-26">26 控制返回数据量</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>以下文章来源于捡田螺的小男孩，作者捡田螺的小男孩</p>
+<p>捡田螺的小男孩.</p>
+<p>专注后端技术栈</p>
+<p>大家好，我是三友</p>
+<p>梳理了SQL 优化的26条小技巧，建议收藏起来慢慢看~~</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>select具体字段</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>select * 很可能用不到覆盖索引，造成回表</li><li>select具体字段可节省资源、减少网络开销</li></ul><div class="pit"><ul><li>select * 查询易造成回表</li></ul></div></div>
+<p>反例子：</p>
+<ul><li>select * from employee;</li></ul>
+<p>正例子：</p>
+<ul><li>select id，name, age from employee;</li><li>select具体字段，节省资源、减少网络开销。</li><li>select * 进行查询时，很可能就 不会使用到覆盖索引 了，就会造成回表查询。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>where避免or连接</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>or可能使索引失效，从而全表扫描</li><li>改用union all或拆成两条SQL分开写</li><li>优化器基于成本可能放弃索引</li></ul><div class="pit"><ul><li>or连接条件差点把数据库CPU打满</li></ul></div></div>
+<p>反例:</p>
+<ul><li>select * from user where userid=1 or age =18</li></ul>
+<p>正例：</p>
+<ul><li>//使用union all</li><li>select * from user where userid=1</li><li>union all</li><li>select * from user where age = 18</li><li>//或者分开两条sql写：</li><li>select * from user where userid=1</li><li>select * from user where age = 18</li><li>使用or可能会使索引失效，从而全表扫描。一位朋友踩过这个坑， 差点把数据库CPU打满了。</li></ul>
+<p>如果userId加了索引，age没加索引，以上or的查询SQL，假设它走了userId的索引，但是走到age查询条件时，它还得全表扫描，也就是需要三步过程：全表扫描+索引扫描+合并。如果它一开始就走全表扫描，直接一遍扫描就完事。mysql是有优化器的，处于效率与成本考虑，遇到or条件，索引可能失效，看起来也合情合理。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>limit限制返回</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>查询最新记录用limit 1避免返回整列表</li><li>只取需要的数据，整体性能更好</li></ul></div>
+<p>假设一个用户有多个订单，要查询最新订单的下单时间的话，你是这样查询：</p>
+<ul><li>select id, order_date from order_tab</li><li>where user_id=666</li><li>order by create_date desc;</li></ul>
+<p>获取到订单列表后，取第一个的下单时间：</p>
+<ul><li>List&lt;Order&gt; orderList = orderService.queryOrderListByUserId(&#x27;666&#x27;);</li><li>Date orderDate = orderList.get(0).getOrderDate();</li></ul>
+<p>还是用limit ，只获取最新那个订单返回：</p>
+<ul><li>select id, order_date from order_tab</li><li>where user_id=666</li><li>order by create_date desc limit 1;</li></ul>
+<p>显然，使用limit的更好~ 因为整体性能更好。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>优先数值类型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>数值类型占用存储空间更小</li><li>数值比较和计算速度比字符串快</li></ul></div>
+<p>比如我们定义性别字段的时候，更推荐0代表女生，1表示男生，而不是定义为WOMEN 或者MAN的字符串。</p>
+<p>因为：</p>
+<ul><li>数值类型（如 INT, FLOAT, DECIMAL 等）通常占用的存储空间比字符串类型（如 VARCHAR, CHAR）小</li><li>数值类型的比较和计算速度通常比字符串快</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>批量操作</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>批量插入比循环单条插入更省时间</li><li>分批进行，如一次500条</li></ul></div>
+<p>反例：</p>
+<ul><li>for(User u :list){</li><li>INSERT into user(name,age) values(#name#,#age#)</li></ul>
+<p>正例：</p>
+<ul><li>//一次500批量插入，分批进行</li><li>insert into user(name,age) values</li><li>&lt;foreach collection=&quot;list&quot; item=&quot;item&quot; index=&quot;index&quot; separator=&quot;,&quot;&gt;</li><li>(#{item.name},#{item.age})</li><li>&lt;/foreach&gt;</li></ul>
+<p>理由：</p>
+<ul><li>批量插入性能好，更加省时间</li></ul>
+<p>打个比喻: 假如你需要搬一万块砖到楼顶,你有一个电梯,电梯一次可以放适量的砖（最多放500）,你可以选择一次运送一块砖,也可以一次运送500,你觉得哪个时间消耗大?</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>union all替换union</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>union会合并排序结果，union all直接合并</li><li>无重复记录时用union all更高效</li></ul></div>
+<p>如果检索结果中不会有重复的记录，推荐union all 替换 union。</p>
+<p>反例：</p>
+<ul><li>select * from user where userid=1</li><li>union</li><li>select * from user where age = 10</li></ul>
+<p>正例：</p>
+<ul><li>select * from user where userid=1</li><li>union all</li><li>select * from user where age = 10</li></ul>
+<p>理由：</p>
+<ul><li>如果使用union，不管检索结果有没有重复，都会尝试进行合并，然后在输出最终结果前进行排序。 如果已知检索结果没有重复记录，使用union all 代替union，这样会提高效率 。</li></ul>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>字段尽量not null</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>not null可防止空指针问题</li><li>NULL存储需额外空间、比较更复杂</li><li>NULL值可能导致索引失效</li></ul></div>
+<p>如果没有特殊的理由， 一般都建议将字段定义为NOT NULL。</p>
+<ul><li>city VARCHAR(50) NOT NULL</li></ul>
+<p>为什么呢？</p>
+<ul><li>NOT NULL 可以防止出现空指针问题。</li><li>其次，NULL值存储也需要额外的空间的，它也会导致比较运算更为复杂，使优化器难以优化SQL。</li><li>NULL值有可能会导致索引失效</li></ul>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>索引列不用函数</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>索引列上用内置函数会使索引失效</li><li>函数放常量侧，如对now()运算而非对字段</li></ul><div class="pit"><ul><li>对索引列使用Date_ADD导致索引失效</li></ul></div></div>
+<p>业务需求：查询最近七天内登陆过的用户(假设loginTime加了索引)</p>
+<p>反例：</p>
+<ul><li>select userId,loginTime from loginuser where Date_ADD(loginTime,Interval 7 DAY) &gt;=now();</li></ul>
+<p>正例：</p>
+<ul><li>explain  select userId,loginTime from loginuser where  loginTime &gt;= Date_ADD(NOW(),INTERVAL - 7 DAY);</li></ul>
+<p>理由：</p>
+<ul><li>索引列上使用mysql的内置函数，索引失效</li></ul>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>where不写表达式</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>where中对字段做运算会放弃索引全表扫描</li><li>把运算移到常量侧，如写age=11</li></ul><div class="pit"><ul><li>对age-1运算导致索引失效</li></ul></div></div>
+<p>反例：</p>
+<ul><li>select * from user where age-1 =10；</li></ul>
+<p>正例：</p>
+<ul><li>select * from user where age =11；</li></ul>
+<p>理由：</p>
+<ul><li>虽然age加了索引，但是因为对它进行运算，索引直接迷路了。。。</li></ul>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>group by先过滤</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>group by前先用where过滤不需要的记录</li><li>能用where过滤就别用having</li></ul><div class="pit"><ul><li>把过滤条件写进having而非where</li></ul></div></div>
+<p>假设有一个 orders 表，存储了所有用户的订单信息，并包含 city 字段表示用户所在城市。我们想要计算来自北京的每个用户的总消费金额。</p>
+<ul><li>CREATE TABLE orders (</li><li>id INT PRIMARY KEY,</li><li>user_id INT,</li><li>city VARCHAR(50) NOT NULL,</li><li>amount DECIMAL(10, 2)</li></ul>
+<p>计算北京用户的消费总额，按用户分组，反例SQL（不使用 WHERE 条件过滤）：</p>
+<ul><li>SELECT user_id, SUM(amount) AS total_amount</li><li>FROM orders</li><li>GROUP BY user_id</li><li>HAVING city = &#x27;北京&#x27;;</li></ul>
+<p>应该先用 WHERE 条件过滤，正例如下:</p>
+<ul><li>SELECT user_id, SUM(amount) AS total_amount</li><li>FROM orders</li><li>WHERE city = &#x27;北京&#x27;</li><li>GROUP BY user_id;</li></ul>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>优化like语句</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>%放前面不走索引</li><li>前缀匹配123%可走索引</li><li>必要时结合其他索引条件或借助ES</li></ul><div class="pit"><ul><li>like &#x27;%123&#x27; 导致索引失效</li></ul></div></div>
+<p>日常开发中，如果用到模糊关键字查询，很容易想到like，但是like很可能让你的索引失效。</p>
+<p>反例：</p>
+<ul><li>select userId，name from user where userId like &#x27;%123&#x27;;</li></ul>
+<p>正例：</p>
+<ul><li>select userId，name from user where userId like &#x27;123%&#x27;;</li></ul>
+<p>理由：</p>
+<ul><li>把%放前面，并不走索引.</li></ul>
+<p>有些时候你就是需要包含关键词，可以结合其他查询条件（加索引的其他条件）结合起来。或者可以借助 Elasticsearch 来进行模糊查询，这里知道like在前会导致索引失效这个点就好啦。</p>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>小表驱动大表</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>减少数据扫描量，先过滤无关数据</li><li>大表数据量大时exists比in效果更好</li></ul></div>
+<p>小表驱动大表，这主要是为了优化性能，让查询执行得更高效。背后的核心原因是减少数据扫描量，尽量让数据库在处理时能先过滤掉大量无关数据，从而缩短查询时间。</p>
+<p>假设我们有个客户表和一个订单表。其中订单表有10万记录，客户表只有1000行记录。</p>
+<p>现在要查询下单过的客户信息，可以这样写：</p>
+<ul><li>SELECT * FROM customers c</li><li>WHERE EXISTS (</li><li>SELECT 1 FROM orders o WHERE o.customer_id = c.id</li></ul>
+<p>EXISTS 会逐行扫描 customers 表（即小表），对每一行 c.id，在 orders 表（大表）中检查是否有 customer_id = c.id 的记录。</p>
+<p>当然，也可以使用in实现：</p>
+<ul><li>SELECT * FROM customers</li><li>WHERE id IN (</li><li>SELECT customer_id FROM orders</li></ul>
+<p>in 查询会先执行内部查询部分 SELECT customer_id FROM orders，获得 orders 表（大表）中的所有 customer_id，然后在 customers 表（小表）中查找匹配的 id。</p>
+<p>因为orders表的数据量比较大，因此这里用exists效果会相对更好一点。</p>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>in元素不宜过多</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>in元素建议不超过200个</li><li>超量分批执行，每批200一组</li><li>子查询in数量未知更易踩坑</li></ul><div class="pit"><ul><li>in子查询元素过多导致接口超时</li></ul></div></div>
+<p>如果使用了in，即使后面的条件加了索引，还是要注意in后面的元素不要过多哈。in元素一般建议不要超过200个，如果超过了，建议分组，每次200一组进行哈。</p>
+<p>反例：</p>
+<ul><li>select user_id,name from user where user_id in (1,2,3...1000000);</li></ul>
+<p>如果我们对in的条件不做任何限制的话，该查询语句一次性可能会查询出非常多的数据，很容易导致接口超时。尤其有时候，我们是用的子查询，in后面的子查询，你都不知道数量有多少那种，更容易采坑.如下这种子查询：</p>
+<ul><li>select * from user where user_id in (select author_id from artilce where type = 1);</li></ul>
+<p>正例是，分批进行，比如每批200个：</p>
+<ul><li>select user_id,name from user where user_id in (1,2,3...200);</li></ul>
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>优化limit分页</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>大偏移量limit出现深分页性能问题</li><li>标签记录法需要连续自增字段</li><li>延迟关联法把条件转移到主键索引减少回表</li></ul><div class="pit"><ul><li>深分页limit 100000,10效率低</li></ul></div></div>
+<p>我们日常做分页需求时，一般会用 limit 实现，但是当偏移量特别大的时候，查询效率就变得低下，也就是出现深分页问题。</p>
+<p>反例：</p>
+<ul><li>select id,name,balance from account where create_time&gt; &#x27;2020-09-19&#x27; limit 100000,10;</li></ul>
+<p>我们可以通过减少回表次数来优化。一般有标签记录法和延迟关联法。</p>
+<p>标签记录法</p>
+<p>就是标记一下上次查询到哪一条了，下次再来查的时候，从该条开始往下扫描。就好像看书一样，上次看到哪里了，你就折叠一下或者夹个书签，下次来看的时候，直接就翻到啦。</p>
+<p>假设上一次记录到100000，则SQL可以修改为：</p>
+<ul><li>select  id,name,balance FROM account where id &gt; 100000 limit 10;</li></ul>
+<p>这样的话，后面无论翻多少页，性能都会不错的，因为命中了id索引。但是这种方式有局限性：需要一种类似连续自增的字段。</p>
+<p>延迟关联法</p>
+<p>延迟关联法，就是把条件转移到主键索引树，然后减少回表。如下：</p>
+<ul><li>select  acct1.id,acct1.name,acct1.balance FROM account acct1 INNER JOIN (SELECT a.id FROM account a WHERE a.create_time &gt; &#x27;2020-09-19&#x27; limit 100000, 10) AS acct2 on acct1.id= acct2.id;</li></ul>
+<p>优化思路就是，先通过idx_create_time二级索引树查询到满足条件的主键ID，再与原表通过主键ID内连接，这样后面直接走了主键索引了，同时也减少了回表。</p>
+      </section>
+
+      <section class="src" id="sec-15">
+        <h2 class="sec"><span class="n">15</span>连接查询优先</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>子查询可能创建临时表</li><li>用join避免临时表，优化器可用索引加速</li></ul><div class="pit"><ul><li>in子查询生成临时结果集</li></ul></div></div>
+<p>因为使用子查询，可能会创建临时表。</p>
+<p>反例如下：</p>
+<ul><li>SELECT *</li><li>FROM customers c</li><li>WHERE c.id IN (</li><li>SELECT o.customer_id</li><li>FROM orders o</li></ul>
+<p>IN 子查询会在 orders 表中查询所有 customer_id，并生成一个临时结果集。</p>
+<p>我们可以用连接查询避免临时表：</p>
+<ul><li>SELECT DISTINCT c.*</li><li>FROM customers c</li><li>JOIN orders o ON c.id = o.customer_id;</li><li>通过 JOIN 直接将 customers 和 orders 表关联，符合条件的记录一次性筛选完成。</li><li>MySQL 优化器通常可以利用索引来加速 JOIN，避免了临时表的创建，查询效果就更佳</li></ul>
+      </section>
+
+      <section class="src" id="sec-16">
+        <h2 class="sec"><span class="n">16</span>join类型选择</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>优先inner join，返回匹配行数少</li><li>left join左表结果尽量小，条件放左边</li></ul></div>
+<ul><li>Inner join 内连接，在两张表进行连接查询时，只保留两张表中完全匹配的结果集</li><li>left join 在两张表进行连接查询时，会返回左表所有的行，即使在右表中没有匹配的记录。</li><li>right join 在两张表进行连接查询时，会返回右表所有的行，即使在左表中没有匹配的记录。</li></ul>
+<p>都满足SQL需求的前提下，推荐优先使用Inner join（内连接），如果要使用left join，左边表数据结果尽量小，如果有条件的尽量放到左边处理。</p>
+<p>反例:</p>
+<ul><li>select * from tab1 t1 left join tab2 t2  on t1.size = t2.size where t1.id&gt;2;</li></ul>
+<p>正例：</p>
+<ul><li>select * from (select * from tab1 where id &gt;2) t1 left join tab2 t2 on t1.size = t2.size;</li></ul>
+<p>理由：</p>
+<ul><li>如果inner join是等值连接，或许返回的行数比较少，所以性能相对会好一点。</li><li>同理，使用了左连接，左边表数据结果尽量小，条件尽量放到左边处理，意味着返回的行数可能比较少。</li></ul>
+      </section>
+
+      <section class="src" id="sec-17">
+        <h2 class="sec"><span class="n">17</span>避免!=和&lt;&gt;</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>!=和&lt;&gt;可能使索引失效全表扫描</li><li>可拆成两条&lt;和&gt;的SQL</li></ul><div class="pit"><ul><li>where age &lt;&gt;18 使索引失效</li></ul></div></div>
+<p>反例：</p>
+<ul><li>select age,name  from user where age &lt;&gt;18;</li></ul>
+<p>正例：</p>
+<ul><li>//可以考虑分开两条sql写</li><li>select age,name  from user where age &lt;18;</li><li>select age,name  from user where age &gt;18;</li></ul>
+<p>理由：</p>
+<ul><li>使用!=和&lt;&gt;很可能会让索引失效</li></ul>
+      </section>
+
+      <section class="src" id="sec-18">
+        <h2 class="sec"><span class="n">18</span>联合索引最左匹配</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>(k1,k2,k3)相当于(k1)(k1,k2)(k1,k2,k3)</li><li>不满足最左原则索引一般失效</li><li>是否失效还与优化器有关</li></ul><div class="pit"><ul><li>只按age查询用不到idx_userid_age</li></ul></div></div>
+<p>表结构：（有一个联合索引idx_userid_age，userId在前，age在后）</p>
+<ul><li>CREATE TABLE `user` (</li><li>`id` int(11) NOT NULL AUTO_INCREMENT,</li><li>`userId` int(11) NOT NULL,</li><li>`age` int(11) DEFAULT NULL,</li><li>`name` varchar(255) NOT NULL,</li><li>PRIMARY KEY (`id`),</li><li>KEY `idx_userid_age` (`userId`,`age`) USING BTREE</li><li>) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;</li></ul>
+<p>反例：</p>
+<ul><li>select * from user where age = 10;</li></ul>
+<p>正例：</p>
+<ul><li>//符合最左匹配原则</li><li>select * from user where userid=10 and age =10；</li><li>//符合最左匹配原则</li><li>select * from user where userid =10;</li></ul>
+<p>理由：</p>
+<ul><li>当我们创建一个联合索引的时候，如(k1,k2,k3)，相当于创建了（k1）、(k1,k2)和(k1,k2,k3)三个索引，这就是最左匹配原则。</li><li>联合索引不满足最左原则，索引一般会失效，但是这个还跟Mysql优化器有关的。</li></ul>
+      </section>
+
+      <section class="src" id="sec-19">
+        <h2 class="sec"><span class="n">19</span>where/order by建索引</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>在where和order by涉及的列上建索引</li><li>避免全表扫描</li></ul></div>
+<p>反例：</p>
+<ul><li>select * from user where address =&#x27;深圳&#x27; order by age ;</li></ul>
+<p>正例：</p>
+<ul><li>添加索引</li><li>alter table user add index idx_address_age (address,age)</li></ul>
+      </section>
+
+      <section class="src" id="sec-20">
+        <h2 class="sec"><span class="n">20</span>使用覆盖索引</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>覆盖索引免回表，仅访问索引取全部数据</li><li>select id,name配合普通索引可覆盖</li></ul></div>
+<p>覆盖索引能够使得你的SQL语句不需要回表，仅仅访问索引就能够得到所有需要的数据，大大提高了查询效率。</p>
+<p>反例：</p>
+<ul><li>// like模糊查询，不走索引了</li><li>select * from user where userid like &#x27;%123%&#x27;</li></ul>
+<p>正例：</p>
+<ul><li>//id为主键，那么为普通索引，即覆盖索引登场了。</li><li>select id,name from user where userid like &#x27;%123%&#x27;;</li></ul>
+      </section>
+
+      <section class="src" id="sec-21">
+        <h2 class="sec"><span class="n">21</span>删除冗余重复索引</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>组合索引(A,B)相当于(A)和(A,B)</li><li>删除重复索引降低维护与优化器负担</li></ul><div class="pit"><ul><li>同时建idx_userId和idx_userId_age是冗余</li></ul></div></div>
+<p>反例：</p>
+<ul><li>KEY `idx_userId` (`userId`)</li><li>KEY `idx_userId_age` (`userId`,`age`)</li></ul>
+<p>正例:</p>
+<ul><li>//删除userId索引，因为组合索引（A，B）相当于创建了（A）和（A，B）索引</li><li>KEY `idx_userId_age` (`userId`,`age`)</li></ul>
+<p>理由：</p>
+<ul><li>重复的索引需要维护，并且优化器在优化查询的时候也需要逐个地进行考虑，这会影响性能的。</li></ul>
+      </section>
+
+      <section class="src" id="sec-22">
+        <h2 class="sec"><span class="n">22</span>表连接不超过3个</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>连表越多编译时间和开销越大</li><li>拆成几个较小连接执行可读性更高</li><li>需连很多表说明设计有问题</li></ul></div>
+<ul><li>连表越多，编译的时间和开销也就越大。</li><li>把连接表拆开成较小的几个执行，可读性更高。</li><li>如果一定需要连接很多表才能得到数据，那么意味着糟糕的设计了。</li></ul>
+      </section>
+
+      <section class="src" id="sec-23">
+        <h2 class="sec"><span class="n">23</span>索引不超过5个</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>索引提升查询但降低插入更新效率</li><li>一个表索引最好不超过5个</li></ul></div>
+<ul><li>索引并不是越多越好，索引虽然提高了查询的效率，但是也降低了插入和更新的效率。</li><li>insert或update时有可能会重建索引，所以建索引需要慎重考虑，视具体情况来定。</li><li>一个表的索引数最好不要超过5个，若太多需要考虑一些索引是否没有存在的必要。</li></ul>
+      </section>
+
+      <section class="src" id="sec-24">
+        <h2 class="sec"><span class="n">24</span>低区分度不建索引</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>大量重复数据的字段不适合建索引</li><li>优化器判断不走索引成本更低而放弃</li></ul><div class="pit"><ul><li>性别类字段建索引易被放弃</li></ul></div></div>
+<p>因为SQL优化器是根据表中数据量来进行查询优化的，如果索引列有大量重复数据，Mysql查询优化器推算发现不走索引的成本更低，很可能就放弃索引了。</p>
+      </section>
+
+      <section class="src" id="sec-25">
+        <h2 class="sec"><span class="n">25</span>字符串加引号</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>字符串字段条件必须加引号</li><li>不加引号会隐式类型转换为浮点数比较</li><li>类型不匹配导致索引失效</li></ul><div class="pit"><ul><li>userid=123不加引号导致索引失效</li></ul></div></div>
+<p>反例：</p>
+<ul><li>select * from user where userid =123;</li></ul>
+<p>正例：</p>
+<ul><li>select * from user where userid =&#x27;123&#x27;;</li></ul>
+<p>理由：</p>
+<ul><li>为什么第一条语句未加单引号就不走索引了呢？这是因为不加单引号时，是字符串跟数字的比较，它们类型不匹配，MySQL会做隐式的类型转换，把它们转换为浮点数再做比较。</li></ul>
+      </section>
+
+      <section class="src" id="sec-26">
+        <h2 class="sec"><span class="n">26</span>控制返回数据量</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>限制返回数据量可缩短查询时间</li><li>减少网络传输负担</li><li>前端分页可先查前两百条</li></ul><div class="pit"><ul><li>一次性查询所有数据导致性能下降</li></ul></div></div>
+<p>假设业务需求是，用户请求查看自己最近一年观看过的直播数据。</p>
+<p>反例：</p>
+<ul><li>//一次性查询所有数据回来</li><li>select * from LivingInfo where watchId =useId and watchTime &gt;= Date_sub(now(),Interval 1 Y)</li></ul>
+<p>正例：</p>
+<ul><li>//分页查询</li><li>select * from LivingInfo where watchId =useId and watchTime&gt;= Date_sub(now(),Interval 1 Y) limit offset，pageSize</li><li>//如果是前端分页，可以先查询前两百条记录，因为一般用户应该也不会往下翻太多页，</li><li>select * from LivingInfo where watchId =useId and watchTime&gt;= Date_sub(now(),Interval 1 Y) limit 200 ;</li></ul>
+<p>理由：</p>
+<ul><li>查询效率：当返回的数据量过大时，查询所需的时间会显著增加，导致数据库性能下降。通过限制返回的数据量，可以缩短查询时间，提高数据库响应速度。</li><li>网络传输：大量数据的传输会占用网络带宽，可能导致网络拥堵和延迟。减少返回的数据量可以降低网络传输的负担，提高数据传输效率。</li></ul>
+<p>··············  END  ·············</p>
+<p>如何去阅读源码，我总结了18条心法</p>
+<p>如何写出漂亮代码，我总结了45个小技巧</p>
+<p>三万字盘点Spring/Boot的那些常用扩展点</p>
+<p>三万字盘点Spring 9大核心基础功能</p>
+<p>两万字盘点那些被玩烂了的设计模式</p>
+<p>万字+20张图探秘Nacos注册中心核心实现原理</p>
+<p>万字+20张图剖析Spring启动时12个核心步骤</p>
+<h3 class="sub">1.5万字+30张图盘点索引常见的11个知识点</h3>
+<p>三友的java日记</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>union vs union all</h4><p>union会排序并合并结果集；union all直接合并。结果无重复时用union all更高效。</p><a class="src-link" href="#sec-06">原文 → union all替换union</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>exists vs in</h4><p>小表驱动大表：exists逐行扫小表再查大表；in先查大表子查询。大表量大时exists更好。</p><a class="src-link" href="#sec-12">原文 → 小表驱动大表</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>join vs 子查询</h4><p>子查询可能创建临时表；join可用索引加速并一次性筛选，避免临时表。</p><a class="src-link" href="#sec-15">原文 → 连接查询优先</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>深分页优化</h4><p>大偏移量limit用标签记录法（需连续自增字段）或延迟关联法减少回表。</p><a class="src-link" href="#sec-14">原文 → 优化limit分页</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>联合索引最左匹配</h4><p>(k1,k2,k3)联合索引相当于创建(k1)、(k1,k2)、(k1,k2,k3)三个索引；不满足最左原则一般失效。</p><a class="src-link" href="#sec-18">原文 → 联合索引最左匹配</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>覆盖索引免回表</h4><p>查询字段都在索引内时仅访问索引即可，无需回表，大幅提高效率。</p><a class="src-link" href="#sec-20">原文 → 使用覆盖索引</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>in元素上限</h4><p>in查询元素建议不超过200个，超过则每200个一组分批执行，防接口超时。</p><a class="src-link" href="#sec-13">原文 → in元素不宜过多</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>索引数量上限</h4><p>一个表的索引数最好不超过5个；索引过多会降低insert/update效率。</p><a class="src-link" href="#sec-23">原文 → 索引不超过5个</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>字符串不加引号</h4><p>字符串字段where不带引号会触发隐式类型转换，转浮点数比较，导致索引失效。</p><a class="src-link" href="#sec-25">原文 → 字符串加引号</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>like前置%</h4><p>like &#x27;%123&#x27; 把%放前面不走索引；前缀匹配123%才可能走索引。</p><a class="src-link" href="#sec-11">原文 → 优化like语句</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>标签记录法分页</h4><p>记录上次查询位置：select id,name,balance from account where id&gt;100000 limit 10;</p><a class="src-link" href="#sec-14">原文 → 优化limit分页</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>where对字段运算</h4><p>where age-1=10 对age运算，即使有索引也放弃索引全表扫描；改写成 age=11。</p><a class="src-link" href="#sec-09">原文 → where不写表达式</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>索引是SQL优化核心：避免or、函数、表达式、前置%等让索引失效的写法。</li>
+          <li>用select具体字段、limit、覆盖索引、批量操作来减少扫描与回表。</li>
+          <li>优先连接查询和inner join，用union all替代union，控制返回数据量。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&amp;mid=2247514802&amp;idx=1&amp;sn=47ab5c7653b4176bb20bbae7c452d0c2" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&amp;mid=2247514802&amp;idx=1&amp;sn=47ab5c7653b4176bb20bbae7c452d0c2</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

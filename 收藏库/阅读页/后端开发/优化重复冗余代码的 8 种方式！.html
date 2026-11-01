@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">优化重复冗余代码的 8 种方式！</h1>
+  <p class="lede">用8种Java手段消除重复冗余代码，每种都配前后对比示例。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 26 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>抽取公用方法</a>
+          <a href="#sec-02"><span class="n">02</span>抽工具类</a>
+          <a href="#sec-03"><span class="n">03</span>反射</a>
+          <a href="#sec-04"><span class="n">04</span>泛型</a>
+          <a href="#sec-05"><span class="n">05</span>继承和多态</a>
+          <a href="#sec-06"><span class="n">06</span>使用设计模式</a>
+          <a href="#sec-07"><span class="n">07</span>自定义注解（AOP）</a>
+          <a href="#sec-08"><span class="n">08</span>函数式接口和Lambda</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 抽取公用方法</a>
+          <a href="#sec-02">02 抽工具类</a>
+          <a href="#sec-03">03 反射</a>
+          <a href="#sec-04">04 泛型</a>
+          <a href="#sec-05">05 继承和多态</a>
+          <a href="#sec-06">06 使用设计模式</a>
+          <a href="#sec-07">07 自定义注解（AOP）</a>
+          <a href="#sec-08">08 函数式接口和Lambda</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>抽取公用方法 抽工具类 反射 泛型 继承和多态 使用设计模式 自定义注解（AOP） 函数式接口、lambda表达式</th></tr></thead><tbody></tbody></table>
+<p>日常开发中，我们经常会遇到一些重复冗余的代码。大家都知道重复代码不好，它主要有这些缺点：可维护性差、可读性差、增加错误风险等等。</p>
+<p>最近，我优化了一些系统中的重复代码，用了好几种的方式，感觉挺有用的。所以本文主要讲讲优化重复冗余代码的几种方式。</p>
+<ul><li>抽取公用方法</li><li>抽工具类</li><li>继承和多态</li><li>使用设计模式</li><li>自定义注解（ AOP面向切面 ）</li><li>函数式接口和 Lambda表达式</li></ul>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>抽取公用方法</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>遍历 names 只差大小写转换，可抽成 processNames 公用方法</li><li>差异部分用 Function&lt;String,String&gt; 作为参数传入</li><li>用方法引用 String::toUpperCase / toLowerCase 简化调用</li></ul></div>
+<p>抽取公用方法，是最常用的代码去重方式。</p>
+<p>比如下面这个例子，分别遍历names列表，然后各自转化为大写和小写打印出来：</p>
+<ul><li>public class TianLuoExample {</li><li>public static void main(String[] args) {</li><li>List&lt;String&gt; names = Arrays.asList(&quot;Alice&quot;, &quot;Bob&quot;, &quot;Charlie&quot;, &quot;David&quot;, &quot;TianLuo&quot;);</li><li>System.out.println(&quot;Uppercase Names:&quot;);</li><li>for (String name : names) {</li><li>String uppercaseName = name.toUpperCase();</li><li>System.out.println(uppercaseName);</li><li>System.out.println(&quot;Lowercase Names:&quot;);</li><li>for (String name : names) {</li><li>String lowercaseName = name.toLowerCase();</li><li>System.out.println(lowercaseName);</li></ul>
+<p>显然，都是遍历names过程，代码是重复冗余的，只不过转化大小写不一样而已。我们可以抽个公用方法processNames，优化成这样：</p>
+<ul><li>public class TianLuoExample {</li><li>public static void processNames(List&lt;String&gt; names, Function&lt;String, String&gt; nameProcessor, String processType) {</li><li>System.out.println(processType + &quot; Names:&quot;);</li><li>for (String name : names) {</li><li>String processedName = nameProcessor.apply(name);</li><li>System.out.println(processedName);</li><li>public static void main(String[] args) {</li><li>List&lt;String&gt; names = Arrays.asList(&quot;Alice&quot;, &quot;Bob&quot;, &quot;Charlie&quot;, &quot;David&quot;, &quot;TianLuo&quot;);</li><li>processNames(names, String::toUpperCase, &quot;Uppercase&quot;);</li><li>processNames(names, String::toLowerCase, &quot;Lowercase&quot;);</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>抽工具类</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>邮箱校验在注册、修改邮箱、重置密码等多处重复</li><li>抽 EmailValidatorUtil.isValid 静态方法跨类复用</li><li>工具类是公用方法在共性更多时的升级</li></ul></div>
+<p>我们优化重复代码，抽一个公用方法后，如果发现这个方法有更多共性，就可以把公用方法升级为一个工具类。</p>
+<p>比如这样的业务场景：注册、修改邮箱、重置密码等，都需要校验邮箱。</p>
+<p>实现注册功能时，用户会填邮箱，需要验证邮箱格式：</p>
+<ul><li>public class RegisterServiceImpl implements RegisterService{</li><li>private static final String EMAIL_REGEX =</li><li>&quot;^[A-Za-z0-9+_.-]+@(.+)$&quot;;</li><li>public boolean registerUser(UserInfoReq userInfo) {</li><li>String email = userInfo.getEmail();</li><li>Pattern pattern = Pattern.compile(EMAIL_REGEX);</li><li>Matcher emailMatcher = pattern.matcher(email);</li><li>if (!emailMatcher.matches()) {</li><li>System.out.println(&quot;Invalid email address.&quot;);</li><li>return false;</li><li>// 进行其他用户注册逻辑，比如保存用户信息到数据库等</li><li>// 返回注册结果</li><li>return true;</li></ul>
+<p>在密码重置流程中，通常会向用户提供一个链接或验证码，并且需要发送到用户的电子邮件地址。在这种情况下，也需要验证邮箱格式合法性：</p>
+<ul><li>public class PasswordServiceImpl implements PasswordService{</li><li>private static final String EMAIL_REGEX =</li><li>&quot;^[A-Za-z0-9+_.-]+@(.+)$&quot;;</li><li>public void resetPassword(PasswordInfo passwordInfo) {</li><li>Pattern pattern = Pattern.compile(EMAIL_REGEX);</li><li>Matcher emailMatcher = pattern.matcher(passwordInfo.getEmail());</li><li>if (!emailMatcher.matches()) {</li><li>System.out.println(&quot;Invalid email address.&quot;);</li><li>return false;</li><li>//发送通知修改密码</li><li>sendReSetPasswordNotify();</li></ul>
+<p>我们可以抽取个校验邮箱的方法出来，又因为校验邮箱的功能在不同的类中，因此，我们可以抽个校验邮箱的工具类：</p>
+<ul><li>public class EmailValidatorUtil {</li><li>private static final String EMAIL_REGEX =</li><li>&quot;^[A-Za-z0-9+_.-]+@(.+)$&quot;;</li><li>private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);</li><li>public static boolean isValid(String email) {</li><li>Matcher matcher = pattern.matcher(email);</li><li>return matcher.matches();</li><li>//注册的代码可以简化为这样啦</li><li>public class RegisterServiceImpl implements RegisterService{</li><li>public boolean registerUser(UserInfoReq userInfo) {</li><li>if (!EmailValidatorUtil.isValid(userInfo.getEmail())) {</li><li>System.out.println(&quot;Invalid email address.&quot;);</li><li>return false;</li><li>// 进行其他用户注册逻辑，比如保存用户信息到数据库等</li><li>// 返回注册结果</li><li>return true;</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>反射</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>PO、DTO、VO 转化常有成对 setter/getter 重复</li><li>BeanUtils.copyProperties() 底层使用反射</li><li>一行 copyProperties 替代逐字段手动赋值</li></ul></div>
+<p>我们日常开发中，经常需要进行PO、DTO和VO的转化。所以大家经常看到类似的代码：</p>
+<ul><li>//DTO 转VO</li><li>public UserInfoVO convert(UserInfoDTO userInfoDTO) {</li><li>UserInfoVO userInfoVO = new UserInfoVO();</li><li>userInfoVO.setUserName(userInfoDTO.getUserName());</li><li>userInfoVO.setAge(userInfoDTO.getAge());</li><li>return userInfoVO;</li><li>//PO 转DTO</li><li>public UserInfoDTO convert(UserInfoPO userInfoPO) {</li><li>UserInfoDTO userInfoDTO = new UserInfoDTO();</li><li>userInfoDTO.setUserName(userInfoPO.getUserName());</li><li>userInfoDTO.setAge(userInfoPO.getAge());</li><li>return userInfoDTO;</li></ul>
+<p>我们可以使用BeanUtils.copyProperties()去除重复代码，BeanUtils.copyProperties()底层就是使用了反射：</p>
+<ul><li>public UserInfoVO convert(UserInfoDTO userInfoDTO) {</li><li>UserInfoVO userInfoVO = new UserInfoVO();</li><li>BeanUtils.copyProperties(userInfoDTO, userInfoVO);</li><li>return userInfoVO;</li><li>public UserInfoDTO convert(UserInfoPO userInfoPO) {</li><li>UserInfoDTO userInfoDTO = new UserInfoDTO();</li><li>BeanUtils.copyProperties(userInfoPO,userInfoDTO);</li><li>return userInfoDTO;</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>泛型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>转账余额与明细方法流程相同但类型不一致，无法直接合并</li><li>泛型本质是参数化类型，用 &lt;T&gt; 统一 Map&lt;String,List&lt;T&gt;&gt; 逻辑</li><li>getOrDefault + addAll + put 的流程抽成一个泛型方法</li></ul></div>
+<p>泛型是如何去除重复代码的呢？</p>
+<p>给大家看个例子，比如有个转账明细和转账余额对比的业务需求，有两个类似这样的方法：</p>
+<ul><li>private void getAndUpdateBalanceResultMap(String key, Map&lt;String, List&lt;TransferBalanceDTO&gt;&gt; compareResultListMap,</li><li>List&lt;TransferBalanceDTO&gt; balanceDTOs) {</li><li>List&lt;TransferBalanceDTO&gt; tempList = compareResultListMap.getOrDefault(key, new ArrayList&lt;&gt;());</li><li>tempList.addAll(balanceDTOs);</li><li>compareResultListMap.put(key, tempList);</li><li>private void getAndUpdateDetailResultMap(String key, Map&lt;String, List&lt;TransferDetailDTO&gt;&gt; compareResultListMap,</li><li>List&lt;TransferDetailDTO&gt; detailDTOS) {</li><li>List&lt;TransferDetailDTO&gt; tempList = compareResultListMap.getOrDefault(key, new ArrayList&lt;&gt;());</li><li>tempList.addAll(detailDTOS);</li><li>compareResultListMap.put(key, tempList);</li></ul>
+<p>这两块代码，流程功能看着很像，但是就是不能直接合并抽取一个公用方法，因为类型不一致。单纯类型不一样的话，我们可以结合泛型处理，因为泛型的本质就是参数化类型。优化为这样：</p>
+<ul><li>private &lt;T&gt; void getAndUpdateResultMap(String key, Map&lt;String, List&lt;T&gt;&gt; compareResultListMap, List&lt;T&gt; accountingDTOS) {</li><li>List&lt;T&gt; tempList = compareResultListMap.getOrDefault(key, new ArrayList&lt;&gt;());</li><li>tempList.addAll(accountingDTOS);</li><li>compareResultListMap.put(key, tempList);</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>继承和多态</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>普通订单与折扣订单存在重复字段、方法与报告逻辑</li><li>让 DiscountOrder extends Order 复用 generateOrderReport</li><li>calculateTotalPrice 由子类重写并调用 super 复用父类计算</li></ul></div>
+<p>假设要开发一个电子商务平台，需要处理不同类型的订单，例如普通订单和折扣订单。每种订单都有一些共同的属性（如订单号、购买商品列表）和方法（如计算总价、生成订单报告），但折扣订单还有特定的属性和方法。</p>
+<p>在没有使用继承和多态的话，会写出类似这样的代码：</p>
+<ul><li>//普通订单</li><li>public class Order {</li><li>private String orderNumber;</li><li>private List&lt;Product&gt; products;</li><li>public Order(String orderNumber, List&lt;Product&gt; products) {</li><li>this.orderNumber = orderNumber;</li><li>this.products = products;</li><li>public double calculateTotalPrice() {</li><li>double total = 0;</li><li>for (Product product : products) {</li><li>total += product.getPrice();</li><li>return total;</li><li>public String generateOrderReport() {</li><li>return &quot;Order Report for &quot; + orderNumber + &quot;: Total Price = $&quot; + calculateTotalPrice();</li><li>//折扣订单</li><li>public class DiscountOrder {</li><li>private String orderNumber;</li><li>private List&lt;Product&gt; products;</li><li>private double discountPercentage;</li><li>public DiscountOrder(String orderNumber, List&lt;Product&gt; products, double discountPercentage) {</li><li>this.orderNumber = orderNumber;</li><li>this.products = products;</li><li>this.discountPercentage = discountPercentage;</li><li>public double calculateTotalPrice() {</li><li>double total = 0;</li><li>for (Product product : products) {</li><li>total += product.getPrice();</li><li>return total - (total * discountPercentage / 100);</li><li>public String generateOrderReport() {</li><li>return &quot;Order Report for &quot; + orderNumber + &quot;: Total Price = $&quot; + calculateTotalPrice();</li></ul>
+<p>显然，看到在Order和DiscountOrder类中，generateOrderReport()方法的代码是完全相同的。calculateTotalPrice()则是有一点点区别，但也大相径庭。</p>
+<p>我们可以使用继承和多态去除重复代码，让DiscountOrder去继承Order，代码如下：</p>
+<ul><li>public class Order {</li><li>private String orderNumber;</li><li>private List&lt;Product&gt; products;</li><li>public Order(String orderNumber, List&lt;Product&gt; products) {</li><li>this.orderNumber = orderNumber;</li><li>this.products = products;</li><li>public double calculateTotalPrice() {</li><li>double total = 0;</li><li>for (Product product : products) {</li><li>total += product.getPrice();</li><li>return total;</li><li>public String generateOrderReport() {</li><li>return &quot;Order Report for &quot; + orderNumber + &quot;: Total Price = $&quot; + calculateTotalPrice();</li><li>public class DiscountOrder extends Order {</li><li>private double discountPercentage;</li><li>public DiscountOrder(String orderNumber, List&lt;Product&gt; products, double discountPercentage) {</li><li>super(orderNumber, products);</li><li>this.discountPercentage = discountPercentage;</li><li>@Override</li><li>public double calculateTotalPrice() {</li><li>double total = super.calculateTotalPrice();</li><li>return total - (total * discountPercentage / 100);</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>使用设计模式</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>工厂模式分离创建与使用，策略模式封装可替换算法，模板方法定义算法骨架</li><li>Beverage 模板方法固定烧水、倒杯步骤，brew/addCondiments 延迟到子类</li><li>咖啡和茶只需实现各自的差异步骤</li></ul></div>
+<p>很多设计模式可以减少重复代码、提高代码的可读性、可扩展性。比如：</p>
+<ul><li>工厂模式 ：通过工厂模式，可以将对象的创建和使用分开，从而 减少重复创建代码 。</li><li>策略模式 ：策略模式定义了一族算法，将它们封装成独立的类，并使它们可以互相替换。通过使用策略模式， 可以减少在代码中重复使用相同的逻辑 。</li><li>模板方法模式 ：模板方法模式定义了一个算法的骨架，将一些步骤延迟到子类中实现。 这有助于避免在不同类中重复编写相似的代码 。</li></ul>
+<p>下面举个例子，看看模板方法是如何去除重复代码的。</p>
+<p>业务场景：</p>
+<p>假设要开发一个咖啡和茶的制作流程，制作过程中的热水和添加物质的步骤是相同的，但是具体的饮品制作步骤是不同的。</p>
+<p>如果没有使用模板方法模式，实现是这样子的：</p>
+<ul><li>public class Coffee {</li><li>public void prepareCoffee() {</li><li>boilWater();</li><li>brewCoffeeGrinds();</li><li>pourInCup();</li><li>addCondiments();</li><li>private void boilWater() {</li><li>System.out.println(&quot;Boiling water&quot;);</li><li>private void brewCoffeeGrinds() {</li><li>System.out.println(&quot;Brewing coffee grinds&quot;);</li><li>private void pourInCup() {</li><li>System.out.println(&quot;Pouring into cup&quot;);</li><li>private void addCondiments() {</li><li>System.out.println(&quot;Adding sugar and milk&quot;);</li><li>public class Tea {</li><li>public void prepareTea() {</li><li>boilWater();</li><li>steepTeaBag();</li><li>pourInCup();</li><li>addLemon();</li><li>private void boilWater() {</li><li>System.out.println(&quot;Boiling water&quot;);</li><li>private void steepTeaBag() {</li><li>System.out.println(&quot;Steeping the tea bag&quot;);</li><li>private void pourInCup() {</li><li>System.out.println(&quot;Pouring into cup&quot;);</li><li>private void addLemon() {</li><li>System.out.println(&quot;Adding lemon&quot;);</li></ul>
+<p>这个代码例子，我们可以发现，烧水和倒入杯子的步骤代码在Coffee和Tea类中是重复的。</p>
+<p>使用模板方法模式，代码可以优化成这样：</p>
+<ul><li>abstract class Beverage {</li><li>public final void prepareBeverage() {</li><li>boilWater();</li><li>brew();</li><li>pourInCup();</li><li>addCondiments();</li><li>private void boilWater() {</li><li>System.out.println(&quot;Boiling water&quot;);</li><li>abstract void brew();</li><li>private void pourInCup() {</li><li>System.out.println(&quot;Pouring into cup&quot;);</li><li>abstract void addCondiments();</li><li>class Coffee extends Beverage {</li><li>@Override</li><li>void brew() {</li><li>System.out.println(&quot;Brewing coffee grinds&quot;);</li><li>@Override</li><li>void addCondiments() {</li><li>System.out.println(&quot;Adding sugar and milk&quot;);</li><li>class Tea extends Beverage {</li><li>@Override</li><li>void brew() {</li><li>System.out.println(&quot;Steeping the tea bag&quot;);</li><li>@Override</li><li>void addCondiments() {</li><li>System.out.println(&quot;Adding lemon&quot;);</li></ul>
+<p>在这个例子中，我们创建了一个抽象类Beverage，其中定义了制作饮品的模板方法prepareBeverage()。这个方法包含了烧水、倒入杯子等共同的步骤，而将制作过程中的特定步骤brew() 和 addCondiments()延迟到子类中实现。这样，我们避免了在每个具体的饮品类中重复编写相同的烧水和倒入杯子的代码，提高了代码的可维护性和重用性。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>自定义注解（AOP）</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>每个 Controller 方法都重复编写权限校验代码</li><li>用 @RequiresPermission 注解 + PermissionAspect 切面集中校验</li><li>方法上只需添加注解即可完成权限检查</li></ul></div>
+<p>使用AOP框架可以在不同地方插入通用的逻辑，从而减少代码重复。</p>
+<p>业务场景：</p>
+<p>假设要开发一个Web应用程序，需要对不同的Controller方法进行权限检查。每个Controller方法都需要进行类似的权限验证，但是重复的代码会导致代码的冗余和维护困难。</p>
+<ul><li>public class MyController {</li><li>public void viewData() {</li><li>if (!User.hasPermission(&quot;read&quot;)) {</li><li>throw new SecurityException(&quot;Insufficient permission to access this resource.&quot;);</li><li>// Method implementation</li><li>public void modifyData() {</li><li>if (!User.hasPermission(&quot;write&quot;)) {</li><li>throw new SecurityException(&quot;Insufficient permission to access this resource.&quot;);</li><li>// Method implementation</li></ul>
+<p>可以看到，在每个需要权限校验的方法中都需要重复编写相同的权限校验逻辑，即出现了重复代码。我们使用自定义注解的方式能够将权限校验逻辑集中管理，通过切面来处理，消除重复代码。如下：</p>
+<ul><li>@Aspect</li><li>@Component</li><li>public class PermissionAspect {</li><li>@Before(&quot;@annotation(requiresPermission)&quot;)</li><li>public void checkPermission(RequiresPermission requiresPermission) {</li><li>String permission = requiresPermission.value();</li><li>if (!User.hasPermission(permission)) {</li><li>throw new SecurityException(&quot;Insufficient permission to access this resource.&quot;);</li><li>public class MyController {</li><li>@RequiresPermission(&quot;read&quot;)</li><li>public void viewData() {</li><li>// Method implementation</li><li>@RequiresPermission(&quot;write&quot;)</li><li>public void modifyData() {</li><li>// Method implementation</li></ul>
+<p>就这样，不管多少个Controller方法需要进行权限检查，只需在方法上添加相应的注解即可。权限检查的逻辑在切面中集中管理，避免了在每个Controller方法中重复编写相同的权限验证代码。这大大提高了代码的可读性、可维护性，并避免了代码冗余。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>函数式接口和Lambda</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>filterPositiveNumbers 与 filterEvenNumbers 循环判断逻辑重复</li><li>抽 filterNumbers 并传入 Predicate&lt;Integer&gt; 接口</li><li>用 Lambda 表达式传递具体过滤条件</li></ul></div>
+<p>业务场景:</p>
+<p>假设要开发一个应用程序，需要根据不同的条件来过滤一组数据。每次过滤的逻辑都可能会有些微的不同，但基本的流程是相似的。</p>
+<p>没有使用函数式接口和Lambda表达式的情况：</p>
+<ul><li>public class DataFilter {</li><li>public List&lt;Integer&gt; filterPositiveNumbers(List&lt;Integer&gt; numbers) {</li><li>List&lt;Integer&gt; result = new ArrayList&lt;&gt;();</li><li>for (Integer number : numbers) {</li><li>if (number &gt; 0) {</li><li>result.add(number);</li><li>return result;</li><li>public List&lt;Integer&gt; filterEvenNumbers(List&lt;Integer&gt; numbers) {</li><li>List&lt;Integer&gt; result = new ArrayList&lt;&gt;();</li><li>for (Integer number : numbers) {</li><li>if (number % 2 == 0) {</li><li>result.add(number);</li><li>return result;</li></ul>
+<p>在这个例子中，我们有两个不同的方法来过滤一组数据，但是基本的循环和条件判断逻辑是重复的，我们可以使用使用函数式接口和Lambda表达式去除重复代码，如下：</p>
+<ul><li>public class DataFilter {</li><li>public List&lt;Integer&gt; filterNumbers(List&lt;Integer&gt; numbers, Predicate&lt;Integer&gt; predicate) {</li><li>List&lt;Integer&gt; result = new ArrayList&lt;&gt;();</li><li>for (Integer number : numbers) {</li><li>if (predicate.test(number)) {</li><li>result.add(number);</li><li>return result;</li></ul>
+<p>我们将过滤的核心逻辑抽象出来。该方法接受一个Predicate函数式接口作为参数，以便根据不同的条件来过滤数据。然后，我们可以使用Lambda表达式来传递具体的条件，这样最终也达到去除重复代码的效果。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>重复代码三大缺点</h4><p>重复代码导致可维护性差、可读性差、增加错误风险。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>公用方法 vs 工具类</h4><p>公用方法适合单点复用；跨类复用且共性更多时升级为静态工具类。</p><a class="src-link" href="#sec-02">原文 → 抽工具类</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>processNames 抽取</h4><p>遍历逻辑抽成 processNames，用 Function&lt;String,String&gt; 传入大小写转换。</p><a class="src-link" href="#sec-01">原文 → 抽取公用方法</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>BeanUtils.copyProperties</h4><p>PO/DTO/VO 转化用 BeanUtils.copyProperties 一行替代手动 getter/setter，底层反射。</p><a class="src-link" href="#sec-03">原文 → 反射</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>泛型统一方法</h4><p>private &lt;T&gt; void getAndUpdateResultMap(...) 用参数化类型统一仅类型不同的方法。</p><a class="src-link" href="#sec-04">原文 → 泛型</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>继承 vs 多态</h4><p>继承让子类复用父类共性字段与方法，多态通过重写实现差异计算。</p><a class="src-link" href="#sec-05">原文 → 继承和多态</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>模板方法模式</h4><p>abstract class Beverage 固定 prepareBeverage 骨架，brew/addCondiments 延迟到子类。</p><a class="src-link" href="#sec-06">原文 → 使用设计模式</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>注解+AOP 权限校验</h4><p>@RequiresPermission 注解 + PermissionAspect 切面集中校验，方法只加注解。</p><a class="src-link" href="#sec-07">原文 → 自定义注解（AOP）</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Predicate 过滤</h4><p>filterNumbers(List, Predicate&lt;Integer&gt;) 抽象过滤条件，Lambda 传入具体规则。</p><a class="src-link" href="#sec-08">原文 → 函数式接口和Lambda</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>去重核心思路</h4><p>把相同流程抽象出来，把差异通过参数、子类或接口传递，减少冗余。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>去重本质是抽象：把不变的流程抽出来，把变化点用参数、子类或接口传进去。</li>
+          <li>按复用范围选武器：单方法→公用方法，跨类→工具类，仅类型不同→泛型，结构相似→设计模式。</li>
+          <li>权限等横切逻辑优先用自定义注解+AOP集中处理，避免每个方法重复编写。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzA5NDIzNzY1OQ==&amp;mid=2735625220&amp;idx=1&amp;sn=b79ba47ebf78b3cac4ea4e3bc19b5222" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA5NDIzNzY1OQ==&amp;mid=2735625220&amp;idx=1&amp;sn=b79ba47ebf78b3cac4ea4e3bc19b5222</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

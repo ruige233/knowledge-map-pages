@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">1亿条数据批量插入 MySQL，哪种方式最快？</h1>
+  <p class="lede">亿级数据插入 MySQL 最快方案：JDBC 批处理+事务混合</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 17 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>JDBC批处理前置配置</a>
+          <a href="#sec-02"><span class="n">02</span>总结与结论</a>
+          <a href="#sec-03"><span class="n">03</span>千万级补充测试</a>
+          <a href="#sec-04"><span class="n">04</span>补充：开启事务</a>
+          <a href="#sec-05"><span class="n">05</span>补充：关闭事务</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 JDBC批处理前置配置</a>
+          <a href="#sec-02">02 总结与结论</a>
+          <a href="#sec-03">03 千万级补充测试</a>
+          <a href="#sec-04">04 补充：开启事务</a>
+          <a href="#sec-05">05 补充：关闭事务</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>能够看到，在开启事务下 JDBC直接处理 和 JDBC批处理 均耗时更短。 Mybatis 轻量级框架插入 , mybatis在我这次实验被黑的可惨了，哈哈。实际开启事务以后，差距不会这么大（差距10倍）。大家有兴趣的可以接着去测试 JDBC直接处理，在本次实验，开启事务和关闭事务，耗时差距5倍左右，并且这个倍数会随着数据量的增大而增大。因为在未开启事务时，更新10000条数据，就得访问数据库10000次。导致每次操作都需要操作一次数据库。 JDBC批处理，在本次实验，开启事务与关闭事务，耗时差距很微小（后面会增加测试，加大这个数值的差距）。但是能够看到开启事务以后，速度还是有提升。 结论：设计到大量单条数据的插入，使用JDBC批处理和事务混合速度最快</th></tr></thead><tbody></tbody></table>
+<p>利用JAVA向Mysql插入一亿数量级数据—效率测评</p>
+<p>这几天研究mysql优化中查询效率时，发现测试的数据太少（10万级别），利用 EXPLAIN 比较不同的 SQL 语句，不能够得到比较有效的测评数据，大多模棱两可，不敢通过这些数据下定论。</p>
+<p>所以通过随机生成人的姓名、年龄、性别、电话、email、地址 ，向mysql数据库大量插入数据，便于用大量的数据测试 SQL 语句优化效率。、在生成过程中发现使用不同的方法，效率天差万别。</p>
+<p>1、先上Mysql数据库，随机生成的人员数据图。分别是ID、姓名、性别、年龄、Email、电话、住址。</p>
+<p>下图一共三千三百万数据：</p>
+<p>在数据量在亿级别时，别点下面按钮，会导致Navicat持续加载这亿级别的数据，导致电脑死机。~觉着自己电脑配置不错的可以去试试，可能会有惊喜</p>
+<p>2、本次测评一共通过三种策略，五种情况，进行大批量数据插入测试</p>
+<p>策略分别是：</p>
+<ul><li>Mybatis 轻量级框架插入（无事务）</li><li>采用JDBC直接处理（开启事务、无事务）</li><li>采用JDBC批处理（开启事务、无事务）</li></ul>
+<p>测试结果：</p>
+<p>Mybatis轻量级插入 -&gt; JDBC直接处理 -&gt; JDBC 批处理。</p>
+<p>JDBC 批处理，效率最高</p>
+<p>第一种策略测试：</p>
+<h3 class="sub">2.1 Mybatis 轻量级框架插入（无事务）</h3>
+<p>Mybatis是一个轻量级框架，它比hibernate轻便、效率高。</p>
+<p>但是处理大批量的数据插入操作时，需要过程中实现一个ORM的转换，本次测试存在实例，以及未开启事务，导致mybatis效率很一般。</p>
+<p>这里实验内容是：</p>
+<ul><li>利用Spring框架生成mapper实例、创建人物实例对象</li><li>循环更改该实例对象属性、并插入。</li><li>//代码内无事务</li><li>private long begin = 33112001;//起始id</li><li>private long end = begin+100000;//每次循环插入的数据量</li><li>private String url = &quot;jdbc:mysql://localhost:3306/bigdata?useServerPrepStmts=false&amp;rewriteBatchedStatements=true&amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;;</li><li>private String user = &quot;root&quot;;</li><li>private String password = &quot;0203&quot;;</li><li>@org.junit.Test</li><li>public void insertBigData2()</li><li>//加载Spring，以及得到PersonMapper实例对象。这里创建的时间并不对最后结果产生很大的影响</li><li>ApplicationContext context = new ClassPathXmlApplicationContext(&quot;applicationContext.xml&quot;);</li><li>PersonMapper pMapper = (PersonMapper) context.getBean(&quot;personMapper&quot;);</li><li>//创建一个人实例</li><li>Person person = new Person();</li><li>//计开始时间</li><li>long bTime = System.currentTimeMillis();</li><li>//开始循环，循环次数500W次。</li><li>for(int i=0;i&lt;5000000;i++)</li><li>//为person赋值</li><li>person.setId(i);</li><li>person.setName(RandomValue.getChineseName());</li><li>person.setSex(RandomValue.name_sex);</li><li>person.setAge(RandomValue.getNum(1, 100));</li><li>person.setEmail(RandomValue.getEmail(4,15));</li><li>person.setTel(RandomValue.getTel());</li><li>person.setAddress(RandomValue.getRoad());</li><li>//执行插入语句</li><li>pMapper.insert(person);</li><li>begin++;</li><li>//计结束时间</li><li>long eTime = System.currentTimeMillis();</li><li>System.out.println(&quot;插入500W条数据耗时：&quot;+(eTime-bTime));</li></ul>
+<p>本想测试插入五百万条数据，但是实际运行过程中太慢，中途不得不终止程序。最后得到52W数据，大约耗时两首歌的时间（7~9分钟）。随后，利用mybatis向mysql插入10000数据。</p>
+<p>结果如下：</p>
+<p>利用mybatis插入 一万 条数据耗时：28613，即28.6秒</p>
+<p>第二种策略测试：</p>
+<h3 class="sub">2.2 采用JDBC直接处理（开启事务、关闭事务）</h3>
+<p>采用JDBC直接处理的策略，这里的实验内容分为开启事务、未开启事务是两种，过程均如下：</p>
+<ul><li>利用PreparedStatment预编译</li><li>循环，插入对应数据，并存入</li></ul>
+<p>事务对于插入数据有多大的影响呢？看下面的实验结果:</p>
+<ul><li>//该代码为开启事务</li><li>private long begin = 33112001;//起始id</li><li>private long end = begin+100000;//每次循环插入的数据量</li><li>private String url = &quot;jdbc:mysql://localhost:3306/bigdata?useServerPrepStmts=false&amp;rewriteBatchedStatements=true&amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;;</li><li>private String user = &quot;root&quot;;</li><li>private String password = &quot;0203&quot;;</li><li>@org.junit.Test</li><li>public void insertBigData3() {</li><li>//定义连接、statement对象</li><li>Connection conn = null;</li><li>PreparedStatement pstm = null;</li><li>try {</li><li>//加载jdbc驱动</li><li>Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</li><li>//连接mysql</li><li>conn = DriverManager.getConnection(url, user, password);</li><li>//将自动提交关闭</li><li>conn.setAutoCommit(false);</li><li>//编写sql</li><li>String sql = &quot;INSERT INTO person VALUES (?,?,?,?,?,?,?)&quot;;</li><li>//预编译sql</li><li>pstm = conn.prepareStatement(sql);</li><li>//开始总计时</li><li>long bTime1 = System.currentTimeMillis();</li><li>//循环10次，每次一万数据，一共10万</li><li>for(int i=0;i&lt;10;i++) {</li><li>//开启分段计时，计1W数据耗时</li><li>long bTime = System.currentTimeMillis();</li><li>//开始循环</li><li>while (begin &lt; end) {</li><li>//赋值</li><li>pstm.setLong(1, begin);</li><li>pstm.setString(2, RandomValue.getChineseName());</li><li>pstm.setString(3, RandomValue.name_sex);</li><li>pstm.setInt(4, RandomValue.getNum(1, 100));</li><li>pstm.setString(5, RandomValue.getEmail(4, 15));</li><li>pstm.setString(6, RandomValue.getTel());</li><li>pstm.setString(7, RandomValue.getRoad());</li><li>//执行sql</li><li>pstm.execute();</li><li>begin++;</li><li>//提交事务</li><li>conn.commit();</li><li>//边界值自增10W</li><li>end += 10000;</li><li>//关闭分段计时</li><li>long eTime = System.currentTimeMillis();</li><li>//输出</li><li>System.out.println(&quot;成功插入1W条数据耗时：&quot;+(eTime-bTime));</li><li>//关闭总计时</li><li>long eTime1 = System.currentTimeMillis();</li><li>//输出</li><li>System.out.println(&quot;插入10W数据共耗时：&quot;+(eTime1-bTime1));</li><li>} catch (SQLException e) {</li><li>e.printStackTrace();</li><li>} catch (ClassNotFoundException e1) {</li><li>e1.printStackTrace();</li></ul>
+<p>1、我们首先利用上述代码测试无事务状态下，插入10W条数据需要耗时多少。</p>
+<p>如图：</p>
+<ul><li>成功插入1W条数据耗时：21603</li><li>成功插入1W条数据耗时：20537</li><li>成功插入1W条数据耗时：20470</li><li>成功插入1W条数据耗时：21160</li><li>成功插入1W条数据耗时：23270</li><li>成功插入1W条数据耗时：21230</li><li>成功插入1W条数据耗时：20372</li><li>成功插入1W条数据耗时：22608</li><li>成功插入1W条数据耗时：20361</li><li>成功插入1W条数据耗时：20494</li><li>插入10W数据共耗时：212106</li></ul>
+<p>实验结论如下：</p>
+<p>在未开启事务的情况下，平均每 21.2 秒插入 一万 数据。</p>
+<p>接着我们测试开启事务后，插入十万条数据耗时，如图：</p>
+<ul><li>成功插入1W条数据耗时：4938</li><li>成功插入1W条数据耗时：3518</li><li>成功插入1W条数据耗时：3713</li><li>成功插入1W条数据耗时：3883</li><li>成功插入1W条数据耗时：3872</li><li>成功插入1W条数据耗时：3873</li><li>成功插入1W条数据耗时：3863</li><li>成功插入1W条数据耗时：3819</li><li>成功插入1W条数据耗时：3933</li><li>成功插入1W条数据耗时：3811</li><li>插入10W数据共耗时：39255</li></ul>
+<p>实验结论如下：</p>
+<p>开启事务后，平均每 3.9 秒插入 一万 数据</p>
+<p>第三种策略测试：</p>
+<h3 class="sub">2.3 采用JDBC批处理（开启事务、无事务）</h3>
+<p>采用JDBC批处理时需要注意一下几点：</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>JDBC批处理前置配置</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>URL 需携带 rewriteBatchedStatements=true、useServerPrepStmts=false 开启批处理与预编译</li><li>PreparedStatement 预处理 SQL 必须放在循环体外</li><li>循环内 addBatch 累积，循环外 executeBatch 统一执行</li></ul></div>
+<ul><li>String url = “jdbc:mysql://localhost:3306/User?rewriteBatched</li><li>-Statements=true&amp;useServerPrepStmts=false”;</li></ul>
+<p>2、PreparedStatement预处理sql语句必须放在循环体外</p>
+<p>代码如下：</p>
+<ul><li>private long begin = 33112001;//起始id</li><li>private long end = begin+100000;//每次循环插入的数据量</li><li>private String url = &quot;jdbc:mysql://localhost:3306/bigdata?useServerPrepStmts=false&amp;rewriteBatchedStatements=true&amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;;</li><li>private String user = &quot;root&quot;;</li><li>private String password = &quot;0203&quot;;</li><li>@org.junit.Test</li><li>public void insertBigData() {</li><li>//定义连接、statement对象</li><li>Connection conn = null;</li><li>PreparedStatement pstm = null;</li><li>try {</li><li>//加载jdbc驱动</li><li>Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</li><li>//连接mysql</li><li>conn = DriverManager.getConnection(url, user, password);</li><li>//将自动提交关闭</li><li>// conn.setAutoCommit(false);</li><li>//编写sql</li><li>String sql = &quot;INSERT INTO person VALUES (?,?,?,?,?,?,?)&quot;;</li><li>//预编译sql</li><li>pstm = conn.prepareStatement(sql);</li><li>//开始总计时</li><li>long bTime1 = System.currentTimeMillis();</li><li>//循环10次，每次十万数据，一共1000万</li><li>for(int i=0;i&lt;10;i++) {</li><li>//开启分段计时，计1W数据耗时</li><li>long bTime = System.currentTimeMillis();</li><li>//开始循环</li><li>while (begin &lt; end) {</li><li>//赋值</li><li>pstm.setLong(1, begin);</li><li>pstm.setString(2, RandomValue.getChineseName());</li><li>pstm.setString(3, RandomValue.name_sex);</li><li>pstm.setInt(4, RandomValue.getNum(1, 100));</li><li>pstm.setString(5, RandomValue.getEmail(4, 15));</li><li>pstm.setString(6, RandomValue.getTel());</li><li>pstm.setString(7, RandomValue.getRoad());</li><li>//添加到同一个批处理中</li><li>pstm.addBatch();</li><li>begin++;</li><li>//执行批处理</li><li>pstm.executeBatch();</li><li>//提交事务</li><li>//        conn.commit();</li><li>//边界值自增10W</li><li>end += 100000;</li><li>//关闭分段计时</li><li>long eTime = System.currentTimeMillis();</li><li>//输出</li><li>System.out.println(&quot;成功插入10W条数据耗时：&quot;+(eTime-bTime));</li><li>//关闭总计时</li><li>long eTime1 = System.currentTimeMillis();</li><li>//输出</li><li>System.out.println(&quot;插入100W数据共耗时：&quot;+(eTime1-bTime1));</li><li>} catch (SQLException e) {</li><li>e.printStackTrace();</li><li>} catch (ClassNotFoundException e1) {</li><li>e1.printStackTrace();</li></ul>
+<p>首先开始测试</p>
+<p>无事务，每次循环插入10W条数据，循环10次，一共100W条数据。</p>
+<p>结果如下图：</p>
+<ul><li>成功插入10W条数据耗时：3832</li><li>成功插入10W条数据耗时：1770</li><li>成功插入10W条数据耗时：2628</li><li>成功插入10W条数据耗时：2140</li><li>成功插入10W条数据耗时：2148</li><li>成功插入10W条数据耗时：1757</li><li>成功插入10W条数据耗时：1767</li><li>成功插入10W条数据耗时：1832</li><li>成功插入10W条数据耗时：1830</li><li>成功插入10W条数据耗时：2031</li><li>插入100W数据共耗时：21737</li></ul>
+<p>实验结果：</p>
+<p>使用JDBC批处理，未开启事务下，平均每 2.1 秒插入 十万 条数据</p>
+<p>接着测试</p>
+<p>开启事务，每次循环插入10W条数据，循环10次，一共100W条数据。</p>
+<p>结果如下图：</p>
+<ul><li>成功插入10W条数据耗时：3482</li><li>成功插入10W条数据耗时：1776</li><li>成功插入10W条数据耗时：1979</li><li>成功插入10W条数据耗时：1730</li><li>成功插入10W条数据耗时：1643</li><li>成功插入10W条数据耗时：1665</li><li>成功插入10W条数据耗时：1622</li><li>成功插入10W条数据耗时：1624</li><li>成功插入10W条数据耗时：1779</li><li>成功插入10W条数据耗时：1698</li><li>插入100W数据共耗时：19003</li></ul>
+<p>实验结果：</p>
+<p>使用JDBC批处理，开启事务，平均每 1.9 秒插入 十万 条数据</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>总结与结论</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>开启事务下 JDBC 直接处理与 JDBC 批处理耗时均更短</li><li>JDBC 直接处理开/关事务差距约 5 倍，且随数据量增大而增大</li><li>JDBC 批处理开/关事务差距微小，但开启事务仍有提升</li><li>大量单条数据插入用 JDBC 批处理+事务混合最快，1 亿条耗时 174756 毫秒</li></ul><div class="pit"><ul><li>未开启事务时，插入 10000 条数据就要访问数据库 10000 次，耗时被放大</li></ul></div></div>
+<p>能够看到，在开启事务下 JDBC直接处理 和 JDBC批处理 均耗时更短。</p>
+<ul><li>Mybatis 轻量级框架插入 , mybatis在我这次实验被黑的可惨了，哈哈。实际开启事务以后，差距不会这么大（差距10倍）。大家有兴趣的可以接着去测试</li><li>JDBC直接处理，在本次实验，开启事务和关闭事务，耗时差距5倍左右，并且这个倍数会随着数据量的增大而增大。因为在未开启事务时，更新10000条数据，就得访问数据库10000次。导致每次操作都需要操作一次数据库。</li><li>JDBC批处理，在本次实验，开启事务与关闭事务，耗时差距很微小（后面会增加测试，加大这个数值的差距）。但是能够看到开启事务以后，速度还是有提升。</li></ul>
+<p>结论：设计到大量单条数据的插入，使用JDBC批处理和事务混合速度最快</p>
+<p>实测使用批处理+事务混合插入1亿条数据耗时：174756毫秒</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>千万级补充测试</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>补充测评：JDBC 批处理事务开/关各插 20 次、每次 50W，共 1000 万条</li><li>开/关事务的完整结果见下方两小节，总体差距不大</li></ul></div>
+<p>JDBC批处理事务，开启和关闭事务，测评插入20次，一次50W数据，一共一千万数据耗时：</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>补充：开启事务</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>开启事务插入 1000W 数据共耗时 197654 毫秒</li><li>这是批处理+事务开启的千万级补充结果</li></ul></div>
+<p>插入1000W数据共耗时：197654</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>补充：关闭事务</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>关闭事务插入 1000W 数据共耗时 200540 毫秒</li><li>与开启事务相差约 2886 毫秒，差距不大</li></ul></div>
+<p>插入1000W数据共耗时：200540</p>
+<p>还是没很大的差距~</p>
+<p>借用：</p>
+<p>分别是：</p>
+<ul><li>不用批处理，不用事务；</li><li>只用批处理，不用事务；</li><li>只用事务，不用批处理；</li><li>既用事务，也用批处理；（很明显，这个最快，所以建议在处理大批量的数据时，同时使用批处理和事务）</li></ul>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>最快插入方案</h4><p>大量单条数据插入 MySQL，使用 JDBC 批处理和事务混合速度最快</p><a class="src-link" href="#sec-02">原文 → 总结与结论</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>三种策略效率排序</h4><p>Mybatis 轻量级插入最慢，JDBC 直接处理次之，JDBC 批处理最快</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Mybatis 无事务插入</h4><p>插入一万条耗时 28613 毫秒（约 28.6 秒）；五百万条因太慢中途终止</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>JDBC 直接处理事务影响</h4><p>无事务约 21.2 秒/万条，开事务约 3.9 秒/万条，相差约 5 倍</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>JDBC 批处理效率</h4><p>无事务约 2.1 秒/十万条，开事务约 1.9 秒/十万条</p></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>JDBC 批处理写法</h4><p>URL 开 rewriteBatchedStatements=true、useServerPrepStmts=false；预处理 SQL 放循环体外，循环 addBatch，循环外 executeBatch</p><a class="src-link" href="#sec-01">原文 → JDBC批处理前置配置</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>未开事务逐条访问库</h4><p>未开启事务时，插入 10000 条数据就得访问数据库 10000 次，耗时成倍放大</p><a class="src-link" href="#sec-02">原文 → 总结与结论</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>1 亿条实测耗时</h4><p>实测使用批处理+事务混合插入 1 亿条数据耗时 174756 毫秒</p><a class="src-link" href="#sec-02">原文 → 总结与结论</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>千万级开/关事务</h4><p>20 次×50W 共 1000 万条：开启事务 197654 毫秒，关闭事务 200540 毫秒，差距不大</p><a class="src-link" href="#sec-03">原文 → 千万级补充测试</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>批量插入 MySQL 优先用 JDBC 批处理+事务，实测 1 亿条仅 174756 毫秒</li>
+          <li>JDBC 直接处理开事务比关事务快约 5 倍，批处理下二者差距很小</li>
+          <li>批处理记得 URL 开 rewriteBatchedStatements=true，并把预处理 SQL 放循环体外</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIwNjg4MzY4NA==&amp;mid=2247526137&amp;idx=2&amp;sn=63f9600aafcb892f2c676f4ddd1921f7" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIwNjg4MzY4NA==&amp;mid=2247526137&amp;idx=2&amp;sn=63f9600aafcb892f2c676f4ddd1921f7</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

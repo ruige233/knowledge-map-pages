@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Spring Cloud + Nacos + 负载均衡器实现全链路灰度发布实战</h1>
+  <p class="lede">用Nacos元数据version与自定义Ribbon实现全链路灰度发布</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台 · 回复关键词</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 34 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>灰度发布概念</a>
+          <a href="#sec-02"><span class="n">02</span>组件版本</a>
+          <a href="#sec-03"><span class="n">03</span>核心组件</a>
+          <a href="#sec-04"><span class="n">04</span>实现思路</a>
+          <a href="#sec-05"><span class="n">05</span>Demo 工程结构</a>
+          <a href="#sec-06"><span class="n">06</span>灰度核心包</a>
+          <a href="#sec-07"><span class="n">07</span>业务服务透传</a>
+          <a href="#sec-08"><span class="n">08</span>基础信息类</a>
+          <a href="#sec-09"><span class="n">09</span>运行与配置</a>
+          <a href="#sec-10"><span class="n">10</span>效果演示</a>
+          <a href="#sec-11"><span class="n">11</span>源码地址</a>
+          <a href="#sec-12"><span class="n">12</span>遗留问题</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 灰度发布概念</a>
+          <a href="#sec-02">02 组件版本</a>
+          <a href="#sec-03">03 核心组件</a>
+          <a href="#sec-04">04 实现思路</a>
+          <a href="#sec-05">05 Demo 工程结构</a>
+          <a href="#sec-06">06 灰度核心包</a>
+          <a href="#sec-07">07 业务服务透传</a>
+          <a href="#sec-08">08 基础信息类</a>
+          <a href="#sec-09">09 运行与配置</a>
+          <a href="#sec-10">10 效果演示</a>
+          <a href="#sec-11">11 源码地址</a>
+          <a href="#sec-12">12 遗留问题</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>灰度发布概念</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>灰度发布即金丝雀发布，在黑白之间平滑过渡</li><li>AB test 让部分用户先用新版本，再逐步扩大</li><li>流量切分：新服务器低权重、逐步增加请求数</li></ul></div>
+<p>灰度发布, 也叫金丝雀发布。是指在黑与白之间，能够平滑过渡的一种发布方式。AB test就是一种灰度发布方式，让一部分用户继续用A，一部分用户开始用B，如果用户对B没有什么反对意见，那么逐步扩大范围，把所有用户都迁移到B上面来。</p>
+<p>灰度发布可以保证整体系统的稳定，在初始灰度的时候就可以发现、调整问题，以保证其影响度，而我们平常所说的金丝雀部署也就是灰度发布的一种方式。</p>
+<p>具体到服务器上，实际操作中还可以做更多控制，譬如说，给最初更新的10台服务器设置较低的权重、控制发送给这10台服务器的请求数，然后逐渐提高权重、增加请求数。一种平滑过渡的思路, 这个控制叫做“流量切分”。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>组件版本</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Demo 沿用 Spring Boot 2.3.12 / Hoxton.SR12 / Alibaba 2.2.9</li><li>版本较旧，新版本需自行调整，实现思路不变</li></ul><div class="pit"><ul><li>旧版本框架源码与新版本可能有差异</li></ul></div></div>
+<p>我们这项目已经练习了两年半了使用的版本不是很新，我这里的Demo也会使用这个版本，有感情了，使用新版本的朋友自己调整一下就行，实现思路是一样的只是这些框架源码可能会有变化。</p>
+<ul><li>spring-boot: 2.3.12.RELEASE</li><li>spring-cloud-dependencies: Hoxton.SR12</li><li>spring-cloud-alibaba-dependencies: 2.2.9.RELEASE</li></ul>
+<p>spring-cloud 对应版本关系图</p>
+<p>https://blog.csdn.net/weixin_44606481/article/details/131726688</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>核心组件</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>注册中心 Nacos、网关 SpringCloudGateway</li><li>负载均衡 Ribbon（SpringCloudLoadBalancer 类似），RPC 用 OpenFeign</li></ul></div>
+<ul><li>注册中心： Nacos</li><li>网关： SpringCloudGateway</li><li>负载均衡器： Ribbon （使用SpringCloudLoadBalancer实现也是类似的）</li><li>服务间RPC调用： OpenFeign</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>实现思路</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>重点在服务发现：灰度流量只路由到灰度服务</li><li>用 Nacos Metadata 的 version 值区分调用版本</li></ul><div class="pit"><ul><li>文中省略部分流程，需结合文末源码</li></ul></div></div>
+<p>要实现Spring Cloud项目灰度发布技术方案有很多，重点在于服务发现，怎么将灰度流量只请求到灰度服务，这里我们会使用Nacos作为注册中心和配置中心，核心就是利用Nacos的Metadata设置一个version值，在调用下游服务是通过version值来区分要调用那个版本，这里会省略一些流程，文章末尾提供了源码地址需要自提。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>Demo 工程结构</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Demo 为父工程+多模块结构</li><li>核心代码集中在 spring-cloud-starter-kerwin-gray starter</li></ul></div>
+<p>这个是demo项目，结构都按最简单的来。</p>
+<ul><li>spring-cloud-gray-example // 父工程</li><li>kerwin-common // 项目公共模块</li><li>kerwin-gateway // 微服务网关</li><li>kerwin-order // 订单模块</li><li>order-app // 订单业务服务</li><li>kerwin-starter // 自定义springboot starter模块</li><li>spring-cloud-starter-kerwin-gray // 灰度发布starter包 (核心代码都在这里)</li><li>kerwin-user // 用户模块</li><li>user-app // 用户业务服务</li><li>user-client // 用户client（Feign和DTO）</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>灰度核心包</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>网关前置过滤器判定灰度并写入 ThreadLocal</li><li>自定义 Ribbon 规则按 ALL/PROD/GRAY 过滤服务列表</li><li>后置过滤器与异常处理器清理 ThreadLocal 防内存泄漏</li></ul><div class="pit"><ul><li>城市判断写死为“本地”，生产需自行实现 ip2region</li><li>用户编号列表校验未实现，默认返回 false</li></ul></div></div>
+<p>入口Spring Cloud Gateway实现灰度发布设计（一些基础信息类在下面）</p>
+<p>在请求进入网关时开始对是否要请求灰度版本进行判断，通过Spring Cloud Gateway的过滤器实现，在调用下游服务时重写一个Ribbon的负载均衡器实现调用时对灰度状态进行判断。</p>
+<p>存取请求灰度标记Holder（业务服务也是使用的这个）</p>
+<p>使用ThreadLocal记录每个请求线程的灰度标记，会在前置过滤器中将标记设置到ThreadLocal中。</p>
+<ul><li>public class GrayFlagRequestHolder {</li><li>/**</li><li>* 标记是否使用灰度版本</li><li>* 具体描述请查看 {@link com.kerwin.gray.enums.GrayStatusEnum}</li><li>private static final ThreadLocal&lt;GrayStatusEnum&gt; grayFlag = new ThreadLocal&lt;&gt;();</li><li>public static void setGrayTag(final GrayStatusEnum tag) {</li><li>grayFlag.set(tag);</li><li>public static GrayStatusEnum getGrayTag() {</li><li>return grayFlag.get();</li><li>public static void remove() {</li><li>grayFlag.remove();</li></ul>
+<p>前置过滤器</p>
+<p>在前置过滤器中会对请求是否要使用灰度版本进行判断，并且会将灰度状态枚举GrayStatusEnum设置到GrayRequestContextHolder中存储这一个请求的灰度状态枚举，在负载均衡器中会取出灰度状态枚举判断要调用那个版本的服务，同时这里还实现了Ordered 接口会对网关的过滤器进行的排序，这里我们将这个过滤器的排序设置为Ordered.HIGHEST_PRECEDENCE int的最小值，保证这个过滤器最先执行。</p>
+<ul><li>public class GrayGatewayBeginFilter implements GlobalFilter, Ordered {</li><li>@Autowired</li><li>private GrayGatewayProperties grayGatewayProperties;</li><li>@Override</li><li>public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {</li><li>GrayStatusEnum grayStatusEnum = GrayStatusEnum.ALL;</li><li>// 当灰度开关打开时才进行请求头判断</li><li>if (grayGatewayProperties.getEnabled()) {</li><li>grayStatusEnum = GrayStatusEnum.PROD;</li><li>// 判断是否需要调用灰度版本</li><li>if (checkGray(exchange.getRequest())) {</li><li>grayStatusEnum = GrayStatusEnum.GRAY;</li><li>GrayFlagRequestHolder.setGrayTag(grayStatusEnum);</li><li>ServerHttpRequest newRequest = exchange.getRequest().mutate()</li><li>.header(GrayConstant.GRAY_HEADER, grayStatusEnum.getVal())</li><li>.build();</li><li>ServerWebExchange newExchange = exchange.mutate()</li><li>.request(newRequest)</li><li>.build();</li><li>return chain.filter(newExchange);</li><li>/**</li><li>* 校验是否使用灰度版本</li><li>private boolean checkGray(ServerHttpRequest request) {</li><li>if (checkGrayHeadKey(request) || checkGrayIPList(request) || checkGrayCiryList(request) || checkGrayUserNoList(request)) {</li><li>return true;</li><li>return false;</li><li>/**</li><li>* 校验自定义灰度版本请求头判断是否需要调用灰度版本</li><li>private boolean checkGrayHeadKey(ServerHttpRequest request) {</li><li>HttpHeaders headers = request.getHeaders();</li><li>if (headers.containsKey(grayGatewayProperties.getGrayHeadKey())) {</li><li>List&lt;String&gt; grayValues = headers.get(grayGatewayProperties.getGrayHeadKey());</li><li>if (!Objects.isNull(grayValues)</li><li>&amp;&amp; grayValues.size() &gt; 0</li><li>&amp;&amp; grayGatewayProperties.getGrayHeadValue().equals(grayValues.get(0))) {</li><li>return true;</li><li>return false;</li><li>/**</li><li>* 校验自定义灰度版本IP数组判断是否需要调用灰度版本</li><li>private boolean checkGrayIPList(ServerHttpRequest request) {</li><li>List&lt;String&gt; grayIPList = grayGatewayProperties.getGrayIPList();</li><li>if (CollectionUtils.isEmpty(grayIPList)) {</li><li>return false;</li><li>String realIP = request.getHeaders().getFirst(&quot;X-Real-IP&quot;);</li><li>if (realIP == null || realIP.isEmpty()) {</li><li>realIP = request.getRemoteAddress().getAddress().getHostAddress();</li><li>if (realIP != null &amp;&amp; CollectionUtils.contains(grayIPList.iterator(), realIP)) {</li><li>return true;</li><li>return false;</li><li>/**</li><li>* 校验自定义灰度版本城市数组判断是否需要调用灰度版本</li><li>private boolean checkGrayCiryList(ServerHttpRequest request) {</li><li>List&lt;String&gt; grayCityList = grayGatewayProperties.getGrayCityList();</li><li>if (CollectionUtils.isEmpty(grayCityList)) {</li><li>return false;</li><li>String realIP = request.getHeaders().getFirst(&quot;X-Real-IP&quot;);</li><li>if (realIP == null || realIP.isEmpty()) {</li><li>realIP = request.getRemoteAddress().getAddress().getHostAddress();</li><li>// 通过IP获取当前城市名称</li><li>// 这里篇幅比较长不具体实现了,想要实现的可以使用ip2region.xdb,这里写死cityName = &quot;本地&quot;</li><li>String cityName = &quot;本地&quot;;</li><li>if (cityName != null &amp;&amp; CollectionUtils.contains(grayCityList.iterator(), cityName)) {</li><li>return true;</li><li>return false;</li><li>/**</li><li>* 校验自定义灰度版本用户编号数组（我们系统不会在网关获取用户编号这种方法如果需要可以自己实现一下）</li><li>private boolean checkGrayUserNoList(ServerHttpRequest request) {</li><li>List&lt;String&gt; grayUserNoList = grayGatewayProperties.getGrayUserNoList();</li><li>if (CollectionUtils.isEmpty(grayUserNoList)) {</li><li>return false;</li><li>return false;</li><li>@Override</li><li>public int getOrder() {</li><li>// 设置过滤器的执行顺序，值越小越先执行</li><li>return Ordered.HIGHEST_PRECEDENCE;</li></ul>
+<p>后置过滤器</p>
+<p>后置过滤器是为了在调用完下游业务服务后在响应之前将GrayFlagRequestHolder中的 ThreadLocal 清除避免照成内存泄漏。</p>
+<ul><li>public class GrayGatewayAfterFilter implements GlobalFilter, Ordered {</li><li>@Override</li><li>public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {</li><li>// 请求执行完必须要remore当前线程的ThreadLocal</li><li>GrayFlagRequestHolder.remove();</li><li>return chain.filter(exchange);</li><li>@Override</li><li>public int getOrder() {</li><li>// 设置过滤器的执行顺序，值越小越先执行</li><li>return Ordered.LOWEST_PRECEDENCE;</li></ul>
+<p>全局异常处理器</p>
+<p>全局异常处理器是为了处理异常情况下将GrayFlagRequestHolder中的 ThreadLocal 清除避免照成内存泄漏，如果在调用下游业务服务时出现了异常就无法进入后置过滤器。</p>
+<ul><li>public class GrayGatewayExceptionHandler implements WebExceptionHandler, Ordered {</li><li>@Override</li><li>public Mono&lt;Void&gt; handle(ServerWebExchange exchange, Throwable ex) {</li><li>// 请求执行完必须要remore当前线程的ThreadLocal</li><li>GrayFlagRequestHolder.remove();</li><li>ServerHttpResponse response = exchange.getResponse();</li><li>if (ex instanceof ResponseStatusException) {</li><li>// 处理 ResponseStatusException 异常</li><li>ResponseStatusException responseStatusException = (ResponseStatusException) ex;</li><li>response.setStatusCode(responseStatusException.getStatus());</li><li>// 可以根据需要设置响应头等</li><li>return response.setComplete();</li><li>} else {</li><li>// 处理其他异常</li><li>response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);</li><li>// 可以根据需要设置响应头等</li><li>return response.setComplete();</li><li>@Override</li><li>public int getOrder() {</li><li>// 设置过滤器的执行顺序，值越小越先执行</li><li>return Ordered.HIGHEST_PRECEDENCE;</li></ul>
+<p>自定义Ribbon负载均衡路由（业务服务也是使用的这个）</p>
+<p>「灰度Ribbon负载均衡路由抽象类：」这里提供了两个获取服务列表的方法，会对GrayFlagRequestHolder中存储的当前线程灰度状态枚举进行判断，如果枚举值为GrayStatusEnum.ALL则响应全部服务列表不区分版本，如果枚举值为GrayStatusEnum.PROD则返回生产版本的服务列表，如果枚举值为GrayStatusEnum.GRAY则返回灰度版本的服务列表，版本号会在GrayVersionProperties中配置，通过服务列表中在Nacos的metadata中设置的version和GrayVersionProperties的版本号进行匹配出对应版本的服务列表。</p>
+<ul><li>public abstract class AbstractGrayLoadBalancerRule extends AbstractLoadBalancerRule {</li><li>@Autowired</li><li>private GrayVersionProperties grayVersionProperties;</li><li>@Value(&quot;${spring.cloud.nacos.discovery.metadata.version}&quot;)</li><li>private String metaVersion;</li><li>/**</li><li>* 只有已启动且可访问的服务器，并对灰度标识进行判断</li><li>public List&lt;Server&gt; getReachableServers() {</li><li>ILoadBalancer lb = getLoadBalancer();</li><li>if (lb == null) {</li><li>return new ArrayList&lt;&gt;();</li><li>List&lt;Server&gt; reachableServers = lb.getReachableServers();</li><li>return getGrayServers(reachableServers);</li><li>/**</li><li>* 所有已知的服务器，可访问和不可访问，并对灰度标识进行判断</li><li>public List&lt;Server&gt; getAllServers() {</li><li>ILoadBalancer lb = getLoadBalancer();</li><li>if (lb == null) {</li><li>return new ArrayList&lt;&gt;();</li><li>List&lt;Server&gt; allServers = lb.getAllServers();</li><li>return getGrayServers(allServers);</li><li>/**</li><li>* 获取灰度版本服务列表</li><li>protected List&lt;Server&gt; getGrayServers(List&lt;Server&gt; servers) {</li><li>List&lt;Server&gt; result = new ArrayList&lt;&gt;();</li><li>if (servers == null) {</li><li>return result;</li><li>String currentVersion = metaVersion;</li><li>GrayStatusEnum grayStatusEnum = GrayFlagRequestHolder.getGrayTag();</li><li>if (grayStatusEnum != null) {</li><li>switch (grayStatusEnum) {</li><li>case ALL:</li><li>return servers;</li><li>case PROD:</li><li>currentVersion = grayVersionProperties.getProdVersion();</li><li>break;</li><li>case GRAY:</li><li>currentVersion = grayVersionProperties.getGrayVersion();</li><li>break;</li><li>for (Server server : servers) {</li><li>NacosServer nacosServer = (NacosServer) server;</li><li>Map&lt;String, String&gt; metadata = nacosServer.getMetadata();</li><li>String version = metadata.get(&quot;version&quot;);</li><li>// 判断服务metadata下的version是否于设置的请求版本一致</li><li>if (version != null &amp;&amp; version.equals(currentVersion)) {</li><li>result.add(server);</li><li>return result;</li></ul>
+<p>「自定义轮询算法实现GrayRoundRobinRule：」代码篇幅太长了这里只截取代码片段，我这里是直接拷贝了Ribbon的轮询算法，将里面获取服务列表的方法换成了自定义AbstractGrayLoadBalancerRule中的方法，其它算法也可以通过类似的方式实现。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>业务服务透传</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MVC 拦截器接收上游灰度请求头存入 Holder</li><li>OpenFeign 拦截器把灰度标记写入下游请求头继续透传</li></ul></div>
+<p>自定义SpringMVC请求拦截器</p>
+<p>自定义SpringMVC请求拦截器获取上游服务的灰度请求头，如果获取到则设置到GrayFlagRequestHolder中，之后如果有后续的RPC调用同样的将灰度标记传递下去。</p>
+<ul><li>@SuppressWarnings(&quot;all&quot;)</li><li>public class GrayMvcHandlerInterceptor implements HandlerInterceptor {</li><li>@Override</li><li>public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {</li><li>String grayTag = request.getHeader(GrayConstant.GRAY_HEADER);</li><li>// 如果HttpHeader中灰度标记存在，则将灰度标记放到holder中，如果需要就传递下去</li><li>if (grayTag!= null) {</li><li>GrayFlagRequestHolder.setGrayTag(GrayStatusEnum.getByVal(grayTag));</li><li>return true;</li><li>@Override</li><li>public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {</li><li>@Override</li><li>public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {</li><li>GrayFlagRequestHolder.remove();</li></ul>
+<p>自定义OpenFeign请求拦截器</p>
+<p>自定义OpenFeign请求拦截器，取出自定义SpringMVC请求拦截器中设置到GrayFlagRequestHolder中的灰度标识，并且放到调用下游服务的请求头中，将灰度标记传递下去。</p>
+<ul><li>public class GrayFeignRequestInterceptor implements RequestInterceptor {</li><li>@Override</li><li>public void apply(RequestTemplate template) {</li><li>// 如果灰度标记存在，将灰度标记通过HttpHeader传递下去</li><li>GrayStatusEnum grayStatusEnum = GrayFlagRequestHolder.getGrayTag();</li><li>if (grayStatusEnum != null ) {</li><li>template.header(GrayConstant.GRAY_HEADER, Collections.singleton(grayStatusEnum.getVal()));</li></ul>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>基础信息类</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>GrayStatusEnum 分 ALL/PROD/GRAY 三态</li><li>配置类区分网关开关与全局版本号</li><li>自动配置默认不加载，由 kerwin.tool.gray.load=true 开启</li></ul><div class="pit"><ul><li>灰度测试完成后应关闭灰度逻辑，避免误判</li></ul></div></div>
+<p>这里会定义一些基础参数，比如是否开启灰度还有什么请求需要使用灰度版本等，为后续业务做准备。</p>
+<ul><li>调用业务服务时设置的灰度统一请求头</li><li>public interface GrayConstant {</li><li>/**</li><li>* 灰度统一请求头</li><li>String GRAY_HEADER=&quot;gray&quot;;</li><li>灰度版本状态枚举</li><li>public enum GrayStatusEnum {</li><li>ALL(&quot;ALL&quot;,&quot;可以调用全部版本的服务&quot;),</li><li>PROD(&quot;PROD&quot;,&quot;只能调用生产版本的服务&quot;),</li><li>GRAY(&quot;GRAY&quot;,&quot;只能调用灰度版本的服务&quot;);</li><li>GrayStatusEnum(String val, String desc) {</li><li>this.val = val;</li><li>this.desc = desc;</li><li>private String val;</li><li>private String desc;</li><li>public String getVal() {</li><li>return val;</li><li>public static GrayStatusEnum getByVal(String val){</li><li>if(val == null){</li><li>return null;</li><li>for (GrayStatusEnum value : values()) {</li><li>if(value.val.equals(val)){</li><li>return value;</li><li>return null;</li><li>网关灰度配置信息类</li><li>@Data</li><li>@Configuration</li><li>@RefreshScope</li><li>@ConfigurationProperties(&quot;kerwin.tool.gray.gateway&quot;)</li><li>public class GrayGatewayProperties {</li><li>/**</li><li>* 灰度开关（如果开启灰度开关则进行灰度逻辑处理，如果关闭则走正常处理逻辑）</li><li>* PS：一般在灰度发布测试完成以后会将线上版本都切换成灰度版本完成全部升级，这时候应该关闭灰度逻辑判断</li><li>private Boolean enabled = false;</li><li>/**</li><li>* 自定义灰度版本请求头 （通过grayHeadValue来匹配请求头中的值如果一致就去调用灰度版本,用于公司测试）</li><li>private String grayHeadKey=&quot;gray&quot;;</li><li>/**</li><li>* 自定义灰度版本请求头匹配值</li><li>private String grayHeadValue=&quot;gray-996&quot;;</li><li>/**</li><li>* 使用灰度版本IP数组</li><li>private List&lt;String&gt; grayIPList = new ArrayList&lt;&gt;();</li><li>/**</li><li>* 使用灰度版本城市数组</li><li>private List&lt;String&gt; grayCityList = new ArrayList&lt;&gt;();</li><li>/**</li><li>* 使用灰度版本用户编号数组（我们系统不会在网关获取用户编号这种方法如果需要可以自己实现一下）</li><li>private List&lt;String&gt; grayUserNoList = new ArrayList&lt;&gt;();</li><li>全局版本配置信息类</li><li>@Data</li><li>@Configuration</li><li>@RefreshScope</li><li>@ConfigurationProperties(&quot;kerwin.tool.gray.version&quot;)</li><li>public class GrayVersionProperties {</li><li>/**</li><li>* 当前线上版本号</li><li>private String prodVersion;</li><li>/**</li><li>* 灰度版本号</li><li>private String grayVersion;</li><li>全局自动配置类</li><li>@Configuration</li><li>// 可以通过@ConditionalOnProperty设置是否开启灰度自动配置 默认是不加载的</li><li>@ConditionalOnProperty(value = &quot;kerwin.tool.gray.load&quot;,havingValue = &quot;true&quot;)</li><li>@EnableConfigurationProperties(GrayVersionProperties.class)</li><li>public class GrayAutoConfiguration {</li><li>@Configuration(proxyBeanMethods = false)</li><li>@ConditionalOnClass(value = GlobalFilter.class)</li><li>@EnableConfigurationProperties(GrayGatewayProperties.class)</li><li>static class GrayGatewayFilterAutoConfiguration {</li><li>@Bean</li><li>public GrayGatewayBeginFilter grayGatewayBeginFilter() {</li><li>return new GrayGatewayBeginFilter();</li><li>@Bean</li><li>public GrayGatewayAfterFilter grayGatewayAfterFilter() {</li><li>return new GrayGatewayAfterFilter();</li><li>@Bean</li><li>public GrayGatewayExceptionHandler grayGatewayExceptionHandler(){</li><li>return new GrayGatewayExceptionHandler();</li><li>@Configuration(proxyBeanMethods = false)</li><li>@ConditionalOnClass(value = WebMvcConfigurer.class)</li><li>static class GrayWebMvcAutoConfiguration {</li><li>/**</li><li>* Spring MVC 请求拦截器</li><li>* @return WebMvcConfigurer</li><li>@Bean</li><li>public WebMvcConfigurer webMvcConfigurer() {</li><li>return new WebMvcConfigurer() {</li><li>@Override</li><li>public void addInterceptors(InterceptorRegistry registry) {</li><li>registry.addInterceptor(new GrayMvcHandlerInterceptor());</li><li>@Configuration</li><li>@ConditionalOnClass(value = RequestInterceptor.class)</li><li>static class GrayFeignInterceptorAutoConfiguration {</li><li>/**</li><li>* Feign拦截器</li><li>* @return GrayFeignRequestInterceptor</li><li>@Bean</li><li>public GrayFeignRequestInterceptor grayFeignRequestInterceptor() {</li><li>return new GrayFeignRequestInterceptor();</li></ul>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>运行与配置</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>启动网关+用户/订单各 V1/V2 共五个服务</li><li>VM 参数指定端口与 nacos metadata.version</li><li>Ribbon 规则通过 NFLoadBalancerRuleClassName 指定</li></ul></div>
+<p>这里我会启动五个服务，一个网关服务、一个用户服务V1版本、一个订单服务V1版本、一个用户服务V2版本、一个订单服务V2版本，来演示灰度发布效果。</p>
+<p>PS：Nacos的命名空间我这里叫spring-cloud-gray-example可以自己创建一个也可以换成自己的命名空间，源码里面配置都是存在的，有问题看源码就行</p>
+<p>配置Nacos全局配置文件（common-config.yaml）</p>
+<p>所有服务都会使用到这个配置</p>
+<ul><li>kerwin:</li><li>tool:</li><li>gray:</li><li>## 配置是否加载灰度自动配置类，如果不配置那么默认不加载</li><li>load: true</li><li>## 配置生产版本和灰度版本号</li><li>version:</li><li>prodVersion: V1</li><li>grayVersion: V2</li><li>## 配置Ribbon调用user-app和order-app服务时使用我们自定义灰度轮询算法</li><li>user-app:</li><li>ribbon:</li><li>NFLoadBalancerRuleClassName: com.kerwin.gray.loadbalancer.GrayRoundRobinRule</li><li>order-app:</li><li>ribbon:</li><li>NFLoadBalancerRuleClassName: com.kerwin.gray.loadbalancer.GrayRoundRobinRule</li></ul>
+<p>配置网关Nacos配置文件（gateway-app.yaml）</p>
+<ul><li>kerwin:</li><li>tool:</li><li>gray:</li><li>gateway:</li><li>## 是否开启灰度发布功能</li><li>enabled: true</li><li>## 自定义灰度版本请求头</li><li>grayHeadKey: gray</li><li>## 自定义灰度版本请求头匹配值</li><li>grayHeadValue: gray-996</li><li>## 使用灰度版本IP数组</li><li>grayIPList:</li><li>- &#x27;127.0.0.1&#x27;</li><li>## 使用灰度版本城市数组</li><li>grayCityList:</li><li>- 本地</li></ul>
+<p>启动网关服务</p>
+<p>网关服务启动一个就行，直接Debug启动即可，方便调试源码</p>
+<p>启动业务服务V1 和 V2版本（用户服务和订单服务都用这种方式启动）</p>
+<p>先直接Debug启动会在IDEA这个位置看到一个对应启动类名称的信息</p>
+<p>点击Edit编辑这个启动配置</p>
+<p>复制一个对应启动配置作为V2版本，自己将Name改成自己能区分的即可</p>
+<p>配置启动参数，第一步点击Modify options然后第二步将Add VM options勾选上，第三步填写对应服务的启动端口和Nacos的metadata.version，我这里用户服务V1版本配置为-Dserver.port=7201-Dspring.cloud.nacos.discovery.metadata.version=V1，用户服务V2版本配置为-Dserver.port=7202-Dspring.cloud.nacos.discovery.metadata.version=V2，订单服务配置类似，配置好后点Apply。</p>
+<p>最后启动好的服务信息</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>效果演示</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>关闭灰度时随机路由，可能跨版本</li><li>开启灰度且不命中规则时只走生产 V1</li><li>请求头 gray=gray-996 命中则全走灰度 V2</li></ul></div>
+<p>源码中的user-app提供了一个获取用户信息的接口并且会携带当前服务的端口和版本信息，order-app服务提供了一个获取订单信息的接口，会去远程调用user-app获取订单关联的用户信息，并且也会携带当前服务的端口和版本信息响应。</p>
+<p>场景一（关闭灰度开关：不区分调用服务版本）</p>
+<p>关闭灰度开关有两个配置可以实现</p>
+<p>1、在项目启动之前修改Nacos全局配置文件中的kerwin.tool.gray.load配置是否加载灰度自动配置类，只要配置不为true就不会加载整个灰度相关类</p>
+<p>2、关闭网关灰度开关，修改网关Nacos配置文件中的kerwin.tool.gray.gateway.enabled，只要配置不为true就不会进行灰度判断。</p>
+<p>调用演示</p>
+<p>这里调用不一定就是Order服务版本为V1 User服务版本也为V1，也有可能Order服务版本为V1 User服务版本也为V2.</p>
+<ul><li>第一次调用，Order服务版本为V1，User服务版本也为V1</li><li>第二次调用，Order服务版本为V2，User服务版本也为V2</li></ul>
+<p>场景二（开启灰度开关：只调用生产版本）</p>
+<p>修改网关Nacos配置文件中的kerwin.tool.gray.gateway.enabled设置为true，其它灰度IP数组和城市数组配置匹配不上就行，这样怎么调用都是V1版本，因为在GrayVersionProperties版本配置中设置的生产版本就是为V1灰度版本为V2。</p>
+<p>场景三（开启灰度开关：通过请求头、ip、城市匹配调用灰度版本）</p>
+<p>这里通过请求头测试，携带请求头gray=gray-996访问网关那么流量就会都进入灰度版本V2。</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>源码地址</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Gitee 仓库 spring-cloud-gray-example 可自提</li></ul></div>
+<p>https://gitee.com/kerwin_code/spring-cloud-gray-example</p>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>遗留问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>xxl-job 用不同执行器区分灰度任务</li><li>MQ 用两套服务端隔离生产与灰度消息</li><li>作者建议 Nginx+Lua 网关 + Nacos 灰度命名空间整体隔离</li></ul></div>
+<h3 class="sub">1、如果项目中使用到了分布式任务调度那怎么区分灰度版本</h3>
+<p>这里其实挺好解决的，就拿xxl-job来说，注册不同的执行器就行，在发布灰度版本时注册到灰度版本的执行器即可。</p>
+<h3 class="sub">2、如果项目中使用的了MQ我们收发消息怎么控制灰度</h3>
+<p>这里和解决分布式任务调度思想是一样的灰度版本的服务发送消息的时候投递到另外一个MQ的服务端，就是弄两套MQ服务端，生产的服务使用生产的MQ，灰度发布使用灰度的MQ</p>
+<p>3、这里整个实现流程不是很复杂，但也是很没必要，只是提供一种实现方案可以参考</p>
+<p>其实通过Nginx + Lua脚本方式直接路由网关，然后给灰度整套服务都使用一个Nacos灰度的命名空间，生产的使用生产的命名空间，这样就能将两套服务都隔离了，分布式任务调度、MQ等配置都可以独立在自己命名空间的配置文件中岂不美哉</p>
+<p>- End-</p>
+<p>JAVA日知录</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>灰度发布与金丝雀发布</h4><p>灰度发布即金丝雀发布；金丝雀部署是其中一种方式，都靠小流量逐步放量降低风险。</p><a class="src-link" href="#sec-01">原文 → 灰度发布概念</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>灰度三态枚举</h4><p>ALL 调全部版本；PROD 只调生产版本；GRAY 只调灰度版本。</p><a class="src-link" href="#sec-08">原文 → 基础信息类</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>组件版本清单</h4><p>Spring Boot 2.3.12.RELEASE、Spring Cloud Hoxton.SR12、Spring Cloud Alibaba 2.2.9.RELEASE。</p><a class="src-link" href="#sec-02">原文 → 组件版本</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>演示服务规模</h4><p>演示启动 5 个服务：网关 + 用户/订单各 V1、V2 版本。</p><a class="src-link" href="#sec-09">原文 → 运行与配置</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>ThreadLocal 灰度标记</h4><p>GrayFlagRequestHolder 用 ThreadLocal 存 GrayStatusEnum，前置过滤器 set，后置/异常时 remove。</p><a class="src-link" href="#sec-06">原文 → 灰度核心包</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>自定义 Ribbon 过滤</h4><p>AbstractGrayLoadBalancerRule 按 Nacos metadata.version 与配置版本匹配过滤服务列表。</p><a class="src-link" href="#sec-06">原文 → 灰度核心包</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>拦截器透传</h4><p>MVC 拦截器读灰度请求头，Feign 拦截器写回请求头，实现全链路传递。</p><a class="src-link" href="#sec-07">原文 → 业务服务透传</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>ThreadLocal 内存泄漏</h4><p>必须在后置过滤器和全局异常处理器中 remove ThreadLocal，否则异常路径会泄漏。</p><a class="src-link" href="#sec-06">原文 → 灰度核心包</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>城市判断写死</h4><p>checkGrayCiryList 中 cityName 写死为“本地”，生产需用 ip2region.xdb 实现。</p><a class="src-link" href="#sec-06">原文 → 灰度核心包</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>更优隔离方案</h4><p>可用 Nginx+Lua 路由网关，灰度与生产各用独立 Nacos 命名空间整体隔离。</p><a class="src-link" href="#sec-12">原文 → 遗留问题</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>全链路灰度的关键是灰度标记：网关判定后写入 ThreadLocal，再经请求头在服务间透传。</li>
+          <li>服务版本用 Nacos metadata.version 区分，自定义 Ribbon 按枚举过滤实现按版本路由。</li>
+          <li>ThreadLocal 必须在前置后置过滤器和异常处理器中成对清理，防止内存泄漏。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzAwMTk4NjM1MA==&amp;mid=2247520519&amp;idx=1&amp;sn=dbac105798e93116fd8cb0466e33ed1e" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwMTk4NjM1MA==&amp;mid=2247520519&amp;idx=1&amp;sn=dbac105798e93116fd8cb0466e33ed1e</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

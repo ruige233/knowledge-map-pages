@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">万字+20张图探秘Nacos注册中心核心实现原理</h1>
+  <p class="lede">万字拆解Nacos注册中心：临时/永久实例、心跳、订阅与AP/CP实现原理</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 23 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>临时与永久实例</a>
+          <a href="#sec-02"><span class="n">02</span>服务注册</a>
+          <a href="#sec-03"><span class="n">03</span>心跳机制</a>
+          <a href="#sec-04"><span class="n">04</span>健康检查</a>
+          <a href="#sec-05"><span class="n">05</span>服务发现</a>
+          <a href="#sec-06"><span class="n">06</span>数据一致性</a>
+          <a href="#sec-07"><span class="n">07</span>数据模型</a>
+          <a href="#sec-08"><span class="n">08</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 临时与永久实例</a>
+          <a href="#sec-02">02 服务注册</a>
+          <a href="#sec-03">03 心跳机制</a>
+          <a href="#sec-04">04 健康检查</a>
+          <a href="#sec-05">05 服务发现</a>
+          <a href="#sec-06">06 数据一致性</a>
+          <a href="#sec-07">07 数据模型</a>
+          <a href="#sec-08">08 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>大家好，我是三友~~</p>
+<p>今天就应某位小伙伴的要求，来讲一讲Nacos作为服务注册中心底层的实现原理</p>
+<p>不知你是否跟我一样，在使用Nacos时有以下几点疑问：</p>
+<ul><li>临时实例和永久实例是什么？有什么区别？</li><li>服务实例是如何注册到服务端的？</li><li>服务实例和服务端之间是如何保活的？</li><li>服务订阅是如何实现的？</li><li>集群间数据是如何同步的？CP还是AP？</li><li>Nacos的数据模型是什么样的？</li></ul>
+<p>本文就通过探讨上述问题来探秘Nacos服务注册中心核心的底层实现原理。</p>
+<p>虽然Nacos最新版本已经到了2.x版本，但是为了照顾那些还在用1.x版本的同学，所以本文我会同时去讲1.x版本和2.x版本的实现</p>
+<p>观前提醒，本文又又又是一篇超长的干货，非常适合一键三连~~</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>临时与永久实例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>临时实例只存内存注册表，不落盘，异常或下线即被剔除</li><li>永久实例额外持久化到磁盘，异常仅标不健康仍可查询</li><li>临时适合业务服务，永久适合MySQL/Redis等需持续观测的运维服务</li><li>1.x临时/永久由实例决定，2.x改由服务整体决定</li></ul><div class="pit"><ul><li>2.x版本同一服务的实例不能既有临时又有永久，临时/永久属性由服务统一决定</li></ul></div></div>
+<p>临时实例和永久实例在Nacos中是一个非常非常重要的概念</p>
+<p>之所以说它重要，主要是因为我在读源码的时候发现，临时实例和永久实例在底层的许多实现机制是完全不同的</p>
+<p>临时实例</p>
+<p>临时实例在注册到注册中心之后仅仅只保存在服务端内部一个缓存中，不会持久化到磁盘</p>
+<p>这个服务端内部的缓存在注册中心届一般被称为服务注册表</p>
+<p>当服务实例出现异常或者下线之后，就会把这个服务实例从服务注册表中剔除</p>
+<p>永久实例</p>
+<p>永久服务实例不仅仅会存在服务注册表中，同时也会被持久化到磁盘文件中</p>
+<p>当服务实例出现异常或者下线，Nacos只会将服务实例的健康状态设置为不健康，并不会对将其从服务注册表中剔除</p>
+<p>所以这个服务实例的信息你还是可以从注册中心看到，只不过处于不健康状态</p>
+<p>这是就是两者最最最基本的区别</p>
+<p>当然除了上述最基本的区别之外，两者还有很多其它的区别，接下来本文还会提到</p>
+<p>这里你可能会有一个疑问</p>
+<p>为什么Nacos要将服务实例分为临时实例和永久实例?</p>
+<p>主要还是因为应用场景不同</p>
+<p>临时实例就比较适合于业务服务，服务下线之后可以不需要在注册中心中查看到</p>
+<p>永久实例就比较适合需要运维的服务，这种服务几乎是永久存在的，比如说MySQL、Redis等等</p>
+<p>MySQL、Redis等服务实例可以通过SDK手动注册</p>
+<p>对于这些服务，我们需要一直看到服务实例的状态，即使出现异常，也需要能够查看时实的状态</p>
+<p>所以从这可以看出Nacos跟你印象中的注册中心不太一样，他不仅仅可以注册平时业务中的实例，还可以注册像MySQL、Redis这个服务实例的信息到注册中心</p>
+<p>在SpringCloud环境底下，一般其实都是业务服务，所以默认注册服务实例都是临时实例</p>
+<p>当然如果你想改成永久实例，可以通过下面这个配置项来完成</p>
+<ul><li>spring</li><li>cloud:</li><li>nacos:</li><li>discovery:</li><li>#ephemeral单词是临时的意思，设置成false，就是永久实例了</li><li>ephemeral: false</li></ul>
+<p>这里还有一个小细节</p>
+<p>在1.x版本中，一个服务中可以既有临时实例也有永久实例，服务实例是永久还是临时是由服务实例本身决定的</p>
+<p>但是2.x版本中，一个服务中的所有实例要么都是临时的要么都是永久的，是由服务决定的，而不是具体的服务实例</p>
+<p>所以在2.x可以说是临时服务和永久服务</p>
+<p>为什么2.x把临时还是永久的属性由实例本身决定改成了由服务决定?</p>
+<p>其实很简单，你想想，假设对一个MySQL服务来说，它的每个服务实例肯定都是永久的，不会出现一些是永久的，一些是临时的情况吧</p>
+<p>所以临时还是永久的属性由服务本身决定其实就更加合理了</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>服务注册</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>1.x通过Http接口注册，服务端基于SpringBoot，逻辑简单</li><li>2.x改用gRPC长连接，注册性能较1.x至少提升2倍，仍兼容Http</li><li>2.x临时实例另存客户端缓存，Redo定时任务默认3s重做注册与订阅</li></ul></div>
+<p>作为一个服务注册中心，服务注册肯定是一个非常重要的功能</p>
+<p>所谓的服务注册，就是通过注册中心提供的客户端SDK（或者是控制台）将服务本身的一些元信息，比如ip、端口等信息发送到注册中心服务端</p>
+<p>服务端在接收到服务之后，会将服务的信息保存到前面提到的服务注册表中</p>
+<h3 class="sub">1、1.x版本的实现</h3>
+<p>在Nacos在1.x版本的时候，服务注册是通过Http接口实现的</p>
+<p>代码如下</p>
+<p>整个逻辑比较简单，因为Nacos服务端本身就是用SpringBoot写的</p>
+<p>但是在2.x版本的实现就比较复杂了</p>
+<h3 class="sub">2、2.x版本的实现</h3>
+<h3 class="sub">2.1、通信协议的改变</h3>
+<p>2.x版本相比于1.x版本最主要的升级就是客户端和服务端通信协议的改变，由1.x版本的Http改成了2.x版本gRPC</p>
+<p>gRPC是谷歌公司开发的一个高性能、开源和通用的RPC框架，Java版本的实现底层也是基于Netty来的</p>
+<p>之所以改成了gRPC，主要是因为Http请求会频繁创建和销毁连接，白白浪费资源</p>
+<p>所以在2.x版本之后，为了提升性能，就将通信协议改成了gRPC</p>
+<p>根据官网显示，整体的效果还是很明显，相比于1.x版本，注册性能总体提升至少2倍</p>
+<p>虽然通信方式改成了gRPC，但是2.x版本服务端依然保留了Http注册的接口，所以用1.x的Nacos SDK依然可以注册到2.x版本的服务端</p>
+<h3 class="sub">2.2、具体的实现</h3>
+<p>Nacos客户端在启动的时候，会通过gRPC跟服务端建立长连接</p>
+<p>这个连接会一直存在，之后客户端与服务端所有的通信都是基于这个长连接来的</p>
+<p>当客户端发起注册的时候，就会通过这个长连接，将服务实例的信息发送给服务端</p>
+<p>服务端拿到服务实例，跟1.x一样，也会存到服务注册表</p>
+<p>除了注册之外，当注册的是临时实例时，2.x还会将服务实例信息存储到客户端中的一个缓存中，供Redo操作</p>
+<p>所谓的Redo操作，其实就是一个补偿机制，本质是个定时任务，默认每3s执行一次</p>
+<p>这个定时任务作用是，当客户端与服务端重新建立连接时（因为一些异常原因导致连接断开）</p>
+<p>那么之前注册的服务实例肯定还要继续注册服务端（断开连接服务实例就会被剔除服务注册表）</p>
+<p>所以这个Redo操作一个很重要的作用就是重连之后的重新注册的作用</p>
+<p>除了注册之外，比如服务订阅之类的操作也需要Redo操作，当连接重新建立，之前客户端的操作都需要Redo一下</p>
+<p>小总结</p>
+<h3 class="sub">1.x版本是通过Http协议来进行服务注册的</h3>
+<p>2.x由于客户端与服务端的通信改成了gRPC长连接，所以改成通过gRPC长连接来注册</p>
+<p>2.x比1.x多个Redo操作，当注册的服务实例是临时实例是，出现网络异常，连接重新建立之后，客户端需要将服务注册、服务订阅之类的操作进行重做</p>
+<p>这里你可能会有个疑问</p>
+<p>既然2.x有Redo机制保证客户端与服务端通信正常之后重新注册，那么1.x有类似的这种Redo机制么？</p>
+<p>当然也会有，接下往下看。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>心跳机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>心跳仅针对临时实例，正常下线由客户端主动上报剔除</li><li>1.x客户端与服务端各5s定时任务，超15s标不健康，超30s剔除</li><li>1.x心跳发现注册表缺失时会把实例重新加入，兼有Redo作用</li><li>2.x用gRPC长连接心跳加服务端20s主动检查保活</li></ul></div>
+<p>心跳机制，也可以被称为保活机制，它的作用就是服务实例告诉注册中心我这个服务实例还活着</p>
+<p>在正常情况下，服务关闭了，那么服务会主动向Nacos服务端发送一个服务下线的请求</p>
+<p>Nacos服务端在接收到请求之后，会将这个服务实例从服务注册表中剔除</p>
+<p>但是对于异常情况下，比如出现网络问题，可能导致这个注册的服务实例无法提供服务，处于不可用状态，也就是不健康</p>
+<p>而此时在没有任何机制的情况下，服务端是无法知道这个服务处于不可用状态</p>
+<p>所以为了避免这种情况，一些注册中心，就比如Nacos、Eureka，就会用心跳机制来判断这个服务实例是否能正常</p>
+<p>在Nacos中，心跳机制仅仅是针对临时实例来说的，临时实例需要靠心跳机制来保活</p>
+<p>心跳机制在1.x和2.x版本的实现也是不一样的</p>
+<h3 class="sub">1.x心跳实现</h3>
+<p>在1.x中，心跳机制实现是通过客户端和服务端各存在的一个定时任务来完成的</p>
+<p>在服务注册时，发现是临时实例，客户端会开启一个5s执行一次的定时任务</p>
+<p>这个定时任务会构建一个Http请求，携带这个服务实例的信息，然后发送到服务端</p>
+<p>在Nacos服务端也会开启一个定时任务，默认也是5s执行一次，去检查这些服务实例最后一次心跳的时间，也就是客户端最后一次发送Http请求的时间</p>
+<ul><li>当最后一次心跳时间超过15s，但没有超过30s，会把这服务实例标记成不健康</li><li>当最后一次心跳超过30s，直接把服务从服务注册表中剔除</li></ul>
+<p>这就是1.x版本的心跳机制，本质就是两个定时任务</p>
+<p>其实1.x的这个心跳还有一个作用，就是跟上一节说的gRPC时Redo操作的作用是一样的</p>
+<p>服务在处理心跳的时候，发现心跳携带这个服务实例的信息在注册表中没有，此时就会添加到服务注册表</p>
+<p>所以心跳也有Redo的类似效果</p>
+<h3 class="sub">2.x心跳实现</h3>
+<p>在2.x版本之后，由于通信协议改成了gRPC，客户端与服务端保持长连接，所以2.x版本之后它是利用这个gRPC长连接本身的心跳来保活</p>
+<p>一旦这个连接断开，服务端就会认为这个连接注册的服务实例不可用，之后就会将这个服务实例从服务注册表中提出剔除</p>
+<p>除了连接本身的心跳之外，Nacos还有服务端的一个主动检测机制</p>
+<p>Nacos服务端也会启动一个定时任务，默认每隔3s执行一次</p>
+<p>这个任务会去检查超过20s没有发送请求数据的连接</p>
+<p>一旦发现有连接已经超过20s没发送请求，那么就会向这个连接对应的客户端发送一个请求</p>
+<p>如果请求不通或者响应失败，此时服务端也会认为与客户端的这个连接异常，从而将这个客户端注册的服务实例从服务注册表中剔除</p>
+<p>所以对于2.x版本，主要是两种机制来进行保活：</p>
+<ul><li>连接本身的心跳机制，断开就直接剔除服务实例</li><li>Nacos主动检查机制，服务端会对20s没有发送数据的连接进行检查，出现异常时也会主动断开连接，剔除服务实例</li></ul>
+<p>小总结</p>
+<p>心跳机制仅仅针对临时实例而言</p>
+<p>1.x心跳机制是通过客户端和服务端两个定时任务来完成的，客户端定时上报心跳信息，服务端定时检查心跳时间，超过15s标记不健康，超过30s直接剔除</p>
+<p>1.x心跳机制还有类似2.x的Redo作用，服务端发现心跳的服务信息不存在会，会将服务信息添加到注册表，相当于重新注册了</p>
+<p>2.x是基于gRPC长连接本身的心跳机制和服务端的定时检查机制来的，出现异常直接剔除</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>健康检查</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>永久实例无法主动上报心跳，改由服务端健康检查探测</li><li>健康检查是服务端主动向实例发请求，与心跳方向相反</li><li>支持TCP、HTTP、MySQL三种方式，默认TCP，周期2~7秒</li></ul></div>
+<p>前面说了，心跳机制仅仅是临时实例用来保护的机制</p>
+<p>而对于永久实例来说，一般来说无法主动上报心跳</p>
+<p>就比如说MySQL实例，肯定是不会主动上报心跳到Nacos的，所以这就导致无法通过心跳机制来保活</p>
+<p>所以针对永久实例的情况，Nacos通过一种叫健康检查的机制去判断服务实例是否活着</p>
+<p>健康检查跟心跳机制刚好相反，心跳机制是服务实例向服务端发送请求</p>
+<p>而所谓的健康检查就是服务端主动向服务实例发送请求，去探测服务实例是否活着</p>
+<p>健康检查机制在1.x和2.x的实现机制是一样的</p>
+<p>Nacos服务端在会去创建一个健康检查任务，这个任务每次执行时间间隔会在2000~7000毫秒之间</p>
+<p>当任务触发的时候，会根据设置的健康检查的方式执行不同的逻辑，目前主要有以下三种方式：</p>
+<ul><li>TCP</li><li>HTTP</li><li>MySQL</li></ul>
+<p>TCP的方式就是根据服务实例的ip和端口去判断是否能连接成功，如果连接成功，就认为健康，反之就任务不健康</p>
+<p>HTTP的方式就是向服务实例的ip和端口发送一个Http请求，请求路径是需要设置的，如果能正常请求，说明实例健康，反之就不健康</p>
+<p>MySQL的方式是一种特殊的检查方式，他可以执行下面这条Sql来判断数据库是不是主库</p>
+<p>默认情况下，都是通过TCP的方式来探测服务实例是否还活着</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>服务发现</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>主动查询是pull，订阅是push，SpringCloud默认用订阅</li><li>1.x订阅用UDP推送加定时查询兜底，正常10s、异常最多60s</li><li>2.x基于gRPC长连接推送，定时对比默认关闭，异常靠Redo恢复</li><li>2.x只支持订阅临时服务，永久服务不再支持订阅</li></ul><div class="pit"><ul><li>2.x只支持订阅临时服务，永久服务不支持订阅</li></ul></div></div>
+<p>所谓的服务发现就是指当有服务实例注册成功之后，其它服务可以发现这些服务实例</p>
+<p>Nacos提供了两种发现方式：</p>
+<ul><li>主动查询</li><li>服务订阅</li></ul>
+<p>主动查询就是指客户端主动向服务端查询需要关注的服务实例，也就是拉（pull）的模式</p>
+<p>服务订阅就是指客户端向服务端发送一个订阅服务的请求，当被订阅的服务有信息变动就会主动将服务实例的信息推送给订阅的客户端，本质就是推（push）模式</p>
+<p>在我们平时使用时，一般来说都是选择使用订阅的方式，这样一旦有服务实例数据的变动，客户端能够第一时间感知</p>
+<p>并且Nacos在整合SpringCloud的时候，默认就是使用订阅的方式</p>
+<p>对于这两种服务发现方式，1.x和2.x版本实现也是不一样</p>
+<p>服务查询其实两者实现都很简单</p>
+<p>1.x整体就是发送Http请求去查询服务实例，2.x只不过是将Http请求换成了gRPC的请求</p>
+<p>服务端对于查询的处理过程都是一样的，从服务注册表中查出符合查询条件的服务实例进行返回</p>
+<p>不过对于服务订阅，两者的机制就稍微复杂一点</p>
+<p>在Nacos客户端，不论是1.x还是2.x都是通过SDK中的NamingService#subscribe方法来发起订阅的</p>
+<p>当有服务实例数据变动的时，客户端就会回调EventListener，就可以拿到最新的服务实例数据了</p>
+<p>虽然1.x还是2.x都是同样的方法，但是具体的实现逻辑是不一样的</p>
+<h3 class="sub">1.x服务订阅实现</h3>
+<p>在1.x版本的时候，服务订阅的处理逻辑大致会有以下三步：</p>
+<p>第一步，客户端在启动的时候，会去构建一个叫PushReceiver的类</p>
+<p>这个类会去创建一个UDP Socket，端口是随机的</p>
+<p>其实通过名字就可以知道这个类的作用，就是通过UDP的方式接收服务端推送的数据的</p>
+<p>第二步，调用NamingService#subscribe来发起订阅时，会先去服务端查询需要订阅服务的所有实例信息</p>
+<p>之后会将所有服务实例数据存到客户端的一个内部缓存中</p>
+<p>并且在查询的时候，会将这个UDP Socket的端口作为一个参数传到服务端</p>
+<p>服务端接收到这个UDP端口后，后续就通过这个端口给客户端推送服务实例数据</p>
+<p>第三步，会为这次订阅开启一个不定时执行的任务</p>
+<p>之所以不定时，是因为这个当执行异常的时候，下次执行的时间间隔就会变长，但是最多不超过60s，正常是10s，这个10s是查询服务实例是服务端返回的</p>
+<p>这个任务会去从服务端查询订阅的服务实例信息，然后更新内部缓存</p>
+<p>这里你可能会有个疑问</p>
+<p>既然有了服务变动推送的功能，为什么还要定时去查询更新服务实例信息呢?</p>
+<p>其实很简单，那就是因为UDP通信不稳定导致的</p>
+<p>虽然有Push，但是由于UDP通信自身的不确定性，有可能会导致客户端接收变动信息失败</p>
+<p>所以这里就加了一个定时任务，弥补这种可能性，属于一个兜底的方案。</p>
+<p>这就是1.x版本的服务订阅的实现</p>
+<h3 class="sub">2.x服务订阅的实现</h3>
+<p>讲完1.x的版本实现，接下来就讲一讲2.x版本的实现</p>
+<p>由于2.x版本换成了gRPC长连接的方式，所以2.x版本服务数据变更推送已经完全抛弃了1.x的UDP做法</p>
+<p>当有服务实例变动的时候，服务端直接通过这个长连接将服务信息发送给客户端</p>
+<p>客户端拿到最新服务实例数据之后的处理方式就跟1.x是一样了</p>
+<p>除了处理方式一样，2.x也继承了1.x的其他的东西</p>
+<p>比如客户端依然会有服务实例的缓存</p>
+<p>定时对比机制也保留了，只不过这个定时对比的机制默认是关闭状态</p>
+<p>之所以默认关闭，主要还是因为长连接还是比较稳定的原因</p>
+<p>当客户端出现异常，接收不到请求，那么服务端会直接跟客户端断开连接</p>
+<p>当恢复正常，由于有Redo操作，所以还是能拿到最新的实例信息的</p>
+<p>所以2.x版本的服务订阅功能的实现大致如下图所示</p>
+<p>这里还有个细节需要注意</p>
+<p>在1.x版本的时候，任何服务都是可以被订阅的</p>
+<p>但是在2.x版本中，只支持订阅临时服务，对于永久服务，已经不支持订阅了</p>
+<p>小总结</p>
+<p>服务查询1.x是通过Http请求；2.x通过gRPC请求</p>
+<p>服务订阅1.x是通过UDP来推送的；2.x就基于gRPC长连接来实现的</p>
+<p>1.x和2.x客户端都有服务实例的缓存，也有定时对比机制，只不过1.x会自动开启；2.x提供了一个开个，可以手动选择是否开启，默认不开启</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>数据一致性</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>集群按责任机制分工，每节点只负责部分实例的心跳与健康检查</li><li>CAP最多满足两项，分区容错必保；BASE优先可用性、最终一致</li><li>临时实例走Distro保AP，永久实例走Raft（2.x为JRaft）保CP</li><li>Distro用失败重试与定时对比；Raft需过半Follower确认才写成功</li></ul><div class="pit"><ul><li>Nacos读服务实例时不转发Leader，Follower可能返回旧数据，与Raft读约定不符</li></ul></div></div>
+<p>由于Nacos是支持集群模式的，所以一定会涉及到分布式系统中不可避免的数据一致性问题</p>
+<h3 class="sub">1、服务实例的责任机制</h3>
+<p>再说数据一致性问题之前，先来讨论一下服务实例的责任机制</p>
+<p>什么是服务实例的责任机制？</p>
+<p>比如上面提到的服务注册、心跳管理、监控检查机制，当只有一个Nacos服务时，那么自然而言这个服务会去检查所有的服务实例的心跳时间，执行所有服务实例的健康检查任务</p>
+<p>但是当出现Nacos服务出现集群时，为了平衡各Nacos服务的压力，Nacos会根据一定的规则让每个Nacos服务只管理一部分服务实例的</p>
+<p>当然每个Nacos服务的注册表还是全部的服务实例数据</p>
+<p>这个管理机制我给他起了一个名字，就叫做责任机制，因为我在1.x和2.x都提到了responsible这个单词</p>
+<p>本质就是Nacos服务对哪些服务实例负有心跳监测，健康检查的责任。</p>
+<h3 class="sub">2、CAP定理和BASE理论</h3>
+<p>谈到数据一致性问题，一定离不开两个著名分布式理论</p>
+<ul><li>CAP定理</li><li>BASE理论</li></ul>
+<p>CAP定理中，三个字母分别代表这些含义：</p>
+<ul><li>C，Consistency单词的缩写，代表一致性，指分布式系统中各个节点的数据保持强一致，也就是每个时刻都必须一样，不一样整个系统就不能对外提供服务</li><li>A，Availability单词的缩写，代表可用性，指整个分布式系统保持对外可用，即使从每个节点获取的数据可能都不一样，只要能获取到就行</li><li>P，Partition tolerance单词的缩写，代表分区容错性。</li></ul>
+<p>所谓的CAP定理，就是指在一个分布式系统中，CAP这三个指标，最多同时只能满足其中的两个，不可能三个都同时满足</p>
+<p>为什么三者不能同时满足？</p>
+<p>对于一个分布式系统，网络分区是一定需要满足的</p>
+<p>而所谓分区指的是系统中的服务部署在不同的网络区域中</p>
+<p>比如，同一套系统可能同时在北京和上海都有部署，那么他们就处于不同的网络分区，就可能出现无法互相访问的情况</p>
+<p>当然，你也可以把所有的服务都放在一个网络分区，但是当网络出现故障时，整个系统都无法对外提供服务，那这还有什么意义呢？</p>
+<p>所以分布式系统一定需要满足分区容错性，把系统部署在不同的区域网络中</p>
+<p>此时只剩下了一致性和可用性，它们为什么不能同时满足？</p>
+<p>其实答案很简单，就因为可能出现网络分区导致的通信失败。</p>
+<p>比如说，现在出现了网络分区的问题，上图中的A网络区域和B网络区域无法相互访问</p>
+<p>此时假设往上图中的A网络区域发送请求，将服务中的一个值 i 属性设置成 1</p>
+<p>如果保证可用性，此时由于A和B网络不通，此时只有A中的服务修改成功，B无法修改成功，此时数据AB区域数据就不一致性，也就没有保证数据一致性</p>
+<p>如果保证一致性，此时由于A和B网络不通，所以此时A也不能修改成功，必须修改失败，否则就会导致AB数据不一致</p>
+<p>虽然A没修改成功，保证了数据一致性，AB还是之前相同的数据，但是此时整个系统已经没有写可用性了，无法成功写数据了。</p>
+<p>所以从上面分析可以看出，在有分区容错性的前提下，可用性和一致性是无法同时保证的。</p>
+<p>虽然无法同时一致性和可用性，但是能不能换种思路来思考一下这个问题</p>
+<p>首先我们可以先保证系统的可用性，也就是先让系统能够写数据，将A区域服务中的i修改成1</p>
+<p>之后当AB区域之间网络恢复之后，将A区域的i值复制给B区域，这样就能够保证AB区域间的数据最终是一致的了</p>
+<p>这不就皆大欢喜了么</p>
+<p>这种思路其实就是BASE理论的核心要点，优先保证可用性，数据最终达成一致性。</p>
+<p>BASE理论主要是包括以下三点：</p>
+<ul><li>基本可用（Basically Available）：系统出现故障还是能够对外提供服务，不至于直接无法用了</li><li>软状态（Soft State）：允许各个节点的数据不一致</li><li>最终一致性，（Eventually Consistent）：虽然允许各个节点的数据不一致，但是在一定时间之后，各个节点的数据最终需要一致的</li></ul>
+<p>BASE理论其实就是妥协之后的产物。</p>
+<h3 class="sub">3、Nacos的AP和CP</h3>
+<p>Nacos其实目前是同时支持AP和CP的</p>
+<p>具体使用AP还是CP得取决于Nacos内部的具体功能，并不是有的文章说的可以通过一个配置自由切换。</p>
+<p>就以服务注册举例来说，对于临时实例来说，Nacos会优先保证可用性，也就是AP</p>
+<p>对于永久实例，Nacos会优先保证数据的一致性，也就是CP</p>
+<p>接下来我们就来讲一讲Nacos的CP和AP的实现原理</p>
+<h3 class="sub">3.1、Nacos的AP实现</h3>
+<p>对于AP来说，Nacos使用的是阿里自研的Distro协议</p>
+<p>在这个协议中，每个服务端节点是一个平等的状态，每个服务端节点正常情况下数据是一样的，每个服务端节点都可以接收来自客户端的读写请求</p>
+<p>当某个节点刚启动时，他会向集群中的某个节点发送请求，拉取所有的服务实例数据到自己的服务注册表中</p>
+<p>这样其它客户端就可以从这个服务节点中获取到服务实例数据了</p>
+<p>当某个服务端节点接收到注册临时服务实例的请求，不仅仅会将这个服务实例存到自身的服务注册表，同时也会向其它所有服务节点发送请求，将这个服务数据同步到其它所有节点</p>
+<p>所以此时从任意一个节点都是可以获取到所有的服务实例数据的。</p>
+<p>即使数据同步的过程发生异常，服务实例也成功注册到一个Nacos服务中，对外部而言，整个Nacos集群是可用的，也就达到了AP的效果</p>
+<p>同时为了满足BASE理论，Nacos也有下面两种机制保证最终节点间数据最终是一致的：</p>
+<ul><li>失败重试机制</li><li>定时对比机制</li></ul>
+<p>失败重试机制是指当数据同步给其它节点失败时，会每隔3s重试一次，直到成功</p>
+<p>定时对比机制就是指，每个Nacos服务节点会定时向所有的其它服务节点发送一些认证的请求</p>
+<p>这个请求会告诉每个服务节点自己负责的服务实例的对应的版本号，这个版本号随着服务实例的变动就会变动</p>
+<p>如果其它服务节点的数据的版本号跟自己的对不上，那就说明其它服务节点的数据不是最新的</p>
+<p>此时这个Nacos服务节点就会将自己负责的服务实例数据发给不是最新数据的节点，这样就保证了每个节点的数据是一样的了。</p>
+<h3 class="sub">3.2、Nacos的CP实现</h3>
+<p>Nacos的CP实现是基于Raft算法来实现的</p>
+<p>在1.x版本早期，Nacos是自己手动实现Raft算法</p>
+<p>在2.x版本，Nacos移除了手动实现Raft算法，转而拥抱基于蚂蚁开源的JRaft框架</p>
+<p>在Raft算法，每个节点主要有三个状态</p>
+<ul><li>Leader，负责所有的读写请求，一个集群只有一个</li><li>Follower，从节点，主要是负责复制Leader的数据，保证数据的一致性</li><li>Candidate，候选节点，最终会变成Leader或者Follower</li></ul>
+<p>集群启动时都是节点Follower，经过一段时间会转换成Candidate状态，再经过一系列复杂的选择算法，选出一个Leader</p>
+<p>这个选举算法比较复杂，完全值得另写一篇文章，这里就不细说了。不过立个flag，如果本篇文章点赞量超过28个，我连夜爆肝，再来一篇。</p>
+<p>当有写请求时，如果请求的节点不是Leader节点时，会将请求转给Leader节点，由Leader节点处理写请求</p>
+<p>比如，有个客户端连到的上图中的Nacos服务2节点，之后向Nacos服务2注册服务</p>
+<p>Nacos服务2接收到请求之后，会判断自己是不是Leader节点，发现自己不是</p>
+<p>此时Nacos服务2就会向Leader节点发送请求，Leader节点接收到请求之后，会处理服务注册的过程</p>
+<p>为什么说Raft是保证CP的呢？</p>
+<p>主要是因为Raft在处理写的时候有一个判断过程</p>
+<ul><li>首先，Leader在处理写请求时，不会直接数据应用到自己的系统，而是先向所有的Follower发送请求，让他们先处理这个请求</li><li>当超过半数的Follower成功处理了这个写请求之后，Leader才会写数据，并返回给客户端请求处理成功</li><li>如果超过一定时间未收到超过半数处理成功Follower的信号，此时Leader认为这次写数据是失败的，就不会处理写请求，直接返回给客户端请求失败</li></ul>
+<p>所以，一旦发生故障，导致接收不到半数的Follower写成功的响应，整个集群就直接写失败，这就很符合CP的概念了。</p>
+<p>不过这里还有一个小细节需要注意</p>
+<p>Nacos在处理查询服务实例的请求直接时，并不会将请求转发给Leader节点处理，而是直接查当前Nacos服务实例的注册表</p>
+<p>这其实就会引发一个问题</p>
+<p>如果客户端查询的Follower节点没有及时处理Leader同步过来的写请求（过半响应的节点中不包括这个节点），此时在这个Follower其实是查不到最新的数据的，这就会导致数据的不一致</p>
+<p>所以说，虽然Raft协议规定要求从Leader节点查最新的数据，但是Nacos至少在读服务实例数据时并没有遵守这个协议</p>
+<p>当然对于其它的一些数据的读写请求有的还是遵守了这个协议。</p>
+<p>JRaft对于读请求其实是做了很多优化的，其实从Follower节点通过一定的机制也是能够保证读到最新的数据</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>数据模型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Namespace、Group、ServiceName三者共同确定一个服务</li><li>服务内还有集群概念，可按地域划分并指定订阅集群，默认全部</li></ul></div>
+<p>在Nacos中，一个服务的确定是由三部分信息确定</p>
+<ul><li>命名空间（Namespace）：多租户隔离用的，默认是 public</li><li>分组（Group）：这个其实可以用来做环境隔离，服务注册时可以指定服务的分组，比如是测试环境或者是开发环境，默认是 DEFAULT_GROUP</li><li>服务名（ServiceName）：这个就不用多说了</li></ul>
+<p>通过上面三者就可以确定同一个服务了</p>
+<p>在服务注册和订阅的时候，必须要指定上述三部分信息，如果不指定，Nacos就会提供默认的信息</p>
+<p>不过，在Nacos中，在服务里面其实还是有一个集群的概念</p>
+<p>在服务注册的时候，可以指定这个服务实例在哪个集体的集群中，默认是在DEFAULT集群下</p>
+<p>在SpringCloud环境底下可以通过如下配置去设置</p>
+<ul><li>spring</li><li>cloud:</li><li>nacos:</li><li>discovery:</li><li>cluster-name: sanyoujavaCluster</li></ul>
+<p>在服务订阅的时候，可以指定订阅哪些集群下的服务实例</p>
+<p>当然，也可以不指定，如果不指定话，默认就是订阅这个服务下的所有集群的服务实例</p>
+<p>我们日常使用中可以将部署在相同区域的服务划分为同一个集群，比如杭州属于一个集群，上海属于一个集群</p>
+<p>这样服务调用的时候，就可以优先使用同一个地区的服务了，比跨区域调用速度更快。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>本节为全文收尾，回顾成文过程与祝福，无新增技术要点</li><li>已剥离文末点赞、在看、往期推荐等推广噪声</li></ul></div>
+<p>到这，终终终于总算是讲完了Nacos作为注册中心核心的实现原理</p>
+<p>这篇文章从最开始的翻源码、查资料到最终完成，前前后后也肝了大半个月的时间，横跨了2023和2024，码了上万字</p>
+<p>不知道你读完整篇文章是否有所收货</p>
+<p>不过有一点可以确定的是，能够看到这里的那一定都是真爱粉了</p>
+<p>2024年到了，这里也祝大家身体健康，升职加薪，今年我也会继续输出硬核干货文章</p>
+<p>··············  END  ·············</p>
+<p>如何去阅读源码，我总结了18条心法</p>
+<p>如何写出漂亮代码，我总结了45个小技巧</p>
+<p>三万字盘点Spring/Boot的那些常用扩展点</p>
+<p>三万字盘点Spring 9大核心基础功能</p>
+<p>两万字盘点那些被玩烂了的设计模式</p>
+<p>万字+20张图剖析Spring启动时12个核心步骤</p>
+<h3 class="sub">1.5万字+30张图盘点索引常见的11个知识点</h3>
+<h3 class="sub">1.5万字+25张图盘点RocketMQ 11种消息类型</h3>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>临时实例 vs 永久实例</h4><p>临时：仅存内存注册表，异常即剔除；永久：额外落盘，异常仅标不健康仍可查。</p><a class="src-link" href="#sec-01">原文 → 临时与永久实例</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>1.x/2.x通信与性能</h4><p>1.x用Http频繁建连浪费资源；2.x改gRPC长连接，注册性能较1.x至少提升2倍。</p><a class="src-link" href="#sec-02">原文 → 服务注册</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>注册为永久实例</h4><p>spring.cloud.nacos.discovery.ephemeral: false，即可把实例注册为永久实例。</p><a class="src-link" href="#sec-01">原文 → 临时与永久实例</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>1.x心跳阈值</h4><p>客户端与服务端定时任务均5s一次；最后心跳超15s标不健康，超30s剔除。</p><a class="src-link" href="#sec-03">原文 → 心跳机制</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>健康检查三方式</h4><p>服务端每2~7秒健康检查一次，默认TCP，另有HTTP与MySQL方式。</p><a class="src-link" href="#sec-04">原文 → 健康检查</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>心跳 vs 健康检查</h4><p>心跳是实例主动上报给服务端；健康检查是服务端反向探测永久实例，方向相反。</p><a class="src-link" href="#sec-04">原文 → 健康检查</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>1.x订阅三步走</h4><p>客户端建UDP PushReceiver，subscribe查全量并传UDP端口，再靠定时任务兜底更新缓存。</p><a class="src-link" href="#sec-05">原文 → 服务发现</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>2.x永久服务不可订阅</h4><p>2.x只支持订阅临时服务，永久服务不再支持订阅，选型时需注意。</p><a class="src-link" href="#sec-05">原文 → 服务发现</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>AP/CP不可自由切换</h4><p>Nacos按功能决定AP或CP：临时实例保AP、永久实例保CP，不能靠一个配置切换。</p><a class="src-link" href="#sec-06">原文 → 数据一致性</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Redo补偿机制</h4><p>2.x的Redo是定时任务，默认每3s执行，重连后重做注册、订阅等操作。</p><a class="src-link" href="#sec-02">原文 → 服务注册</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>CP读未走Leader</h4><p>Nacos读服务实例不转发Leader，Follower可能返回旧数据，与Raft读约定不符。</p><a class="src-link" href="#sec-06">原文 → 数据一致性</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>数据模型三要素</h4><p>Namespace、Group、ServiceName三者共同确定一个服务，缺省时用默认值。</p><a class="src-link" href="#sec-07">原文 → 数据模型</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>临时实例靠心跳保活、异常即剔除；永久实例靠健康检查、异常仅标不健康。</li>
+          <li>2.x用gRPC长连接统一注册、订阅与心跳，并以Redo补偿重连后的状态重做。</li>
+          <li>临时实例走Distro保AP，永久实例走Raft/JRaft保CP，读写路径各有取舍。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&amp;mid=2247507823&amp;idx=1&amp;sn=283cb4f79e5642b029030b0798d7a654" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&amp;mid=2247507823&amp;idx=1&amp;sn=283cb4f79e5642b029030b0798d7a654</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

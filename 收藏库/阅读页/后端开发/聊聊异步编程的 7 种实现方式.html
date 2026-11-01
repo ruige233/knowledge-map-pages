@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">聊聊异步编程的 7 种实现方式</h1>
+  <p class="lede">一文梳理 Java 异步编程的七种实现方式</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 24 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>继承 Thread 与线程池</a>
+          <a href="#sec-02"><span class="n">02</span>Callable 与 Future</a>
+          <a href="#sec-03"><span class="n">03</span>FutureTask</a>
+          <a href="#sec-04"><span class="n">04</span>CompletableFuture</a>
+          <a href="#sec-05"><span class="n">05</span>@Async 注解</a>
+          <a href="#sec-06"><span class="n">06</span>Spring 事件机制</a>
+          <a href="#sec-07"><span class="n">07</span>消息队列</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 继承 Thread 与线程池</a>
+          <a href="#sec-02">02 Callable 与 Future</a>
+          <a href="#sec-03">03 FutureTask</a>
+          <a href="#sec-04">04 CompletableFuture</a>
+          <a href="#sec-05">05 @Async 注解</a>
+          <a href="#sec-06">06 Spring 事件机制</a>
+          <a href="#sec-07">07 消息队列</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>三、FutureTask FutureTask实现了RunnableFuture接口，则RunnableFuture接口继承了Runnable接口和Future接口，所以可以将FutureTask对象作为任务提交给ThreadPoolExecutor去执行，也可以直接被Thread执行；又因为实现了Future接口，所以也能用来获得任务的执行结果。 FutureTask 构造函数： public FutureTask(Callable&lt;V&gt; callable) public FutureTask(Runnable runnable, V result) FutureTask 常用来封装Callable和Runnable，可以作为一个任务提交到线程池中执行。除了作为一个独立的类之外，也提供了一些功能性函数供我们创建自定义 task 类使用。 FutureTask 线程安全由CAS来保证。 四、异步框架 CompletableFuture Future 类通过get()方法阻塞等待获取异步执行的运行结果，性能比较差。 JDK1.8 中，Java 提供了CompletableFuture类，它是基于异步函数式编程。相对阻塞式等待返回结果，CompletableFuture可以通过回调的方式来处理计算结果，实现了异步非阻塞，性能更优。 优点： 异步任务结束时，会自动回调某个对象的方法 异步任务出错时，会自动回调某个对象的方法 主线程设置好回调后，不再关心异步任务的执行 五、 SpringBoot 注解 @Async 除了硬编码的异步编程处理方式，SpringBoot 框架还提供了注解式解决方案，以方法体为边界，方法体内部的代码逻辑全部按异步方式执行。 首先，使用@EnableAsync启用异步注解 在异步处理的方法上添加注解@Async，当对execute 方法调用时，通过自定义的线程池defaultThreadPoolExecutor异步化执行  execute 方法 用 @Async 注解标记的方法，称为异步方法。在spring boot应用中使用 @Async 很简单： 调用异步方法类上或者启动类加上注解 @EnableAsync 在需要被异步调用的方法外加上 @Async 所使用的 @Async 注解方法的类对象应该是Spring容器管理的bean对象； 六、Spring ApplicationEvent 事件 事件机制在一些大型项目中被经常使用，Spring 专门提供了一套事件机制的接口，满足了架构原则上的解耦。 ApplicationContext通过ApplicationEvent类和ApplicationListener接口进行事件处理。如果将实现ApplicationListener接口的 bean 注入到上下文中，则每次使用ApplicationContext发布ApplicationEvent时，都会通知该 bean。本质上，这是标准的观察者设计模式。 ApplicationEvent 是由 Spring 提供的所有 Event 类的基类 首先，自定义业务事件子类，继承自ApplicationEvent，通过泛型注入业务模型参数类。相当于 MQ 的消息体。 然后，编写事件监听器。ApplicationListener接口是由 Spring 提供的事件订阅者必须实现的接口，我们需要定义一个子类，继承ApplicationListener。相当于 MQ 的消费端 最后，发布事件，把某个事件告诉所有与这个事件相关的监听器。相当于 MQ 的生产端。 我们需要手动创建一个SimpleApplicationEventMulticaster，并设置TaskExecutor，此时所有的消费事件采用异步线程执行。 SimpleApplicationEventMulticaster这个我们自己实例化的 Bean 与系统默认的加载顺序如何？会不会有冲突？ 查了下 Spring 源码，处理逻辑在AbstractApplicationContext#initApplicationEventMulticaster方法中，通过 beanFactory 查找是否有自定义的 Bean，如果没有，容器会自己 new 一个SimpleApplicationEventMulticaster对象注入到容器中。 七、消息队列 异步架构是互联网系统中一种典型架构模式，与同步架构相对应。而消息队列天生就是这种异步架构，具有超高吞吐量和超低时延。 消息队列异步架构的主要角色包括消息生产者、消息队列和消息消费者。 消息生产者就是主应用程序，生产者将调用请求封装成消息发送给消息队列。 消息队列的职责就是缓冲消息，等待消费者消费。根据消费方式又分为点对点模式和发布订阅模式两种。 消息消费者，用来从消息队列中拉取、消费消息，完成业务逻辑处理。 当然市面上消息队列框架非常多，常见的有RabbitMQ、Kafka、RocketMQ、ActiveMQ 和 Pulsar 等</th></tr></thead><tbody></tbody></table>
+<p>早期的系统是同步的，容易理解，我们来看个例子</p>
+<p>同步编程</p>
+<p>当用户创建一笔电商交易订单时，要经历的业务逻辑流程还是很长的，每一步都要耗费一定的时间，那么整体的RT就会比较长。</p>
+<p>于是，聪明的人们开始思考能不能将一些非核心业务从主流程中剥离出来，于是有了异步编程雏形。</p>
+<p>异步编程是让程序并发运行的一种手段。它允许多个事件同时发生，当程序调用需要长时间运行的方法时，它不会阻塞当前的执行流程，程序可以继续运行。</p>
+<p>核心思路：采用多线程优化性能，将串行操作变成并行操作。异步模式设计的程序可以显著减少线程等待，从而在高吞吐量场景中，极大提升系统的整体性能，显著降低时延。</p>
+<p>接下来，我们来讲下异步有哪些编程实现方式</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>继承 Thread 与线程池</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>继承 Thread 类是最简单的异步线程创建方式，用 start() 启动</li><li>频繁创建销毁 Thread 浪费系统资源，应改用线程池</li><li>业务逻辑封装到 Runnable 或 Callable 交由线程池执行</li></ul><div class="pit"><ul><li>每次 new Thread 频繁创建销毁会浪费系统资源</li></ul></div></div>
+<p>直接继承Thread类是创建异步线程最简单的方式。</p>
+<p>首先，创建Thread子类，普通类或匿名内部类方式；然后创建子类实例；最后通过start()方法启动线程。</p>
+<ul><li>public class AsyncThread extends Thread{</li><li>@Override</li><li>public void run() {</li><li>System.out.println(&quot;当前线程名称:&quot; + this.getName() + &quot;, 执行线程名称:&quot; + Thread.currentThread().getName() + &quot;-hello&quot;);</li><li>public static void main(String[] args) {</li><li>// 模拟业务流程</li><li>// .......</li><li>// 创建异步线程</li><li>AsyncThread asyncThread = new AsyncThread();</li><li>// 启动异步线程</li><li>asyncThread.start();</li></ul>
+<p>当然如果每次都创建一个Thread线程，频繁的创建、销毁，浪费系统资源。我们可以采用线程池</p>
+<ul><li>@Bean(name = &quot;executorService&quot;)</li><li>public ExecutorService downloadExecutorService() {</li><li>return new ThreadPoolExecutor(20, 40, 60, TimeUnit.SECONDS, new ArrayBlockingQueue&lt;&gt;(2000),</li><li>new ThreadFactoryBuilder().setNameFormat(&quot;defaultExecutorService-%d&quot;).build(),</li><li>(r, executor) -&gt; log.error(&quot;defaultExecutor pool is full! &quot;));</li></ul>
+<p>将业务逻辑封装到Runnable或Callable中，交由线程池来执行</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>Callable 与 Future</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Java 1.5 起 Callable 和 Future 可在任务完成后获取执行结果</li><li>Future 提供取消任务、查询是否完成、获取结果等方法</li><li>get() 会阻塞直到任务执行完毕才返回，另有带超时的重载</li></ul><div class="pit"><ul><li>get() 方法会产生阻塞，一直等到任务执行完毕才返回</li></ul></div></div>
+<p>上述方式虽然达到了多线程并行处理，但有些业务不仅仅要执行过程，还要获取执行结果。</p>
+<pre><code>Java 从1.5版本开始，提供了Callable和Future，可以在任务执行完毕之后得到任务执行结果。</code></pre>
+<p>当然也提供了其他功能，如：取消任务、查询任务是否完成等</p>
+<p>Future类位于java.util.concurrent包下，接口定义：</p>
+<ul><li>public interface Future&lt;V&gt; {</li><li>boolean cancel(boolean mayInterruptIfRunning);</li><li>boolean isCancelled();</li><li>boolean isDone();</li><li>V get() throws InterruptedException, ExecutionException;</li><li>V get(long timeout, TimeUnit unit)</li><li>throws InterruptedException, ExecutionException, TimeoutException;</li></ul>
+<p>方法描述：</p>
+<ul><li>cancel()：取消任务，如果取消任务成功返回true，如果取消任务失败则返回false</li><li>isCancelled()：表示任务是否被取消成功，如果在任务正常完成前被取消成功，则返回 true</li><li>isDone()：表示任务是否已经完成，如果完成，返回true</li><li>get()：获取执行结果，这个方法会产生阻塞，会一直等到任务执行完毕才返回</li><li>get(long timeout, TimeUnit unit)：用来获取执行结果，如果在指定时间内，还没获取到结果，就直接返回null</li></ul>
+<p>代码示例：</p>
+<ul><li>public class CallableAndFuture {</li><li>public static ExecutorService executorService = new ThreadPoolExecutor(4, 40,</li><li>0L, TimeUnit.MILLISECONDS,</li><li>new LinkedBlockingQueue&lt;Runnable&gt;(1024), new ThreadFactoryBuilder()</li><li>.setNameFormat(&quot;demo-pool-%d&quot;).build(), new ThreadPoolExecutor.AbortPolicy());</li><li>static class MyCallable implements Callable&lt;String&gt; {</li><li>@Override</li><li>public String call() throws Exception {</li><li>return &quot;异步处理，Callable 返回结果&quot;;</li><li>public static void main(String[] args) {</li><li>Future&lt;String&gt; future = executorService.submit(new MyCallable());</li><li>try {</li><li>System.out.println(future.get());</li><li>} catch (Exception e) {</li><li>// nodo</li><li>} finally {</li><li>executorService.shutdown();</li></ul>
+<p>Future 表示一个可能还没有完成的异步任务的结果，通过get方法获取执行结果，该方法会阻塞直到任务返回结果。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>FutureTask</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>FutureTask 实现 RunnableFuture，可提交线程池执行也可直接 Thread 执行</li><li>封装 Callable 和 Runnable，既能执行又能获取结果</li><li>线程安全由 CAS 保证</li></ul><div class="pit"><ul><li>多任务串行/并行组合时 Future 代码繁琐，手动处理交叉点易出错</li></ul></div></div>
+<p>FutureTask实现了RunnableFuture接口，则RunnableFuture接口继承了Runnable接口和Future接口，所以可以将FutureTask对象作为任务提交给ThreadPoolExecutor去执行，也可以直接被Thread执行；又因为实现了Future接口，所以也能用来获得任务的执行结果。</p>
+<p>FutureTask 构造函数：</p>
+<ul><li>public FutureTask(Callable&lt;V&gt; callable)</li><li>public FutureTask(Runnable runnable, V result)</li></ul>
+<p>FutureTask 常用来封装Callable和Runnable，可以作为一个任务提交到线程池中执行。除了作为一个独立的类之外，也提供了一些功能性函数供我们创建自定义 task 类使用。</p>
+<p>FutureTask 线程安全由CAS来保证。</p>
+<ul><li>ExecutorService executor = Executors.newCachedThreadPool();</li><li>// FutureTask包装callbale任务，再交给线程池执行</li><li>FutureTask&lt;Integer&gt; futureTask = new FutureTask&lt;&gt;(() -&gt; {</li><li>System.out.println(&quot;子线程开始计算：&quot;);</li><li>Integer sum = 0;</li><li>for (int i = 1; i &lt;= 100; i++)</li><li>sum += i;</li><li>return sum;</li><li>});</li><li>// 线程池执行任务， 运行结果在 futureTask 对象里面</li><li>executor.submit(futureTask);</li><li>try {</li><li>System.out.println(&quot;task运行结果计算的总和为：&quot; + futureTask.get());</li><li>} catch (Exception e) {</li><li>e.printStackTrace();</li><li>executor.shutdown();</li></ul>
+<p>Callable 和 Future 的区别：Callable 用于产生结果，Future 用于获取结果</p>
+<p>如果是对多个任务多次自由串行、或并行组合，涉及多个线程之间同步阻塞获取结果，Future 代码实现会比较繁琐，需要我们手动处理各个交叉点，很容易出错。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>CompletableFuture</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>JDK1.8 提供，基于异步函数式编程</li><li>通过回调处理计算结果，异步非阻塞、性能优于 Future</li><li>提供约 50 种 API 处理串行、并行、组合与错误</li></ul></div>
+<p>Future 类通过get()方法阻塞等待获取异步执行的运行结果，性能比较差。</p>
+<p>JDK1.8 中，Java 提供了CompletableFuture类，它是基于异步函数式编程。相对阻塞式等待返回结果，CompletableFuture可以通过回调的方式来处理计算结果，实现了异步非阻塞，性能更优。</p>
+<p>优点：</p>
+<ul><li>异步任务结束时，会自动回调某个对象的方法</li><li>异步任务出错时，会自动回调某个对象的方法</li><li>主线程设置好回调后，不再关心异步任务的执行</li></ul>
+<p>泡茶示例：</p>
+<p>(内容摘自：极客时间的《Java 并发编程实战》)</p>
+<ul><li>//任务1：洗水壶-&gt;烧开水</li><li>CompletableFuture&lt;Void&gt; f1 =</li><li>CompletableFuture.runAsync(() -&gt; {</li><li>System.out.println(&quot;T1:洗水壶...&quot;);</li><li>sleep(1, TimeUnit.SECONDS);</li><li>System.out.println(&quot;T1:烧开水...&quot;);</li><li>sleep(15, TimeUnit.SECONDS);</li><li>});</li><li>//任务2：洗茶壶-&gt;洗茶杯-&gt;拿茶叶</li><li>CompletableFuture&lt;String&gt; f2 =</li><li>CompletableFuture.supplyAsync(() -&gt; {</li><li>System.out.println(&quot;T2:洗茶壶...&quot;);</li><li>sleep(1, TimeUnit.SECONDS);</li><li>System.out.println(&quot;T2:洗茶杯...&quot;);</li><li>sleep(2, TimeUnit.SECONDS);</li><li>System.out.println(&quot;T2:拿茶叶...&quot;);</li><li>sleep(1, TimeUnit.SECONDS);</li><li>return &quot;龙井&quot;;</li><li>});</li><li>//任务3：任务1和任务2完成后执行：泡茶</li><li>CompletableFuture&lt;String&gt; f3 =</li><li>f1.thenCombine(f2, (__, tf) -&gt; {</li><li>System.out.println(&quot;T1:拿到茶叶:&quot; + tf);</li><li>System.out.println(&quot;T1:泡茶...&quot;);</li><li>return &quot;上茶:&quot; + tf;</li><li>});</li><li>//等待任务3执行结果</li><li>System.out.println(f3.join());</li></ul>
+<p>CompletableFuture 提供了非常丰富的API，大约有50种处理串行，并行，组合以及处理错误的方法。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>@Async 注解</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>@EnableAsync 启用异步注解，@Async 标记异步方法</li><li>以方法体为边界，方法内逻辑整体异步执行</li><li>可用 @Async(&quot;线程池名&quot;) 指定自定义线程池</li></ul><div class="pit"><ul><li>@Async 方法所在类必须是 Spring 容器管理的 bean</li></ul></div></div>
+<p>除了硬编码的异步编程处理方式，SpringBoot 框架还提供了注解式解决方案，以方法体为边界，方法体内部的代码逻辑全部按异步方式执行。</p>
+<p>首先，使用@EnableAsync启用异步注解</p>
+<ul><li>@SpringBootApplication</li><li>@EnableAsync</li><li>public class StartApplication {</li><li>public static void main(String[] args) {</li><li>SpringApplication.run(StartApplication.class, args);</li></ul>
+<p>自定义线程池：</p>
+<ul><li>@Configuration</li><li>@Slf4j</li><li>public class ThreadPoolConfiguration {</li><li>@Bean(name = &quot;defaultThreadPoolExecutor&quot;, destroyMethod = &quot;shutdown&quot;)</li><li>public ThreadPoolExecutor systemCheckPoolExecutorService() {</li><li>return new ThreadPoolExecutor(3, 10, 60, TimeUnit.SECONDS,</li><li>new LinkedBlockingQueue&lt;Runnable&gt;(10000),</li><li>new ThreadFactoryBuilder().setNameFormat(&quot;default-executor-%d&quot;).build(),</li><li>(r, executor) -&gt; log.error(&quot;system pool is full! &quot;));</li></ul>
+<p>在异步处理的方法上添加注解@Async，当对execute 方法调用时，通过自定义的线程池defaultThreadPoolExecutor异步化执行  execute 方法</p>
+<ul><li>@Service</li><li>public class AsyncServiceImpl implements AsyncService {</li><li>@Async(&quot;defaultThreadPoolExecutor&quot;)</li><li>public Boolean execute(Integer num) {</li><li>System.out.println(&quot;线程：&quot; + Thread.currentThread().getName() + &quot; , 任务：&quot; + num);</li><li>return true;</li></ul>
+<p>用 @Async 注解标记的方法，称为异步方法。在spring boot应用中使用 @Async 很简单：</p>
+<ul><li>调用异步方法类上或者启动类加上注解 @EnableAsync</li><li>在需要被异步调用的方法外加上 @Async</li><li>所使用的 @Async 注解方法的类对象应该是Spring容器管理的bean对象；</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>Spring 事件机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>ApplicationEvent 与 ApplicationListener 本质是观察者模式</li><li>默认同步阻塞，生产端与消费端同线程执行</li><li>自定义 SimpleApplicationEventMulticaster 并设 TaskExecutor 可实现异步</li></ul><div class="pit"><ul><li>Spring 事件机制默认同步阻塞，仅代码规范上解耦</li></ul></div></div>
+<p>事件机制在一些大型项目中被经常使用，Spring 专门提供了一套事件机制的接口，满足了架构原则上的解耦。</p>
+<p>ApplicationContext通过ApplicationEvent类和ApplicationListener接口进行事件处理。如果将实现ApplicationListener接口的 bean 注入到上下文中，则每次使用ApplicationContext发布ApplicationEvent时，都会通知该 bean。本质上，这是标准的观察者设计模式。</p>
+<p>ApplicationEvent 是由 Spring 提供的所有 Event 类的基类</p>
+<p>首先，自定义业务事件子类，继承自ApplicationEvent，通过泛型注入业务模型参数类。相当于 MQ 的消息体。</p>
+<ul><li>public class OrderEvent extends AbstractGenericEvent&lt;OrderModel&gt; {</li><li>public OrderEvent(OrderModel source) {</li><li>super(source);</li></ul>
+<p>然后，编写事件监听器。ApplicationListener接口是由 Spring 提供的事件订阅者必须实现的接口，我们需要定义一个子类，继承ApplicationListener。相当于 MQ 的消费端</p>
+<ul><li>@Component</li><li>public class OrderEventListener implements ApplicationListener&lt;OrderEvent&gt; {</li><li>@Override</li><li>public void onApplicationEvent(OrderEvent event) {</li><li>System.out.println(&quot;【OrderEventListener】监听器处理！&quot; + JSON.toJSONString(event.getSource()));</li></ul>
+<p>最后，发布事件，把某个事件告诉所有与这个事件相关的监听器。相当于 MQ 的生产端。</p>
+<ul><li>OrderModel orderModel = new OrderModel();</li><li>orderModel.setOrderId((long) i);</li><li>orderModel.setBuyerName(&quot;Tom-&quot; + i);</li><li>orderModel.setSellerName(&quot;judy-&quot; + i);</li><li>orderModel.setAmount(100L);</li><li>// 发布Spring事件通知</li><li>SpringUtils.getApplicationContext().publishEvent(new OrderEvent(orderModel));</li></ul>
+<p>加个餐：</p>
+<ul><li>[消费端]线程：http-nio-8090-exec-1，消费事件 {&quot;amount&quot;:100.0,&quot;buyerName&quot;:&quot;Tom-1&quot;,&quot;orderId&quot;:1,&quot;sellerName&quot;:&quot;judy-1&quot;}</li><li>[生产端]线程：http-nio-8090-exec-1，发布事件 1</li><li>[消费端]线程：http-nio-8090-exec-1，消费事件 {&quot;amount&quot;:100.0,&quot;buyerName&quot;:&quot;Tom-2&quot;,&quot;orderId&quot;:2,&quot;sellerName&quot;:&quot;judy-2&quot;}</li><li>[生产端]线程：http-nio-8090-exec-1，发布事件 2</li><li>[消费端]线程：http-nio-8090-exec-1，消费事件 {&quot;amount&quot;:100.0,&quot;buyerName&quot;:&quot;Tom-3&quot;,&quot;orderId&quot;:3,&quot;sellerName&quot;:&quot;judy-3&quot;}</li><li>[生产端]线程：http-nio-8090-exec-1，发布事件 3</li></ul>
+<p>上面是跑了个demo的运行结果，我们发现无论生产端还是消费端，使用了同一个线程http-nio-8090-exec-1，Spring 框架的事件机制默认是同步阻塞的。只是在代码规范方面做了解耦，有较好的扩展性，但底层还是采用同步调用方式。</p>
+<p>那么问题来了，如果想实现异步调用，如何处理？</p>
+<p>我们需要手动创建一个SimpleApplicationEventMulticaster，并设置TaskExecutor，此时所有的消费事件采用异步线程执行。</p>
+<ul><li>@Component</li><li>public class SpringConfiguration {</li><li>@Bean</li><li>public SimpleApplicationEventMulticaster applicationEventMulticaster(@Qualifier(&quot;defaultThreadPoolExecutor&quot;) ThreadPoolExecutor defaultThreadPoolExecutor) {</li><li>SimpleApplicationEventMulticaster simpleApplicationEventMulticaster = new SimpleApplicationEventMulticaster();</li><li>simpleApplicationEventMulticaster.setTaskExecutor(defaultThreadPoolExecutor);</li><li>return simpleApplicationEventMulticaster;</li></ul>
+<p>我们看下改造后的运行结果：</p>
+<ul><li>[生产端]线程：http-nio-8090-exec-1，发布事件 1</li><li>[生产端]线程：http-nio-8090-exec-1，发布事件 2</li><li>[生产端]线程：http-nio-8090-exec-1，发布事件 3</li><li>[消费端]线程：default-executor-1，消费事件 {&quot;amount&quot;:100.0,&quot;buyerName&quot;:&quot;Tom-2&quot;,&quot;orderId&quot;:2,&quot;sellerName&quot;:&quot;judy-2&quot;}</li><li>[消费端]线程：default-executor-2，消费事件 {&quot;amount&quot;:100.0,&quot;buyerName&quot;:&quot;Tom-1&quot;,&quot;orderId&quot;:1,&quot;sellerName&quot;:&quot;judy-1&quot;}</li><li>[消费端]线程：default-executor-0，消费事件 {&quot;amount&quot;:100.0,&quot;buyerName&quot;:&quot;Tom-3&quot;,&quot;orderId&quot;:3,&quot;sellerName&quot;:&quot;judy-3&quot;}</li></ul>
+<p>SimpleApplicationEventMulticaster这个我们自己实例化的 Bean 与系统默认的加载顺序如何？会不会有冲突？</p>
+<p>查了下 Spring 源码，处理逻辑在AbstractApplicationContext#initApplicationEventMulticaster方法中，通过 beanFactory 查找是否有自定义的 Bean，如果没有，容器会自己 new 一个SimpleApplicationEventMulticaster对象注入到容器中。</p>
+<p>代码地址：https://github.com/aalansehaiyang/wx-project</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>消息队列</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>消息队列是天然异步架构，高吞吐、低时延</li><li>角色含生产者、消息队列、消费者，消费分点对点与发布订阅</li><li>常见框架有 RabbitMQ、Kafka、RocketMQ、ActiveMQ、Pulsar</li></ul></div>
+<p>异步架构是互联网系统中一种典型架构模式，与同步架构相对应。而消息队列天生就是这种异步架构，具有超高吞吐量和超低时延。</p>
+<p>消息队列异步架构的主要角色包括消息生产者、消息队列和消息消费者。</p>
+<p>消息生产者就是主应用程序，生产者将调用请求封装成消息发送给消息队列。</p>
+<p>消息队列的职责就是缓冲消息，等待消费者消费。根据消费方式又分为点对点模式和发布订阅模式两种。</p>
+<p>消息消费者，用来从消息队列中拉取、消费消息，完成业务逻辑处理。</p>
+<p>当然市面上消息队列框架非常多，常见的有RabbitMQ、Kafka、RocketMQ、ActiveMQ 和 Pulsar 等</p>
+<p>不同的消息队列的功能特性会略有不同，但整体架构类似，这里就不展开了。</p>
+<p>我们只需要记住一个关键点，借助消息队列这个中间件可以高效的实现异步编程。</p>
+<p>··············  END  ·············</p>
+<p>如何去阅读源码，我总结了18条心法</p>
+<p>如何写出漂亮代码，我总结了45个小技巧</p>
+<p>三万字盘点Spring/Boot的那些常用扩展点</p>
+<p>三万字盘点Spring 9大核心基础功能</p>
+<p>万字+20张图剖析Spring启动时12个核心步骤</p>
+<h3 class="sub">1.5万字+30张图盘点索引常见的11个知识点</h3>
+<p>两万字盘点那些被玩烂了的设计模式</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Callable 与 Future</h4><p>Callable 用于产生结果，Future 用于获取结果；配合线程池可拿到任务执行结果。</p><a class="src-link" href="#sec-03">原文 → FutureTask</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Future 与 CompletableFuture</h4><p>Future 靠 get() 阻塞等待结果，性能较差；CompletableFuture 以回调处理结果，异步非阻塞、性能更优。</p><a class="src-link" href="#sec-04">原文 → CompletableFuture</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>CompletableFuture API 规模</h4><p>CompletableFuture 提供约 50 种处理串行、并行、组合以及错误处理的方法。</p><a class="src-link" href="#sec-04">原文 → CompletableFuture</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>自定义线程池 Bean</h4><p>用 ThreadPoolExecutor 指定核心/最大线程数、队列与拒绝策略，封装 Runnable/Callable 提交线程池。</p><a class="src-link" href="#sec-01">原文 → 继承 Thread 与线程池</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>@Async 三步用法</h4><p>启动类加 @EnableAsync，方法加 @Async，可用 @Async(&quot;线程池名&quot;) 指定自定义线程池异步执行。</p><a class="src-link" href="#sec-05">原文 → @Async 注解</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Spring 事件异步化</h4><p>自定义 SimpleApplicationEventMulticaster 并 setTaskExecutor，消费事件改为异步线程执行。</p><a class="src-link" href="#sec-06">原文 → Spring 事件机制</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Spring 事件默认同步</h4><p>demo 中生产端与消费端同用 http-nio-8090-exec-1 线程，Spring 事件默认同步阻塞。</p><a class="src-link" href="#sec-06">原文 → Spring 事件机制</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>@Async 不生效</h4><p>被 @Async 标记的方法所在类必须是 Spring 容器管理的 bean，否则异步化不生效。</p><a class="src-link" href="#sec-05">原文 → @Async 注解</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>频繁 new Thread 浪费资源</h4><p>每次创建、销毁 Thread 线程会浪费系统资源，应改用线程池执行异步任务。</p><a class="src-link" href="#sec-01">原文 → 继承 Thread 与线程池</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>消息队列实现异步</h4><p>消息队列天生是异步架构，高吞吐、低时延，借助中间件可高效实现异步编程。</p><a class="src-link" href="#sec-07">原文 → 消息队列</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>同步与异步架构</h4><p>同步串行执行整体 RT 长；异步把非核心业务剥离、并行处理，显著减少线程等待。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>异步的核心是串行变并行、减少线程等待，以提升高吞吐场景的吞吐量并降低时延。</li>
+          <li>选型按需递进：Thread 最简单，Future/FutureTask 取结果，CompletableFuture 非阻塞组合，MQ 跨进程解耦。</li>
+          <li>Spring 的 @Async 与事件机制要留意 bean 托管与默认同步这两个易错点。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&amp;mid=2247505834&amp;idx=1&amp;sn=4a5467f1360db29e3dd0e9f9c5b674ee" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg5MDczNDI0Nw==&amp;mid=2247505834&amp;idx=1&amp;sn=4a5467f1360db29e3dd0e9f9c5b674ee</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

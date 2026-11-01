@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">问题排查工具清单！</h1>
+  <p class="lede">Java 问题排查工具速查：Linux 命令、JDK 工具与 IDEA 插件</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 10 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>awk 基础命令</a>
+          <a href="#sec-02"><span class="n">02</span>awk 匹配</a>
+          <a href="#sec-03"><span class="n">03</span>awk 内建变量</a>
+          <a href="#sec-04"><span class="n">04</span>查看堆情况</a>
+          <a href="#sec-05"><span class="n">05</span>导出堆 dump</a>
+          <a href="#sec-06"><span class="n">06</span>堆占用 Top 类</a>
+          <a href="#sec-07"><span class="n">07</span>追踪类加载来源</a>
+          <a href="#sec-08"><span class="n">08</span>OOM 自动留堆</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 awk 基础命令</a>
+          <a href="#sec-02">02 awk 匹配</a>
+          <a href="#sec-03">03 awk 内建变量</a>
+          <a href="#sec-04">04 查看堆情况</a>
+          <a href="#sec-05">05 导出堆 dump</a>
+          <a href="#sec-06">06 堆占用 Top 类</a>
+          <a href="#sec-07">07 追踪类加载来源</a>
+          <a href="#sec-08">08 OOM 自动留堆</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>写在前面</p>
+<p>作者：红魔七号 链接：https://developer.aliyun.com/article/69520</p>
+<p>Linux命令类</p>
+<p>tail</p>
+<p>最常用的tail -f</p>
+<ul><li>tail -300f shopbase.log #倒数300行并进入实时监听文件写入模式</li></ul>
+<p>grep</p>
+<ul><li>grep forest f.txt     #文件查找</li><li>grep forest f.txt cpf.txt #多文件查找</li><li>grep &#x27;log&#x27; /home/admin -r -n #目录下查找所有符合关键字的文件</li><li>cat f.txt | grep -i shopbase</li><li>grep &#x27;shopbase&#x27; /home/admin -r -n --include *.{vm,java} #指定文件后缀</li><li>grep &#x27;shopbase&#x27; /home/admin -r -n --exclude *.{vm,java} #反匹配</li><li>seq 10 | grep 5 -A 3    #上匹配</li><li>seq 10 | grep 5 -B 3    #下匹配</li><li>seq 10 | grep 5 -C 3    #上下匹配，平时用这个就妥了</li><li>cat f.txt | grep -c &#x27;SHOPBASE&#x27;</li></ul>
+<p>awk</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>awk 基础命令</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>awk &#x27;{print $4,$6}&#x27; 打印指定列，NR/FNR/FILENAME/NF 内建变量可辅助输出</li><li>echo 1:2:3:4 | awk -F: &#x27;{print $1,$2,$3,$4}&#x27; 用 -F 指定分隔符</li></ul></div>
+<ul><li>awk &#x27;{print $4,$6}&#x27; f.txt</li><li>awk &#x27;{print NR,$0}&#x27; f.txt cpf.txt</li><li>awk &#x27;{print FNR,$0}&#x27; f.txt cpf.txt</li><li>awk &#x27;{print FNR,FILENAME,$0}&#x27; f.txt cpf.txt</li><li>awk &#x27;{print FILENAME,&quot;NR=&quot;NR,&quot;FNR=&quot;FNR,&quot;$&quot;NF&quot;=&quot;$NF}&#x27; f.txt cpf.txt</li><li>echo 1:2:3:4 | awk -F: &#x27;{print $1,$2,$3,$4}&#x27;</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>awk 匹配</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>awk &#x27;/ldb/ {print}&#x27; 按正则匹配行，!/ldb/ 反向匹配</li><li>awk &#x27;/ldb/ &amp;&amp; /LISTEN/ {print}&#x27; 可组合多个匹配条件</li><li>$5 ~ /ldb/ 只对第 5 列做匹配</li></ul></div>
+<ul><li>awk &#x27;/ldb/ {print}&#x27; f.txt   #匹配ldb</li><li>awk &#x27;!/ldb/ {print}&#x27; f.txt  #不匹配ldb</li><li>awk &#x27;/ldb/ &amp;&amp; /LISTEN/ {print}&#x27; f.txt   #匹配ldb和LISTEN</li><li>awk &#x27;$5 ~ /ldb/ {print}&#x27; f.txt #第五列匹配ldb</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>awk 内建变量</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>NR 是 awk 开始执行后累计读取的记录数，默认等于行数</li><li>FNR 每处理一个新文件从 1 重新计数，适合多文件场景</li><li>NF 是当前记录被分割出的字段数目</li></ul><div class="pit"><ul><li>多文件处理时 NR 不会重置、继续累加，需改用 FNR 按文件计数</li></ul></div></div>
+<ul><li>NR：NR表示从awk开始执行后，按照记录分隔符读取的数据次数，默认的记录分隔符为换行符，因此默认的就是读取的数据行数，NR可以理解为Number of Record的缩写。</li><li>FNR：在awk处理多个输入文件的时候，在处理完第一个文件后，NR并不会从1开始，而是继续累加，因此就出现了FNR，每当处理一个新文件的时候，FNR就从1开始计数，FNR可以理解为File Number of Record。</li><li>NF: NF表示目前的记录被分割的字段的数目，NF可以理解为Number of Field。</li></ul>
+<p>find</p>
+<ul><li>sudo -u admin find /home/admin /tmp /usr -name \*.log(多个目录去找)</li><li>find . -iname \*.txt(大小写都匹配)</li><li>find . -type d(当前目录下的所有子目录)</li><li>find /usr -type l(当前目录下所有的符号链接)</li><li>find /usr -type l -name &quot;z*&quot; -ls(符号链接的详细信息 eg:inode,目录)</li><li>find /home/admin -size +250000k(超过250000k的文件，当然+改成-就是小于了)</li><li>find /home/admin f -perm 777 -exec ls -l {} \; (按照权限查询文件)</li><li>find /home/admin -atime -1  1天内访问过的文件</li><li>find /home/admin -ctime -1  1天内状态改变过的文件</li><li>find /home/admin -mtime -1  1天内修改过的文件</li><li>find /home/admin -amin -1  1分钟内访问过的文件</li><li>find /home/admin -cmin -1  1分钟内状态改变过的文件</li><li>find /home/admin -mmin -1  1分钟内修改过的文件</li></ul>
+<p>top</p>
+<p>top除了看一些基本信息之外，剩下的就是配合来查询vm的各种问题了</p>
+<ul><li>ps -ef | grep java</li><li>top -H -p pid</li></ul>
+<p>获得线程10进制转16进制后jstack去抓看这个线程到底在干啥</p>
+<p>netstat -nat|awk  &#x27;{print $6}&#x27;|sort|uniq -c|sort -rn #查看当前连接，注意close_wait偏高的情况。</p>
+<p>比如如下：</p>
+<p>java七板斧</p>
+<p>jps</p>
+<p>我只用一条命令：</p>
+<ul><li>jps -mlvV</li></ul>
+<p>jstack</p>
+<p>普通用法:</p>
+<ul><li>jstack 2815</li></ul>
+<p>native+java栈:</p>
+<ul><li>jstack -m 2815</li></ul>
+<p>jinfo</p>
+<p>可看系统启动的参数，如下</p>
+<ul><li>jinfo -flags 2815</li></ul>
+<p>jmap</p>
+<p>两个用途</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>查看堆情况</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>jmap -heap 2815 查看进程堆的总体情况</li></ul></div>
+<ul><li>jmap -heap 2815</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>导出堆 dump</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>jmap -dump:live,format=b,file=/tmp/heap2.bin 2815 导出存活对象堆</li><li>去掉 live 则用 jmap -dump:format=b,file=/tmp/heap3.bin 2815 导出全量堆</li></ul></div>
+<ul><li>jmap -dump:live,format=b,file=/tmp/heap2.bin 2815</li><li>jmap -dump:format=b,file=/tmp/heap3.bin 2815</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>堆占用 Top 类</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>jmap -histo 2815 | head -10 快速看堆被哪些类占用 Top10</li></ul></div>
+<ul><li>jmap -histo 2815 | head -10</li></ul>
+<p>jstat</p>
+<p>jstat参数众多，但是使用一个就够了</p>
+<ul><li>jstat -gcutil 2815 1000</li></ul>
+<p>jdb</p>
+<p>时至今日，jdb也是经常使用的。</p>
+<p>jdb可以用来预发debug,假设你预发的java_home是/opt/taobao/java/，远程调试端口是8000.那么</p>
+<p>sudo -u admin /opt/taobao/java/bin/jdb -attach 8000.</p>
+<p>出现以上代表jdb启动成功。后续可以进行设置断点进行调试。</p>
+<p>具体参数可见oracle官方说明：</p>
+<p>http://docs.oracle.com/javase/7/docs/technotes/tools/windows/jdb.html</p>
+<p>plugin of intellij idea</p>
+<p>key promoter</p>
+<p>快捷键一次你记不住，多来几次你总能记住了吧？</p>
+<p>maven helper</p>
+<p>分析maven依赖的好帮手。</p>
+<p>Alibaba Java Coding Guidelines</p>
+<p>安装该插件后，代码超过 80 行、手动创建线程池等，这些和《手册》中的规约不符时，IDEA中会给出警告提示。</p>
+<p>建议大家一定一定一定要安装该插件，它会帮助你检查出很多隐患，督促你写更规范的代码。</p>
+<p>Stackoverflow</p>
+<p>这个插件其实是最实用的插件，程序猿遇到的问题，基本都能找到回答，但是它使用的是google搜索引擎。</p>
+<p>对于不购买vpn的同学来说，感觉好鸡肋呀~</p>
+<p>GrepConsole</p>
+<p>Idea console输出日志一大推，想要快速找到自己想要的类型日志，使用此插件可以快速定位到自己关注的类型日志，比如error，warn，自己也可以配置自己喜欢的颜色~</p>
+<p>IdeaJad</p>
+<p>以前查看class文件形式的时候或者jar，都会使用一个外部反编译工具，这样操作明显不方便，使用此插件可以一直在idea中查看文件~</p>
+<p>VM options</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>追踪类加载来源</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>加 -XX:+TraceClassLoading 可打印每个类从哪个文件加载</li><li>输出形如 [Loaded java.lang... from rt.jar]，直接定位来源</li></ul></div>
+<ul><li>-XX:+TraceClassLoading</li><li>结果形如[Loaded java.lang.invoke.MethodHandleImpl$Lazy from D:\programme\jdk\jdk8U74\jre\lib\rt.jar]</li></ul>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>OOM 自动留堆</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>-XX:+HeapDumpOnOutOfMemoryError 让应用 OOM 时自动生成堆 dump</li><li>-XX:HeapDumpPath=/home/admin/logs/java.hprof 指定 dump 输出路径</li></ul></div>
+<ul><li>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/admin/logs/java.hprof</li></ul>
+<p>jar包冲突</p>
+<p>把这个单独写个大标题不过分吧？</p>
+<p>每个人或多或少都处理过这种烦人的case。</p>
+<p>我特么下边这么多方案不信就搞不定你?</p>
+<ul><li>mvn dependency:tree &gt; ~/dependency.txt</li></ul>
+<p>打出所有依赖</p>
+<ul><li>mvn dependency:tree -Dverbose -Dincludes=groupId:artifactId</li></ul>
+<p>只打出指定groupId和artifactId的依赖关系</p>
+<ul><li>-XX:+TraceClassLoading</li></ul>
+<p>vm启动脚本加入。在tomcat启动脚本中可见加载类的详细信息</p>
+<ul><li>-verbose</li></ul>
+<p>dmesg</p>
+<p>如果发现自己的java进程悄无声息的消失了，几乎没有留下任何线索，那么dmesg一发，很有可能有你想要的。</p>
+<ul><li>sudo dmesg|grep -i kill|less</li></ul>
+<p>去找关键字oom_killer。找到的结果类似如下:</p>
+<ul><li>[6710782.021013] java invoked oom-killer: gfp_mask=0xd0, order=0, oom_adj=0, oom_scoe_adj=0</li><li>[6710782.070639] [&lt;ffffffff81118898&gt;] ? oom_kill_process+0x68/0x140</li><li>[6710782.257588] Task in /LXC011175068174 killed as a result of limit of /LXC011175068174</li><li>[6710784.698347] Memory cgroup out of memory: Kill process 215701 (java) score 854 or sacrifice child</li><li>[6710784.707978] Killed process 215701, UID 679, (java) total-vm:11017300kB, anon-rss:7152432kB, file-rss:1232kB</li></ul>
+<p>以上表明，对应的java进程被系统的OOM Killer给干掉了，得分为854。</p>
+<p>解释一下OOM killer（Out-Of-Memory killer），该机制会监控机器的内存资源消耗。</p>
+<p>当机器内存耗尽前，该机制会扫描所有的进程（按照一定规则计算，内存占用，时间等），挑选出得分最高的进程，然后杀死，从而保护机器。</p>
+<p>dmesg 日志时间转换公式:</p>
+<p>log实际时间=格林威治1970-01-01+(当前时间秒数-系统启动至今的秒数+dmesg打印的log时间)秒数：</p>
+<ul><li>date -d &quot;1970-01-01 UTC `echo &quot;$(date +%s)-$(cat /proc/uptime|cut -f 1 -d&#x27; &#x27;)+12288812.926194&quot;|bc ` seconds&quot;</li></ul>
+<p>剩下的，就是看看为什么内存这么大，触发了OOM-Killer了。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>NR 与 FNR</h4><p>NR 从 awk 执行开始累计记录数，跨文件不重置；FNR 每处理一个新文件就从 1 重新计数。</p><a class="src-link" href="#sec-03">原文 → awk 内建变量</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>grep 前后文匹配</h4><p>seq 10 | grep 5 -A 3 上匹配、-B 3 下匹配、-C 3 上下匹配，日常排查用 -C 就妥了。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>jmap 导出堆 dump</h4><p>jmap -dump:live,format=b,file=/tmp/heap2.bin 2815 导出存活对象堆；去掉 live 导出全量。</p><a class="src-link" href="#sec-05">原文 → 导出堆 dump</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>jstat 看 GC 一条就够</h4><p>jstat 参数众多，但日常使用 jstat -gcutil 2815 1000 一个就够了。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>OOM 自动留堆</h4><p>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/admin/logs/java.hprof，应用挂了自动输出 dump。</p><a class="src-link" href="#sec-08">原文 → OOM 自动留堆</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>类加载来源追踪</h4><p>-XX:+TraceClassLoading 输出 [Loaded 类名 from jar路径]，定位类从哪个文件加载。</p><a class="src-link" href="#sec-07">原文 → 追踪类加载来源</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>代码规范插件告警</h4><p>Alibaba Java Coding Guidelines 会在代码超过 80 行、手动创建线程池等不合规时给出警告。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>jar 包冲突排查</h4><p>mvn dependency:tree 打全量依赖；加 -Dverbose -Dincludes=groupId:artifactId 只打指定依赖关系。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>OOM Killer 杀进程实录</h4><p>dmesg 显示 java 进程 anon-rss:7152432kB，被 OOM Killer 以得分 854 杀死。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>排查先看日志：tail -300f 实时监听，grep 递归加 -C 看上下文。</li>
+          <li>进程/内存问题认准 JDK 工具链：jps、jstack、jmap、jstat 各管一段。</li>
+          <li>兜底两招：jar 冲突用 mvn dependency:tree，进程消失查 dmesg 的 oom_killer。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247514221&amp;idx=1&amp;sn=48e53c564c177dc309bc9e6174868d7a" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247514221&amp;idx=1&amp;sn=48e53c564c177dc309bc9e6174868d7a</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

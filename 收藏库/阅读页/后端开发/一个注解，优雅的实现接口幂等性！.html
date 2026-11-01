@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">一个注解，优雅的实现接口幂等性！</h1>
+  <p class="lede">用自定义注解 + AOP + Redis 优雅实现接口幂等性</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 16 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>什么是幂等性</a>
+          <a href="#sec-02"><span class="n">02</span>哪些请求天然幂等</a>
+          <a href="#sec-03"><span class="n">03</span>为什么需要幂等</a>
+          <a href="#sec-04"><span class="n">04</span>超时重试</a>
+          <a href="#sec-05"><span class="n">05</span>异步回调</a>
+          <a href="#sec-06"><span class="n">06</span>消息队列</a>
+          <a href="#sec-07"><span class="n">07</span>实现幂等的关键因素</a>
+          <a href="#sec-08"><span class="n">08</span>注解实现幂等性</a>
+          <a href="#sec-09"><span class="n">09</span>自定义注解</a>
+          <a href="#sec-10"><span class="n">10</span>统一的请求入参对象</a>
+          <a href="#sec-11"><span class="n">11</span>AOP 处理</a>
+          <a href="#sec-12"><span class="n">12</span>Token 值生成</a>
+          <a href="#sec-13"><span class="n">13</span>请求示例</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 什么是幂等性</a>
+          <a href="#sec-02">02 哪些请求天然幂等</a>
+          <a href="#sec-03">03 为什么需要幂等</a>
+          <a href="#sec-04">04 超时重试</a>
+          <a href="#sec-05">05 异步回调</a>
+          <a href="#sec-06">06 消息队列</a>
+          <a href="#sec-07">07 实现幂等的关键因素</a>
+          <a href="#sec-08">08 注解实现幂等性</a>
+          <a href="#sec-09">09 自定义注解</a>
+          <a href="#sec-10">10 统一的请求入参对象</a>
+          <a href="#sec-11">11 AOP 处理</a>
+          <a href="#sec-12">12 Token 值生成</a>
+          <a href="#sec-13">13 请求示例</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>什么是幂等性</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>幂等：同一接口重复多次请求与一次请求产生相同结果</li><li>生产环境应保证任何接口都幂等，需要严谨设计</li></ul></div>
+<p>简单来说，就是对一个接口执行重复的多次请求，与一次请求所产生的结果是相同的，听起来非常容易理解，但要真正的在系统中要始终保持这个目标，是需要很严谨的设计的，在实际的生产环境下，我们应该保证任何接口都是幂等的，而如何正确的实现幂等，就是本文要讨论的内容。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>哪些请求天然幂等</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>查询天然幂等；删除多数幂等，ABA 场景除外</li><li>更新多数幂等，但 update a=a+1 自增更新非幂等</li><li>插入多数非幂等，可用数据库唯一索引保证不重复</li></ul><div class="pit"><ul><li>ABA 问题：删除后重建的同标识数据会被重试删除误删</li><li>update table set a = a + 1 where v = 1 非幂等</li></ul></div></div>
+<p>首先，我们要知道查询类的请求一般都是天然幂等的，除此之外，删除请求在大多数情况下也是幂等的，但是ABA场景下除外。</p>
+<p>举一个简单的例子</p>
+<p>比如，先请求了一次删除A的操作，但由于响应超时，又自动请求了一次删除A的操作，如果在两次请求之间，又插入了一次A，而实际上新插入的这一次A，是不应该被删除的，这就是ABA问题，不过，在大多数业务场景中，ABA问题都是可以忽略的。</p>
+<p>除了查询和删除之外，还有更新操作，同样的更新操作在大多数场景下也是天然幂等的，其例外是也会存在ABA的问题，更重要的是，比如执行update table set a = a + 1 where v = 1这样的更新就非幂等了。</p>
+<p>最后，就还剩插入了，插入大多数情况下都是非幂等的，除非是利用数据库唯一索引来保证数据不会重复产生。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>为什么需要幂等</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>从三个场景说明为什么需要保证幂等</li><li>超时重试、异步回调、消息队列都会产生重复请求</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>超时重试</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>请求实际已发出但响应超时，重试会让服务端重复执行</li><li>请求方重新发起请求时，被请求方需保证幂等</li></ul></div>
+<p>当发起一次RPC请求时，难免会因为网络不稳定而导致请求失败，一般遇到这样的问题我们希望能够重新请求一次，正常情况下没有问题，但有时请求实际上已经发出去了，只是在请求响应时网络异常或者超时，此时，请求方如果再重新发起一次请求，那被请求方就需要保证幂等了。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>异步回调</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>异步回调是提升系统接口吞吐量的常用方式</li><li>异步回调类接口必须保证幂等</li></ul></div>
+<p>异步回调是提升系统接口吞吐量的一种常用方式，很明显，此类接口一定是需要保证幂等性的。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>消息队列</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Kafka/RocketMQ/RabbitMQ 采用 At least once 原则，允许重复消息</li><li>消息队列不保证无重复，消费者需保证处理逻辑幂等</li></ul></div>
+<p>现在常用的消息队列框架，比如：Kafka、RocketMQ、RabbitMQ在消息传递时都会采取At least once原则（也就是至少一次原则，在消息传递时，不允许丢消息，但是允许有重复的消息），既然消息队列不保证不会出现重复的消息，那消费者自然要保证处理逻辑的幂等性了。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>实现幂等的关键因素</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>幂等唯一标识（幂等号/幂等令牌/全局ID），一般由客户端生成</li><li>服务端确保唯一标识只被使用一次，如数据库唯一索引</li></ul></div>
+<p>关键因素1</p>
+<p>幂等唯一标识，可以叫它幂等号或者幂等令牌或者全局ID，总之就是客户端与服务端一次请求时的唯一标识，一般情况下由客户端来生成，也可以让第三方来统一分配。</p>
+<p>关键因素2</p>
+<p>有了唯一标识以后，服务端只需要确保这个唯一标识只被使用一次即可，一种常见的方式就是利用数据库的唯一索引。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>注解实现幂等性</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>演示一种利用 Redis 实现幂等的方案</li><li>核心流程：注解标记 → AOP 拦截 → token 判定</li></ul></div>
+<p>下面演示一种利用Redis来实现的方式。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>自定义注解</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>定义 @Idempotent 注解，含 name、field、type 三个属性</li><li>name 指定从哪个参数取值，field 指定取哪个属性，type 指定参数类型</li></ul></div>
+<ul><li>import java.lang.annotation.ElementType;</li><li>import java.lang.annotation.Retention;</li><li>import java.lang.annotation.RetentionPolicy;</li><li>import java.lang.annotation.Target;</li><li>@Target(value = ElementType.METHOD)</li><li>@Retention(RetentionPolicy.RUNTIME)</li><li>public @interface Idempotent {</li><li>/**</li><li>* 参数名，表示将从哪个参数中获取属性值。</li><li>* 获取到的属性值将作为KEY。</li><li>* @return</li><li>String name() default &quot;&quot;;</li><li>/**</li><li>* 属性，表示将获取哪个属性的值。</li><li>* @return</li><li>String field() default &quot;&quot;;</li><li>/**</li><li>* 参数类型</li><li>* @return</li><li>Class type();</li></ul>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>统一的请求入参对象</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>RequestData&lt;T&gt; 统一封装 Header（含 token）与 body</li><li>示例 Order 实体含 orderNo 字段</li></ul></div>
+<ul><li>@Data</li><li>public class RequestData&lt;T&gt; {</li><li>private Header header;</li><li>private T body;</li><li>@Data</li><li>public class Header {</li><li>private String token;</li><li>@Data</li><li>public class Order {</li><li>String orderNo;</li></ul>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>AOP 处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>@Pointcut 拦截带 @Idempotent 注解的方法，@Around 环绕处理</li><li>反射取注解的 field/name/type，从 RequestData 取 token</li><li>Redis delete(token) 为 true 则放行，否则返回“重复请求”</li></ul></div>
+<ul><li>import com.springboot.micrometer.annotation.Idempotent;</li><li>import com.springboot.micrometer.entity.RequestData;</li><li>import com.springboot.micrometer.idempotent.RedisIdempotentStorage;</li><li>import org.aspectj.lang.ProceedingJoinPoint;</li><li>import org.aspectj.lang.annotation.Around;</li><li>import org.aspectj.lang.annotation.Aspect;</li><li>import org.aspectj.lang.annotation.Pointcut;</li><li>import org.aspectj.lang.reflect.MethodSignature;</li><li>import org.springframework.stereotype.Component;</li><li>import javax.annotation.Resource;</li><li>import java.lang.reflect.Method;</li><li>import java.util.Map;</li><li>@Aspect</li><li>@Component</li><li>public class IdempotentAspect {</li><li>@Resource</li><li>private RedisIdempotentStorage redisIdempotentStorage;</li><li>@Pointcut(&quot;@annotation(com.springboot.micrometer.annotation.Idempotent)&quot;)</li><li>public void idempotent() {</li><li>@Around(&quot;idempotent()&quot;)</li><li>public Object methodAround(ProceedingJoinPoint joinPoint) throws Throwable {</li><li>MethodSignature signature = (MethodSignature) joinPoint.getSignature();</li><li>Method method = signature.getMethod();</li><li>Idempotent idempotent = method.getAnnotation(Idempotent.class);</li><li>String field = idempotent.field();</li><li>String name = idempotent.name();</li><li>Class clazzType = idempotent.type();</li><li>String token = &quot;&quot;;</li><li>Object object = clazzType.newInstance();</li><li>Map&lt;String, Object&gt; paramValue = AopUtils.getParamValue(joinPoint);</li><li>if (object instanceof RequestData) {</li><li>RequestData idempotentEntity = (RequestData) paramValue.get(name);</li><li>token = String.valueOf(AopUtils.getFieldValue(idempotentEntity.getHeader(), field));</li><li>if (redisIdempotentStorage.delete(token)) {</li><li>return joinPoint.proceed();</li><li>return &quot;重复请求&quot;;</li><li>import org.aspectj.lang.ProceedingJoinPoint;</li><li>import org.aspectj.lang.reflect.CodeSignature;</li><li>import java.lang.reflect.Field;</li><li>import java.util.HashMap;</li><li>import java.util.Map;</li><li>public class AopUtils {</li><li>public static Object getFieldValue(Object obj, String name) throws Exception {</li><li>Field[] fields = obj.getClass().getDeclaredFields();</li><li>Object object = null;</li><li>for (Field field : fields) {</li><li>field.setAccessible(true);</li><li>if (field.getName().toUpperCase().equals(name.toUpperCase())) {</li><li>object = field.get(obj);</li><li>break;</li><li>return object;</li><li>public static Map&lt;String, Object&gt; getParamValue(ProceedingJoinPoint joinPoint) {</li><li>Object[] paramValues = joinPoint.getArgs();</li><li>String[] paramNames = ((CodeSignature) joinPoint.getSignature()).getParameterNames();</li><li>Map&lt;String, Object&gt; param = new HashMap&lt;&gt;(paramNames.length);</li><li>for (int i = 0; i &lt; paramNames.length; i++) {</li><li>param.put(paramNames[i], paramValues[i]);</li><li>return param;</li></ul>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>Token 值生成</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>IdempotentStorage 接口定义 save/delete，Redis 实现保存 10 分钟</li><li>IdGeneratorUtil 用 UUID 生成 token，控制器提供 token 获取接口</li></ul></div>
+<ul><li>import com.springboot.micrometer.idempotent.RedisIdempotentStorage;</li><li>import com.springboot.micrometer.util.IdGeneratorUtil;</li><li>import org.springframework.web.bind.annotation.RequestMapping;</li><li>import org.springframework.web.bind.annotation.RestController;</li><li>import javax.annotation.Resource;</li><li>@RestController</li><li>@RequestMapping(&quot;/idGenerator&quot;)</li><li>public class IdGeneratorController {</li><li>@Resource</li><li>private RedisIdempotentStorage redisIdempotentStorage;</li><li>@RequestMapping(&quot;/getIdGeneratorToken&quot;)</li><li>public String getIdGeneratorToken() {</li><li>String generateId = IdGeneratorUtil.generateId();</li><li>redisIdempotentStorage.save(generateId);</li><li>return generateId;</li><li>public interface IdempotentStorage {</li><li>void save(String idempotentId);</li><li>boolean delete(String idempotentId);</li><li>import org.springframework.data.redis.core.RedisTemplate;</li><li>import org.springframework.stereotype.Component;</li><li>import javax.annotation.Resource;</li><li>import java.io.Serializable;</li><li>import java.util.concurrent.TimeUnit;</li><li>@Component</li><li>public class RedisIdempotentStorage implements IdempotentStorage {</li><li>@Resource</li><li>private RedisTemplate&lt;String, Serializable&gt; redisTemplate;</li><li>@Override</li><li>public void save(String idempotentId) {</li><li>redisTemplate.opsForValue().set(idempotentId, idempotentId, 10, TimeUnit.MINUTES);</li><li>@Override</li><li>public boolean delete(String idempotentId) {</li><li>return redisTemplate.delete(idempotentId);</li><li>import java.util.UUID;</li><li>public class IdGeneratorUtil {</li><li>public static String generateId() {</li><li>return UUID.randomUUID().toString();</li></ul>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>请求示例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>调用前先申请 token，携带 token 再请求业务接口</li><li>@Idempotent(name = &quot;requestData&quot;, type = RequestData.class, field = &quot;token&quot;) 标记 saveOrder</li><li>第一次请求成功，第二次请求失败（重复请求）</li></ul></div>
+<p>调用接口之前，先申请一个token，然后带着服务端返回的token值，再去请求。</p>
+<ul><li>import com.springboot.micrometer.annotation.Idempotent;</li><li>import com.springboot.micrometer.entity.Order;</li><li>import com.springboot.micrometer.entity.RequestData;</li><li>import org.springframework.web.bind.annotation.RequestBody;</li><li>import org.springframework.web.bind.annotation.RequestMapping;</li><li>import org.springframework.web.bind.annotation.RestController;</li><li>@RestController</li><li>@RequestMapping(&quot;/order&quot;)</li><li>public class OrderController {</li><li>@RequestMapping(&quot;/saveOrder&quot;)</li><li>@Idempotent(name = &quot;requestData&quot;, type = RequestData.class, field = &quot;token&quot;)</li><li>public String saveOrder(@RequestBody RequestData&lt;Order&gt; requestData) {</li><li>return &quot;success&quot;;</li></ul>
+<p>请求获取token值。</p>
+<p>带着token值，第一次请求成功。</p>
+<p>第二次请求失败。</p>
+<p>来源：blog.csdn.net/CSDN_WYL2016/article/details/122993086</p>
+<p>—END—</p>
+<p>警报炸锅了，FastJson 又立功了。。</p>
+<p>Spring 中的 Service 有多个实现类，怎么注入？</p>
+<p>对线面试官：说出 Java 中的 7 种重试机制</p>
+<p>Controller 就该这么写，简洁又优雅！</p>
+<p>别再分库分表了，来试试TiDB！</p>
+<p>3种方案，彻底解决跨域问题！</p>
+<p>ES 和 Clickhouse 查询能力对比，实践结果根本料不到</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>幂等 vs 非幂等操作</h4><p>查询天然幂等；删除、更新多数幂等；插入多数非幂等。ABA 与自增更新 a=a+1 是例外。</p><a class="src-link" href="#sec-02">原文 → 哪些请求天然幂等</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>幂等两大关键因素</h4><p>客户端生成幂等唯一标识（幂等号/令牌/全局ID），服务端保证其只被使用一次，如数据库唯一索引。</p><a class="src-link" href="#sec-07">原文 → 实现幂等的关键因素</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>三大重复请求来源</h4><p>超时重试、异步回调、消息队列 At least once 投递，都会带来重复请求。</p><a class="src-link" href="#sec-03">原文 → 为什么需要幂等</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>@Idempotent 注解</h4><p>自定义注解声明 name（参数名）、type（参数类型）、field（取值字段），标记需幂等的方法。</p><a class="src-link" href="#sec-09">原文 → 自定义注解</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>AOP 切面判断首次请求</h4><p>切面取注解参数，从 RequestData 的 Header 取 token，Redis delete(token) 为 true 才放行执行。</p><a class="src-link" href="#sec-11">原文 → AOP 处理</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>token 预存流程</h4><p>调用前请求 token 接口，Redis 保存后返回，再携带 token 调业务接口；二次请求被拦截。</p><a class="src-link" href="#sec-12">原文 → Token 值生成</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Redis 10 分钟有效期</h4><p>token 以 10 分钟有效期存入 Redis（TimeUnit.MINUTES），AOP 用 delete 返回值判断是否首次请求。</p><a class="src-link" href="#sec-12">原文 → Token 值生成</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>ABA 问题</h4><p>删除 A 后超时重试删除 A，期间若重新插入 A，新数据会被误删，多数业务场景可忽略。</p><a class="src-link" href="#sec-02">原文 → 哪些请求天然幂等</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>自增更新非幂等</h4><p>update table set a = a + 1 where v = 1 每次执行结果不同，属非幂等更新。</p><a class="src-link" href="#sec-02">原文 → 哪些请求天然幂等</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>幂等的本质是同一请求重复多次与执行一次结果一致，实现关键是唯一标识 + 标识只用一次。</li>
+          <li>落地套路：@Idempotent 注解声明取 token 的参数，AOP 拦截后用 Redis delete 判定首/重复请求。</li>
+          <li>调用前先申请 token 再请求业务接口，重复请求直接返回“重复请求”，不再执行业务逻辑。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzI3MDM0MzAyMg==&amp;mid=2247499738&amp;idx=1&amp;sn=c97a4dfb25e271e9f41354edc060de88" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzI3MDM0MzAyMg==&amp;mid=2247499738&amp;idx=1&amp;sn=c97a4dfb25e271e9f41354edc060de88</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

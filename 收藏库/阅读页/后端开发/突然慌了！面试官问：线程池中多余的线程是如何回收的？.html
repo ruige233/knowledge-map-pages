@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">突然慌了！面试官问：线程池中多余的线程是如何回收的？</h1>
+  <p class="lede">以JDK1.8源码解析线程池多余工作线程的回收机制</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 11 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>runWorker循环与退出</a>
+          <a href="#sec-02"><span class="n">02</span>getTask返回null的条件</a>
+          <a href="#sec-03"><span class="n">03</span>分场景回收分析</a>
+          <a href="#sec-04"><span class="n">04</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 runWorker循环与退出</a>
+          <a href="#sec-02">02 getTask返回null的条件</a>
+          <a href="#sec-03">03 分场景回收分析</a>
+          <a href="#sec-04">04 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>submit提交线程后，被包装为RunnableFuture；调用execute方法，在ThreadPoolExecutor中包装成Worker；对比核心线程、最大线程、任务队列等参数。 工作线程启动后，就进入runWorker(Worker w)方法。 里面是一个while循环，循环判断任务是否为空，若不为空，执行任务；若取不到任务，或发生异常，退出循环，执行processWorkerExit(w, completedAbruptly); 在这个方法里把工作线程移除掉。</th></tr></thead><tbody></tbody></table>
+<p>最近阅读了JDK线程池ThreadPoolExecutor的源码，对线程池执行任务的流程有了大体了解，实际上这个流程也十分通俗易懂，就不再赘述了，别人写的比我好多了。</p>
+<p>不过，我倒是对线程池是如何回收工作线程比较感兴趣，所以简单分析了一下，加深对线程池的理解吧。</p>
+<p>那么，就以JDK1.8为例分析吧。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>runWorker循环与退出</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>runWorker内是while循环，取到任务就执行，取不到或异常则退出。</li><li>firstTask只执行一次，后续任务从getTask()获取。</li><li>getTask()返回null即结束线程并执行processWorkerExit。</li></ul></div>
+<p>工作线程启动后，就进入runWorker(Worker w)方法。</p>
+<p>里面是一个while循环，循环判断任务是否为空，若不为空，执行任务；若取不到任务，或发生异常，退出循环，执行processWorkerExit(w, completedAbruptly); 在这个方法里把工作线程移除掉。</p>
+<p>取任务的来源有两个，一个是firstTask，这个是工作线程第一次跑的时候执行的任务，最多只能执行一次，后面得从getTask()方法里取任务。看来，getTask()是关键，在不考虑异常的场景下，返回null，就表示退出循环，结束线程。下一步，就得看看，什么情况下getTask()会返回null。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>getTask返回null的条件</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>条件1：池状态为STOP/TIDYING/TERMINATED，或SHUTDOWN且工作队列为空。</li><li>条件2：工作线程数大于最大线程数或当前线程已超时，且还有其他工作线程或队列为空。</li><li>两种条件分别命名为条件1、条件2，后续场景据此判断。</li></ul><div class="pit"><ul><li>条件2比较难理解，需结合后面场景才清晰</li></ul></div></div>
+<p>一共有两种情况会返回null，见红框处 。</p>
+<p>第一种情况，线程池的状态已经是STOP，TIDYING, TERMINATED，或者是SHUTDOWN且工作队列为空；</p>
+<p>第二种情况，工作线程数已经大于最大线程数或当前工作线程已超时，且，还有其他工作线程或任务队列为空。这点比较难理解，总之先记住，后面会用。</p>
+<p>下面以条件1和条件2分别指代这两种情况的判断条件。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>分场景回收分析</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>RUNNING且任务完成：线程数收敛到corePoolSize，核心线程默认不超时。</li><li>timed=true时超时取任务，取不到则CAS递减线程数返回null。</li><li>shutdown()后所有线程都会被销毁；任务未完成时tryTerminate()只中断任意一条空闲线程。</li><li>中断信号如多米诺骨牌般传播，最终唤醒所有阻塞线程。</li></ul><div class="pit"><ul><li>并发通过条件2也不会把线程减到核心数以下，CAS失败会重新循环判断。</li><li>线程并无核心/非核心之分，保留哪些线程完全随机。</li></ul></div></div>
+<p>3.1 未调用shutdown() ，RUNNING状态下全部任务执行完成的场景</p>
+<p>这种场景，会将工作线程的数量减少到核心线程数大小（如果本来就没有超过，则不需要回收）。</p>
+<p>比如一个线程池，核心线程数为4，最大线程数为8。一开始是4个工作线程，当任务把任务队列塞满，就得将工作线程增加到8. 当后面任务执行到差不多了，线程取不到任务了，就会回收到4个工作线程的状态（取决于allowCoreThreadTimeOut的值，这里讨论默认值false的情况，即核心线程不会超时。如果为true，工作线程可以全部销毁）。</p>
+<p>可以先排除上面提到的条件1，线程池的状态已经是STOP，TIDYING, TERMINATED，或者是SHUTDOWN且工作队列为空。因为线程池一直是RUNNING，这条判断永远是false。在这个场景中，可以当条件1不存在。</p>
+<p>下面分析取不出任务时线程是怎么运行的。</p>
+<p>step1. 从任务队列取任务有两种方式，超时等待还是可以一直阻塞下去。决定因素是timed变量。该变量在前面赋值，如果当前线程数大于核心线程数，变量timed为true, 否则为false（上面说了，这里只讨论allowCoreThreadTimeOut为false的情况）。很明显，现在讨论的是timed为true的情况。keepAliveTime一般不设置，默认值为0，所以基本上可以认为是不阻塞，马上返回取任务的结果。</p>
+<p>在线程超时等待唤醒之后，发现取不出任务，timeOut变为true，进入下一次循环。</p>
+<p>step2. 来到条件1的判断，线程池一直RUNNING, 不进入代码块。</p>
+<p>step3. 来到条件2的判断，这时任务队列为空，条件成立，CAS减少线程数，若成功，返回null，否则，重复step1。</p>
+<p>这里要注意，有可能多条线程同时通过条件2的判断，那会不会减少后线程的数量反而比预想的核心线程数少呢？</p>
+<p>比如当前线程数已经只有5条了，此时有两条线程同时唤醒，通过条件2的判断，同时减少数量，那剩下的线程数反而只有3条，和预期不一致。</p>
+<p>实际上是不会的。为了防止这种情况，compareAndDecrementWorkerCount(c) 用的是CAS方法，如果CAS失败就continue，进入下一轮循环，重新判断。</p>
+<p>像上述例子，其中一条线程会CAS失败，然后重新进入循环，发现工作线程数已经只有4了，timed为false, 这条线程就不会被销毁，可以一直阻塞了（workQueue.take())。</p>
+<p>这一点我思考了很久才得出答案，一直在想没有加锁的情况下是怎么保证一定能不多不少回收到核心线程数的呢。原来是CAS的奥妙。</p>
+<p>从这里也可以看出，虽然有核心线程数，但线程并没有区分是核心还是非核心，并不是先创建的就是核心，超过核心线程数后创建的就是非核心，最终保留哪些线程，完全随机。</p>
+<h3 class="sub">3.2 调用shutdown() ，全部任务执行完成的场景</h3>
+<p>这种场景，无论是核心线程还是非核心线程，所有工作线程都会被销毁。</p>
+<p>在调用shutdown()之后，会向所有的空闲工作线程发送中断信号。</p>
+<p>最终传入false，调用下面这个方法。</p>
+<p>可以看出，在发出中断信号前，会判断是否已经中断，以及要获得工作线程的独占锁。</p>
+<p>发出中断信号的时候，工作线程要么在getTask()里准备获取任务，要么在执行任务，那就得等它执行完当前任务才会发出，因为工作线程在执行任务的时候，也会工作线程加锁。工作线程执行完任务，又跑到getTask()里面去了。</p>
+<p>所以我们只要看getTask()里面怎么应对中断异常的就可以了。</p>
+<p>工作线程在getTask()里，有两种可能。</p>
+<h3 class="sub">3.2.1 任务已全部完成，线程在阻塞等待。</h3>
+<p>很简单，中断信号将其唤醒，从而进入下一轮循环。到达条件1处，符合条件，减少工作线程数量，并返回null，由外层结束这条线程。</p>
+<p>这里的decrementWorkerCount()是自旋式的，一定会减1。</p>
+<h3 class="sub">3.2.2 任务还没有完全执行完</h3>
+<p>调用shutdown()之后，未执行完的任务要执行完毕，池子才能结束。所以此时有可能线程还在工作。</p>
+<p>这里又要分两个阶段讨论</p>
+<p>阶段1：任务较多，工作线程都能获得任务</p>
+<p>这里还不涉及到线程退出，可以跳过不看，只是分析一下收到中断信号后线程的表现。</p>
+<p>假设有线程A，正通过getTask()里获取任务。此时A被中断，在获取任务时，无论是poll()还是take()，都会抛出中断异常。异常被捕获，重新进入下一轮循环，只要队列不为空，就可以继续取任务。</p>
+<p>线程A被中断，再次取任务，调用workQueue.poll() or workQueue.take()，不会抛出异常吗？还可以正常取出任务吗？</p>
+<p>这就要看workQueue的实现了。workQueue是BlockingQueue类型，以常见的LinkedBlockingQueue和ArrayBlockingQueue为例，加锁时都是调用lockInterruptibly()，是响应中断的。该方法又调用了AQS的acquireInterruptibly(int arg)。</p>
+<p>acquireInterruptibly(int arg)，无论是在入口处判断中断异常，还是在parkAndCheckInterrupt()方法阻塞，被中断唤醒并判断中断异常时，均使用了Thread.interrupted()。这个方法会返回线程的中断状态，并把中断状态重置！也就是说，线程不再是中断状态了，这样在再次取任务时，就不会报错了。</p>
+<p>因此，这对于正在准备取任务的线程，只是相当于浪费了一次循环，这可能是线程中断带来的副作用吧，当然，对整体的运行不影响。</p>
+<p>分析到这里，我不禁感叹，这里BlockingQueue刚好是会重置中断状态，这到底是怎么想出来的绝妙设计啊？Doug Lea大神Orz.</p>
+<p>阶段2：任务刚好要执行完了</p>
+<p>这时任务已经快取完了，比如有4条工作线程，只剩下2个任务，那就可能出现2条线程获得任务，2条线程阻塞。</p>
+<p>因为在获取任务前的判断，没有加锁，那么会不会出现，所有线程都通过了前面的校验，来到workQueue获取任务的地方，刚好任务队列已经空了，线程全部阻塞了呢？因为shutdown() 已经执行完毕，无法再向线程发出中断信号，从而线程一直在阻塞，无法被回收。</p>
+<p>这种是不会发生的。</p>
+<p>假设有A,B,C,D四条工作线程，同时通过了条件1和条件2的判断，来到取任务的地方。那么，工作队列至少还有一个任务，至少会有一条线程能取到任务。</p>
+<p>假设A，B获得了任务，C,D阻塞。</p>
+<p>A, B接下来的步骤是：</p>
+<p>step1.任务执行完成后，再次getTask()，此时符合条件1，返回null，线程准备被回收。</p>
+<p>step2.processWorkerExit(Worker w, boolean completedAbruptly) 将线程回收。</p>
+<p>回收就只是把线程干掉这么简单吗？来看看processWorkerExit(Worker w, boolean completedAbruptly) 的方法。</p>
+<p>可以看到，在里面除了workers.remove(w) 移除线，还调用了tryTerminate()。</p>
+<p>第一个判断条件没有一个子条件符合，跳过。第二个条件，工作线程还存在，那么随机中断一条空闲线程。</p>
+<p>那么问题就来了，中断一条空闲线程，也没说是一定中断正在阻塞的线程啊。如果A, B同时退出，有没有可能出现A中断B, B中断A，AB互相中断，从而没有线程去中断唤醒阻塞的线程呢？</p>
+<p>答案仍然是，想多了……</p>
+<p>假设A能走到这里，说明A已经从工作线程的集合workers里面移除了（processWorkerExit(Worker w, boolean completedAbruptly) 在tryTerminate()之前，已经将其移除）。那么A中断B，B来到这里中断，就不会在workers里面找到A了。</p>
+<p>也就是说，退出的线程不能互相中断，我从集合中退出后，中断了你，你不能中断我，因为我已经退出集合，你只能中断别人。那么，即使有N个线程同时退出，至少在最后，也会有一条线程，会中断剩余的阻塞线程。</p>
+<p>就像多米诺骨牌一样，中断信号就会被传播下去。</p>
+<p>阻塞的C，D中的任意一条被中断唤醒后，又会重复step1的动作，周而复始，直到所有阻塞线程都被中断，唤醒。</p>
+<p>这也是为什么在tryTerminate()里面，传入false，只需要中断任意一条空闲线程的原因。</p>
+<p>想到这里，再次对Doug Lea心生钦敬（粤语）之情。这设计得也太妙了叭。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>回收本质：getTask()返回null的线程被回收。</li><li>RUNNING场景：大于corePoolSize超时后CAS减数，小于等于则一直阻塞。</li><li>shutdown场景：全部阻塞则都返回null；任务未完则tryTerminate传播中断唤醒。</li></ul></div>
+<p>ThreadPoolExecutor回收工作线程，一条线程getTask()返回null，就会被回收。</p>
+<p>分两种场景。</p>
+<p>1) 未调用shutdown() ，RUNNING状态下全部任务执行完成的场景</p>
+<p>线程数量大于corePoolSize，线程超时阻塞，超时唤醒后CAS减少工作线程数，如果CAS成功，返回null，线程回收。否则进入下一次循环。当工作者线程数量小于等于corePoolSize，就可以一直阻塞了。</p>
+<p>2) 调用shutdown() ，全部任务执行完成的场景</p>
+<p>shutdown() 会向所有线程发出中断信号，这时有两种可能。</p>
+<h3 class="sub">2.1）所有线程都在阻塞</h3>
+<p>中断唤醒，进入循环，都符合第一个if判断条件，都返回null，所有线程回收。</p>
+<h3 class="sub">2.2）任务还没有完全执行完</h3>
+<p>至少会有一条线程被回收。在processWorkerExit(Worker w, boolean completedAbruptly)方法里会调用tryTerminate()，向任意空闲线程发出中断信号。所有被阻塞的线程，最终都会被一个个唤醒，回收。</p>
+<p>这一次的分析，昨晚开始写，写到一半卡壳，今天早上接着写，前后花了大概2+2=4个小时写博客以及1小时思考。</p>
+<p>说实话自己还是有点乱，无法一下子理解透彻，也不知道自己理解得对不对。</p>
+<p>有没有用，我也不知道，只能说，加深了对线程池的理解吧（安慰自己），同时也感慨设计之精妙。</p>
+<p>如有不正确的地方，请大家指正（如果有人看的话）。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>回收的本质</h4><p>一条线程getTask()返回null，就会被processWorkerExit回收。</p><a class="src-link" href="#sec-01">原文 → runWorker循环与退出</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>回收示例</h4><p>核心线程4、最大线程8的线程池，任务完成后从8回收到4。</p><a class="src-link" href="#sec-03">原文 → 分场景回收分析</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>CAS防多减</h4><p>compareAndDecrementWorkerCount(c)用CAS递减，失败则continue重判，避免并发把线程减到核心数以下。</p><a class="src-link" href="#sec-03">原文 → 分场景回收分析</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>核心线程误区</h4><p>线程并没有区分核心与非核心，最终保留哪些线程完全随机。</p><a class="src-link" href="#sec-03">原文 → 分场景回收分析</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>timed取值</h4><p>线程数大于corePoolSize时timed为true超时等待；否则为false可一直阻塞（workQueue.take()）。</p><a class="src-link" href="#sec-03">原文 → 分场景回收分析</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>shutdown后回收</h4><p>调用shutdown()后，无论核心还是非核心线程，所有工作线程都会被销毁。</p><a class="src-link" href="#sec-03">原文 → 分场景回收分析</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>只中断一条空闲线程</h4><p>tryTerminate()只需中断任意一条空闲线程，中断信号会像多米诺骨牌一样传播下去。</p><a class="src-link" href="#sec-03">原文 → 分场景回收分析</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>中断状态被重置</h4><p>BlockingQueue加锁用lockInterruptibly，内部Thread.interrupted()会重置中断状态，再次取任务不报错。</p><a class="src-link" href="#sec-03">原文 → 分场景回收分析</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>getTask()返回null是线程回收的开关，随后由processWorkerExit完成移除。</li>
+          <li>RUNNING下靠timed超时加CAS递减，把线程数稳定收敛到corePoolSize。</li>
+          <li>shutdown后靠中断信号多米诺传播，tryTerminate只需中断任意一条空闲线程。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzAwMTE3MDY4MQ==&amp;mid=2652474261&amp;idx=2&amp;sn=bd9fe67bb7cf8364a05784de973a4bb9" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwMTE3MDY4MQ==&amp;mid=2652474261&amp;idx=2&amp;sn=bd9fe67bb7cf8364a05784de973a4bb9</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

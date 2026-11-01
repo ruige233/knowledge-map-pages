@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">高度抽象代码方法总结</h1>
+  <p class="lede">四种高度抽象代码手法：模板方法、匿名内部类回调、Future模式与反射动态代理</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 14 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：后来丶_a24d 链接：https://www.jianshu.com/p/fadd3cf4ecf7</p>
+<ul><li>通过抽象方法给子类实现，从而达到高度抽象的目的，这里针对不同类而言</li><li>通过传递匿名内部类的形式将需要执行的内容传递给公共抽象类对应方法，这里适合类里面有多个方法需要抽象</li><li>future模式，异步执行，结果处理抽象， 具体实现各个子类实现</li><li>反射，动态代理抽象</li><li>ChatGPT中文网站：https://ai.cxyquan.com</li></ul>
+<p>通过抽象方法给子类实现，从而达到高度抽象的目的，这里针对不同类而言</p>
+<ul><li>public class Test {</li><li>public static void main(String[] args) {</li><li>TestService testService = new TestService();</li><li>testService.getResp(new Object());</li><li>private static class TestService extends BaseService {</li><li>public Object getResp(Object req) {</li><li>return service(req);</li><li>@Override</li><li>protected void validateRequest(Object o) {</li><li>System.out.println(&quot;来自TestService的验证&quot;);</li><li>public abstract class BaseService&lt;Request, Response&gt; {</li><li>/**</li><li>* 总体是通过抽象方法给子类实现，从而达到高度抽象的目的</li><li>public final Response service(Request request) {</li><li>System.out.println(&quot;调用公共的service&quot;);</li><li>// 各个子类实现</li><li>validateRequest(request);</li><li>// 各个子类实现，具体业务逻辑, 此处省略getBiz获取各个子类实际业务逻辑类</li><li>/*Response response = getBiz().biz(request);*/</li><li>System.out.println(&quot;结束调用公共的service&quot;);</li><li>// 只是展示</li><li>return null;</li><li>protected abstract void validateRequest(Request request);</li><li>/*protected abstract Biz&lt;Request, Response&gt; getBiz();*/</li><li>调用公共的service</li><li>来自TestService的验证</li><li>结束调用公共的service</li></ul>
+<p>通过传递匿名内部类的形式将需要执行的内容传递给公共抽象类对应方法，这里适合类里面有多个方法需要抽象</p>
+<ul><li>public class Provider extends AbstractProvider {</li><li>// 获取请求</li><li>public void get(final String key) {</li><li>executeCommand(key, () -&gt; System.out.println(&quot;执行了获取指令, key：&quot; + key), null);</li><li>// 判断是否存在</li><li>public void exists(final String key) {</li><li>executeCommand(key, () -&gt; System.out.println(&quot;执行了判断是否存在指令, key：&quot; + key), null);</li><li>public static void main(String[] args) {</li><li>Provider provider = new Provider();</li><li>provider.get(&quot;ss&quot;);</li><li>provider.exists(&quot;sss&quot;);</li><li>public abstract class AbstractProvider {</li><li>protected &lt;T&gt; void executeCommand(String key, Command&lt;T&gt; command, T defaultValue) {</li><li>command.execute();</li><li>public interface Command&lt;T&gt; {</li><li>void execute();</li></ul>
+<p>future模式，异步执行，结果处理抽象， 具体实现各个子类实现</p>
+<ul><li>先看下异步响应之后的调用时序图</li><li>这里在发送完请求之后，还会调用再次调用RequestFuture的compose方法，为RequestFuture增加listener，这里的listener作用是调用各个ResponHandleAdapter实现类，也就是各个请求的实现类。这样就把解析响应交回各个子类。时序图为: 1.1.1是future模式，1.1.2是为ReuqestFuture添加listener以便回调各个子类实现的onSuccess</li><li>具体看代码</li><li>public class SendJoinGroupRequest extends AbstractRequestSend implements ResponseHandleAdapter {</li><li>public void sendJoinGroupRequest(String s){</li><li>send(s).compose(this);</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>System.out.println(&quot;SendJoinGroupRequest执行结果: &quot; + s);</li><li>public static void main(String[] args) {</li><li>SendJoinGroupRequest sendJoinGroupRequest = new SendJoinGroupRequest();</li><li>sendJoinGroupRequest.sendJoinGroupRequest(&quot;测试发送JoinGroup检测请求&quot;);</li><li>// 写SendHeartbeatRequest 类似的</li><li>/* SendHeartbeatRequest sendHeartbeatRequest = new SendHeartbeatRequest();</li><li>sendHeartbeatRequest.sendHeartbeat(&quot;测试发送心跳检测请求&quot;);*/</li><li>public abstract class AbstractRequestSend {</li><li>/**</li><li>* 模拟异步执行任务</li><li>ExecutorService executorService = Executors.newSingleThreadExecutor();</li><li>public RequestFuture send(String s) {</li><li>// 这里是Future模式</li><li>RequestFuture requestFuture = new RequestFuture();</li><li>executorService.execute(new AsyncExeRemoteInvoke(requestFuture, s));</li><li>return requestFuture;</li><li>private static class AsyncExeRemoteInvoke implements Runnable {</li><li>private RequestFuture requestFuture;</li><li>private String s;</li><li>public AsyncExeRemoteInvoke(RequestFuture requestFuture, String s) {</li><li>this.requestFuture = requestFuture;</li><li>this.s = s;</li><li>@Override</li><li>public void run() {</li><li>// 模拟远程调用耗时</li><li>try {</li><li>Thread.sleep(3000);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>String res = s + &quot;远程调用结束&quot;;</li><li>requestFuture.onComplete(res);</li><li>public interface ResponseHandleAdapter {</li><li>void onSuccess(String s);</li><li>public class RequestFuture {</li><li>private List&lt;RequestFutureListener&gt; requestFutureListenerList;</li><li>public RequestFuture() {</li><li>this.requestFutureListenerList = new ArrayList&lt;&gt;();</li><li>public void onComplete(String s){</li><li>// 假设只执行成功的方法</li><li>fireSuccess(s);</li><li>private void fireSuccess(String s) {</li><li>// 假设只执行成功的方法</li><li>requestFutureListenerList.forEach(requestFutureListener -&gt; requestFutureListener.onSuccess(s));</li><li>private void addListener(RequestFutureListener requestFutureListener){</li><li>requestFutureListenerList.add(requestFutureListener);</li><li>/**</li><li>* 相当于给RequestFuture addListener</li><li>public void compose(ResponseHandleAdapter responseHandleAdapter){</li><li>addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>// 交回给各个请求处理类处理</li><li>responseHandleAdapter.onSuccess(s);</li><li>@Override</li><li>public void onFail() {</li><li>// 暂时不处理</li><li>});</li><li>public interface RequestFutureListener {</li><li>void onSuccess(String s);</li><li>void onFail();</li><li>如果需要实现链式调用，即调用了各个ResponseHandleAdapter 处理结果之后，还需要继续回调，那么可以修改</li><li>RequestFuture的compose方法为</li><li>public RequestFuture compose(ResponseHandleAdapter responseHandleAdapter){</li><li>// 这里实现将结果传播出去的关键代码，执行完各个responseHandleAdapter后，</li><li>// 链式的执行调用compose方法，调用compose方法会添加一个listener</li><li>final RequestFuture future = new RequestFuture();</li><li>addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>// 交回给各个请求处理类处理</li><li>responseHandleAdapter.onSuccess(s, future);</li><li>@Override</li><li>public void onFail() {</li><li>// 暂时不处理</li><li>});</li><li>return future;</li><li>修改ResponseHandleAdapter</li><li>public interface ResponseHandleAdapter {</li><li>void onSuccess(String s, RequestFuture future);</li><li>修改SendJoinGroupRequest</li><li>public class SendJoinGroupRequest extends AbstractRequestSend implements ResponseHandleAdapter {</li><li>public RequestFuture sendJoinGroupRequest(String s){</li><li>return send(s).compose(this);</li><li>@Override</li><li>public void onSuccess(String s, RequestFuture future) {</li><li>System.out.println(&quot;SendJoinGroupRequest执行结果: &quot; + s);</li><li>//将结果传播出去</li><li>future.onComplete(s);</li><li>public static void main(String[] args) {</li><li>SendJoinGroupRequest sendJoinGroupRequest = new SendJoinGroupRequest();</li><li>RequestFuture future = sendJoinGroupRequest.sendJoinGroupRequest(&quot;测试发送JoinGroup检测请求&quot;);</li><li>future.addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>System.out.println(&quot;我是SendJoinGroupRequest传播出来的，请求为:&quot; + s);</li><li>@Override</li><li>public void onFail() {</li><li>});</li><li>/* SendHeartbeatRequest sendHeartbeatRequest = new SendHeartbeatRequest();</li><li>RequestFuture future1 = sendHeartbeatRequest.sendHeartbeat(&quot;测试发送心跳检测请求&quot;);</li><li>future1.addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>System.out.println(&quot;我是SendHeartbeatRequest传播出来的，请求为:&quot; + s);</li><li>@Override</li><li>public void onFail() {</li><li>});*/</li><li>修改执行执行结果为</li><li>SendJoinGroupRequest执行结果: 测试发送JoinGroup检测请求远程调用结束</li><li>我是SendJoinGroupRequest传播出来的，请求为:测试发送JoinGroup检测请求远程调用结束</li></ul>
+<h3 class="sub">1. 如何设计一个安全的对外接口 ？</h3>
+<h3 class="sub">2. SpringBoot API 接口防刷</h3>
+<h3 class="sub">3. 带你全面了解 OAuth2.0</h3>
+<h3 class="sub">4. ChatGPT 中文版插件来了</h3>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 6 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>抽象方法 vs 匿名内部类回调</h4><p>抽象方法适合单个模板步骤交给子类；匿名内部类回调适合类内有多个方法需要抽象，把执行内容作为 Command 传入。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>模板方法式抽象</h4><p>父类 BaseService 用 final service 封装流程，validateRequest 为 protected abstract 交子类实现。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Future 模式异步抽象</h4><p>AbstractRequestSend 用 newSingleThreadExecutor 异步执行，send 立即返回 RequestFuture。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>compose 注册回调</h4><p>RequestFuture.compose 内部 addListener，异步完成后遍历 listener 回调各请求子类的 onSuccess。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>链式调用扩展</h4><p>要链式回调时，compose 内部新建并返回 future，onSuccess 改为携带 future 继续传播结果。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>模拟耗时 3000ms</h4><p>异步任务用 Thread.sleep(3000) 模拟远程调用耗时，随后 onComplete(res) 触发回调。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>公共流程在父类固定、可变逻辑下沉给子类，是高度抽象的统一思路。</li>
+          <li>Future 模式下，响应处理通过 compose 注册 listener 回调各请求子类的 onSuccess。</li>
+          <li>链式调用只需让 compose 返回新 future，并在 onSuccess 中把结果继续传播。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247488286&amp;idx=1&amp;sn=7aa3beb12b56ce03539db9fab07658ef" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247488286&amp;idx=1&amp;sn=7aa3beb12b56ce03539db9fab07658ef</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

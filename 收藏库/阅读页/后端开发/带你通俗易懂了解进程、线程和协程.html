@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">带你通俗易懂了解进程、线程和协程</h1>
+  <p class="lede">以对话讲清进程、线程、协程的区别与联系</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 9 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>什么是进程</a>
+          <a href="#sec-02"><span class="n">02</span>线程与资源共享</a>
+          <a href="#sec-03"><span class="n">03</span>共享资源覆盖问题</a>
+          <a href="#sec-04"><span class="n">04</span>线程上下文切换</a>
+          <a href="#sec-05"><span class="n">05</span>协程与用户态调度</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 什么是进程</a>
+          <a href="#sec-02">02 线程与资源共享</a>
+          <a href="#sec-03">03 共享资源覆盖问题</a>
+          <a href="#sec-04">04 线程上下文切换</a>
+          <a href="#sec-05">05 协程与用户态调度</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>本故事采用简洁明了的对话方式，尽洪荒之力让你在轻松无负担的氛围中，稍微深入地理解进程、线程和协程的相关原理知识</p>
+<p>如果你觉得自己本来就已经理解得很透彻了，那也不妨瞧一瞧，指不定有意外的收获呢</p>
+<p>在这个 AI 内容生成泛滥的时代，依然有一批人&quot;傻傻&quot;坚持原创，如果您能读到最后，还请点赞或收藏或关注支持下我呗，感谢 (￣︶￣)↗</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>什么是进程</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>程序是静态代码，进程是程序的动态实例，类似类与实例的关系。</li><li>进程是分配资源的基本单位，主要资源为 CPU 时间片、内存空间、文件描述符。</li><li>现代操作系统直接调度线程，不会调度进程。</li></ul></div>
+<p>丹尼尔：蛋兄，我对进程、线程、协程这些概念似懂非懂的，要不咱们今天就好好聊聊这些？</p>
+<p>蛋先生：当然可以</p>
+<p>丹尼尔：先说说进程吧，从字面意思上看，是不是可以理解为正在运（进）行的程序？</p>
+<p>蛋先生：正是如此，程序是静态的，而进程则是动态的</p>
+<p>丹尼尔：说得我更糊涂了</p>
+<p>蛋先生：好吧，以你电脑上的视频播放器（就是一个程序）为例。当你不双击它时，它就是一个安静的美男子——哦不，就是一份静静躺在硬盘上的代码</p>
+<p>丹尼尔：别逗我了，蛋兄</p>
+<p>蛋先生：( ╯▽╰) 但当你双击它时，它就通过进程“动”起来了</p>
+<p>丹尼尔：进程做了什么让它“动”起来了？</p>
+<p>蛋先生：程序是代码，比如播放逻辑的代码。要让视频播放，这些代码必须执行起来对吧</p>
+<p>丹尼尔：确实。那进程是怎么执行这些代码的？</p>
+<p>蛋先生：进程会利用操作系统的调度器分配给它的 CPU 时间片，通过 CPU 来执行代码（注意：现代操作系统都是直接调度线程，不会调度进程哦）</p>
+<p>丹尼尔：原来如此，操作系统给进程分配了 CPU 时间片资源。那还有其他的资源吗？</p>
+<p>蛋先生：代码执行过程，需要存储一些数据，所以进程还分配有内存空间资源</p>
+<p>丹尼尔：都存些什么数据呢？</p>
+<p>蛋先生：程序代码本身就需要先存储起来。然后代码执行过程中的变量，参数什么的，也是需要存储的。给个图你了解一下吧</p>
+<p>丹尼尔：哦，还有其它资源吗？</p>
+<p>蛋先生：程序可能会执行一些 I/O 任务，比如视频播放器需要加载视频，这些视频数据可能从本地文件加载，也可能从网络上加载，这就需要文件描述符资源。计算，存储，I/O 涉及的三大资源，就是分配给进程最主要的资源了。而进程就是分配资源的基本单位了</p>
+<p>丹尼尔：原来如此，代码执行，数据存储，I/O 操作，程序就能运行起来了</p>
+<p>蛋先生：正是这样。有了进程，我们可以同时运行多个程序。比如，你可以一边播放视频，一边编辑文档，每个程序都有自己的进程，互不干扰。即使它们都是同一份代码，但各自播放的内容和进度都可以不同</p>
+<p>丹尼尔：明白了</p>
+<p>蛋先生：既然你有编程基础，我就简单总结一下吧。</p>
+<p>什么是进程？进程就是程序的实例（就像面向对象编程中的类，类是静态的，只有实例化后才运行，且同一个类可以有多个实例）</p>
+<p>为什么需要进程？为了让程序运行起来（如果程序不运行，用户昨看视频捏）</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>线程与资源共享</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>线程共享进程大部分资源（代码段、数据段、堆、文件描述符），栈为线程私有。</li><li>线程是程序执行的最小单位，多线程可在同一进程内同时执行多个任务。</li><li>进程间通信需管道、消息队列等机制，线程间共享数据更便捷。</li></ul></div>
+<p>丹尼尔：这个总结我喜欢，接下来该聊聊线程了</p>
+<p>蛋先生：进程（可以看成只有一个线程的进程）同时只能做一件事，所以你的视频播放器的工作方式就像以下</p>
+<p>丹尼尔：那样的体验肯定糟糕透了，视频完全加载并解码完之前，啥都看不了</p>
+<p>蛋先生：没错，所以我们期望能够一边加载和解码，一边播放，这样就不会浪费时间空等了。为了实现这个目的，一个进程就需要进化成多个线程来同时执行多个任务</p>
+<p>丹尼尔：那如果一个进程只能做一件事，我用两个进程不也可以同时做两件事吗？</p>
+<p>蛋先生：你说得对，但进程间是完全独立的，互不干扰。而线程则共享同一个进程的资源，所以线程间交换数据更方便，几乎没有通讯损耗。但进程间交换数据就麻烦多了，得通过一些通讯机制，比如管道、消息队列之类的</p>
+<p>想象一下，我和你住在不同的房子，你要寄给我一箱牛奶，就得通过快递等方式寄给我。但如果我和你住在同一个房子，你买了牛奶只要往冰箱一放，我只要去冰箱一拿，多方便啊</p>
+<p>丹尼尔：那线程都共享进程的什么资源呢？</p>
+<p>蛋先生：分配给进程的资源，绝大部分都是线程间共享的。比如内存空间的代码段，数据段，堆，比如文件描述符等。而栈则是每个线程特有的，因为线程是程序执行的最小单位，它需要记录自己的局部变量等</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>共享资源覆盖问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>多线程对同一共享资源并发写会互相覆盖，导致数据不一致。</li><li>a += 1 在底层分取值、+1、赋值三步，并非原子操作。</li><li>线程切换使两个线程重复执行三步，最终结果 +1 而非 +2。</li></ul><div class="pit"><ul><li>误以为 a += 1 是原子操作，多线程下直接使用会得到不稳定结果。</li></ul></div></div>
+<p>丹尼尔：线程之间共享资源，总感觉会有什么问题</p>
+<p>蛋先生：大部分情况下线程之间还是可以和平共处的，但有一种情况，就是大家都想对同个资源进行写操作时，就会发生覆盖，导致数据不一致等问题</p>
+<p>丹尼尔：能具体说一说吗？</p>
+<p>蛋先生：为了更容易理解，我们借助以下代码来说明。如果两个线程来运行 main 方法，会有概率出现一些让你费解的结果</p>
+<ul><li>public class Main {</li><li>// 定义一个静态成员变量 a</li><li>private static int a = 1;</li><li>// 定义一个方法 add 来增加 a 的值</li><li>public static void add() {</li><li>a += 1;</li><li>public static void main(String[] args) {</li><li>add();</li><li>System.out.println(&quot;a 的值是: &quot; + a); // 输出 a 的值</li></ul>
+<p>丹尼尔：怎么说？</p>
+<p>蛋先生：a 是个静态成员变量，它存储在进程内存空间的数据段，共享于多个线程，所以它属于线程间共享的资源对吧</p>
+<p>丹尼尔：没错</p>
+<p>蛋先生：我们再看下add方法的逻辑a += 1， 这么简单的代码，在底层并非原子操作，而是分为三个步骤</p>
+<p>步骤一：获取 a 变量的值</p>
+<p>步骤二：执行 +1 运算</p>
+<p>步骤三：将运行结果赋值给 a</p>
+<p>丹尼尔：那会有什么问题呢？</p>
+<p>蛋先生：如果线程 1 在执行完步骤一和步骤二，还没执行步骤三时，操作系统进行了 CPU 调度，发生了线程切换，使得线程 2 也开始执行步骤一和步骤二。接下来线程 1 和线程 2 都会各自执行步骤三。因为 add 方法执行了两次，正确的结果 a 的值应该是 +2。但很遗憾，结果是 +1。这样的结果有时候会让你摸不着头脑，而不稳定的结果也将会导致应用的不稳定</p>
+<p>丹尼尔：啊，是这样啊。那该怎么办？</p>
+<p>蛋先生：解决方法有很多种，比如加锁方案，比如无锁方案等，需要根据实际情况选择。这个话题比较复杂，我们后面再找时间详细探讨吧。现在只要知道多线程会有资源覆盖的问题就行了</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>线程上下文切换</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>线程切换需保存现场：程序计数器、寄存器、线程栈指针。</li><li>局部变量存于线程栈，与当前指令最相关的中间数据存于寄存器。</li></ul></div>
+<p>丹尼尔：好的，明白了。刚才提到线程切换，线程切换到底发生了什么呢？</p>
+<p>蛋先生：线程切换会进行线程上下文切换。线程在运行时，实际上是在执行代码，而执行代码过程中需要存储一些中间数据，也可能会执行一些 I/O 操作。如果过程中被中断，是不是得保留现场，以便下次恢复继续运行？</p>
+<p>丹尼尔：嗯，确实需要，但具体都存储些什么呢？</p>
+<p>蛋先生：首先是下一个要执行的代码，这个存储在程序计数器中。然后是一些中间数据如局部变量等，会存储在线程栈中。为了加速计算，中间数据中对当前指令执行至关重要的部分会存储在寄存器中。所以，程序计数器需要保存，寄存器需要保存，线程栈指针也需要保存</p>
+<p>丹尼尔：“中间数据中对当前指令执行至关重要的部分会存储在寄存器”，能举个例子吗？</p>
+<p>蛋先生：假设以下代码，当在执行 add 方法时，x, y, a, b 会压进线程栈中。而其中 a, b 是和当前运算最相关的，则会存储在寄存器中，以加速 CPU 的运算</p>
+<ul><li>int add(int a, int b) {</li><li>return a + b;</li><li>int main() {</li><li>int x = 10;</li><li>int y = 20;</li><li>int result = add(x, y);</li><li>return 0</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>协程与用户态调度</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>协程是用户态的特殊子程序，可在执行中途暂停，待 I/O 返回后恢复。</li><li>协程不涉及内核调度，创建与切换开销极小；阻塞等 I/O 的线程浪费 CPU。</li><li>协程执行时机由程序自身控制，可避免资源覆盖；同线程内协程不能并行执行。</li></ul><div class="pit"><ul><li>误以为同一线程内的多个协程能并行执行，实际它们在 CPU 上有先后顺序。</li></ul></div></div>
+<p>丹尼尔：哦，原来如此。线程已经相当不错了，那协程又是怎么回事呢？</p>
+<p>蛋先生：回想一下，我们之前一个线程负责运行加载和解码逻辑，另一个线程负责播放逻辑，对吧？</p>
+<p>丹尼尔：没错，有什么问题吗？</p>
+<p>蛋先生：其实还有优化的空间。线程在执行加载视频片段时，必须等待结果返回才能执行解码操作</p>
+<p>丹尼尔：确实，加载片段的等待时间似乎又被浪费了</p>
+<p>蛋先生：没错，我们可以充分利用这段时间。只需让线程在加载的同时进行解码，就能大幅减少加载等待的时间。而这正是协程所能发挥的作用</p>
+<p>丹尼尔：哇，蛋兄，你可真是个会过日子的人，这么精打细算。但我只要用不同的线程分别处理加载和解码，不也能达到同样的效果吗？</p>
+<p>蛋先生：可以是可以，但多线程会带来一些问题</p>
+<p>丹尼尔：啥问题呢？</p>
+<p>蛋先生：首先，一个线程用于执行加载操作，这主要是 I/O 操作，几乎不消耗 CPU 资源，导致该线程长时间处于阻塞状态，这是很浪费的。当然，你可以让它休眠以释放 CPU 时间，但创建线程本身就有开销，线程切换同样有开销。相比之下，协程非常轻量，创建和切换的开销极小</p>
+<p>丹尼尔：为什么协程的创建和切换的开销极小呢？</p>
+<p>蛋先生：主要是因为它并非操作系统层面的东西，就不涉及内核调度。一般是由编程语言来实现（比如 Python 的 asyncio 标准库），它属于用户态的东西</p>
+<p>丹尼尔：那协程不会有像多线程那样的资源覆盖问题吗？</p>
+<p>蛋先生：线程的执行时机由操作系统调度，程序员无法控制，这正是多线程容易出现资源覆盖的主要原因。而协程的执行时机由程序自身控制，不受操作系统调度影响，因此可以完全避免这类问题</p>
+<p>此外，同一个线程内的多个协程共享同一个线程的 CPU 时间片资源，它们在 CPU 上的执行是有先后顺序的，不能并行执行。而线程是可以并行执行的</p>
+<p>丹尼尔：那协程是如何实现这一点的呢？</p>
+<p>蛋先生：协程（coroutine），其实是一种特殊的子程序（subroutine，比如普通函数）。普通函数一旦执行就会从头到尾运行，然后返回结果，中间不会暂停。而协程则可以在执行到一半时暂停。利用这一特性，我们可以在遇到 I/O 这类不消耗 CPU 资源的操作时，将其挂起，继续执行其他计算任务，充分利用 CPU 资源。等 I/O 操作结果返回时，再恢复执行</p>
+<p>丹尼尔：感觉很像 NodeJS 的异步 I/O 啊</p>
+<p>蛋先生：没错，它们的目的都是在一个线程内并发执行多个任务。不过在叫法和实现上会有一些差异</p>
+<p>丹尼尔：感觉今天了解得够多了，谢谢蛋兄</p>
+<p>蛋先生：后会有期！</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>程序 vs 进程</h4><p>程序是静态代码，进程是程序的动态实例，类似类与对象的关系。</p><a class="src-link" href="#sec-01">原文 → 什么是进程</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>进程的三大资源</h4><p>分配给进程最主要的资源：CPU 时间片、内存空间、文件描述符，对应计算、存储、I/O。</p><a class="src-link" href="#sec-01">原文 → 什么是进程</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>调度的是线程</h4><p>现代操作系统直接调度线程，不会调度进程。</p><a class="src-link" href="#sec-01">原文 → 什么是进程</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>进程 vs 线程</h4><p>进程是分配资源的基本单位，线程是程序执行的最小单位；线程共享进程资源，进程间独立通信麻烦。</p><a class="src-link" href="#sec-02">原文 → 线程与资源共享</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>a += 1 非原子</h4><p>public static int a = 1; add(){ a += 1; } 两线程并发执行，结果可能 +1 而非 +2。</p><a class="src-link" href="#sec-03">原文 → 共享资源覆盖问题</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>并发写覆盖</h4><p>多线程对同一共享变量并发写会互相覆盖，导致数据不一致、应用不稳定。</p><a class="src-link" href="#sec-03">原文 → 共享资源覆盖问题</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>上下文切换保存现场</h4><p>切换需保存程序计数器、寄存器、线程栈指针；局部变量入栈，关键中间数据入寄存器。</p><a class="src-link" href="#sec-04">原文 → 线程上下文切换</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>线程 vs 协程</h4><p>线程由操作系统调度、可并行、切换有开销；协程由程序自身控制、用户态轻量、同线程内不能并行。</p><a class="src-link" href="#sec-05">原文 → 协程与用户态调度</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>进程管资源，线程管执行：线程共享进程资源、栈私有。</li>
+          <li>多线程共享写会覆盖，a += 1 非原子是典型坑。</li>
+          <li>协程是用户态轻量子程序，挂起恢复省开销、免覆盖。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649786062&amp;idx=1&amp;sn=bbfd8f3307747f9ce7d289cebc5f58a4" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649786062&amp;idx=1&amp;sn=bbfd8f3307747f9ce7d289cebc5f58a4</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

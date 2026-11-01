@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">只改了五行代码接口吞吐量提升了10多倍，高端操作~</h1>
+  <p class="lede">慢SQL、线程池滥用、Redis原型Bean，5行代码修复后吞吐量提升10多倍</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 20 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>背景与压测结果</a>
+          <a href="#sec-02"><span class="n">02</span>三步排查定位根因</a>
+          <a href="#sec-03"><span class="n">03</span>总结与原理复盘</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 背景与压测结果</a>
+          <a href="#sec-02">02 三步排查定位根因</a>
+          <a href="#sec-03">03 总结与原理复盘</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>背景与压测结果</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>目标单节点500/s，100并发压测实际仅50/s，CPU近80%，差10倍。</li><li>最小值不足100ms但最大值5s、百分位4s，说明并发下存在锁或串行等待。</li></ul></div>
+<p>公司的一个ToB系统，因为客户使用的也不多，没啥并发要求，就一直没有经过压测。这两天来了一个“大客户”，对并发量提出了要求：核心接口与几个重点使用场景单节点吞吐量要满足最低500/s的要求。</p>
+<p>当时一想，500/s吞吐量还不简单。Tomcat按照100个线程，那就是单线程1S内处理5个请求，200ms处理一个请求即可。这个没有问题，平时接口响应时间大部分都100ms左右，还不是分分钟满足的事情。</p>
+<p>然而压测一开，100 的并发，吞吐量居然只有 50 ...</p>
+<p>而且再一查，100的并发，CPU使用率居然接近 80% ...</p>
+<p>从上图可以看到几个重要的信息。</p>
+<p>最小值：表示我们非并发场景单次接口响应时长。还不足100ms。挺好!</p>
+<p>最大值：并发场景下，由于各种锁或者其他串行操作，导致部分请求等待时长增加，接口整体响应时间变长。5秒钟。有点过分了！！！</p>
+<p>再一看百分位，大部分的请求响应时间都在4s。无语了！！！</p>
+<p>所以 1s钟的 吞吐量 单节点只有 50 。距离 500 差了10倍。难受！！！！</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>三步排查定位根因</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>先配置接口、远程调用、Redis、SQL多级耗时埋点，用日志定位阻塞点。</li><li>慢SQL是并发更新同一行导致锁等待，占接口耗时80%以上，异步化后提升近2倍。</li><li>线程池核心线程数控制在50以内使吞吐量接近200，GC与内存并非主因。</li><li>jstack堆栈发现近200处运行期createBean，Redis多例Bean是根因，改new后提升10多倍。</li></ul><div class="pit"><ul><li>Jedis非线程安全，每次使用需新实例，却被误声明为@Scope(&quot;prototype&quot;)多例Bean。</li><li>高并发下System.currentTimeMillis/StopWatch耗时统计会影响性能。</li></ul></div></div>
+<p>定位“慢”原因</p>
+<p>这里暂时先忽略 CPU 占用率高的问题</p>
+<p>首先平均响应时间这么慢，肯定是有阻塞。先确定阻塞位置。重点检查几处：</p>
+<ul><li>锁 (同步锁、分布式锁、数据库锁)</li><li>耗时操作 (链接耗时、SQL耗时)</li></ul>
+<p>结合这些先配置耗时埋点。</p>
+<ul><li>接口响应时长统计。超过500ms打印告警日志。</li><li>接口内部远程调用耗时统计。200ms打印告警日志。</li><li>Redis访问耗时。超过10ms打印告警日志。</li><li>SQL执行耗时。超过100ms打印告警日志。</li></ul>
+<p>上述配置生效后，通过日志排查到接口存在慢SQL。具体SQL类似与这种：</p>
+<ul><li>&lt;!-- 主要类似与库存扣减 每次-1 type 只有有限的几种且该表一共就几条数据（一种一条记录）--&gt;</li><li>&lt;!-- 压测时可以认为 type = 1 是写死的 --&gt;</li><li>update table set field = field - 1 where type = 1 and filed &gt; 1;</li></ul>
+<p>上述SQL相当于并发操作同一条数据，肯定存在锁等待。日志显示此处的等待耗时占接口总耗时 80% 以上。</p>
+<p>二话不说先改为敬。因为是压测环境，直接改为异步执行，确认一下效果。</p>
+<p>PS：当时心里是这么想的：妥了，大功告成。就是这里的问题！绝壁是这个原因！优化一下就解决了。当然，如果这么简单就没有必要写这篇文章了...</p>
+<p>优化后的效果：</p>
+<p>嗯...emm...好！这个优化还是很明显的，提升提升了近2倍。</p>
+<p>此时已经感觉到有些不对了，慢SQL已经解决了（异步了~ 随便吧~ 你执行 10s我也不管了），虽然对吞吐量的提升没有预期的效果。但是数据是不会骗人的。</p>
+<ul><li>最大值：已经从  5s -&gt; 2s</li><li>百分位值：  4s -&gt; 1s</li></ul>
+<p>这已经是很大的提升了。</p>
+<p>继续定位“慢”的原因</p>
+<p>通过第一阶段的“优化”，我们距离目标近了很多。废话不多说，继续下一步的排查。</p>
+<p>我们继续看日志，此时日志出现类似下边这种情况：</p>
+<ul><li>2023-01-04 15:17:05:347 INFO **.**.**.***.50 [TID: 1s22s72s8ws9w00] **********************</li><li>2023-01-04 15:17:05:348 INFO **.**.**.***.21 [TID: 1s22s72s8ws9w00] **********************</li><li>2023-01-04 15:17:05:350 INFO **.**.**.***.47 [TID: 1s22s72s8ws9w00] **********************</li><li>2023-01-04 15:17:05:465 INFO **.**.**.***.234 [TID: 1s22s72s8ws9w00] **********************</li><li>2023-01-04 15:17:05:467 INFO **.**.**.***.123 [TID: 1s22s72s8ws9w00] **********************</li><li>2023-01-04 15:17:05:581 INFO **.**.**.***.451 [TID: 1s22s72s8ws9w00] **********************</li><li>2023-01-04 15:17:05:702 INFO **.**.**.***.72 [TID: 1s22s72s8ws9w00] **********************</li></ul>
+<p>前三行info日志没有问题，间隔很小。第4 ~ 第5，第6 ~ 第7，第7 ~ 第8 很明显有百毫秒的耗时。检查代码发现，这部分没有任何耗时操作。那么这段时间干什么了呢？</p>
+<ul><li>发生了线程切换，换其他线程执行其他任务了。(线程太多了)</li><li>日志打印太多了，压测5分钟日志量500M。（记得日志打印太多是有很大影响的）</li><li>STW。（但是日志还在输出，所以前两种可能性很高，而且一般不会停顿百毫秒）</li></ul>
+<p>按照这三个思路做了以下操作：</p>
+<p>首先，提升日志打印级别到DEBUG。emm... 提升不大，好像增加了10左右。</p>
+<p>然后，拆线程 @Async 注解使用线程池，控制代码线程池数量（之前存在3个线程池，统一配置的核心线程数为100）结合业务，服务总核心线程数控制在50以内，同步增加阻塞最大大小。结果还可以，提升了50，接近200了。</p>
+<p>最后，观察JVM的GC日志，发现YGC频次4/s，没有FGC。1分钟内GC时间不到1s，很明显不是GC问题，不过发现JVM内存太小只有512M，直接给了4G。吞吐量没啥提升，YGC频次降低为2秒1次。</p>
+<p>唉，一顿操作猛如虎。</p>
+<p>PS：其实中间还对数据库参数一通瞎搞，这里不多说了。</p>
+<p>其实也不是没有收获，至少在减少服务线程数量后还是有一定收获的。</p>
+<p>另外，已经关注到了另外一个点：CPU使用率，减少了线程数量后，CPU的使用率并没有明显的下降，这里是很有问题的，当时认为CPU的使用率主要与开启的线程数量有关，之前线程多，CPU使用率较高可以理解。但是，在砍掉了一大半的线程后，依然居高不下这就很奇怪了。</p>
+<p>此时关注的重点开始从代码“慢”方向转移到“CPU高”方向。</p>
+<p>定位CPU使用率高的原因</p>
+<p>CPU的使用率高，通常与线程数相关肯定是没有问题的。当时对居高不下的原因考虑可能有以下两点：</p>
+<ul><li>有额外的线程存在。</li><li>代码有部分CPU密集操作。</li></ul>
+<p>然后继续一顿操作：</p>
+<ul><li>观察服务活跃线程数。</li><li>观察有无CPU占用率较高线程。</li></ul>
+<p>在观察过程中发现，没有明显CPU占用较高线程。所有线程基本都在10%以内。类似于下图，不过有很多线程。</p>
+<p>没有很高就证明大家都很正常，只是多而已...</p>
+<p>此时没有下一步的排查思路了。当时想着,算了打印一下堆栈看看吧，看看到底干了啥~</p>
+<p>在看的过程中发现这段日志：</p>
+<ul><li>&quot;http-nio-6071-exec-9&quot; #82 daemon prio=5 os_prio=0 tid=0x00007fea9aed1000 nid=0x62 runnable [0x00007fe934cf4000]</li><li>java.lang.Thread.State: RUNNABLE</li><li>at org.springframework.core.annotation.AnnotationUtils.getValue(AnnotationUtils.java:1058)</li><li>at org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactory$AspectJAnnotation.resolveExpression(AbstractAspectJAdvisorFactory.java:216)</li><li>at org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactory$AspectJAnnotation.&lt;init&gt;(AbstractAspectJAdvisorFactory.java:197)</li><li>at org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactory.findAnnotation(AbstractAspectJAdvisorFactory.java:147)</li><li>at org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactory.findAspectJAnnotationOnMethod(AbstractAspectJAdvisorFactory.java:135)</li><li>at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvice(ReflectiveAspectJAdvisorFactory.java:244)</li><li>at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.instantiateAdvice(InstantiationModelAwarePointcutAdvisorImpl.java:149)</li><li>at org.springframework.aop.aspectj.annotation.InstantiationModelAwarePointcutAdvisorImpl.&lt;init&gt;(InstantiationModelAwarePointcutAdvisorImpl.java:113)</li><li>at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisor(ReflectiveAspectJAdvisorFactory.java:213)</li><li>at org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory.getAdvisors(ReflectiveAspectJAdvisorFactory.java:144)</li><li>at org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder.buildAspectJAdvisors(BeanFactoryAspectJAdvisorsBuilder.java:149)</li><li>at org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator.findCandidateAdvisors(AnnotationAwareAspectJAutoProxyCreator.java:95)</li><li>at org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator.shouldSkip(AspectJAwareAdvisorAutoProxyCreator.java:101)</li><li>at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.wrapIfNecessary(AbstractAutoProxyCreator.java:333)</li><li>at org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator.postProcessAfterInitialization(AbstractAutoProxyCreator.java:291)</li><li>at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsAfterInitialization(AbstractAutowireCapableBeanFactory.java:455)</li><li>at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)</li><li>at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)</li><li>at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)</li><li>at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:353)</li><li>at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:233)</li><li>at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveNamedBean(DefaultListableBeanFactory.java:1282)</li><li>at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveNamedBean(DefaultListableBeanFactory.java:1243)</li><li>at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:494)</li><li>at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBean(DefaultListableBeanFactory.java:349)</li><li>at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBean(DefaultListableBeanFactory.java:342)</li><li>at cn.hutool.extra.spring.SpringUtil.getBean(SpringUtil.java:117)</li><li>......</li><li>......</li></ul>
+<p>上边的堆栈发现了一个点：在执行getBean的时候，执行了createBean方法。我们都知道Spring托管的Bean都是提前实例化好放在IOC容器中的。createBean要做的事情有很多，比如Bean的初始化，依赖注入其他类，而且中间还有一些前后置处理器执行、代理检查等等，总之是一个耗时方法，所以都是在程序启动时去扫描，加载，完成Bean的初始化。</p>
+<p>而我们在运行程序线程堆栈中发现了这个操作。而且通过检索发现竟然有近200处。</p>
+<p>通过堆栈信息很快定位到执行位置：</p>
+<ul><li>&lt;!--BeanUtils 是 hutool 工具类。也是从IOC容器获取Bean 等价于 @Autowired 注解 --&gt;</li><li>RedisTool redisTool = BeanUtils.getBean(RedisMaster.class);</li></ul>
+<p>而RedisMaster类</p>
+<ul><li>@Component</li><li>@Scope(&quot;prototype&quot;)</li><li>public class RedisMaster implements IRedisTool {</li><li>// ......</li></ul>
+<p>没错就是用了多例。而且使用的地方是Redis（系统使用Jedis客户端，Jedis并非线程安全，每次使用都需要新的实例），接口对Redis的使用还是比较频繁的，一个接口得有10次左右获取Redis数据。也就是说执行10次左右的createBean逻辑 ...</p>
+<p>叹气！！！</p>
+<p>赶紧改代码，直接使用万能的 new 。</p>
+<p>在看结果之前还有一点需要提一下，由于系统有大量统计耗时的操作。实现方式是通过：</p>
+<ul><li>long start = System.currentTimeMillis();</li><li>// ......</li><li>long end = System.currentTimeMillis();</li><li>long runTime = start - end;</li></ul>
+<p>或者Hutool提供的StopWatch：</p>
+<p>这里感谢一下huoger 同学的评论，当时还误以为该方式能够降低性能的影响，但是实际上也只是一层封装。底层使用的是 System.nanoTime()。</p>
+<ul><li>StopWatch watch = new StopWatch();</li><li>watch.start();</li><li>// ......</li><li>watch.stop();</li><li>System.out.println(watch.getTotalTimeMillis());</li></ul>
+<p>而这种在并发量高的情况下，对性能影响还是比较大的，特别在服务器使用了一些特定时钟的情况下。这里就不多说，感兴趣的可以自行搜索一下。</p>
+<p>最终结果：</p>
+<p>排查涉及的命令如下：</p>
+<ul><li>查询服务进程CPU情况：  top –Hp pid</li><li>查询JVM GC相关参数： jstat -gc pid 2000   (对  pid [进程号]  每隔 2s 输出一次日志)</li><li>打印当前堆栈信息：  jstack -l pid &gt;&gt; stack.log</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>总结与原理复盘</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>最终5行代码：new Redis实例1处、耗时统计3处、SQL异步@Async 1处。</li><li>并发createBean同一对象存在锁等待，非并发场景响应不足50ms则很快。</li><li>吞吐量与响应时长、线程数、代码性能相关；CPU使用率由线程数与CPU使用时间决定。</li></ul></div>
+<p>结果是好的，过程是曲折的。总的来说还是知识的欠缺，文章看起来还算顺畅，但都是事后诸葛亮，不对，应该是时候臭皮匠。基本都是边查资料边分析边操作，前后花费了4天时间，尝试了很多。</p>
+<ul><li>Mysql : Buffer Pool  、 Change Buffer  、 Redo Log  大小、双一配置...</li><li>代码 :   异步执行，线程池参数调整，tomcat 配置，Druid连接池配置...</li><li>JVM :  内存大小，分配，垃圾收集器都想换...</li></ul>
+<p>总归一通瞎搞，能想到的都试试。</p>
+<p>后续还需要多了解一些性能优化知识，至少要做到排查思路清晰，不瞎搞。</p>
+<p>最后5行代码有哪些：</p>
+<ul><li>new Redis实例：  1</li><li>耗时统计：  3</li><li>SQL异步执行 @Async：  1</li></ul>
+<p>上图最终的结果是包含该部分的，时间原因未对SQL进行处理，后续会考虑Redis原子操作+定时同步数据库方式来进行，避免同时操数据库</p>
+<p>TODO</p>
+<p>问题虽然解决了。但是原理还不清楚，需要继续深挖。</p>
+<p>为什么createBean对性能影响这么大？</p>
+<p>如果影响这么大，Spring为什么还要有多例？</p>
+<p>首先非并发场景速度还是很快的。这个毋庸置疑。毕竟接口响应时间不足50ms。</p>
+<p>所以问题一定出在，并发createBean同一对象的锁等待场景。根据堆栈日志，翻了一下Spring源码，果然发现这里出现了同步锁。相信锁肯定不止一处。</p>
+<p>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</p>
+<p>System.currentTimeMillis并发度多少才会对性能产生影响，影响有多大？</p>
+<p>很多公司（包括大厂）在业务代码中，还是会频繁的使用System.currentTimeMillis获取时间戳。比如：时间字段赋值场景。所以，性能影响肯定会有，但是影响的门槛是不是很高。</p>
+<p>继续学习性能优化知识</p>
+<p>吞吐量与什么有关？</p>
+<p>首先，接口响应时长。直接影响因素还是接口响应时长，响应时间越短，吞吐量越高。一个接口响应时间100ms,那么1s就能处理10次。</p>
+<p>其次，线程数。现在都是多线程环境，如果同时10个线程处理请求，那么吞吐量又能增加10倍。当然由于CPU资源有限，所以线程数也会受限。理论上，在 CPU 资源利用率较低的场景，调大tomcat线程数，以及并发数，能够有效的提升吞吐量。</p>
+<p>最后，高性能代码。无论接口响应时长，还是 CPU 资源利用率，都依赖于我们的代码，要做高性能的方案设计，以及高性能的代码实现，任重而道远。</p>
+<p>CPU使用率的高低与哪些因素有关？</p>
+<p>CPU使用率的高低，本质还是由线程数，以及CPU使用时间决定的。</p>
+<p>假如一台10核的机器，运行一个单线程的应用程序。正常这个单线程的应用程序会交给一个CPU核心去运行，此时占用率就是10%。而现在应用程序都是多线程的，因此一个应用程序可能需要全部的CPU核心来执行，此时就会达到100%。</p>
+<p>此外，以单线程应用程序为例，大部分情况下，我们还涉及到访问Redis/Mysql、RPC请求等一些阻塞等待操作，那么CPU就不是时刻在工作的。</p>
+<p>所以阻塞等待的时间越长，CPU利用率也会越低。也正是因为如此，为了充分的利用CPU资源，多线程也就应运而生（一个线程虽然阻塞了，但是CPU别闲着，赶紧去运行其他的线程）。</p>
+<p>一个服务线程数在多少比较合适（算上Tomcat，最终的线程数量是226），执行过程中发现即使tomcat线程数量是100，活跃线程数也很少超过50，整个压测过程基本维持在20左右。</p>
+<p>来源｜juejin.cn/post/7185479136599769125</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>压测基线</h4><p>100并发下吞吐量仅50/s，CPU近80%；最小值不足100ms，最大值5s，百分位4s，距500/s差10倍</p><a class="src-link" href="#sec-01">原文 → 背景与压测结果</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>慢SQL异步化收益</h4><p>最大值5s→2s，百分位4s→1s，吞吐量提升近2倍</p><a class="src-link" href="#sec-02">原文 → 三步排查定位根因</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>线程池调优收益</h4><p>线程池核心线程数控制在50以内后吞吐量接近200；GC非主因，内存512M调4G吞吐量无明显提升</p><a class="src-link" href="#sec-02">原文 → 三步排查定位根因</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>多例Bean的坑</h4><p>Redis工具类被@Scope(&quot;prototype&quot;)声明为多例，接口频繁getBean触发createBean，含锁等待且近200处</p><a class="src-link" href="#sec-02">原文 → 三步排查定位根因</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Redis实例直接new</h4><p>用 new RedisMaster() 替代 BeanUtils.getBean(RedisMaster.class)，避免运行期createBean</p><a class="src-link" href="#sec-02">原文 → 三步排查定位根因</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>耗时统计改法</h4><p>减少 System.currentTimeMillis / StopWatch 统计；Hutool StopWatch 底层是 System.nanoTime()</p><a class="src-link" href="#sec-02">原文 → 三步排查定位根因</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>吞吐量三因素</h4><p>吞吐量与接口响应时长、线程数、代码性能相关，响应越短、线程越多、代码越高效吞吐越高</p><a class="src-link" href="#sec-03">原文 → 总结与原理复盘</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>单例与多例Bean</h4><p>单例Bean启动时创建；多例每次获取重新createBean，运行期开销大且并发时可能锁等待</p><a class="src-link" href="#sec-03">原文 → 总结与原理复盘</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先量化定位再优化：用多级耗时埋点和线程堆栈找根因，而不是盲目调参。</li>
+          <li>高并发下避免运行期频繁createBean：原型多例Bean与耗时统计都要改掉。</li>
+          <li>吞吐量=响应时长×线程数×代码性能；压测是暴露并发问题的唯一手段。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIyNDU2ODA4OQ==&amp;mid=2247508863&amp;idx=1&amp;sn=9561cb0be9cd21eb63c41122ef6d9fc1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIyNDU2ODA4OQ==&amp;mid=2247508863&amp;idx=1&amp;sn=9561cb0be9cd21eb63c41122ef6d9fc1</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

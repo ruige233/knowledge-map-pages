@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">使用责任链模式实现登录风险控制</h1>
+  <p class="lede">用责任链把登录风控拆成可插拔规则节点，解耦登录主体与风险处理</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 23 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>责任链模式</a>
+          <a href="#sec-02"><span class="n">02</span>登录风控落地</a>
+          <a href="#sec-03"><span class="n">03</span>小结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 责任链模式</a>
+          <a href="#sec-02">02 登录风控落地</a>
+          <a href="#sec-03">03 小结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>设计模式、实战</p>
+<table><thead><tr><th>责任链模式是是设计模式中的一种行为型模式。该模式下，多个对象通过next属性进行关系关联，从而形成一个对象执行链表。当发起执行请求时，会从首个节点对象开始向后依次执行，如果一个对象不能处理该请求或者完成了请求工作(需要结合具体的业务场景)，那么它会把相同的请求传给下一个接收者，依此类推。 责任链上的每个节点的处理者负责处理请求，用户只需要将请求发送到责任链上即可，无须关心请求的处理细节和请求的传递，所以责任链将请求的发送者和请求的处理者解耦了，即使以后多加一些责任节点，也可以做到很好的扩展。</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>责任链模式</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>责任链是行为型模式，节点通过 next 关联成执行链表</li><li>请求从首节点依次向后执行，能处理则处理，否则传给后继</li><li>用户只把请求发到链上，发送者与处理者解耦，易扩展</li></ul></div>
+<p>责任链模式是是设计模式中的一种行为型模式。该模式下，多个对象通过next属性进行关系关联，从而形成一个对象执行链表。当发起执行请求时，会从首个节点对象开始向后依次执行，如果一个对象不能处理该请求或者完成了请求工作(需要结合具体的业务场景)，那么它会把相同的请求传给下一个接收者，依此类推。</p>
+<p>责任链上的每个节点的处理者负责处理请求，用户只需要将请求发送到责任链上即可，无须关心请求的处理细节和请求的传递，所以责任链将请求的发送者和请求的处理者解耦了，即使以后多加一些责任节点，也可以做到很好的扩展。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>登录风控落地</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>抽象父类 AbstractLoginHandle 含 nextHandle 与抽象方法 filterRisk</li><li>四个规则子类各自判断并把命中的 RiskRule 收集进 filter</li><li>LoginHandleManage 用 @PostConstruct 按固定顺序串联并执行链路</li><li>执行后取 operate 最大的规则做提示/短信/阻断/封号处置</li></ul></div>
+<p>上部分简单的介绍了责任链模式，那么现在就结合实际的业务场景来使用该模式。刚好这两天公司的产品经理就提出非常应景的需求。在用户登录时，需要判断登录账号存在的风险，比如在短时间内输入密码错误次数达到预设值,在短时间内，同一账号的登录所在地不属于同一个城市，登录ip地址不属于白名单范围内等。</p>
+<p>当满足这些风险规则时，那么就需要根据需求对账号做进一步的处理，例如阻断登录，发送短信提醒或者禁用账号等。下面就使用责任链模式来实现这个需求功能。首先需要确定一个抽象处理类Handler，该处理类包含抽象处理方法和一个后继连接。</p>
+<p>其次需要有若干个具体处理类XXXHandler，这个具体处理类需要继承抽象处理类Handler并且实现抽象处理者的处理方法，判断能否处理本次请求，如果可以处理请求则处理，否则将该请求转给它的后继者。最后需要有一个执行器或者客户端类来确定执行顺序，它不关心处理细节和请求的传递过程。</p>
+<p>1创建抽象父类</p>
+<p>在正式编码前，需要确认有哪些数据表和对象。</p>
+<ul><li>风险规则类RiskRule: 用于记录不同规则信息，如触发条件，处置措施等。</li><li>登录日志类LoginLog: 用于记录登录日志，其中包含登录地区，登录ip等。</li><li>账户类UserAccount: 简单的账号account和密码password。</li><li>@Data</li><li>public class RiskRule {</li><li>private Integer id;</li><li>/**</li><li>* 风险名称</li><li>private String riskName;</li><li>/**</li><li>* 白名单ip</li><li>private String acceptIp;</li><li>/**</li><li>* 触发次数</li><li>private Integer triggerNumber;</li><li>/**</li><li>* 触发时间</li><li>private Integer triggerTime;</li><li>/**</li><li>* 触发时间类型</li><li>private Integer triggerTimeType;</li><li>/**</li><li>* 异常登录时间 （json）</li><li>private String unusualLoginTime;</li><li>/**</li><li>* 采取的操作措施 1：提示 2：发送短信  3：阻断登录  4：封号</li><li>private Integer operate;</li><li>@Data</li><li>public class LoginLog {</li><li>@TableId(type = IdType.AUTO)</li><li>private Integer id;</li><li>private String account;</li><li>private Integer result;</li><li>private String cityCode;</li><li>private String ip;</li><li>private Date time;</li></ul>
+<p>在确认完需要的对象后，现在可以编写登录风险处理抽象父类AbstractLoginHandle，该类需要包含一个nextHandle对象和filterRisk方法。filterRisk主要处理风险控制的规则并筛选出满足触发条件的规则对象，用于最后统一处理。</p>
+<ul><li>/**</li><li>* 登录风险处理抽象父类</li><li>public abstract class AbstractLoginHandle {</li><li>public AbstractLoginHandle nextHandle; // 下一个执行节点</li><li>public void setNextHandle(AbstractLoginHandle nextHandle){</li><li>this.nextHandle = nextHandle;</li><li>/**</li><li>* 具体的执行方法，过滤出满足风控的规则</li><li>* @param filter 满足风控的规则</li><li>* @param ruleMap 所有规则集合</li><li>* @param account 登录账户</li><li>public abstract void filterRisk(List&lt;RiskRule&gt; filter, Map&lt;Integer,RiskRule&gt; ruleMap, UserAccount account);</li></ul>
+<p>2密码错误次数</p>
+<p>在创建完抽象父类后，下面开始实现具体的子类。首先是常见的密码错误次数，实现起来简单，需要去登录日志表中按照对应规则配置的规定时间来查询密码错误的日志即可。如果查询出的数量大于等于该规则的触发数量，那么就将该RiskRule对象添加到filter中，最后继续向下执行。</p>
+<ul><li>/**</li><li>* 密码错误次数风险实现</li><li>@Component</li><li>public class PasswordErrorRiskHandle extends AbstractLoginHandle {</li><li>// 配置触发时间间隔类型是秒</li><li>private static final Integer SEC = 1;</li><li>// 配置触发时间间隔类型是分钟</li><li>private static final Integer MIN = 2;</li><li>// 配置触发时间间隔类型是小时</li><li>private static final Integer HOU = 3;</li><li>@Resource</li><li>private LoginLogService loginLogService;</li><li>@Override</li><li>public void filterRisk(List&lt;RiskRule&gt; filter, Map&lt;Integer, RiskRule&gt; ruleMap, UserAccount account) {</li><li>if (MapUtil.isNotEmpty(ruleMap)) {</li><li>//获取密码错误的规则信息</li><li>RiskRule passwordRisk = ruleMap.get(1);</li><li>if (passwordRisk != null) {</li><li>//触发次数</li><li>Integer triggerNumber = passwordRisk.getTriggerNumber();</li><li>//触发时间</li><li>Integer triggerTime = passwordRisk.getTriggerTime();</li><li>//时间类型</li><li>Integer triggerTimeType = passwordRisk.getTriggerTimeType();</li><li>Date endTime = new Date();</li><li>Date startTime;</li><li>if (triggerTimeType == SEC) {</li><li>startTime = DateUtil.offsetSecond(endTime, -triggerTime);</li><li>} else if (triggerTimeType == MIN) {</li><li>startTime = DateUtil.offsetMinute(endTime, -triggerTime);</li><li>} else {</li><li>startTime = DateUtil.offsetHour(endTime, -triggerTime);</li><li>// 查询范围时间内密码错误的次数</li><li>Integer count = loginLogService.lambdaQuery().eq(LoginLog::getResult, 2)</li><li>.eq(LoginLog::getAccount, account.getAccount())</li><li>.between(LoginLog::getTime, startTime, endTime)</li><li>.count();</li><li>// 如果达到触发规则，则记录</li><li>if (count != null &amp;&amp; count.intValue() &gt;= triggerNumber.intValue()) {</li><li>filter.add(passwordRisk);</li><li>//是否有下一个节点 ， 如果有，继续向下执行</li><li>if (this.nextHandle != null) {</li><li>this.nextHandle.filterRisk(filter, ruleMap, account);</li></ul>
+<p>3异常时间登录</p>
+<p>到底什么时间登录才算异常时间登录，这个需要根据公司，系统来做判断。如果一家公司从来不加班，用的也都是些OA系统，正常的登录时间段都在早上8点到下午6点这样。如果有一天，一个账号突然在凌晨两三点进行了登录，那么这就可以算作异常登录。</p>
+<p>当然，具体的时间段可以根据实际的需求进行设置。为了方便，这些时间段直接以json的方式存在的数据表中，具体格式如下。</p>
+<ul><li>&quot;week&quot;:0,</li><li>&quot;startTime&quot;:&quot;12:00:00&quot;,</li><li>&quot;endTime&quot;:&quot;14:00:00&quot;</li><li>&quot;week&quot;:1,</li><li>&quot;startTime&quot;:&quot;12:00:00&quot;,</li><li>&quot;endTime&quot;:&quot;14:00:00&quot;</li></ul>
+<p>这个需求实现也非常简单，只需要判断当前的登录时间是否在配置的异常登录时间范围内即可，如果在这个范围为内，那么就将该风险规则添加到filter中。</p>
+<ul><li>/**</li><li>* 异常时间登录风险实现</li><li>@Component</li><li>public class UnusualLoginRiskHandle extends AbstractLoginHandle {</li><li>@Override</li><li>public void filterRisk(List&lt;RiskRule&gt; filter, Map&lt;Integer, RiskRule&gt; ruleMap, UserAccount account) {</li><li>if (MapUtil.isNotEmpty(ruleMap)) {</li><li>RiskRule loginTimeExe = ruleMap.get(2);</li><li>if (loginTimeExe != null) {</li><li>// 将json转为异常时间对象</li><li>List&lt;UnusualLoginTime&gt; unusualLoginTimes = JSONUtil.toList(loginTimeExe.getUnusualLoginTime(), UnusualLoginTime.class);</li><li>Date now = new Date();</li><li>// 判断当前时间是周几</li><li>int dayOfWeek = DateUtil.dayOfWeek(now);</li><li>for (UnusualLoginTime unusualLoginTime : unusualLoginTimes) {</li><li>// 如果当前的周数与配置的周数相等，那么判断当前的具体时间</li><li>if (unusualLoginTime.getWeek() == dayOfWeek) {</li><li>DateTime startTime = DateUtil.parseTimeToday(unusualLoginTime.getStartTime());</li><li>DateTime endTime = DateUtil.parseTimeToday(unusualLoginTime.getEndTime());</li><li>// 如果当前的时间，在配置的时间范围内，那么将算作异常时间登录</li><li>if (DateUtil.isIn(now, startTime, endTime)) {</li><li>filter.add(loginTimeExe);</li><li>break;</li><li>// 是否有下一个节点 ， 如果有，继续向下执行</li><li>if (this.nextHandle != null) {</li><li>this.nextHandle.filterRisk(filter, ruleMap, account);</li><li>@Data</li><li>public static class UnusualLoginTime {</li><li>private int week;</li><li>private String startTime;</li><li>private String endTime;</li></ul>
+<p>4IP白名单</p>
+<p>在使用一些阿里云服务时，有时需要配置一些ip白名单才可以访问，非白名单内的ip将会阻断连接。这也是一种保证系统服务安全的一种方式，实现起来也比较容易。从数据库中读取ip白名单，如果是多个，可以使用英文逗号进行分割。</p>
+<p>用户登录时，通过HttpServletRequest来获取用户的ip(这里为了方便测试，将ip作为一个字段放在了account中),如果这个ip不在白名单内，那么将这个风险规则添加到filter中。</p>
+<ul><li>/**</li><li>* 登录ip风险实现</li><li>@Component</li><li>public class IPRiskHandle extends AbstractLoginHandle {</li><li>@Override</li><li>public void filterRisk(List&lt;RiskRule&gt; filter, Map&lt;Integer, RiskRule&gt; ruleMap, UserAccount account) {</li><li>if (MapUtil.isNotEmpty(ruleMap)) {</li><li>RiskRule ipRisk = ruleMap.get(3);</li><li>//判断是否配置登录ip白名单</li><li>if (null != ipRisk &amp;&amp; StrUtil.isNotEmpty(ipRisk.getAcceptIp())) {</li><li>List&lt;String&gt; acceptIpList = Arrays.asList(ipRisk.getAcceptIp().split(&quot;,&quot;));</li><li>//当前登录ip是否在白名单内，如果不在，则添加到filter中</li><li>if (!acceptIpList.contains(account.getIp())) {</li><li>filter.add(ipRisk);</li><li>if (this.nextHandle != null) {</li><li>this.nextHandle.filterRisk(filter, ruleMap, account);</li></ul>
+<p>5异常地区登录</p>
+<p>如果一个账号在短时间内在不同地区进行了登录操作，比如上一秒在北京登录，下一秒就在上海进行了登录。</p>
+<p>那么这就可能出现了账号盗取情况，需要采取一定的处置措施，比如输入短信验证码，输入密保，封号等。</p>
+<ul><li>/**</li><li>* 登录地区风险实现</li><li>@Component</li><li>public class LoginAreaRiskHandle extends AbstractLoginHandle {</li><li>private static final Integer SEC = 1;</li><li>private static final Integer MIN = 2;</li><li>private static final Integer HOU = 3;</li><li>@Resource</li><li>private LoginLogService loginLogService;</li><li>@Override</li><li>public void filterRisk(List&lt;RiskRule&gt; filter, Map&lt;Integer, RiskRule&gt; ruleMap, UserAccount account) {</li><li>if (MapUtil.isNotEmpty(ruleMap)) {</li><li>RiskRule areaRisk = ruleMap.get(4);</li><li>if (null != areaRisk) {</li><li>Integer triggerTime = areaRisk.getTriggerTime();</li><li>Integer triggerTimeType = areaRisk.getTriggerTimeType();</li><li>Integer triggerNumber = areaRisk.getTriggerNumber();</li><li>Date endTime = new Date();</li><li>Date startTime;</li><li>//获取查询时间范围的开始时间</li><li>if (triggerTimeType == SEC) {</li><li>startTime = DateUtil.offsetSecond(endTime, -triggerTime);</li><li>} else if (triggerTimeType == MIN) {</li><li>startTime = DateUtil.offsetMinute(endTime, -triggerTime);</li><li>} else {</li><li>startTime = DateUtil.offsetHour(endTime, -triggerTime);</li><li>// 指定时间范围内，登录地区是否超过指定个数</li><li>List&lt;LoginLog&gt; loginLogList = loginLogService.lambdaQuery().select(LoginLog::getCityCode).between(LoginLog::getTime, startTime, endTime)</li><li>.eq(LoginLog::getResult, 1)</li><li>.eq(LoginLog::getAccount, account.getAccount())</li><li>.list();</li><li>long areaCount = CollUtil.emptyIfNull(loginLogList).stream().map(LoginLog::getCityCode).distinct().count();</li><li>//如果超过指定个数，则将该风险策略添加到filter</li><li>if (areaCount &gt;= triggerNumber.longValue()) {</li><li>filter.add(areaRisk);</li><li>if (this.nextHandle != null) {</li><li>this.nextHandle.filterRisk(filter, ruleMap, account);</li></ul>
+<p>6组合链路节点</p>
+<p>再将上面的各种情况实现完成后，需要有一个执行器来聚合这些handle。让这些hande节点有一定的执行顺序。</p>
+<p>并且在所有节点执行完成后，对触发的风险规则进行处理。我自己定义的执行顺序是密码错误次数-&gt;异常时间登录-&gt;ip白名单-&gt;异常地区登录。</p>
+<ul><li>@Slf4j</li><li>@Component</li><li>public class LoginHandleManage {</li><li>@Resource</li><li>private RiskRuleService riskRuleService;</li><li>@Resource</li><li>private LoginLogService loginLogService;</li><li>@Resource</li><li>private IPRiskHandle ipRiskHandle;</li><li>@Resource</li><li>private LoginAreaRiskHandle loginAreaRiskHandle;</li><li>@Resource</li><li>private PasswordErrorRiskHandle passwordErrorRiskHandle;</li><li>@Resource</li><li>private UnusualLoginRiskHandle unusualLoginRiskHandle;</li><li>/**</li><li>* 构建执行顺序</li><li>* passwordErrorRiskHandle -&gt; unusualLoginRiskHandle -&gt; ipRiskHandle -&gt; loginAreaRiskHandle</li><li>@PostConstruct</li><li>public void init() {</li><li>passwordErrorRiskHandle.setNextHandle(unusualLoginRiskHandle);</li><li>unusualLoginRiskHandle.setNextHandle(ipRiskHandle);</li><li>ipRiskHandle.setNextHandle(loginAreaRiskHandle);</li><li>/**</li><li>* 执行链路入口</li><li>* @param account</li><li>* @throws Exception</li><li>public void execute(UserAccount account) throws Exception {</li><li>//获取所有风险规则</li><li>List&lt;RiskRule&gt; riskRules = riskRuleService.lambdaQuery().list();</li><li>Map&lt;Integer, RiskRule&gt; riskRuleMap = riskRules.stream().collect(Collectors.toMap(RiskRule::getId, r -&gt; r));</li><li>List&lt;RiskRule&gt; filterRisk = new ArrayList&lt;&gt;();</li><li>//开始从首节点执行</li><li>passwordErrorRiskHandle.filterRisk(filterRisk, riskRuleMap, account);</li><li>if (CollUtil.isNotEmpty(filterRisk)) {</li><li>// 获取最严重处置措施的规则</li><li>Optional&lt;RiskRule&gt; optional = filterRisk.stream().max(Comparator.comparing(RiskRule::getOperate));</li><li>if (optional.isPresent()) {</li><li>RiskRule riskRule = optional.get();</li><li>handleOperate(riskRule);//处置</li><li>//TODO 记录日志</li><li>/**</li><li>* 处置风险</li><li>* @param riskRule</li><li>* @throws Exception</li><li>public void handleOperate(RiskRule riskRule) throws Exception {</li><li>int operate = riskRule.getOperate().intValue();</li><li>if (operate == OperateEnum.TIP.op) { //1</li><li>log.info(&quot;========执行提示逻辑========&quot;);</li><li>} else if (operate == OperateEnum.SMS.op) {//2</li><li>log.info(&quot;========执行短信提醒逻辑========&quot;);</li><li>} else if (operate == OperateEnum.BLOCK.op) {//3</li><li>log.info(&quot;========执行登录阻断逻辑========&quot;);</li><li>throw new Exception(&quot;登录存在风险！&quot;);</li><li>} else if (operate == OperateEnum.DISABLE.op) {//4</li><li>log.info(&quot;========执行封号逻辑========&quot;);</li><li>throw new Exception(&quot;登录存在风险，账号被封！&quot;);</li></ul>
+<p>现在所有的逻辑已经搞定了，那么在登录的实现方法中只需要注入LoginHandleManage并调用execute即可，这样就可以与主体的登录逻辑代码实现解耦。</p>
+<ul><li>@Resource</li><li>private LoginHandleManage loginHandleManage;</li><li>public String login(UserAccount account) throws Exception {</li><li>//执行责任链</li><li>loginHandleManage.execute(account);</li><li>//TODO 登录逻辑</li><li>String token = &quot;&quot;;</li><li>return token;</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>小结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>责任链用委托思想构建链表，逐个询问节点是否可处理</li><li>带来处理时延但解耦与可扩展性好，按场景选择性使用</li></ul><div class="pit"><ul><li>责任链逐节点传递会带来处理时延</li></ul></div></div>
+<p>责任链模式使用了委托的思想构建了一个链表，通过遍历链表来挨个询问链表中的每一个节点是否可以胜任某件事情，如果某个节点能够胜任，则直接处理，否则继续向下传递。责任链会造成处理的时延，但是能够很好的解耦合，提高可扩展性，可以结合具体场景，选择性使用。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>能处理则处理，否则后传</h4><p>责任链节点能处理请求则处理，不能处理或完成工作后，把同一请求传给下一节点，依此类推。</p><a class="src-link" href="#sec-01">原文 → 责任链模式</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>解耦请求发送者与处理者</h4><p>用户只把请求发到责任链上，无须关心处理细节与传递过程，新增节点也容易扩展。</p><a class="src-link" href="#sec-01">原文 → 责任链模式</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>AbstractLoginHandle 抽象父类</h4><p>含 nextHandle 后继连接与抽象方法 filterRisk(filter, ruleMap, account)，子类继承并实现。</p><a class="src-link" href="#sec-02">原文 → 登录风控落地</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>operate 处置措施取值</h4><p>operate：1提示、2发送短信、3阻断登录、4封号；执行后取 operate 最大的规则做处置。</p><a class="src-link" href="#sec-02">原文 → 登录风控落地</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>密码错误次数过滤</h4><p>按秒/分/时计算时间窗，查 result=2 的登录日志，count≥触发次数则加入 filter。</p><a class="src-link" href="#sec-02">原文 → 登录风控落地</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>异常时间登录判定</h4><p>时间段以 JSON 存 week/startTime/endTime，比对当天星期与当前时间是否落在配置范围。</p><a class="src-link" href="#sec-02">原文 → 登录风控落地</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>IP 白名单校验</h4><p>白名单 ip 以英文逗号分隔，split 后 contains 判断，不在名单则把规则加入 filter。</p><a class="src-link" href="#sec-02">原文 → 登录风控落地</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>链路组装与执行</h4><p>在 @PostConstruct 里依次 setNextHandle 串联四节点，execute 从首节点触发并统一处置。</p><a class="src-link" href="#sec-02">原文 → 登录风控落地</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>责任链有时延但利大于弊</h4><p>责任链用委托构建链表，逐个询问节点；会造成处理时延，但解耦与扩展性好，按场景选用。</p><a class="src-link" href="#sec-03">原文 → 小结</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把登录风控拆成独立规则节点，新增或调整规则只需增减链路节点，不侵入登录主流程。</li>
+          <li>规则命中后统一收集进 filter，再按 operate 优先级取最严重措施处置，避免分散处理。</li>
+          <li>责任链以时延换解耦与扩展性，适合规则多、变化频繁的风控校验场景。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIyNDU2ODA4OQ==&amp;mid=2247509235&amp;idx=1&amp;sn=4d7c1e4ec9ed1432ed54d9fcacddea43" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIyNDU2ODA4OQ==&amp;mid=2247509235&amp;idx=1&amp;sn=4d7c1e4ec9ed1432ed54d9fcacddea43</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

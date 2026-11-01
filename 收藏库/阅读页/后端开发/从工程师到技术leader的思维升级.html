@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">从工程师到技术leader的思维升级</h1>
+  <p class="lede">技术人从新人到技术leader四个阶段的思维升级路径</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 18 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>技术新人</a>
+          <a href="#sec-02"><span class="n">02</span>潜力干将</a>
+          <a href="#sec-03"><span class="n">03</span>架构师</a>
+          <a href="#sec-04"><span class="n">04</span>技术leader</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 技术新人</a>
+          <a href="#sec-02">02 潜力干将</a>
+          <a href="#sec-03">03 架构师</a>
+          <a href="#sec-04">04 技术leader</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>不管是代码大神，还是业务大佬，都是从一个个小项目开始的。唯有建立起自己的思维框架，才能由小及大，慢慢Hold住更大的业务板块。注意了，职场不比学校，个人能力足够强就可以了。作为一个技术新人，除了学会如何做事，如何成长，更要学会如何给别人创造价值感。 在新团队建立个人品牌至关重要，做好第一件事至关重要。做事认真、深入、积极主动，可好于70%的同事。成为团队专家，做出令人佩服的成果，逐渐建立影响力。获得认可，机会增多，形成正循环，加速成长。 成功学习的框架： 当前这个事情谁做的是最好的 他为什么是最好的，好在什么地方，他是怎么做到的 我怎么认识他，怎么向他学习 我和他的差距在哪里？我的学习或者做事的路径是什么 非正式职场进阶公式：修炼3个基础通用能力 学习总结能力。保持旺盛的好奇心，是建立学习总结能力的前提。 沟通表达能力。如何去表达自己的观点，怎么样去把自己学的东西形成产出，是优秀的应届生同学通用的能力。 逻辑推导能力。做一个事情的时候，你有没有想清楚目标，有没有想清楚路径。 先做人：从“人”的角度出发去做事。什么是自我驱动力：这个事不归我管，但是我愿意为此而付出劳动。 其次，在公司中，要善于与人协作。职场人也是社会人，更好的与他人协作，可以让我们更快更舒心的完成工作。如何才能在协作中真正达到双赢甚至多赢？ 别人的想法当成自己的想法，帮别人实现。很简单，初期与人合作的时候，要把别人的事当作自己的事，并且想方设法实现好，该做螺丝钉的时候也要做好。 多想少说多实践。如果你有好的想法不妨说出来，并且实现出来一个Demo证明可行性，能把想法落地远比“提出想法”更重要。 自己的想法找一帮人帮实现出来。这个阶段最重要的就是平衡利益， 合理的让每个项目成员都能获得最大的利益是项目成功的关键 ，仅仅把事情做好还只是第一步，项目要发挥出最大的价值，还需要主动推动上级进行资源协调和后期宣传等。大家都帮你宣传，才能有更多的落地场景。 再做事：事情到我为止 潜力干将——既要有潜力，更要能干、会干、敢干。当团队遇到一些问题，能否第一时间想到你？事情能否到你为止？是一个技术人能否在团队内建立口碑和影响力的重要标志。其次，要有令人佩服的成果、建立起自己的核心竞争力。没有核心竞争力，也就很难成为团队的骨干。 架构师不是完成任务的工具人，而是要善于发现兴奋点，从对单点技术的追求到全栈技术的掌握，乃至对全局的掌控力，最终形成自身影响力。 父辈常说“要扑下身做事”，既是让我们脚踏实地、全神贯注，更是教育我们要关注事情的各个枝节。对单点技术的不懈追求是每个架构师走上架构之路的奠基石。其次，从前端到后端，再到中间件，业务的整个框架，架构师应该都要有所了解。这样在做技术选型时，才能知道这几者的区别是什么？适用的场景是什么，需要用到什么技术。如果没有这样的技术判断力的话，是很难做出合适的技术决策的。最后，架构师要分析在优化中哪些是关键环节，让最关键环节的同学担任此次架构设计中的核心角色。否则后期再去做协调时，是很难平衡的。 要有成事思维 架构师的成事思维，简单来说是有以终为始的目标感，对做事的方案想的足够的完整周到，从目标到结果、从方案的实施路径到具体步骤清晰严谨，能最大程度上降低风险。以终为始、系统性思维、逻辑性思考是成事思维最基础也是最重要的三种思维。 以终为始：什么是目的、什么是手段、什么是原因、什么是结果、该保什么、该放弃什么？比如在我思考商品和库存团队如何发展，首先想的一件事情就是，商品域要建设成什么样子才是我们想要的？我们需要一个什么的团队才能达到这个目标？区分清楚目的和手段才能更精准地完成工作。当前的中台是因为做的好才会有很多人来用，还是因为有很多人来才会做的好。哪个是因哪个是果？又或者是互为因果？区分清楚原因和结果，才能更快的定位问题；在工作中，明晰该保什么，该放弃什么，才能聚焦精力，定点爆破。 系统性思维：思考全面、上帝视角、以史为鉴。思考全面既要有对事情本身的思考，也要兼顾合作团队之间的影响，更要考虑改变这件事对其环境的影响，即带有生态思维的思考。上帝视角是指我们在处理业务架构时，既要从技术层面去深入解决，又要拔高维度，从业务层面去看待问题。以史为鉴则是从历史角度推测未来，将以往的失败经验、成功案例沉淀和抽象出来，为新业务赋能。 逻辑性思考：结构化思维、增长飞轮、因果思维。结构化思维大多指抽象和分类，按照一定的位置关系逻辑再组织在一起，可以是上下、左右关系、包含关系、分类关系、依赖关系等这些逻辑关系。增长飞轮则是要求我们在做一件事时要动态的看待它的发展过程，随着时间的积累，我们的能力、优势、资源能不能不停地正向循环增长。因果思维可能是最简单的思维，也是最难的一种思维方式，从一个好问题出发，再推导出一系列子问题，最后回答和实现这些问题再看能否得出一个我们想要的结果，架构师就是要不停地追问为什么，来判断这个问题的根因是什么，只有找到根因才能对症下药得到好的结果。 技术leader不是项目小组长，不是带着大家把事情囫囵做完就可以了，而是要在工作中成就他人，创造价值感。 技术leader的责任里第一点就是创造价值感。即把一个事情做成，拿到一个合适的结果。好的技术leader在做事时，会给同学们描绘一个场景，让人热血沸腾：这个事情一定行，一定非常有价值。我在观察一些比较优秀的同学时，发现他们给我的感觉是“我跟着他干，会有伟大的前途，不管目前这个项目最终能否成功，我就是很想跟着他干”。甚至于这个项目还没有开始，我就认为他一定能干成。第二点是利他。让团队的成员增值。利他可以说是成事的前提。 建立安全感的四个TIPS： 安全感来自背靠背的信任： 能否把你的后背交给你的技术leader，你是不是信任他，冲锋陷阵的时候，他是不是支持你？遇到挫折时，他是不是依然坚定你们的选择？ 安全感来自被需要： 不是说统揽部门所有重要工作，就是被技术leader需要，而是技术leader很重视“我”的意见。 安全感来自确定性： 做的好与不好？需要一个确定性的评比原则。比如我作为技术leader，我会告诉大家，这个项目需要做到哪些事情，达成什么目标，犯了哪些错误就要背负什么责任。如果一个团队内，什么事情都是不确定的，都是需要看上级的心情，那同学们一定是没有安全感的。 安全感的建立也需要过程： 一线同学和技术leader的信任关系是一点点建立起来的。为什么很多技术leader喜欢“任人唯亲”，因为技术leader对旧相识的熟悉，会延续和传递到工作当来，便于他对工作有更深的理解和把控。所以新的技术leader和同学关系建立时，也要慢慢从一个个的小任务开始，信任感逐渐叠加。最终才能建立安全感。 技术leader的价值感：善做会说 善做最重要的是定义问题：挑战性的目标和场景化的价值。会说则侧重的是三个沟通技巧： 向上主动争取机会。 我们做的每一项工作本质上都是为了公司利益服务。工作交给你、交给他，没有本质上的区别，主动争取更多机会，并没有什么可害羞的。 居中多和平级沟通。 聊一下是否有合作的机会，近期的工作进展是怎样的，互通有无，知己知彼才能百战百胜。 对下承认自身的不足。 在团队内做项目时，如果自身建议不被采纳时，要多听少说，不要把自己架到圣人的地步。如今技术更新迭代之快，令人咂舌。做到顶尖的好技术人不一定是最好的技术leader，但最好的技术leader一定会把每个技术点第一的人放到合适的地方，发挥他们的最大潜力。 总结下，对大部分新同学来说，更多的是“以事修人”，对于更资深、更核心的同学来说，更多的是“以人成事”。作为技术leader，我们要多给建议，少给方案：技术leader提出“我今天需要解决一个问题”，至于如何去解决，需要什么路径，先让同学去想、去做，技术leader后续再做相应的指引。</th></tr></thead><tbody></tbody></table>
+<p>阿里妹导读</p>
+<p>从技术新人到一个成熟的技术leader，需要经历几个身份迭代？每一次身份的转换都需要怎样的思维升级？本文将从技术新人、潜力干将、架构师、技术leader四种身份的思维升级依次展开。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>技术新人</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>前3年建立个人品牌，交给你的第一件事一定要做好</li><li>认真、深入、积极主动三点做好，已好于70%的同事</li><li>学习框架：找标杆、拆解好在哪里、主动链接学习、明确差距与路径</li><li>修炼学习总结、沟通表达、逻辑推导三个基础通用能力</li></ul></div>
+<p>很多技术人刚踏上工作岗位时，免不了都会有这样的感叹：“我要做百万量级的大项目！我要为千万客户谋福祉！我这样优秀的人岂能每天做这样的小事情？”其实，不管是代码大神，还是业务大佬，都是从一个个小项目开始的。唯有建立起自己的思维框架，才能由小及大，慢慢Hold住更大的业务板块。注意了，职场不比学校，个人能力足够强就可以了。作为一个技术新人，除了学会如何做事，如何成长，更要学会如何给别人创造价值感。</p>
+<p>先做事：用实际行动做自我介绍</p>
+<p>新人到一个团队最关键的是在前3年建立起个人品牌。在别人对你完全不了解的情况下，你做的第一件事是非常重要的。很多情况下你给别人留下的印象会蔓延到整个公司。所以交给你的第一件事情一定要做好。</p>
+<p>怎么才叫做好？大部分情况下，做事认真一点、考虑得更深入一点、积极主动一点这几点都做好，你基本已经好于70%的同学了，好于70%的同学我们都称之为“靠谱”。把每件事情做好，并且在当中建立起自己的分别心，比如做技术的，要在某一方面成为一个团队的专家，在这个领域要成为权威，目标就是做出一件令人佩服的成果，逐渐建立起自己的影响力。</p>
+<p>获得了合作伙伴包括主管的认可，自然获得的机会就会更多，做的事情也会越复杂，你的合作伙伴以及和你一起做事的小伙伴也会越来越强，这样就会形成正循环，你的成长就会比较快。所以前3年通过做事形成自己的影响力，积累自己的人脉。</p>
+<p>成功没有捷径，但有方法：你有学习框架吗？</p>
+<p>远大的理想需要坚定地努力去实现。有效的方法能让我们事半功倍。我在以往的工作经验中学到了下面这个框架，在日常生活中经常以此为大纲，思考下一步行动。比如有段时间我特别想学习如何做一个技术leader，就先选择了一个心目中最想达到的目标：我的某位同事。他团队的同学发展得都非常好，经手的业务都很有创造性，他本人也非常善于创造价值感。我就一直告诉自己，做技术leader，一定要像他一样，给同学们创造价值感。</p>
+<p>学习框架：</p>
+<h3 class="sub">1.当前这个事情谁做的是最好的</h3>
+<h3 class="sub">2.他为什么是最好的，好在什么地方，他是怎么做到的</h3>
+<h3 class="sub">3.我怎么认识他，怎么向他学习</h3>
+<h3 class="sub">4.我和他的差距在哪里？我的学习或者做事的路径是什么</h3>
+<p>非正式职场进阶公式：修炼3个基础通用能力</p>
+<p>新同学想在职场上有更好的发展，建议可以从这3个方面修炼基础通用能力，夯实自身能力基石。</p>
+<ul><li>学习总结能力。保持旺盛的好奇心，是建立学习总结能力的前提。</li><li>沟通表达能力。如何去表达自己的观点，怎么样去把自己学的东西形成产出，是优秀的应届生同学通用的能力。</li><li>逻辑推导能力。做一个事情的时候，你有没有想清楚目标，有没有想清楚路径。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>潜力干将</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>潜力干将既要有潜力，更要能干、会干、敢干</li><li>自我驱动力：这个事不归我管，但我愿意为此付出劳动</li><li>协作三层次：帮别人实现想法、用Demo落地、找一群人实现并平衡利益</li><li>事情能否到你为止，是建立口碑和影响力的重要标志</li></ul><div class="pit"><ul><li>刚接手小项目觉得太简单、大材小用，做不好小事难以为成大事打基础</li></ul></div></div>
+<p>靠谱专业的新人，慢慢就会脱颖而出成为团队中不可或缺的中坚力量，这时候就进入到了潜力干将的阶段。这时候最重要的是：通过“先做人、再做事”，创造自己的核心竞争力。</p>
+<p>先做人：从“人”的角度出发去做事</p>
+<p>职场中的“做人”，不仅是指待人接物，更是指如何从“人”的角度出发去做事。其中，找到自我驱动力很重要。</p>
+<p>什么是自我驱动力：这个事不归我管，但是我愿意为此而付出劳动。我刚来阿里时，各项制度还不是很完善，就买了很多书给同学借阅学习，但作为一个技术公司，当时的借阅记录居然要人工来填写，很不方便。能不能将这个借阅动作系统化呢？于是我做了一个小的借阅系统，这对我而言不值一提，却对同学们帮助很大，这就是一个攒人品的过程。反观现在刚入职的一些同学，刚接手一些小项目，觉得太简单了，大材小用。其实能将一件件小事做好，才能为后续成大事打下坚实的基础。</p>
+<p>其次，在公司中，要善于与人协作。职场人也是社会人，更好的与他人协作，可以让我们更快更舒心的完成工作。如何才能在协作中真正达到双赢甚至多赢？</p>
+<ul><li>别人的想法当成自己的想法，帮别人实现。很简单，初期与人合作的时候，要把别人的事当作自己的事，并且想方设法实现好，该做螺丝钉的时候也要做好。</li><li>多想少说多实践。如果你有好的想法不妨说出来，并且实现出来一个Demo证明可行性，能把想法落地远比“提出想法”更重要。</li><li>自己的想法找一帮人帮实现出来。这个阶段最重要的就是平衡利益， 合理的让每个项目成员都能获得最大的利益是项目成功的关键 ，仅仅把事情做好还只是第一步，项目要发挥出最大的价值，还需要主动推动上级进行资源协调和后期宣传等。大家都帮你宣传，才能有更多的落地场景。</li></ul>
+<p>再做事：事情到我为止</p>
+<p>潜力干将——既要有潜力，更要能干、会干、敢干。当团队遇到一些问题，能否第一时间想到你？事情能否到你为止？是一个技术人能否在团队内建立口碑和影响力的重要标志。其次，要有令人佩服的成果、建立起自己的核心竞争力。没有核心竞争力，也就很难成为团队的骨干。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>架构师</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>架构师不是工具人，要善于发现兴奋点，追求单点到全栈再到全局掌控力</li><li>成事思维三件套：以终为始、系统性思维、逻辑性思考</li><li>技术选型要有判断力，知道各层区别、适用场景与所需技术</li><li>把资深的人放在关键环节关键角色，在合适时间做合适的事</li></ul><div class="pit"><ul><li>把大佬一网打尽未必成功，放错位置反而成为项目阻力</li><li>项目没做好就夸大宣传，失实吹嘘违背技术人的秉性</li></ul></div></div>
+<p>这里讲的不是架构师这个角色，而是在团队里负责单独项目的骨干。它不是强制性的组织关系，而是靠项目和个人的影响力，吸引别人和我们一起奋斗。</p>
+<p>要善于发现兴奋点</p>
+<p>架构师不是完成任务的工具人，而是要善于发现兴奋点，从对单点技术的追求到全栈技术的掌握，乃至对全局的掌控力，最终形成自身影响力。</p>
+<p>父辈常说“要扑下身做事”，既是让我们脚踏实地、全神贯注，更是教育我们要关注事情的各个枝节。对单点技术的不懈追求是每个架构师走上架构之路的奠基石。其次，从前端到后端，再到中间件，业务的整个框架，架构师应该都要有所了解。这样在做技术选型时，才能知道这几者的区别是什么？适用的场景是什么，需要用到什么技术。如果没有这样的技术判断力的话，是很难做出合适的技术决策的。最后，架构师要分析在优化中哪些是关键环节，让最关键环节的同学担任此次架构设计中的核心角色。否则后期再去做协调时，是很难平衡的。</p>
+<p>一个项目成不成，或者一个项目的成果是60分还是80分？很大程度上是看架构师能否将所有东西表达出来，或者是否有影响力的人认可你的人、你的结果？项目做成了，学会表达，放大你的成果，也是很重要的。但这个放大也不是说项目没做好，就去吹已经做的很好了。如实的、不夸大地去做宣传才是一个技术人该保持的秉性。</p>
+<p>要有成事思维</p>
+<p>架构师的成事思维，简单来说是有以终为始的目标感，对做事的方案想的足够的完整周到，从目标到结果、从方案的实施路径到具体步骤清晰严谨，能最大程度上降低风险。以终为始、系统性思维、逻辑性思考是成事思维最基础也是最重要的三种思维。</p>
+<p>以终为始：什么是目的、什么是手段、什么是原因、什么是结果、该保什么、该放弃什么？比如在我思考商品和库存团队如何发展，首先想的一件事情就是，商品域要建设成什么样子才是我们想要的？我们需要一个什么的团队才能达到这个目标？区分清楚目的和手段才能更精准地完成工作。当前的中台是因为做的好才会有很多人来用，还是因为有很多人来才会做的好。哪个是因哪个是果？又或者是互为因果？区分清楚原因和结果，才能更快的定位问题；在工作中，明晰该保什么，该放弃什么，才能聚焦精力，定点爆破。</p>
+<p>系统性思维：思考全面、上帝视角、以史为鉴。思考全面既要有对事情本身的思考，也要兼顾合作团队之间的影响，更要考虑改变这件事对其环境的影响，即带有生态思维的思考。上帝视角是指我们在处理业务架构时，既要从技术层面去深入解决，又要拔高维度，从业务层面去看待问题。以史为鉴则是从历史角度推测未来，将以往的失败经验、成功案例沉淀和抽象出来，为新业务赋能。</p>
+<p>逻辑性思考：结构化思维、增长飞轮、因果思维。结构化思维大多指抽象和分类，按照一定的位置关系逻辑再组织在一起，可以是上下、左右关系、包含关系、分类关系、依赖关系等这些逻辑关系。增长飞轮则是要求我们在做一件事时要动态的看待它的发展过程，随着时间的积累，我们的能力、优势、资源能不能不停地正向循环增长。因果思维可能是最简单的思维，也是最难的一种思维方式，从一个好问题出发，再推导出一系列子问题，最后回答和实现这些问题再看能否得出一个我们想要的结果，架构师就是要不停地追问为什么，来判断这个问题的根因是什么，只有找到根因才能对症下药得到好的结果。</p>
+<p>要学会平衡</p>
+<p>架构师不仅要在技术方案上做好平衡，更要在人和事上做平衡。让合适的人参与进来，在合适的时间点做合适的事情。不是所有的项目将大佬一网打尽就可以成功的，而是要将资深的技术人放在关键环节的关键角色上，这样才能事半功倍，否则大佬的加盟不仅无益，反而可能成为项目发展的阻力。其次，能在合适时间点做合适的事情。一个价值关注度更高的项目，可能会拿到更好的资源。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>技术leader</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>技术leader不是小组长，要成就他人、创造价值感，核心是利他</li><li>把荣誉给一线同学，leader做后盾输送营养、顶住困难凝聚团队</li><li>安全感来自背靠背信任、被需要、确定性，并需循序渐进建立</li><li>善做会说：向上争取机会、居中和平级沟通、对下承认不足</li></ul><div class="pit"><ul><li>涉及绩效时不敢担责、把责任往上移，会破坏一线同学的信任</li><li>把自己架到圣人地步，建议不被采纳时强推，难发挥团队潜力</li></ul></div></div>
+<p>技术leader不是项目小组长，不是带着大家把事情囫囵做完就可以了，而是要在工作中成就他人，创造价值感。</p>
+<p>技术leader的责任里第一点就是创造价值感。即把一个事情做成，拿到一个合适的结果。好的技术leader在做事时，会给同学们描绘一个场景，让人热血沸腾：这个事情一定行，一定非常有价值。我在观察一些比较优秀的同学时，发现他们给我的感觉是“我跟着他干，会有伟大的前途，不管目前这个项目最终能否成功，我就是很想跟着他干”。甚至于这个项目还没有开始，我就认为他一定能干成。第二点是利他。让团队的成员增值。利他可以说是成事的前提。我们真正在落地一个项目时，需要多个同学来合作执行。那这些同学凭什么来做这个项目而不是其他项目呢？背后的驱动力是什么呢？</p>
+<p>大家看这棵树，树根部分象征公司的管理层、董事会，就是这棵树的树干部分，一线同学就像这些枝叶一样伸展开来。一棵树最吸引的地方永远是末端那些枝叶和花朵。所以我们把荣誉给到一线同学，让他们感受到这种幸福。技术leader则要做好一线同学的后盾，平时要把营养、能量输送给他们，遭遇狂风暴雨的时候，树干要顶住困难，凝聚团队，留下更多的一线同学。</p>
+<p>技术leader的安全感：组织信任</p>
+<p>技术leader的安全感是双向赋予的，上级领导需要给予技术leader足够的安全感，保护团队中的“树干”，才能充分发挥技术leader的力量，进而给到一线同学更多的营养；如果技术leader自身没有安全感时，也不可能给到一线同学安全感的，或者说也不可能死心塌地“利他”。这是技术leader应该做的，但它本身违反人性的。所以当你是个大技术leader时，和你下属的技术leader建立好信任关系，对整个团队的发展非常重要的。</p>
+<p>建立安全感的四个TIPS：</p>
+<ul><li>安全感来自背靠背的信任： 能否把你的后背交给你的技术leader，你是不是信任他，冲锋陷阵的时候，他是不是支持你？遇到挫折时，他是不是依然坚定你们的选择？</li><li>安全感来自被需要： 不是说统揽部门所有重要工作，就是被技术leader需要，而是技术leader很重视“我”的意见。</li><li>安全感来自确定性： 做的好与不好？需要一个确定性的评比原则。比如我作为技术leader，我会告诉大家，这个项目需要做到哪些事情，达成什么目标，犯了哪些错误就要背负什么责任。如果一个团队内，什么事情都是不确定的，都是需要看上级的心情，那同学们一定是没有安全感的。</li><li>安全感的建立也需要过程： 一线同学和技术leader的信任关系是一点点建立起来的。为什么很多技术leader喜欢“任人唯亲”，因为技术leader对旧相识的熟悉，会延续和传递到工作当来，便于他对工作有更深的理解和把控。所以新的技术leader和同学关系建立时，也要慢慢从一个个的小任务开始，信任感逐渐叠加。最终才能建立安全感。</li></ul>
+<p>这里要提醒技术leader们，注意信息和任务的上传和下达：向下2级收集信息，只向下级分配任务。每个层级的技术leader都应该承担相应的责任，要尽力不要将责任往上移。比如在涉及到绩效时，有些技术leader就会自己不敢承担责任，会想把责任往上移。但是对于该同学来讲，技术leader对自己的看法，远比上上级对自己的看法更重要。</p>
+<p>技术leader的价值感：善做会说</p>
+<p>善做最重要的是定义问题：挑战性的目标和场景化的价值。会说则侧重的是三个沟通技巧：</p>
+<ul><li>向上主动争取机会。 我们做的每一项工作本质上都是为了公司利益服务。工作交给你、交给他，没有本质上的区别，主动争取更多机会，并没有什么可害羞的。</li><li>居中多和平级沟通。 聊一下是否有合作的机会，近期的工作进展是怎样的，互通有无，知己知彼才能百战百胜。</li><li>对下承认自身的不足。 在团队内做项目时，如果自身建议不被采纳时，要多听少说，不要把自己架到圣人的地步。如今技术更新迭代之快，令人咂舌。做到顶尖的好技术人不一定是最好的技术leader，但最好的技术leader一定会把每个技术点第一的人放到合适的地方，发挥他们的最大潜力。</li></ul>
+<p>总结下，对大部分新同学来说，更多的是“以事修人”，对于更资深、更核心的同学来说，更多的是“以人成事”。作为技术leader，我们要多给建议，少给方案：技术leader提出“我今天需要解决一个问题”，至于如何去解决，需要什么路径，先让同学去想、去做，技术leader后续再做相应的指引。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>新人靠谱标准</h4><p>做事认真一点、考虑深入一点、积极主动一点都做好，基本已好于70%的同事，这就是靠谱。</p><a class="src-link" href="#sec-01">原文 → 技术新人</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>三个基础通用能力</h4><p>学习总结靠好奇心、沟通表达把所学形成产出、逻辑推导想清目标与路径，构成非正式进阶公式。</p><a class="src-link" href="#sec-01">原文 → 技术新人</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>70%与3年</h4><p>三点做好即可超过70%的同事；前3年通过做事建立个人品牌、形成影响力并积累人脉。</p><a class="src-link" href="#sec-01">原文 → 技术新人</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>自我驱动力</h4><p>这个事不归我管，但我愿意为此付出劳动；主动做借阅系统之类的小事，才能为成大事打基础。</p><a class="src-link" href="#sec-02">原文 → 潜力干将</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>大材小用心态</h4><p>刚接手小项目觉得太简单、大材小用；做不好小事，就难以为后续成大事打下坚实基础。</p><a class="src-link" href="#sec-02">原文 → 潜力干将</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>协作三阶段</h4><p>先帮别人实现想法，再多想少说用Demo证明可行性，最后找一群人实现并平衡利益放大价值。</p><a class="src-link" href="#sec-02">原文 → 潜力干将</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>成事思维三件套</h4><p>以终为始、系统性思维、逻辑性思考，是架构师成事思维最基础也是最重要的三种思维。</p><a class="src-link" href="#sec-03">原文 → 架构师</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>大佬一网打尽</h4><p>把资深的人放在关键环节关键角色才能事半功倍，否则大佬加盟不仅无益反而成为阻力。</p><a class="src-link" href="#sec-03">原文 → 架构师</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>技术leader即成就他人</h4><p>技术leader不是小组长，要在工作中成就他人、创造价值感，利他是成事的前提。</p><a class="src-link" href="#sec-04">原文 → 技术leader</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>树结构隐喻</h4><p>管理层如树根树干，一线同学如枝叶花朵；把荣誉给一线，leader做后盾输送营养、顶住风雨。</p><a class="src-link" href="#sec-04">原文 → 技术leader</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>责任上移</h4><p>绩效时不敢担责、把责任往上移会破坏信任；应向下2级收集信息、只向下级分配任务。</p><a class="src-link" href="#sec-04">原文 → 技术leader</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>多给建议少给方案</h4><p>以事修人、以人成事；leader提出问题，让同学想路径并去做，后续再做相应指引。</p><a class="src-link" href="#sec-04">原文 → 技术leader</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>职场进阶靠思维升级：新人先做事建框架，潜力干将先做人再做事，架构师要有以终为始的成事思维。</li>
+          <li>把每件小事做到自己为止，认真深入主动超过70%的人，才能积累影响力和核心竞争力。</li>
+          <li>技术leader的本质是成就他人、创造价值感，建立组织信任，多给建议少给方案。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247536060&amp;idx=1&amp;sn=0c16ecdbed2021b327cf6c05b6a47f4e" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247536060&amp;idx=1&amp;sn=0c16ecdbed2021b327cf6c05b6a47f4e</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

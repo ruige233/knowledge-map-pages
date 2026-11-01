@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Java8 Stream 一行代码实现数据分组统计、排序、最大值、最小值、平均值、总数、合计</h1>
+  <p class="lede">Java8 Stream 分组统计、排序、求和等聚合操作示例合集</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 11 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<ul><li>示例：统计用户status的最大值，最小值，求和，平均值</li><li>分组统计：</li><li>如果我们想看某个部门下面有哪些数据，可以如下代码</li><li>求最大值，最小值</li><li>对某个字段求最大，最小，求和，统计，计数</li><li>求最大值，最小值还可以这样做</li><li>对某个字段求和并汇总</li><li>求某个字段的平均值</li><li>拼接某个字段的值，可以设置前缀，后缀或者分隔符</li><li>根据部门进行分组，并获取汇总人数</li><li>根据部门和是否退休进行分组，并汇总人数</li><li>根据部门和是否退休进行分组，并取得每组中年龄最大的人</li></ul>
+<p>Java8对数据处理可谓十分流畅，既不改变数据，又能对数据进行很好的处理，今天给大家演示下，用Java8的Stream如何对数据进行分组统计，排序，求和等</p>
+<p>这些方法属于java 8的汇总统计类：</p>
+<ul><li>getAverage(): 它返回所有接受值的平均值。</li><li>getCount(): 它计算所有元素的总数。</li><li>getMax(): 它返回最大值。</li><li>getMin(): 它返回最小值。</li><li>getSum(): 它返回所有元素的总和。</li></ul>
+<p>示例：统计用户status的最大值，最小值，求和，平均值</p>
+<p>看官可以根据自己的需求进行灵活变通</p>
+<ul><li>@GetMapping(&quot;/list&quot;)</li><li>public void list(){</li><li>List&lt;InputForm&gt; inputForms = inputFormMapper.selectList();</li><li>Map&lt;String, IntSummaryStatistics&gt; collect = inputForms.stream()</li><li>.collect(Collectors.groupingBy(InputForm::getCreateUserName, Collectors.summarizingInt(InputForm::getStatus)));</li><li>// 对名字去重</li><li>Set&lt;String&gt; collect1 = inputForms.stream().distinct().map(InputForm::getCreateUserName).collect(Collectors.toSet());</li><li>// 遍历名字，从map中取出对应用户的status最大值，最小值，平均值。。。</li><li>for (String s1 : collect1) {</li><li>IntSummaryStatistics statistics1 = collect.get(s1);</li><li>System.out.println(&quot;第一个用户的名字为====&quot; + s1);</li><li>System.out.println(&quot;**********************************************&quot;);</li><li>System.out.println(&quot;status的个数为===&quot; + statistics1.getCount());</li><li>System.out.println(&quot;status的最小值为===&quot; + statistics1.getMin());</li><li>System.out.println(&quot;status的求和为===&quot; + statistics1.getSum());</li><li>System.out.println(&quot;status的平均值为===&quot; + statistics1.getAverage());</li><li>System.out.println();</li><li>System.out.println();</li></ul>
+<p>结果如下：</p>
+<p>分组统计：</p>
+<ul><li>@GetMapping(&quot;/list&quot;)</li><li>public void list(){</li><li>List&lt;InputForm&gt; inputForms = inputFormMapper.selectList();</li><li>System.out.println(&quot;inputForms = &quot; + inputForms);</li><li>Map&lt;String, Long&gt; collect = inputForms.stream().collect(Collectors.groupingBy(InputForm::getCreateUserName,</li><li>Collectors.counting()));</li><li>System.out.println(&quot;collect = &quot; + collect);</li></ul>
+<p>❝ 其中Collectors.groupingBy(InputForm::getCreateUserName, Collectors.counting())返回的是一个Map集合，InputForm::getCreateUserName代表key，Collectors.counting()代表value，我是按照创建人的姓名进行统计 ❞</p>
+<p>可以看到总共有九条数据，其中莫昀锦有两个，周亚丽有七个</p>
+<p>如果我们想看某个部门下面有哪些数据，可以如下代码</p>
+<ul><li>@GetMapping(&quot;/list&quot;)</li><li>public Map&lt;String, List&lt;InputForm&gt;&gt; list(){</li><li>List&lt;InputForm&gt; inputForms = inputFormMapper.selectList();</li><li>System.out.println(&quot;inputForms = &quot; + inputForms);</li><li>Map&lt;String, List&lt;InputForm&gt;&gt; collect = inputForms.stream()</li><li>.collect(Collectors.groupingBy(InputForm::getCreateCompanyName));</li><li>return collect;</li></ul>
+<p>求最大值，最小值</p>
+<ul><li>@GetMapping(&quot;/list&quot;)</li><li>public Map&lt;String, List&lt;InputForm&gt;&gt; list(){</li><li>List&lt;InputForm&gt; inputForms = inputFormMapper.selectList();</li><li>System.out.println(&quot;inputForms = &quot; + inputForms);</li><li>Optional&lt;InputForm&gt; min = inputForms.stream()</li><li>.min(Comparator.comparing(InputForm::getId));</li><li>System.out.println(&quot;min = &quot; + min);</li><li>return null;</li></ul>
+<p>可以看到此id是最小的，最大值雷同</p>
+<p>对某个字段求最大，最小，求和，统计，计数</p>
+<ul><li>@GetMapping(&quot;/list&quot;)</li><li>public void list(){</li><li>List&lt;InputForm&gt; inputForms = inputFormMapper.selectList();</li><li>System.out.println(&quot;inputForms = &quot; + inputForms);</li><li>IntSummaryStatistics collect = inputForms.stream()</li><li>.collect(Collectors.summarizingInt(InputForm::getStatus));</li><li>double average = collect.getAverage();</li><li>int max = collect.getMax();</li><li>int min = collect.getMin();</li><li>long sum = collect.getSum();</li><li>long count = collect.getCount();</li><li>System.out.println(&quot;collect = &quot; + collect);</li></ul>
+<p>求最大值，最小值还可以这样做</p>
+<ul><li>// 求最大值</li><li>Optional&lt;InputForm&gt; max = inputForms.stream().max(Comparator.comparing(InputForm::getAgency));</li><li>if (max.isPresent()){</li><li>System.out.println(&quot;max = &quot; + max);</li><li>// 求最小值</li><li>Optional&lt;InputForm&gt; min = inputForms.stream().min(Comparator.comparing(InputForm::getAgency));</li><li>if (min.isPresent()){</li><li>System.out.println(&quot;min = &quot; + min);</li></ul>
+<p>对某个字段求和并汇总</p>
+<ul><li>int sum = inputForms.stream().mapToInt(InputForm::getStatus).sum();</li><li>System.out.println(&quot;sum = &quot; + sum);</li></ul>
+<p>求某个字段的平均值</p>
+<ul><li>// 求某个字段的平均值</li><li>Double collect2 = inputForms.stream().collect(Collectors.averagingInt(InputForm::getStatus));</li><li>System.out.println(&quot;collect2 = &quot; + collect2);</li><li>// 简化后</li><li>OptionalDouble average = inputForms.stream().mapToDouble(InputForm::getStatus).average();</li><li>if (average.isPresent()){</li><li>System.out.println(&quot;average = &quot; + average);</li></ul>
+<p>拼接某个字段的值，可以设置前缀，后缀或者分隔符</p>
+<ul><li>// 拼接某个字段的值,用逗号分隔，并设置前缀和后缀</li><li>String collect3 = inputForms.stream().map(InputForm::getCreateUserName).collect(Collectors.joining(&quot;,&quot;, &quot;我是前缀&quot;, &quot;我是后缀&quot;));</li><li>System.out.println(&quot;collect3 = &quot; + collect3);</li></ul>
+<p>根据部门进行分组，并获取汇总人数</p>
+<ul><li>// 根据部门进行汇总，并获取汇总人数</li><li>Map&lt;String, Long&gt; collect4 = inputForms.stream().collect(Collectors.groupingBy(InputForm::getCreateDeptName, Collectors.counting()));</li><li>System.out.println(&quot;collect4 = &quot; + collect4);</li></ul>
+<p>根据部门和是否退休进行分组，并汇总人数</p>
+<ul><li>// 根据部门和是否退休进行分组，并汇总人数</li><li>Map&lt;String, Map&lt;Integer, Long&gt;&gt; collect5 = inputForms.stream().collect(Collectors.groupingBy(InputForm::getCreateDeptName, Collectors.groupingBy(InputForm::getIsDelete, Collectors.counting())));</li><li>System.out.println(&quot;collect5 = &quot; + collect5);</li></ul>
+<p>根据部门和是否退休进行分组，并取得每组中年龄最大的人</p>
+<ul><li>// 根据部门和是否退休进行分组，并取得每组中年龄最大的人</li><li>Map&lt;String, Map&lt;Integer, InputForm&gt;&gt; collect6 = inputForms.stream().collect(</li><li>Collectors.groupingBy(InputForm::getCreateDeptName,</li><li>Collectors.groupingBy(InputForm::getIsDelete,</li><li>Collectors.collectingAndThen(</li><li>Collectors.maxBy(</li><li>Comparator.comparing(InputForm::getAge)), Optional::get))));</li><li>System.out.println(&quot;collect6 = &quot; + collect6);</li></ul>
+<h3 class="sub">1. 面试官：post为什么会发送两次请求？</h3>
+<h3 class="sub">2. Spring 在多线程环境下如何确保事务一致性?</h3>
+<p>3. 告别复杂逻辑，项目终于用上了 Spring 状态机，非常优雅！</p>
+<h3 class="sub">4. 我的私密学习小圈子~</h3>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>分组统计并计数</h4><p>groupingBy(InputForm::getCreateUserName, counting()) 按创建人统计条数，返回 Map&lt;String, Long&gt;。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>分组汇总统计</h4><p>groupingBy(getCreateUserName, summarizingInt(getStatus)) 一次得到每组的个数、最小、求和、平均。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>max/min 返回 Optional</h4><p>stream().max/min(Comparator.comparing(...)) 返回 Optional，需 isPresent() 判断再取值。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>求和与求平均</h4><p>mapToInt(getStatus).sum() 求和；averagingInt 或 mapToDouble(...).average() 求平均。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>拼接字段值</h4><p>Collectors.joining(&quot;,&quot;,&quot;我是前缀&quot;,&quot;我是后缀&quot;) 拼接字段并自定义前后缀与分隔符。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>双重分组计数</h4><p>groupingBy(部门, groupingBy(是否退休, counting())) 返回 Map&lt;String, Map&lt;Integer, Long&gt;&gt;。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>取每组年龄最大的人</h4><p>collectingAndThen(maxBy(comparing(getAge)), Optional::get) 配合双重分组取每组最大年龄。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>汇总统计类方法</h4><p>getAverage/getCount/getMax/getMin/getSum 分别返回平均值、总数、最大值、最小值、总和。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>分组统计优先用 groupingBy，需要一次多指标时叠加 summarizingInt。</li>
+          <li>求最值用 min/max + Comparator.comparing，记得处理 Optional。</li>
+          <li>双重分组、拼接、取组内最大都能用 Collectors 一行完成。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzU4MDUyMDQyNQ==&amp;mid=2247519207&amp;idx=1&amp;sn=fb725eb337b04844efac078987cacf27" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzU4MDUyMDQyNQ==&amp;mid=2247519207&amp;idx=1&amp;sn=fb725eb337b04844efac078987cacf27</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

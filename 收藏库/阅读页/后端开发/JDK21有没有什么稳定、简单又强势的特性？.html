@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">JDK21有没有什么稳定、简单又强势的特性？</h1>
+  <p class="lede">AJDK21.0.5 虚拟线程：改动小、性能强，并修复 pin 死锁问题</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 33 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>虚拟线程与 Loom 背景</a>
+          <a href="#sec-02"><span class="n">02</span>稳定性与性能</a>
+          <a href="#sec-03"><span class="n">03</span>线程改造要点</a>
+          <a href="#sec-04"><span class="n">04</span>pin 问题与解法</a>
+          <a href="#sec-05"><span class="n">05</span>诊断工具</a>
+          <a href="#sec-06"><span class="n">06</span>结语</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 虚拟线程与 Loom 背景</a>
+          <a href="#sec-02">02 稳定性与性能</a>
+          <a href="#sec-03">03 线程改造要点</a>
+          <a href="#sec-04">04 pin 问题与解法</a>
+          <a href="#sec-05">05 诊断工具</a>
+          <a href="#sec-06">06 结语</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>阿里妹导读</p>
+<p>这篇文章主要介绍了Java虚拟线程的发展及其在AJDK中的实现和优化。</p>
+<p>阅前声明：本文介绍的内容基于AJDK21.0.5[1]以及以上的版本，想要用更加稳定的Java虚拟线程还请升级哦:-)</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>虚拟线程与 Loom 背景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>虚拟线程、协程、纤程同指 Loom 轻量线程概念</li><li>Go 的 goroutine 是内置轻量线程的典型</li><li>AJDK11/8 自研 wisp，JDK21 起改用 Loom 实现以与上游同步</li><li>AJDK21.0.5 包含 openjdk21 Loom 全部内容并减少 pin 死锁</li></ul></div>
+<p>作为开发者，想必大家对协程/纤程的概念并不陌生。在Java的Loom项目（虚拟线程）出现之前，协程已经在其他编程语言中得到了广泛应用，比如Go语言就以其内置的轻量级线程——goroutines而闻名。</p>
+<p>在AJDK11/AJDK8/Dragonwell11/Dragonwell8中，我们JVM团队则是自研了wisp特性，其实现原理与其他语言的协程类似，通过减少线程创建和上下文切换帮助Java应用提升性能。</p>
+<pre><code>Java Loom项目是由Oracle发起的一个旨在为Java平台引入轻量级线程（也称为纤程，Fiber[2]）的开发项目。在Java中我们使用的名词——虚拟线程、协程、纤程指代的都是这个概念，其目标是让开发者能够更容易地编写出高并发的应用程序，而无需担心传统线程所带来的资源消耗和复杂性问题。</code></pre>
+<p>出于与上游同步一致的目的，从JDK21开始，我们不再支持wisp，而是采用loom项目的实现来继续优化、研发Java虚拟线程特性。目前，AJDK21.0.5包含了openjdk21中loom的所有内容，并在这基础上进一步优化了虚拟线程，以减少用户在使用虚拟线程时遇到死锁问题（也称为虚拟线程pin问题）的情况。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>稳定性与性能</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>去年双十一 tpp 灰度上线至今无问题反馈，已大规模应用</li><li>即将在 polardb 上线</li><li>实验以 ajdk21 不用协程为 baseline，对比协程/ajdk11/wisp 版本</li><li>csw 表示 context switch</li></ul></div>
+<p>稳定性：去年双十一期间，tpp已经灰度上线，目前没有出现问题反馈。当前版本已经在tpp大规模应用，并即将在polardb上线。</p>
+<p>性能提升：以下提供一些实验数据供用户参考。</p>
+<p>表格中以ajdk21不使用协程为baseline，对比了ajdk21协程、ajdk11以及ajdk11开启wisp协程的情况。（csw表示context switch）</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>线程改造要点</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>无需修改所有 synchronized，只需改线程创建部分</li><li>单线程：Thread.ofVirtual().start() 替代 new Thread</li><li>线程池：核心是把工厂换成 Thread.ofVirtual().factory()</li><li>官方推荐 newVirtualThreadPerTaskExecutor，但需注意限流</li></ul><div class="pit"><ul><li>不限流的官方推荐方式可能导致持续 FGC 甚至 OOM</li><li>自行创建虚拟线程工厂需预加载调用链所有类，否则可能崩溃或死锁</li><li>自建工厂不受 parallelism/maxPoolSize 参数控制</li></ul></div></div>
+<p>虽然Java虚拟线程使用起来是很简单的，但是对比于其他只要开一个选项的特性来说，它还是需要开发者做一点适配改动的。此前很多开发者可能会被“需要修改所有的synchronized的代码块”劝退，但对使用AJDK21.0.5的开发者来说，现在已经可以从修改synchronized的工作中解脱出来啦！开发者只需要去修改应用中有关创建线程的部分，就可以享受到JDK21虚拟线程带来的提升。</p>
+<h3 class="sub">3.1. 单一线程转为虚拟线程</h3>
+<ul><li>// 传统 java thread，每一个线程都对应于底层操作系统的一个线程</li><li>Thread javaThread = new Thread(()-&gt;{</li><li>// some tasks</li><li>});</li><li>// 轻量的虚拟线程 virtual thread，它会被底层一个线程携带运行</li><li>Thread virtualThread = Thread.ofVirtual().start(()-&gt;{</li><li>// some tasks</li><li>});</li></ul>
+<h3 class="sub">3.2. 线程池转为虚拟线程池</h3>
+<p>线程池中变成虚拟线程池的核心：将线程池的工厂转成虚拟线程工厂Thread.ofVirtual().factory()。</p>
+<p>用户可以找到自己应用代码中的线程池进行相应的修改，以下给出两种示例。</p>
+<ul><li>// 1. 官方推荐的每一个任务一个虚拟线程的使用方式</li><li>//   （因为创建虚拟线程所需要的资源很少，虚拟线程不需要被缓存，但是没有限流处理可能会加剧GC（因为所有被切出去的虚拟线程都是GC Root）</li><li>ExecutorService es = Executors.newVirtualThreadPerTaskExecutor();</li><li>// 2. 传统线程池改造成虚拟线程池</li><li>//    官方并不推荐这种使用方式，但如果想要为应用限流，可以通过虚拟线程池的方式使用，实际应用升级也有很多采用这种方式</li><li>ThreadFactory factory = Thread.ofVirtual().factory();</li><li>ExecutorService executorService =</li><li>new ThreadPoolExecutor(MAX_WORKER_THREADS, MAX_WORKER_THREADS,</li><li>10L, TimeUnit.MINUTES,</li><li>new LinkedBlockingQueue&lt;Runnable&gt;(),</li><li>factory);</li></ul>
+<p>官方推荐方式的隐患</p>
+<p>虽然openjdk官方推荐使用Executors.newVirtualThreadPerTaskExecutor();且明确不推荐使用虚拟线程池，但这里必须要提醒用户：过多的虚拟线程任务有可能会导致持续不断地FGC，甚至OOM应用退出。这种现象后的根因是，被切出的虚拟线程都会在GC中视为根对象，这些虚拟线程引用的所有对象都必须继续保留在堆上。</p>
+<p>以下是一个简单的用例以说明这种情况，感兴趣的同学可以尝试一下。（实验中堆设置成4G大小）</p>
+<ul><li>import java.util.concurrent.ExecutorService;</li><li>import java.util.concurrent.Executors;</li><li>import java.util.concurrent.LinkedBlockingDeque;</li><li>import java.util.concurrent.ThreadFactory;</li><li>import java.util.concurrent.ThreadPoolExecutor;</li><li>import java.util.concurrent.TimeUnit;</li><li>public class TestFGCVT {</li><li>public static void main(String[] args){</li><li>// 1024 * 1024 * (1024 * 8) bytes -&gt; 8G</li><li>ThreadFactory factory = Thread.ofVirtual().factory();</li><li>// 不限流的方式可能会造成连续不断地FGC，甚至OOM退出</li><li>ExecutorService es = Executors.newThreadPerTaskExecutor(factory);</li><li>// 限流，最多有1024*100个虚拟线程任务</li><li>// ExecutorService es = new ThreadPoolExecutor(1024*100, 1024*100, // 1024 * 100 * 1024 * 8 = 800M</li><li>//                                        10L, TimeUnit.MINUTES,</li><li>//                                        new LinkedBlockingDeque&lt;Runnable&gt;(),</li><li>//                                        factory);</li><li>for(int i = 0 ; i &lt; 1024 * 1024; i++) {</li><li>System.out.println(&quot;execute: &quot; + i);</li><li>es.execute(new Task(i));</li><li>try {</li><li>es.shutdown();</li><li>while(!es.awaitTermination(10, TimeUnit.SECONDS)) {</li><li>System.out.println(&quot;still waiting...&quot;);</li><li>es.close();</li><li>} catch (Exception e) {</li><li>e.printStackTrace();</li><li>class Task implements Runnable {</li><li>int num;</li><li>Task(int i) {</li><li>num = i;</li><li>@Override</li><li>public void run() {</li><li>Integer[] largeInt = new Integer[1024];</li><li>for(int j = 0 ; j &lt; largeInt.length; j++) {</li><li>largeInt[j] = j * 100;</li><li>try {</li><li>Thread.sleep(30_000); // yield this vthread 这里虽然线程被切出去了，但是持有的超大Integer数组中的所有Integer对象都会一直存活在堆上，至少占用1024 * 8 bytes</li><li>} catch (Exception e) {</li><li>e.printStackTrace();</li><li>int sum = 0;</li><li>for(int j = 0 ; j &lt; largeInt.length; j++) {</li><li>sum += largeInt[j];</li><li>System.out.println(num + &quot;:&quot; + sum);</li></ul>
+<h3 class="sub">3.3. 重要参数介绍</h3>
+<p>虚拟线程本身无需开任何参数就可以使用，但是对于Java应用来说，还是需要关心关于虚拟线程的两个核心参数，以控制底层实际工作线程数量，主要参数如下：</p>
+<p>1.-Djdk.virtualThreadScheduler.parallelism=N这个参数是并行线程数的设置，虚拟机会在大部分情况下维持的工作线程数量与N一致，这个参数需要用户根据自己的机器决定，一般情况下与机器的CPU核数一致（或略小于机器CPU核数）。</p>
+<p>2.-Djdk.virtualThreadScheduler.maxPoolSize=M这个参数是最大允许创建的线程数量，实际应用中可以将M设置比较大，（M&gt;&gt;N，比如设置成M=1024），遇到pin情况（在第4小节中会详细介绍）后触发的补偿机制在当前线程数量未超过M时都会生效。在补偿结束后，线程池会尽量恢复到N个线程。这个补偿机制主要的目的是解决虚拟线程中的pin问题，这种问题遇到的概率本身非常低，且处理此情况的补偿机制带来的开销几乎可以忽略不计，因此用户无需担心该参数带来的负面影响。</p>
+<p>此外，-Djdk.virtualThreadScheduler.minRunnable已经开放，默认是max(parallelism / 2, 1)。其余的参数暂时没有开放给用户。目前虚拟线程的工作线程池默认的corePoolSize实际与parallelism一致，keepAliveTime是30s。</p>
+<h3 class="sub">3.4. 不推荐的做法</h3>
+<p>如果不使用Thread.ofVirtual().factory()而选择自行创建虚拟线程工厂，需要用户对当前的虚拟线程机制有较高的理解。这种工厂创建线程的调用链上使用到的类(&lt;clinit&gt;)以及对象初始化操作(&lt;init&gt;)，需要用户自行确保全部提前加载和初始化，否则可能会导致JVM崩溃或者应用死锁。以下给出一个自主创建虚拟线程池的例子。</p>
+<ul><li>public static void main(String[] args) {</li><li>ForkJoinPool.ForkJoinWorkerThreadFactory forkJoinWorkerThreadFactory = new ForkJoinPool.ForkJoinWorkerThreadFactory() {</li><li>@Override</li><li>public ForkJoinWorkerThread newThread(ForkJoinPool pool) {</li><li>return new CarrierThread(pool);</li><li>// newThread这个调用链上的所有类和初始化都需要用户保证遇到pin问题前全部加载和初始化。</li><li>// 用户可以选择在运行任务前主动触发一次newThread。如果newThread中有选择逻辑，用户需要保证路径全覆盖。</li><li>// 这里的newThread最佳使用jdk.internal.misc.CarrierThread，否则无法在遇到pinned问题时生成多余线程。</li><li>// 当然，使用其余的普通线程编码上并不会出现问题。</li><li>ForkJoinPool scheduler = new ForkJoinPool(4, forkJoinWorkerThreadFactory, (t, e) -&gt; { }, true,</li><li>4, 10, 1, pool -&gt; true, 30, TimeUnit.SECONDS);</li><li>// 4 parallelism, 4 corePoolSize, 10 maximumPoolSize, 1 minimumRunnable, 30s keepAliveTime</li><li>Thread.Builder builder = virtualThreadBuilder(scheduler);</li><li>// 单个任务用法和Thread.ofVirtual()一致</li><li>builder.start(()-&gt;{});</li><li>// es用法</li><li>ExecutorService es = Executors.newThreadPerTaskExecutor(builder.factory());</li><li>// java.lang.ThreadBuilders$VirtualThreadBuilder(Executor) 本身被JDK中标记成只为测试使用的方法，需要反射</li><li>public static Thread.Builder.OfVirtual virtualThreadBuilder(Executor scheduler) {</li><li>try {</li><li>Class&lt;?&gt; clazz = Class.forName(&quot;java.lang.ThreadBuilders$VirtualThreadBuilder&quot;);</li><li>Constructor&lt;?&gt; ctor = clazz.getDeclaredConstructor(Executor.class);</li><li>ctor.setAccessible(true);</li><li>return (Thread.Builder.OfVirtual) ctor.newInstance(scheduler);</li><li>} catch (InvocationTargetException e) {</li><li>Throwable cause = e.getCause();</li><li>if (cause instanceof RuntimeException re) {</li><li>throw re;</li><li>throw new RuntimeException(e);</li><li>} catch (Exception e) {</li><li>throw new RuntimeException(e);</li></ul>
+<p>上述例子只是一个示范，但是我们不推荐使用。用户应该要理解，这种独立创建虚拟线程工厂的方式下，底层工作线程数量是由用户自行编码控制的，不受到-Djdk.virtualThreadScheduler.parallelism和-Djdk.virtualThreadScheduler.maxPoolSize=M的影响。因此，如果混用自行创建的虚拟线程工厂和默认的虚拟线程工厂，底层的工作线程数量应当是这两种工厂的工作线程之和。这会影响到虚拟线程使用的效果。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>pin 问题与解法</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>虚拟线程、Carrier Thread、OS 线程为 N:1:1，切换免用户态/内核态</li><li>pin 指虚拟线程无法从 Carrier Thread 移除，占满后应用卡死</li><li>典型成因：类加载/初始化、synchronized、native c 调用</li><li>根因是含 C/C++ native Frame 的协程不可冻结恢复</li></ul><div class="pit"><ul><li>synchronized 持有或进入 om 失败时 yield 失败，组合会卡死</li><li>类加载获取锁失败场景即使解决 om pin 后仍存在</li></ul></div></div>
+<p>在此之前使用过jdk21虚拟线程的开发者可能会有这种体会：应用升级到21并使用虚拟线程后确实变快了，但是总是遇到小概率机器“卡死”的现象，更严重的则是百分之百会遇到一段时间后应用不再响应。</p>
+<p>这就是前文中提到过的虚拟线程pin问题。如果不想了解这个问题原因，而只想确定自己的应用是否是这种情况的，可以直接尝试AJDK21.0.5版本进行解决。想继续了解原理的同学，可以继续阅读此小节。</p>
+<h3 class="sub">4.1. 什么是虚拟线程pin问题</h3>
+<p>首先，我们在介绍虚拟线程pin问题前，我们先介绍一下Java虚拟线程提升性能的原理。</p>
+<p>Java虚拟线程(Virtual Thread)，Java线程(Carrier Thread)，以及操作系统线程(OS Thread)是 N:1:1的关系。在虚拟线程调度器的配合下，Java虚拟线程会被调度到任意一个空闲的Carrier Thread上。当Carrier Thread遇到应该让渡出资源的事件时（比如Thread.sleep，nio read等等），会在调度器的帮助下更换虚拟线程任务。由于这种切换不需要在用户态与内核态切换，因此更加高效。此外，创建一个虚拟线程所需要的资源远远小于Java线程，因此使用资源的方式也更加高效。</p>
+<p>下图是虚拟线程池/线程池的原理示意图。灰色代表虚拟线程，黑色代表Java线程，黄色代表暂时补偿的Java线程/虚拟线程。</p>
+<p>虚拟线程pin则是指，当前的Virtual Thread在遇到需要被调度出去的事件时，由于JVM内部实现的原因无法从当前的Carrier Thread移除，而是选择一直占用当前的Carrier Thread。也就是上图中的灰色可执行任务一直占用黑色线程，而调度器无法将之切换到其他的灰色可执行任务。虚拟线程pin问题的场景就是，所有的Carrier Thread都被某些Virtual Thread占用了，从而没有任何任务能够继续进行下去。</p>
+<p>典型的虚拟线程pin问题主要由以下几个原因导致：</p>
+<h3 class="sub">1.遇到了类加载、初始化事件</h3>
+<h3 class="sub">2.遇到了synchronized代码块</h3>
+<h3 class="sub">3.应用中调用了native c代码</h3>
+<p>这些事件导致Virtual Thread无法移除的原理其实是一致的——这些当前Carrier Thread的线程栈是Java Frame和C/C++ native Frame混杂的，含有C/C++ native Frame的虚拟线程不可移除。其不可移除的原因是当前Loom Virtual Thread的冻结、恢复设计中，其线程栈的地址不是原封不动的。比如原来在0x1000的栈，恢复后可能是从0x2000的地址开始，而栈中的内容和之前完全一致。C/C++代码中会有一些操作（比如取地址）没有办法保证恢复后的正确性。</p>
+<p>为了保证程序的正确性，这些虚拟线程就被pin在的底层的Carrier Thread上。当所有的Carrier Thread都被这种虚拟线程占用，同时没有任何事件能被满足从而继续运行下去的话，Java应用就卡死了。下面我们将具体分析几个pin的场景，并介绍AJDK21.0.5的解决方案。（AJDK21.0.5已经做的工作会用成橙色标记出来。）</p>
+<h3 class="sub">4.2. synchronized导致的pin问题</h3>
+<p>只说理论还是很抽象，有没有什么更直观具体的例子呢？接下来，我们将结合AJDK21.0.5对synchronized代码块的解决方案以及一些小的测试用例来说明。在此前，开发者需要将这个代码块修改成使用juc lock来减少被pin的情况。</p>
+<p>关注openjdk issue的同学可能知道，最新上游中的JEP491[3]是解决了synchronized问题的。但这其实只是LOOM开发分支中的一部分代码，其只解决了使用LM_LIGHTWEIGHT模式下的问题，如果使用LM_LEGACY锁模式，这个问题依旧存在。AJDK21.0.5则是包含了更多的LOOM项目中的解决方案代码，并额外增加了解决类加载、类初始化事件导致pin问题的临时方案。</p>
+<p>4.2.1 运行synchronized模块中的代码时无法被切换（yield失败）—— pin when hold om</p>
+<p>当虚拟线程在执行synchronized中的代码时，遇到需要等待资源的情况时，不会将线程资源让出给其他协程执行任务。</p>
+<ul><li>synchronized(object) {</li><li>try {</li><li>semaphore.acquire(); // this should yield but pinned</li><li>} catch (Exception e) {</li><li>// TODO</li></ul>
+<p>现在我们假设</p>
+<p>1.能够进行semaphore.release操作的是一个新建的协程任务</p>
+<p>2.目前所有的线程资源（简单起见，可以假设只有一个线程）都被上述代码pin住，停在第三行</p>
+<p>那么，程序就会完全停止运行。</p>
+<p>实际的应用情况会比这个更复杂，会有多种pin problem组合导致应用程序无法继续运行。</p>
+<p>概括来说，当前的JVM中加锁其绑定的是线程资源，而不是协程，因此如果切换协程，其锁的持有信息会出现问题。</p>
+<p>TestSynchronizedPinCase1.java</p>
+<ul><li>import java.util.concurrent.*;</li><li>public class TestSynchronizedPinCase1 {</li><li>public static void main(String[] args) throws Exception{</li><li>Object object = new Object();</li><li>Semaphore semaphore = new Semaphore(1);</li><li>semaphore.acquire();</li><li>Thread t1 = Thread.ofVirtual().start(() -&gt; {</li><li>System.out.println(&quot;thread1 is reaching synchronzed, running on &quot; + Thread.currentThread());</li><li>synchronized(object) {</li><li>try{</li><li>System.out.println(&quot;thread1 is acquiring semaphore&quot;);</li><li>semaphore.acquire(); // this should yield but pinned now</li><li>System.out.println(&quot;thread1 acquired&quot;);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>} finally {</li><li>semaphore.release();</li><li>System.out.println(&quot;thread1 released&quot;);</li><li>});</li><li>// ensure the t1 reaches semaphore.acquire();</li><li>System.out.println(&quot;sleep 1000ms to ensure the t1 reaches `semaphore.acquire();`&quot;);</li><li>Thread.sleep(1000);</li><li>System.out.println(&quot;sleep finished&quot;);</li><li>Thread t2 = Thread.ofVirtual().start(()-&gt;{</li><li>System.out.println(&quot;thread2 is running on &quot; + Thread.currentThread());</li><li>semaphore.release();</li><li>System.out.println(&quot;thread2 released the semaphore&quot;);</li><li>});</li><li>t1.join();</li><li>t2.join();</li></ul>
+<p>这个小示例模拟了这种情况下的pin问题。执行用例时，请注意设置参数-Djdk.virtualThreadScheduler.parallelism=1，其保证了底层的Carrier Thread数量为1。（如果用户使用最新的openjdk(包含JEP491)是可以正常运行的，但是如果额外指定LM_LEGACY模式(-XX:LockingMode=1)下会失败，感兴趣的同学可以尝试;-)）</p>
+<p>解决方案</p>
+<p>修改VM内部对om相关的处理，将om的owner记录为virtual thread。锁的所有者记录修正后，不含有C/C++ Frame的CarrierThread就可以顺利选择新的虚拟线程任务切换运行了。</p>
+<p>4.2.2 进入synchronized失败时无法移除 —— pin when enter om</p>
+<p>当虚拟线程在进入synchronized时，如果获取om失败，会直接选择等待，不会将线程资源让出给其他协程执行任务。</p>
+<ul><li>synchronized(object) { // object has been locked and need to wait</li></ul>
+<p>现在我们假设</p>
+<p>1.虚拟线程A成功获取object om，但是需要等待某种资源，因此pin住;</p>
+<p>2.其余许多虚拟线程在等待object om，占用了剩余的线程，因此pin住;</p>
+<p>3.能够释放某种资源的虚拟线程任务没有资源能够执行，无法唤醒虚拟线程A;</p>
+<p>那么，程序就会完全停止。</p>
+<p>这里的某种资源可以是juc，object monitor，或者是触发了类加载逻辑中需要获取的锁等等。这个问题和1.1的pin problem组合在一起就是当前synchronized关键字会带来的虚拟线程卡死问题。</p>
+<p>进入synchronized失败后无法yield的原因，主要是ObjectMonitor::enter其相关逻辑是vm中的C/C++所写的逻辑，其栈是C native frame，含有这种栈的协程不能够进行上下文切换。</p>
+<p>TestSynchronizedPinCase2.java</p>
+<ul><li>import java.util.concurrent.*;</li><li>public class TestSynchronizedPinCase2 {</li><li>public static void main(String[] args) throws Exception{</li><li>Object object = new Object();</li><li>Semaphore semaphore = new Semaphore(1);</li><li>semaphore.acquire();</li><li>Thread t1 = Thread.ofVirtual().start(() -&gt; {</li><li>System.out.println(&quot;thread1 is reaching synchronzed, running on &quot; + Thread.currentThread());</li><li>synchronized(object) {</li><li>try{</li><li>System.out.println(&quot;thread1 is holding object monitor&quot;);</li><li>semaphore.acquire(); // this should yield but pinned now</li><li>System.out.println(&quot;thread1 is goinng to releasing object monitor&quot;);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>} finally {</li><li>semaphore.release();</li><li>System.out.println(&quot;thread1 released&quot;);</li><li>System.out.println(&quot;thread1 released object monitor&quot;);</li><li>});</li><li>// ensure the t1 reaches semaphore.acquire();</li><li>System.out.println(&quot;sleep 1000ms&quot;);</li><li>Thread.sleep(1000);</li><li>System.out.println(&quot;sleep finished&quot;);</li><li>Thread t2 = Thread.ofVirtual().start(() -&gt; {</li><li>System.out.println(&quot;thread2 is reaching synchronzed, running on &quot; + Thread.currentThread());</li><li>synchronized(object) { // this should yield but pinned on contended monitorenter now</li><li>System.out.println(&quot;thread2 is holding object monitor&quot;);</li><li>semaphore.release(); // this should not be called before t1 released monitor</li><li>System.out.println(&quot;thread2 released the semaphore&quot;);</li><li>System.out.println(&quot;thread2 is goinng to releasing object monitor&quot;);</li><li>System.out.println(&quot;thread2 released object monitor&quot;);</li><li>});</li><li>// ensure the t2 reaches synchronized(object);</li><li>System.out.println(&quot;sleep 1000ms&quot;);</li><li>Thread.sleep(1000);</li><li>System.out.println(&quot;sleep finished&quot;);</li><li>Thread t3 = Thread.ofVirtual().start(() -&gt; {</li><li>System.out.println(&quot;thread3 is running on &quot; + Thread.currentThread());</li><li>semaphore.release();</li><li>System.out.println(&quot;thread3 released object monitor&quot;);</li><li>});</li><li>System.out.println(&quot;before join()&quot;);</li><li>t1.join();</li><li>t2.join();</li><li>t3.join();</li><li>System.out.println(&quot;after join()&quot;);</li><li>System.out.println(&quot;reach end&quot;);</li></ul>
+<p>同样，我们给出一个小示例。它模拟了4.2.1和4.2.2两种pin问题。执行这条命令式注意设置参数-Djdk.virtualThreadScheduler.parallelism=1这个保证了底层的Carrier Thread数量为1。</p>
+<p>解决方案</p>
+<p>修改VM内部对om相关的处理，将ObjectMonitor::enter相关获取锁的C/C++ frame移除，并在恢复上下文时重新执行获取锁的逻辑处理。这种方式使得vm逻辑带来的的C/C++ frame能够等价地被冻结和恢复，虚拟线程安全地被Carrier Thread切换出去。</p>
+<h3 class="sub">4.3 类加载、初始化事件导致的pin问题</h3>
+<p>这种情况的pin问题比较难以构造和说明。简单而言，其在vm内部执行类加载和初始化的C/C++代码时遇到了需要切出的事件，但是由于这些C frame，无法让出Carrier Thread。我们给出一个实际场景中可能遇到的栈供大家参考：</p>
+<ul><li>#5  ObjectMonitor::enter (this=0x5654cbc01f10, current=0x7f286c7f9c00) at src/hotspot/share/runtime/objectMonitor.cpp:329</li><li>#6  0x00007f28cad5ca83 in ObjectSynchronizer::enter (obj=..., lock=0x7f2736d59df0, current=0x7f286c7f9c00) at src/hotspot/share/runtime/synchronizer.cpp:523</li><li>#7  0x00007f28cad676f1 in SystemDictionary::resolve_instance_class_or_null (name=name@entry=0x7f27e8edcef8, class_loader=..., class_loader@entry=..., protection_domain=..., __the_thread__=__the_thread__@entry=0x7f286c7f9c00) at src/hotspot/share/classfile/systemDictionary.cpp:607</li><li>#8  0x00007f28cad6931e in SystemDictionary::resolve_or_null (__the_thread__=0x7f286c7f9c00, protection_domain=..., class_loader=..., class_name=0x7f27e8edcef8) at src/hotspot/share/classfile/systemDictionary.cpp:342</li><li>#9  SystemDictionary::resolve_or_fail (class_name=0x7f27e8edcef8, class_loader=..., protection_domain=..., throw_error=&lt;optimized out&gt;, __the_thread__=0x7f286c7f9c00) at src/hotspot/share/classfile/systemDictionary.cpp:320</li><li>#10 0x00007f28ca4dfc33 in ConstantPool::klass_at_impl (this_cp=..., which=156, __the_thread__=0x7f286c7f9c00) at src/hotspot/share/oops/constantPool.cpp:535</li><li>#11 0x00007f28ca74a996 in ConstantPool::klass_at (__the_thread__=0x7f286c7f9c00, which=156, this=0x7f2745941640) at src/hotspot/share/oops/constantPool.hpp:391</li></ul>
+<p>上面是常量池解析时的栈，其SystemDictionary::resolve_instance_class_or_null需要获取类加载器的锁，如果失败就会就行park。</p>
+<p>现在我们假设</p>
+<p>1.虚拟线程A持有了类加载器CLD的om，同时因为等待某种资源pin住</p>
+<p>2.其余虚拟线程因为触发类加载，获取CLD om失败而pin住</p>
+<p>3.某种资源释放提交的任务是虚拟线程执行，需要线程资源，只有这个任务执行后，虚拟线程A才能继续</p>
+<p>上述情况即使在解决了object monitor pinned problem后，也依旧会存在（即Loom上游最新版本也存在这个问题）。假设我们使用的是解决了om pinned problem的Loom JDK，虚拟线程A确实可以成功释放底层的线程资源，但是这个线程资源紧接着很可能被第二种情况的虚拟线程占用。最终第三个某种资源释放的任务依旧没有线程能够执行。</p>
+<p>类加载中获取锁失败时，其栈中含有vm内执行逻辑的c/c++ native frame，这种协程不能上下文切换。</p>
+<p>此外，即使FJP线程池没有达到上限，在当前实现中不会补偿增加线程。</p>
+<p>解决方案</p>
+<p>目前的解决方案是一个work around，在锁获取失败后，通过JavaCall主动触发FJP补偿线程的逻辑。其逻辑修改在已经解决object monitor pinned problem的情况下，理论上触发概率较小，因此不会带来明显的overhead。开发者用户请按照3.3中的重要参数介绍合理为自己的Java应用设置具体数值。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>诊断工具</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>jcmd &lt;pid&gt;/&lt;name&gt; ThreadAndVThread.dump 输出虚拟线程栈</li><li>相比 openjdk 能额外输出非挂载虚拟线程的栈</li><li>ATP 平台可分析该格式日志</li><li>ATP 暂只显示锁持有与等待，不给死锁结论</li></ul></div>
+<p>AJDK21.0.5开始增强了对虚拟线程的诊断工具，与openjdk的工具相比，AJDK能够额外输出非挂载运行中的虚拟线程的栈信息。</p>
+<h3 class="sub">5.1. 使用</h3>
+<p>jcmd &lt;pid&gt;/&lt;application-name&gt; ThreadAndVThread.dump</p>
+<h3 class="sub">5.2. 优势介绍</h3>
+<p>目前的openjdk上游为虚拟线程新增的命令jcmd &lt;pid&gt;/&lt;application-name&gt; Thread.dump_to_file -format=json testdump.json不会显示unmounted virtual thread。然而，开发人员本身可能也很关心被切换出去的协程的栈是什么样的。在解决了synchronized pin问题后，有很多被切走的协程还会有锁的持有。这个信息对于debug来说非常重要。</p>
+<h3 class="sub">5.3. 效果展示</h3>
+<p>ATP平台也会提供分析这种格式日志的功能：</p>
+<p>目前的ATP分析暂时只会显示所有锁的持有与等待情况，不会给出是否存在死锁的结论，这会在后续的工作中进一步优化。如果无法解决问题可以联系@佳未协同分析。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>虚拟线程稳定、简单、强势，鼓励升级使用</li><li>欢迎使用与反馈</li></ul></div>
+<p>以上就是对AJDK21.0.5中的虚拟线程的介绍啦，这么稳定、简单又强势的特性，赶快用起来！欢迎大家使用和反馈~@佳未﻿</p>
+<p>参考链接：</p>
+<p>[1]https://aliyuque.antfin.com/aone355606/gfqllg/wvurnxk1oarmoqtu</p>
+<p>[2]https://en.wikipedia.org/wiki/Fiber_(computer_science)</p>
+<p>[3]https://bugs.openjdk.org/browse/JDK-8338383</p>
+<p>通过SchedulerX实现分布式任务调度</p>
+<p>企业级应用中经常会遇到数据定时处理、文件处理、报表生成等定时处理的任务，对于任务配置和执行率有较高要求，本文介绍如何利用SchedulerX来实施企业级定时任务的调度与管理，为定时任务提供高效、稳定和灵活的解决方案。</p>
+<p>点击阅读原文查看详情。</p>
+<p>阅读原文</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>虚拟线程 vs 传统线程</h4><p>虚拟线程与 Carrier Thread、OS 线程是 N:1:1，切换不经过用户态/内核态，创建开销远小于 Java 线程。</p><a class="src-link" href="#sec-04">原文 → pin 问题与解法</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>wisp vs Loom</h4><p>wisp 为 AJDK 自研协程；JDK21 起停用，改用 Oracle Loom 实现并与上游保持一致。</p><a class="src-link" href="#sec-01">原文 → 虚拟线程与 Loom 背景</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>双十一稳定性</h4><p>去年双十一 tpp 灰度上线无问题反馈，当前已大规模应用，即将在 polardb 上线。</p><a class="src-link" href="#sec-02">原文 → 稳定性与性能</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>不限流隐患数值</h4><p>实验堆设 4G，每任务持 1024 个 Integer 对象；过多虚拟线程任务可能持续 FGC 直至 OOM。</p><a class="src-link" href="#sec-03">原文 → 线程改造要点</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>单线程改造</h4><p>Thread.ofVirtual().start(()-&gt;{...}) 替代 new Thread，底层由一个线程携带运行。</p><a class="src-link" href="#sec-03">原文 → 线程改造要点</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>线程池改造</h4><p>把工厂换成 Thread.ofVirtual().factory() 传入 ThreadPoolExecutor，即可改造为虚拟线程池。</p><a class="src-link" href="#sec-03">原文 → 线程改造要点</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>官方推荐方式隐患</h4><p>Executors.newVirtualThreadPerTaskExecutor() 不限流，被切出的虚拟线程都是 GC Root，易引发 FGC/OOM。</p><a class="src-link" href="#sec-03">原文 → 线程改造要点</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>自建工厂风险</h4><p>自建虚拟线程工厂需预加载调用链所有类，否则可能 JVM 崩溃或死锁；且不受 parallelism 参数控制。</p><a class="src-link" href="#sec-03">原文 → 线程改造要点</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>pin 根因</h4><p>含 C/C++ native Frame 的虚拟线程不可冻结恢复，被 pin 在 Carrier Thread；占满后应用卡死。</p><a class="src-link" href="#sec-04">原文 → pin 问题与解法</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>synchronized 已修复</h4><p>AJDK21.0.5 修复 synchronized 进入/持有 om 的 pin，无需再修改所有 synchronized 代码块。</p><a class="src-link" href="#sec-04">原文 → pin 问题与解法</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>诊断命令</h4><p>jcmd &lt;pid&gt;/&lt;name&gt; ThreadAndVThread.dump，可输出 openjdk 没有的非挂载虚拟线程栈。</p><a class="src-link" href="#sec-05">原文 → 诊断工具</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>升级到 AJDK21.0.5：虚拟线程开箱即用，无需再改所有 synchronized。</li>
+          <li>改造只动线程创建处：单线程 Thread.ofVirtual()，线程池换虚拟线程工厂。</li>
+          <li>注意限流与参数：parallelism 接近 CPU 核数、放宽 maxPoolSize，避免 FGC/OOM。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247546348&amp;idx=1&amp;sn=f2a8e7c5f6f858ddc6cb52644afa0430" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247546348&amp;idx=1&amp;sn=f2a8e7c5f6f858ddc6cb52644afa0430</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

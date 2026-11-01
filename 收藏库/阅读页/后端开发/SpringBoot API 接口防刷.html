@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">SpringBoot API 接口防刷</h1>
+  <p class="lede">用 Redis 计数 + 自定义注解拦截器实现 SpringBoot 接口限流防刷</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 13 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：帅大叔的简书 链接：https://www.jianshu.com/p/836938a9d373</p>
+<p>顾名思义，想让某个接口某个人在某段时间内只能请求N次。</p>
+<p>在项目中比较常见的问题也有，那就是连点按钮导致请求多次，以前在web端有表单重复提交，可以通过token 来解决。</p>
+<p>除了上面的方法外，前后端配合的方法。现在全部由后端来控制。</p>
+<p>在你请求的时候，服务器通过redis 记录下你请求的次数，如果次数超过限制就不给访问。</p>
+<p>在redis 保存的key 是有时效性的，过期就会删除。</p>
+<p>代码实现：</p>
+<p>为了让它看起来逼格高一点，所以以自定义注解的方式实现</p>
+<p>`@RequestLimit` 注解</p>
+<ul><li>import java.lang.annotation.*;</li><li>/**</li><li>* 请求限制的自定义注解</li><li>* @Target 注解可修饰的对象范围，ElementType.METHOD 作用于方法，ElementType.TYPE 作用于类</li><li>* (ElementType)取值有：</li><li>* 　　　　1.CONSTRUCTOR:用于描述构造器</li><li>* 　　　　2.FIELD:用于描述域</li><li>* 　　　　3.LOCAL_VARIABLE:用于描述局部变量</li><li>* 　　　　4.METHOD:用于描述方法</li><li>* 　　　　5.PACKAGE:用于描述包</li><li>* 　　　　6.PARAMETER:用于描述参数</li><li>* 　　　　7.TYPE:用于描述类、接口(包括注解类型) 或enum声明</li><li>* @Retention定义了该Annotation被保留的时间长短：某些Annotation仅出现在源代码中，而被编译器丢弃；</li><li>* 而另一些却被编译在class文件中；编译在class文件中的Annotation可能会被虚拟机忽略，</li><li>* 而另一些在class被装载时将被读取（请注意并不影响class的执行，因为Annotation与class在使用上是被分离的）。</li><li>* 使用这个meta-Annotation可以对 Annotation的“生命周期”限制。</li><li>* （RetentionPoicy）取值有：</li><li>* 　　　　1.SOURCE:在源文件中有效（即源文件保留）</li><li>* 　　　　2.CLASS:在class文件中有效（即class保留）</li><li>* 　　　　3.RUNTIME:在运行时有效（即运行时保留）</li><li>* @Inherited</li><li>* 元注解是一个标记注解，@Inherited阐述了某个被标注的类型是被继承的。</li><li>* 如果一个使用了@Inherited修饰的annotation类型被用于一个class，则这个annotation将被用于该class的子类。</li><li>@Documented</li><li>@Inherited</li><li>@Target({ElementType.METHOD,ElementType.TYPE})</li><li>@Retention(RetentionPolicy.RUNTIME)</li><li>public @interface RequestLimit {</li><li>// 在 second 秒内，最大只能请求 maxCount 次</li><li>int second() default 1;</li><li>int maxCount() default 1;</li></ul>
+<p>`RequestLimitIntercept` 拦截器</p>
+<p>自定义一个拦截器，请求之前，进行请求次数校验</p>
+<ul><li>import com.alibaba.fastjson.JSONObject;</li><li>import lombok.extern.slf4j.Slf4j;</li><li>import org.springframework.beans.factory.annotation.Autowired;</li><li>import org.springframework.data.redis.core.RedisTemplate;</li><li>import org.springframework.stereotype.Component;</li><li>import org.springframework.web.method.HandlerMethod;</li><li>import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;</li><li>import top.lrshuai.limit.annotation.RequestLimit;</li><li>import top.lrshuai.limit.common.ApiResultEnum;</li><li>import top.lrshuai.limit.common.Result;</li><li>import javax.servlet.http.HttpServletRequest;</li><li>import javax.servlet.http.HttpServletResponse;</li><li>import java.io.IOException;</li><li>import java.io.PrintWriter;</li><li>import java.lang.reflect.Method;</li><li>import java.util.concurrent.TimeUnit;</li><li>/**</li><li>* 请求拦截</li><li>@Slf4j</li><li>@Component</li><li>public class RequestLimitIntercept extends HandlerInterceptorAdapter {</li><li>@Autowired</li><li>private RedisTemplate&lt;String,Object&gt; redisTemplate;</li><li>@Override</li><li>public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {</li><li>/**</li><li>* isAssignableFrom() 判定此 Class 对象所表示的类或接口与指定的 Class 参数所表示的类或接口是否相同，或是否是其超类或超接口</li><li>* isAssignableFrom()方法是判断是否为某个类的父类</li><li>* instanceof关键字是判断是否某个类的子类</li><li>if(handler.getClass().isAssignableFrom(HandlerMethod.class)){</li><li>//HandlerMethod 封装方法定义相关的信息,如类,方法,参数等</li><li>HandlerMethod handlerMethod = (HandlerMethod) handler;</li><li>Method method = handlerMethod.getMethod();</li><li>// 获取方法中是否包含注解</li><li>RequestLimit methodAnnotation = method.getAnnotation(RequestLimit.class);</li><li>//获取 类中是否包含注解，也就是controller 是否有注解</li><li>RequestLimit classAnnotation = method.getDeclaringClass().getAnnotation(RequestLimit.class);</li><li>// 如果 方法上有注解就优先选择方法上的参数，否则类上的参数</li><li>RequestLimit requestLimit = methodAnnotation != null?methodAnnotation:classAnnotation;</li><li>if(requestLimit != null){</li><li>if(isLimit(request,requestLimit)){</li><li>resonseOut(response,Result.error(ApiResultEnum.REQUST_LIMIT));</li><li>return false;</li><li>return super.preHandle(request, response, handler);</li><li>//判断请求是否受限</li><li>public boolean isLimit(HttpServletRequest request,RequestLimit requestLimit){</li><li>// 受限的redis 缓存key ,因为这里用浏览器做测试，我就用sessionid 来做唯一key,如果是app ,可以使用 用户ID 之类的唯一标识。</li><li>String limitKey = request.getServletPath()+request.getSession().getId();</li><li>// 从缓存中获取，当前这个请求访问了几次</li><li>Integer redisCount = (Integer) redisTemplate.opsForValue().get(limitKey);</li><li>if(redisCount == null){</li><li>//初始 次数</li><li>redisTemplate.opsForValue().set(limitKey,1,requestLimit.second(), TimeUnit.SECONDS);</li><li>}else{</li><li>if(redisCount.intValue() &gt;= requestLimit.maxCount()){</li><li>return true;</li><li>// 次数自增</li><li>redisTemplate.opsForValue().increment(limitKey);</li><li>return false;</li><li>/**</li><li>* 回写给客户端</li><li>* @param response</li><li>* @param result</li><li>* @throws IOException</li><li>private void resonseOut(HttpServletResponse response, Result result) throws IOException {</li><li>response.setCharacterEncoding(&quot;UTF-8&quot;);</li><li>response.setContentType(&quot;application/json; charset=utf-8&quot;);</li><li>PrintWriter out = null ;</li><li>String json = JSONObject.toJSON(result).toString();</li><li>out = response.getWriter();</li><li>out.append(json);</li></ul>
+<p>拦截器写好了，但是还得添加注册</p>
+<p>`WebMvcConfig` 配置类</p>
+<p>因为我的是Springboot2.*所以只需实现WebMvcConfigurer</p>
+<p>如果是springboot1.*那就继承自WebMvcConfigurerAdapter</p>
+<p>然后重写addInterceptors()添加自定义拦截器即可。</p>
+<ul><li>@Slf4j</li><li>@Component</li><li>public class WebMvcConfig implements WebMvcConfigurer {</li><li>@Autowired</li><li>private RequestLimitIntercept requestLimitIntercept;</li><li>@Override</li><li>public void addInterceptors(InterceptorRegistry registry) {</li><li>log.info(&quot;添加拦截&quot;);</li><li>registry.addInterceptor(requestLimitIntercept);</li></ul>
+<p>`Controller`</p>
+<p>控制层测试接口，</p>
+<p>使用方式：</p>
+<ul><li>第一种：直接在类上使用注解 @RequestLimit(maxCount = 5,second = 1)</li><li>第二种：在方法上使用注解 @RequestLimit(maxCount = 5,second = 1)</li></ul>
+<p>maxCount 最大的请求数、second 代表时间，单位是秒</p>
+<p>默认1秒内，每个接口只能请求一次</p>
+<ul><li>@RestController</li><li>@RequestMapping(&quot;/index&quot;)</li><li>@RequestLimit(maxCount = 5,second = 1)</li><li>public class IndexController {</li><li>/**</li><li>* @RequestLimit 修饰在方法上，优先使用其参数</li><li>* @return</li><li>@GetMapping(&quot;/test1&quot;)</li><li>@RequestLimit</li><li>public Result test(){</li><li>//TODO ...</li><li>return Result.ok();</li><li>/**</li><li>* @RequestLimit 修饰在类上，用的是类的参数</li><li>* @return</li><li>@GetMapping(&quot;/test2&quot;)</li><li>public Result test2(){</li><li>//TODO ...</li><li>return Result.ok();</li></ul>
+<p>如果在类和方法上同时有@RequestLimit注解 ,以方法上的参数为准，好像注释有点多了。</p>
+<p>代码地址</p>
+<p>完整的代码，如下地址</p>
+<p>Gitee地址：https://gitee.com/rstyro/spring-boot/tree/master/SpringBoot-limit</p>
+<p>Github地址：</p>
+<p>https://github.com/rstyro/Springboot/tree/master/SpringBoot-limit</p>
+<p>各位大佬，去Github看示例代码的时候，如果感觉有点用的话，给个Star呗</p>
+<p>-End-</p>
+<p>读到这里说明你喜欢本公众号的文章，欢迎 置顶（标星）本公众号 Linux技术迷，这样就可以第一时间获取推送了~</p>
+<h3 class="sub">1. Linux 中 find 命令的 35 个实际例子</h3>
+<h3 class="sub">2. 运维必备的《网络端口大全》，看这一份就够了</h3>
+<h3 class="sub">3. Linux 学习指南 （收藏篇）</h3>
+<h3 class="sub">4. 2万字系统总结，带你实现Linux命令自由</h3>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 7 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>防刷原理</h4><p>请求时由 Redis 记录次数，超过 second 秒内 maxCount 次即拒绝访问，key 过期自动删除。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>默认限流参数</h4><p>@RequestLimit 默认 second=1、maxCount=1，即默认 1 秒内每个接口只能请求一次。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>注解定义范式</h4><p>用 @Target({METHOD,TYPE}) 加 @Retention(RUNTIME) 定义注解，second()/maxCount() 带默认值。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>拦截器计数逻辑</h4><p>limitKey=servletPath+sessionId；Redis 计数为空则 set 初始值，否则超限判定或 increment 自增。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>拦截器注册</h4><p>SpringBoot 2.x 实现 WebMvcConfigurer，重写 addInterceptors 用 InterceptorRegistry 注册拦截器。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>方法注解 vs 类注解</h4><p>方法上的 @RequestLimit 优先于类上的注解；两者同时存在时以方法参数为准。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>限流 key 选择</h4><p>浏览器测试用 sessionId 作唯一 key；App 场景应换成用户 ID 等唯一标识。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>接口防刷的核心是 Redis 计数加过期时间，超限即拒绝访问。</li>
+          <li>用 @RequestLimit 声明限流参数，拦截器读注解并用 Redis 自增计数，方法注解优先于类注解。</li>
+          <li>SpringBoot 2.x 实现 WebMvcConfigurer 注册拦截器，类或方法上加注解即可启用限流。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247486093&amp;idx=1&amp;sn=99bd2611f48afa957cf5ea599590a9bd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247486093&amp;idx=1&amp;sn=99bd2611f48afa957cf5ea599590a9bd</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

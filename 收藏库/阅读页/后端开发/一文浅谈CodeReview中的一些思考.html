@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">一文浅谈CodeReview中的一些思考</h1>
+  <p class="lede">双视角拆解CodeReview的评审关注点与团队CR文化建设</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 20 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>CodeReview的作用： 改善代码质量：通过CodeReview机制，可以让团队其他同学帮忙协助把关代码质量，发现代码中潜在的质量问题，并给出改进建议，从而推动团队整体代码代码质量的提升。 能够实现知识共享，统一认知：CodeReview过程是知识碰撞的过程，是学习别人的知识体系促进自我成长的过程，通过CR这样的过程能够将不同成长阶段的成员之间知识水位尽量拉齐，能够有效的提升团队编程的整体水平。 能够及时潜在安全和性能问题等：通过CodeReview能够及时发现代码中潜在的安全问题和性能问题，例如：SQL注入问题、方案安全漏洞问题、部分业务场景查询实现性能较差等问题。 站在CodeReviewer角度 学习心态：我始终觉得代码CR的过程并不是一味的从代码中找问题的过程，也是相互学习的过程。从代码CR中汲取优秀的设计思想，学习被CR的代码中设计优秀的地方，每一份代码中都有一些不错的地方，内化为自己的设计理念。比如一个简单的场景：一处复杂设计的代码在当前的代码中被重构设计的更加优秀，可读性更好。 专业的知识储备：在CodeReview之前我们需要储备对应的知识，知道为什么要这样做，为什么不能那样做，以及那样做会有什么样的坏处（如性能损耗等），了解底层的实现细节锤炼自身扎实的知识储备，此外不断加强学习新技术打开视野，拓展知识储备的边界，快速的成长。 关注细节耐心CR：作为CodeReviewer我们要充分的关注代码细节，包括命名、注释、异常处理、日志等等，甚至于代码中的一个空格。同时要有耐心，CodeReview是很耗费时间和精力的，要保持耐心和长期坚持。 有深度的CR意见：很多情况下，我们喜欢提CR的时候一步到位这一句要改成什么，却很少会关注为什么要这样写，对于复杂一些/少见一些的场景，我的建议是应该在CR意见中进行阐述，讲清楚前因后果，此时就成功的将知识储备输出给了被CR的同学，在CR的过程中获得了成长。 尽可能了解业务背景：没有业务背景往往只能看看代码的规范性问题，然而对于业务逻辑中的问题如果没有深入的了解清楚业务诉求是比较难做出高质量的CodeReview意见的。 站在被CodeReviewer角度 学习心态：面对CodeReviewer提出的意见，我们要保持良好的学习心态，思考下他意见背后的原因，汲取其中的设计和规范理念从中获得成长，敢于拉齐自己认知与团队内不一致的地方，快速的融入并遵从团队统一的代码规范体系。 虚心接受建议：被CodeReviewer要学会接受建议，应该尊重别人的思考和想法，对于好的意见我们要虚心的接受，进而不断的提升自己的编程能力。 有自己的主见：接受建议并不是说所有的都要接受，很多时候多种方案是都可以的，也有时候意见也有考虑不足之处，此时，被CR的同学需要保持主见，避免因为一味的接受别人的建议而引入了新的问题。 开放包容的心态：有时候CR者并不一定提出的全部是合理的意见，此时，还是要保持开放包容的心态，保持友好的沟通与对方将问题讨论清楚即可。 对自己的代码负责：虽然CodeReview能够起到保证代码质量的目的，但是作为代码的开发者尽量不要将还未测试过的代码丢给CodeReviewer，CodeReview的过程不能保证所有的问题都能够被发现，一定要为自己的代码负责，当确定自己的代码没有问题的时候再提交CodeReview，这也是对CodeReviewer的一种尊重。 关于培养团队中CodeReview的文化思考： 建设代码规约：团队范围内的代码规约需要团队层面能够达成共识，可以是团队leader牵头制定，也可以由大家一起通过CR的过程碰撞产生，总之需要能够沉淀代码规约并在团队范围内达成共识，这是形成文化的基础。 CR形式多样化：可以针对某一份代码在固定的时间（周会等）中进行分享并带领大家一起进行Review，增强大家的参与感和趣味性；也可以跨越领域去交换CR别的团队的代码，学习一下别的团队的代码规范。 调动积极性：鼓励团队同学积极参与，结合奖励机制不断的引导。 坚守文化：文化的形成，关键还在于坚持，只有坚持长期主义才能形成良好的CR文化，很多团队可能会存在坚持了一阵，时间久了慢慢又回归了旧的状态，这是我们不愿看到的。 适度的奖励机制：ICBU部门层面通过设立适当的奖励机制来鼓励大家参与卓越工程，参与CodeReview，有效的引导大家参与团队内的CodeReview，也有效的助推文化的形成和建设。</th></tr></thead><tbody></tbody></table>
+<p>阿里妹导读</p>
+<p>CodeReview在日常的开发过程中越来越被重视，它在提高代码质量同时促进团队成员之间的知识共享和技能提升方面发挥了诸多作用，本文将主要围绕CodeReview展开，简单聊聊在CodeReview过程中的心得和思考。</p>
+<p>正如图中调侃的衡量代码质量的唯一有效标准就是CodeReview过程中WTF/min，从中可以看出CodeReview对于保障代码质量的重要性。</p>
+<p>CodeReview在日常的开发过程中也越来越被重视，它在提高代码质量同时促进团队成员之间的知识共享和技能提升方面发挥了诸多作用，本文将主要围绕CodeReview展开，简单聊聊在CodeReview过程中的心得和思考。</p>
+<p>CodeReview的重要性</p>
+<p>CodeReview是开发过程不可或缺的重要一环，如果将代码发布比作一个工厂的流水线，那么CodeReview就是流水线接近于重点的质检员，他要担负着对产品质量的保障工作，将“缺陷”从众多的“产品”中挑出，反向推动“生产方”改进生产质量。</p>
+<p>CodeReview的作用：</p>
+<p>1.改善代码质量：通过CodeReview机制，可以让团队其他同学帮忙协助把关代码质量，发现代码中潜在的质量问题，并给出改进建议，从而推动团队整体代码代码质量的提升。</p>
+<p>2.能够实现知识共享，统一认知：CodeReview过程是知识碰撞的过程，是学习别人的知识体系促进自我成长的过程，通过CR这样的过程能够将不同成长阶段的成员之间知识水位尽量拉齐，能够有效的提升团队编程的整体水平。</p>
+<p>3.能够及时潜在安全和性能问题等：通过CodeReview能够及时发现代码中潜在的安全问题和性能问题，例如：SQL注入问题、方案安全漏洞问题、部分业务场景查询实现性能较差等问题。</p>
+<p>总之，通过严格的CodeReview能够帮助团队成员养成良好的编程习惯和规范，从提高整个团队的代码质量和团队认知拉齐。</p>
+<p>CodeReview实践经验</p>
+<p>在CodeReview实验经验章节中，第一部分，将主要介绍CodeReview关注的哪些方面，通过表格的方式进行梳理和归纳；后续部分将主要围绕各个分类下的问题汇总以及从个人的视角出发提出建议。接下来，将主要围绕2个问题展开讨论：</p>
+<ul><li>CodeReview应该关注那些问题；</li><li>CodeReview问题点解读与建议。</li></ul>
+<p>CodeReview关注哪些</p>
+<p>CodeReview关注的点比较多，这里简单做了一些归类，梳理了一部分核心关注点和场景问题。</p>
+<table><thead><tr><th>关注点分类</th><th>关注点细分</th><th>核心关注点</th><th>常见问题</th></tr></thead><tbody><tr><td>代码规范与质量</td><td>命名</td><td>变量命名、方法命名、类命名、包命名</td><td>命名拼写错误、命名与实际含义不符（超出或小于）、用词不准</td></tr><tr><td></td><td>注释</td><td>是否有注释、注释是否合理</td><td>通篇无注释、注释不准确</td></tr><tr><td></td><td>日志打印</td><td>日志打印级别、日志打印参数、日志格式、异常打印、是否应该打印日志</td><td>日志打印级别误用、日志参数未打印、日志格式不规范、异常信息未打印、打印日志过多</td></tr><tr><td></td><td>异常处理</td><td>异常是否抛出、是否规范的异常编码等</td><td>异常该抛出未抛、肆意的使用RuntimeException等</td></tr><tr><td></td><td>逻辑正确</td><td>业务逻辑是否正常</td><td>空指针问题、逻辑不正确等</td></tr><tr><td></td><td>代码风格一致</td><td>代码风格与应用整体风格一致</td><td>代码风格不一致（如）</td></tr><tr><td></td><td>代码复杂度</td><td>圈复杂度</td><td>大量嵌套if导致非常复杂等</td></tr><tr><td>架构设计</td><td>关注分层</td><td>分层是否合理、是否存在跨层调用</td><td>分层混乱、跨层调用</td></tr><tr><td></td><td>关注扩展性</td><td>扩展适配</td><td>硬编码扩展性低</td></tr><tr><td></td><td>业务域划分</td><td>业务域划分清晰</td><td>业务域划分混乱</td></tr><tr><td>性能问题</td><td>慢SQL</td><td>索引设计、是否存在慢SQL语法</td><td>索引未设计、慢SQL用法如like %xxx语句等</td></tr><tr><td></td><td>缓存设计</td><td>添加缓存、是否存在缓存击穿问题</td><td>该加而未加缓存、缓存击穿问题等</td></tr><tr><td>安全性问题</td><td>是否存在安全风险</td><td>文件上传验权、越权访问问题</td><td>文件上传未验权、越权访问数据等</td></tr></tbody></table>
+<p>代码规范与质量</p>
+<p>CodeReview过程中首先要关注代码的规范和质量问题，而且出现问题也是最多的，包括命名、注释是否合理、日志打印规范、异常处理是否合理等等，接下来主要阐述一下主要遇到的一些问题点以及哪些是合理的方案。</p>
+<p>命名问题</p>
+<p>命名是CodeReview阶段中常见的问题之一，开发中也经常为了一个优雅的命名而改来改去，无论是对变量还是方法、类都尽可能的给予一个恰当表示的命名。</p>
+<ul><li>变量命名：推荐使用简洁明了带有业务语义的命名方式。不建议使用tmp、list、a、b等无法表述清楚当前变量是什么含义的命名方式。不建议使用下划线命名的变量名称如：_aop_signature。</li><li>常量命名：常量命名方式推荐大写字母，多个词之间通过下划线连接，如图中的常量值我们建议提取成常量定义IS_RESHOOT。﻿﻿</li><li>方法命名和类命名：采用合适的词描述清楚当前方法/类的功能即可，此外注意采用驼峰式命名，代码可读性更高。</li></ul>
+<p>比如图中的案例，原本的意图是获取语种类型，但是命名为fillXXX则与实际的功能不是很匹配，所以建议修改为getXXX命名。</p>
+<p>CodeReview中需要关注注释是否恰当，是否能够表达清楚当前的行/方法/类的功能，同时也要关注是否存在适当的注释，下面是我对注释的几点建议。</p>
+<ul><li>注释恰当：能够清楚的表达当前行/方法/类的功能，不建议出现注释与代码不匹配情况。﻿</li><li>适当的注释：建议对于较为复杂的代码要提供适当的注释，都说好的代码是自注释的，但是无法保证的是有较复杂的业务背景情况下还有人能够看明白，此时需要添加部分注释。</li></ul>
+<p>比如，有大量复杂条件判断的if条件时，如果不了解业务需求的话很难从中了解这段方法是在做什么，所以建议添加适当的注释。</p>
+<p>日志打印</p>
+<p>CodeReview中需要关注日志打印级别是否合理，以及日志打印的格式是否符合规范，同时要注意是否有打印关键的参数，接下来是我对日志打印的几点建议。</p>
+<ul><li>日志打印级别是否合理：建议采用适当的日志级别进行打印，比如系统异常情况采用error级别打印，如果只是打印流程中某一个结果可以选用info级别，当部分参数不符合预期的情况下可以采用warn。</li></ul>
+<p>info级别：可以用来记录服务调用过程中的关键信息，不要盲目的打印日志。</p>
+<p>warn级别：用户输入的信息不符合规范等情况。</p>
+<p>error级别：系统异常,可能需要人为干预处理等情况下。</p>
+<ul><li>日志打印关键参数，建议在日志打印中打印出关键的参数信息，否则很难定位异常原因。</li><li>异常信息是否打印，异常处理日志打印时建议打印异常信息（e）到日志中，便于排查问题。</li><li>日志是否打印过多，尤其是针对服务调用频繁的服务，需要重点关注是否有必要打印日志，高QPS服务容易导致日志打印过多，引发磁盘容量不足等风险。</li></ul>
+<p>异常处理</p>
+<p>异常处理也是常见的问题之一，经常会遇到应该抛出异常的地方未抛出导致业务流程流转，进而导致部分流程数据异常。</p>
+<p>比如下一个例子，在初始化二方包时会通过静态代码块的方式加载Spring配置文件并初始化Spring容器，此时如果初始化失败时catch住了异常并未抛出的话会导致应用启动成功，但是Spring容器并未初始化完成，容易导致线上问题。</p>
+<p>逻辑是否正确</p>
+<p>要适当检查代码中是否存在逻辑性错误，比如常见的空指针问题、业务逻辑处理不正确等等。</p>
+<p>比如这里的空指针问题，其实完全可以通过Constants.Y.equals(object)来完成，避免空指针引发的业务逻辑异常。</p>
+<p>代码风格是否一致</p>
+<p>代码风格包含很多，包括类的目录归属、参数检查的方式等等，不同的应用可能不尽相同，尽量与之前的代码结构和方案保持一致，不要我写我的你写你的，最后发现同一个应用中的“规范”五花八门，此时新人进来不知所措。</p>
+<p>比如在处理异常信息返回的时候，将大量的中文编码写入业务代码中，其实是不太优雅的，推荐定义标准的异常Code及描述。</p>
+<p>代码复杂度</p>
+<p>有一些代码没有逻辑问题也没有风格问题，但是看起来特别复杂，我将其归为复杂度问题，比如经常会看到有if嵌套过深的问题。比如，有的场景希望在集合数据非空的情况设置一些参数，所以在判断时通过isNotEmpty判断非空，然后在if里面嵌套for循环进行设置，此时我的建议是提前返回，如果集合为空就直接return返回，减少代码的复杂度。</p>
+<p>架构设计</p>
+<p>之前我觉得CodeReview中不需要关注架构设计，理论上应该在评审阶段提前确定好的，但是在实际过程中还是会有一些不合理的地方：比如分层是否合理，是否具备扩展性、业务域划分是否清晰等等。</p>
+<p>关注分层</p>
+<p>大部分应用都有自己的分层方案，增量的需求需要尽量保持一致的分层方案以使得分层架构统一，便于后期维护。比如，不同分层对应的类的命名方式有所区分，所以综合分层来看需要放在正确的分层中或者统一正确的命名方式。</p>
+<p>关注扩展性</p>
+<p>部分业务场景在开发的过程中由于限定于当前的业务诉求，未对后续的扩展能力做提前的规划，这种情况可以在CR阶段指出，引导代码编写者思考如何进行扩展性设计。</p>
+<p>比如下面的例子，从扩展性角度来看，由于代码中设计了OcrHandler和OcrAdaptor两套扩展，OcrHandler设计的比较薄（实际上核心是转调用OcrAdaptor），大量的业务逻辑依然是在OcrAdaptor，显然该设计中OcrHandler的实际意义并不大，所以我的建议是合并这两个扩展性设计为一套。</p>
+<p>关注业务域划分</p>
+<p>业务域划分不清晰的系统往往更容易腐化，因为一旦业务域划分比较乱往往分不清应该放在哪个域的模块中，再加上人员迭代，会使得系统愈发的混乱。</p>
+<p>这里简单举例，比如我们应用中有一部分接口定义放在了通用的域的服务中，其实从业务域划分上其并不够通用，显然放在这里是不合适的，我的建议是单独定义专门的业务域的包来管理该业务专门的服务接口等。</p>
+<p>性能问题</p>
+<p>性能问题容易被忽视，由于大量的业务代码的编写性能问题往往潜藏在大量的业务代码之后，在CodeReview阶段并不一定能够及时的发现问题。</p>
+<p>慢SQL问题</p>
+<p>慢SQL其实偶尔会遇到，在CR的过程需要关注是否有可能发生慢SQL，此过程需要结合数据库索引设计和代码中的使用场景来共同完成定位。</p>
+<p>举个例子，前段时间上线了一个日志服务，该服务在数据库降配后流量较大时段服务耗时飙升，经过排查是慢SQL导致的，核心问题在于设计的索引未能有效命中导致查询过慢，在数据库配置较高的情况下，慢SQL导致的时间损耗并未凸显，而当数据库降配后瞬间CPU被打满导致查询缓存，继而引发服务耗时的飙升。</p>
+<p>关注缓存设计</p>
+<p>部分接口在开发中并未添加缓存，如果流量较大的情况下容易导致雪崩，所以针对流量较大的场景要关注缓存设计是否合理，甚至是否有必要添加二级缓存等。</p>
+<p>安全性</p>
+<p>安全性是很容易忽视的问题，比如典型的无登录校验的上传接口、越权访问问题、SQL注入风险等等。</p>
+<p>SQL注入：例如当前代码中使用的是字符串拼接的方案构造成完整的SQL，然后直接调用数据库连接执行SQL，该方案比较典型的问题就是SQL注入的问题，攻击者可以通过注入条件OR 1=1等条件即可实现对表拖库。</p>
+<pre><code>SELECT * FROM users WHERE username = &#x27;&#x27; OR &#x27;1&#x27;=&#x27;1&#x27;</code></pre>
+<p>﻿无登录权限等校验的上传接口：由于历史原因前辈们遗留了一个无登录上传的http接口，后被灰产利用疯狂上传文件，导致较为严重的问题，为了下线该服务耗费了大量的人力成本，如果在CodeReview阶段能够得到阻止，后续的问题也都可以有效避免。</p>
+<p>越权访问问题：部分场景下如果充分信任前端传递的用户ID，并且未充分对其进行校验的情况下直接查询对应客户的相关信息，很容易导致越权访问的问题，此类接口容易被灰产利用盗刷网站的用户信息，此类问题也是要在CodeReview阶段注意的点，不过此类场景可能比较少，但是风险极高。</p>
+<p>CodeReviewer的自我修养</p>
+<p>我们谈CodeReview主要会关注代码层面的机制或者规范，而我觉得人的层面也需要关注。CodeReview是相关尊重相互学习非常好的场景，甚至于可以认为是被推动成长的一个很好的地方，良好的自我修养，能够推进CodeReview文化的建设和落地，进而能够有效提升CodeReviewer各方的成长和代码质量提升。</p>
+<p>站在CodeReviewer角度</p>
+<p>作为CodeReviewer，一方面作为代码的&quot;质检员&quot;，借助于团队形成的代码规约来严格把控代码质量；另一方面，作为学习者，通过团队同学的CodeReview代码从中学习代码中的优秀设计。</p>
+<ul><li>学习心态：我始终觉得代码CR的过程并不是一味的从代码中找问题的过程，也是相互学习的过程。从代码CR中汲取优秀的设计思想，学习被CR的代码中设计优秀的地方，每一份代码中都有一些不错的地方，内化为自己的设计理念。比如一个简单的场景：一处复杂设计的代码在当前的代码中被重构设计的更加优秀，可读性更好。</li><li>专业的知识储备：在CodeReview之前我们需要储备对应的知识，知道为什么要这样做，为什么不能那样做，以及那样做会有什么样的坏处（如性能损耗等），了解底层的实现细节锤炼自身扎实的知识储备，此外不断加强学习新技术打开视野，拓展知识储备的边界，快速的成长。</li><li>关注细节耐心CR：作为CodeReviewer我们要充分的关注代码细节，包括命名、注释、异常处理、日志等等，甚至于代码中的一个空格。同时要有耐心，CodeReview是很耗费时间和精力的，要保持耐心和长期坚持。</li><li>有深度的CR意见：很多情况下，我们喜欢提CR的时候一步到位这一句要改成什么，却很少会关注为什么要这样写，对于复杂一些/少见一些的场景，我的建议是应该在CR意见中进行阐述，讲清楚前因后果，此时就成功的将知识储备输出给了被CR的同学，在CR的过程中获得了成长。</li><li>尽可能了解业务背景：没有业务背景往往只能看看代码的规范性问题，然而对于业务逻辑中的问题如果没有深入的了解清楚业务诉求是比较难做出高质量的CodeReview意见的。</li></ul>
+<p>站在被CodeReviewer角度</p>
+<p>作为被CodeReviewer，一方面作为学习者，通过团队同学的CodeReview意见从中学习优秀设计思想和代码规范；另一方面，也可以作为规范的输出者，通过良好的代码设计输出自己的代码设计理念，通过CodeReview等场所对外输出；</p>
+<ul><li>学习心态：面对CodeReviewer提出的意见，我们要保持良好的学习心态，思考下他意见背后的原因，汲取其中的设计和规范理念从中获得成长，敢于拉齐自己认知与团队内不一致的地方，快速的融入并遵从团队统一的代码规范体系。</li><li>虚心接受建议：被CodeReviewer要学会接受建议，应该尊重别人的思考和想法，对于好的意见我们要虚心的接受，进而不断的提升自己的编程能力。</li><li>有自己的主见：接受建议并不是说所有的都要接受，很多时候多种方案是都可以的，也有时候意见也有考虑不足之处，此时，被CR的同学需要保持主见，避免因为一味的接受别人的建议而引入了新的问题。</li><li>开放包容的心态：有时候CR者并不一定提出的全部是合理的意见，此时，还是要保持开放包容的心态，保持友好的沟通与对方将问题讨论清楚即可。</li><li>对自己的代码负责：虽然CodeReview能够起到保证代码质量的目的，但是作为代码的开发者尽量不要将还未测试过的代码丢给CodeReviewer，CodeReview的过程不能保证所有的问题都能够被发现，一定要为自己的代码负责，当确定自己的代码没有问题的时候再提交CodeReview，这也是对CodeReviewer的一种尊重。</li></ul>
+<p>CodeReview文化建设</p>
+<p>团队依靠部分人参与的CodeReview力量是有限的，所以我们期望能够建设CodeReview文化。通过CodeReview的文化建设来充分的调动每个成员参与CodeReview的积极性，众人拾柴火焰高，形成文化建设应该是长期目标。</p>
+<p>我们团队通过打破各自业务域范围，打造跨业务域CR的机制和文化，每次CR的时候需要当前业务域同学进行CodeReview的同时也要找跨领业务领域的一位同学协助CodeReview，2位以上的CodeReview都一致通过才能真正通过本次的CodeReview，通过这样的文化和机制建设，团队也形成了CodeReview的风气，大家一起协助其他同学CodeReview，有助于多个业务域的规范统一，也有助于团队层面形成良好的代码规范共识，优秀的设计经验可以跨越领域被分享和学习，促进共同成长。</p>
+<p>关于培养团队中CodeReview的文化思考：</p>
+<ul><li>建设代码规约：团队范围内的代码规约需要团队层面能够达成共识，可以是团队leader牵头制定，也可以由大家一起通过CR的过程碰撞产生，总之需要能够沉淀代码规约并在团队范围内达成共识，这是形成文化的基础。</li><li>CR形式多样化：可以针对某一份代码在固定的时间（周会等）中进行分享并带领大家一起进行Review，增强大家的参与感和趣味性；也可以跨越领域去交换CR别的团队的代码，学习一下别的团队的代码规范。</li><li>调动积极性：鼓励团队同学积极参与，结合奖励机制不断的引导。</li><li>坚守文化：文化的形成，关键还在于坚持，只有坚持长期主义才能形成良好的CR文化，很多团队可能会存在坚持了一阵，时间久了慢慢又回归了旧的状态，这是我们不愿看到的。</li><li>适度的奖励机制：ICBU部门层面通过设立适当的奖励机制来鼓励大家参与卓越工程，参与CodeReview，有效的引导大家参与团队内的CodeReview，也有效的助推文化的形成和建设。</li></ul>
+<p>CodeReview是代码质量保障的关键一环，作为CodeReviewer我们要坚守团队的统一规范，严格把控每一份代码中的质量和规范等问题，牢牢的把控好代码质量关口；同时作为被CodeReviewer我们也要尊重别人的时间和意见，共同维护团队的代码规范，从CodeReview中学习别人的意见和设计思想，促进自身的快速成长。</p>
+<p>本文主要阐述了CodeReview过程中的心得和思考，良好的CodeReview文化能够推动团队共同成长，希望我们能够在前进的路上坚守住CodeReview的文化内涵，力争将工程实践做到卓越，打造面向未来有竞争力的卓越技术团队。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>CodeReview的作用定位</h4><p>CodeReview像流水线质检员，把缺陷从产品中挑出，反向推动生产方改进质量，并促进知识共享、拉齐团队认知。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>评审关注点全景</h4><p>从规范质量（命名/注释/日志/异常/逻辑/风格/复杂度）到架构、性能、安全，CR关注点覆盖代码质量多个层面。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>info/warn/error 日志级别</h4><p>info记录服务关键信息；warn用于输入不合规范；error用于系统异常需人工干预。异常需打印异常信息便于排查。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>异常吞掉导致启动假成功</h4><p>静态代码块初始化Spring容器失败时若catch住异常不抛出，应用启动成功但容器未初始化，易引发线上问题。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>空指针防御写法</h4><p>用 Constants.Y.equals(object) 代替 object.equals(Constants.Y)，可避免对象为空时抛出空指针。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>降低if嵌套复杂度</h4><p>集合非空再for循环的场景，建议提前返回：集合为空直接return，减少代码复杂度。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>SQL注入风险</h4><p>字符串拼接SQL直接执行易被注入，攻击者通过 OR 1=1 即可实现拖库，应使用参数化等方式规避。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>越权访问</h4><p>信任前端传递的用户ID且未校验，直接查询客户信息，易被灰产盗刷用户数据，风险极高。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>慢SQL案例</h4><p>日志服务数据库降配后流量大时耗时飙升：索引未有效命中导致查询过慢，CPU打满引发查询缓存与耗时上升。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>CodeReviewer vs 被CodeReviewer</h4><p>Reviewer像质检员与学习者，需深度意见与业务背景；被Reviewer需虚心接受、保持主见、开放包容并对代码负责。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>CR文化四要素</h4><p>建设代码规约、CR形式多样化、调动积极性与奖励机制、坚守长期主义，是形成CR文化的基础。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>CodeReview既是质量关口也是知识共享场，Reviewer与被Reviewer都要抱着互相学习、共同成长的心态。</li>
+          <li>规范与质量问题最高频，安全和性能问题最低频却最高危，评审时都要覆盖。</li>
+          <li>CR文化靠规约、多样化形式、奖励和长期坚守才能落地，不能只靠个人热情。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247536265&amp;idx=1&amp;sn=44e25ae03d59ae1e1111f1faa9348c9b" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247536265&amp;idx=1&amp;sn=44e25ae03d59ae1e1111f1faa9348c9b</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

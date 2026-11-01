@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">滴滴二面：你项目为什么选择 RocketMQ，而不是 Kafka 我：支支吾吾....</h1>
+  <p class="lede">业务消息场景，RocketMQ 凭事务消息、延迟消息、同步双写胜过 Kafka。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 13 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>主流 MQ 横向对比</a>
+          <a href="#sec-02"><span class="n">02</span>六大核心理由</a>
+          <a href="#sec-03"><span class="n">03</span>选型决策树</a>
+          <a href="#sec-04"><span class="n">04</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 主流 MQ 横向对比</a>
+          <a href="#sec-02">02 六大核心理由</a>
+          <a href="#sec-03">03 选型决策树</a>
+          <a href="#sec-04">04 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>以下文章来源于小哈学Java，作者犬小哈</p>
+<p>小哈学Java.</p>
+<p>码龄9年，前某厂中台研发。专注于Java领域干货分享，不限于BAT面试, 算法，数据库，Spring Boot, 微服务,高并发, JVM, Docker容器，ELK相关知识，期待与您一同进步。</p>
+<p>在线 Java 面试刷题（已更新239题，图文并茂）：https://www.quanxiaoha.com/java-interview</p>
+<p>面试考察点</p>
+<ul><li>技术选型能力 ：面试官不仅仅是想知道 RocketMQ 有什么优点，更是想知道你是否具备 多维度对比分析 的能力，能否根据业务场景特点给出合理的技术选型依据。</li><li>消息中间件全局认知 ：考察你是否了解主流消息队列（RocketMQ、Kafka、RabbitMQ）的定位差异，是否只是 &quot;用过&quot; 还是真正理解各自的设计哲学和适用边界。</li><li>实践与原理结合 ：能否结合项目实际需求（如事务消息、顺序消息、高可用等），讲清楚 &quot;为什么 RocketMQ 是最佳选择&quot; 而非泛泛而谈。</li></ul>
+<p>核心答案</p>
+<p>选择 RocketMQ 的核心原因可以概括为 **&quot;三高一丰&quot;**：</p>
+<table><thead><tr><th>维度</th><th>核心优势</th><th>对比其他 MQ</th></tr></thead><tbody><tr><td>高吞吐</td><td>单机 TPS 可达 10 万+</td><td>优于 RabbitMQ，与 Kafka 接近</td></tr><tr><td>高可靠</td><td>同步双写 + 同步刷盘，消息零丢失</td><td>优于 Kafka（异步刷盘可能丢消息）</td></tr><tr><td>高一致</td><td>原生事务消息支持</td><td>Kafka 和 RabbitMQ 均不原生支持</td></tr><tr><td>功能丰富</td><td>延迟消息、顺序消息、消息回溯、过滤</td><td>功能维度全面领先</td></tr></tbody></table>
+<p>一句话总结：如果你的项目是 Java 技术栈、对消息可靠性要求高、需要事务消息或延迟消息等高级特性，RocketMQ 是最优选择。</p>
+<p>深度解析</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>主流 MQ 横向对比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Kafka 定位大数据消息流平台，追求极致吞吐，但业务消息场景可靠性与功能不如 RocketMQ。</li><li>RabbitMQ 延迟最低但吞吐仅万级，Erlang 栈难排查；RocketMQ 全 Java、吞吐高一个数量级。</li></ul></div>
+<p>img</p>
+<p>上表展示了三大主流消息队列的核心差异。从对比中可以看出：</p>
+<ul><li>RocketMQ vs Kafka ：Kafka 定位是 大数据领域的消息流平台 ，追求极致吞吐，但在业务消息场景（如订单、支付）下的可靠性、功能丰富度不如 RocketMQ。RocketMQ 天生为 业务消息 而生。</li><li>RocketMQ vs RabbitMQ ：RabbitMQ 延迟最低（us 级），但单机吞吐量上限低（万级），且 Erlang 语言栈对 Java 团队不友好，排查问题困难。RocketMQ 吞吐量高出一个数量级，且全 Java 技术栈便于深入定制。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>六大核心理由</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>六大理由：原生事务消息、同步双写高可靠、延迟消息、顺序消息、服务端过滤、全 Java 技术栈。</li><li>事务消息：半消息→本地事务→二次确认→回查，保证最终一致性，无需引入 Seata。</li><li>同步刷盘+同步复制双重保障金融级不丢失；Kafka 默认异步刷盘可能丢消息。</li><li>延迟消息 18 个固定等级（5.0 后任意延迟）；顺序消息靠队列路由+单线程消费；Tag/SQL92 过滤。</li></ul><div class="pit"><ul><li>Kafka 不支持延迟消息，需外部定时任务轮询数据库，复杂度倍增。</li><li>Kafka 消费端需拉取全部消息自行过滤，浪费带宽和 CPU。</li></ul></div></div>
+<p>理由 1：原生事务消息——分布式事务的优雅方案</p>
+<p>这是 RocketMQ 最核心的杀手级特性。以电商下单场景为例：</p>
+<ul><li>// ============ 生产者：发送事务消息 ============</li><li>TransactionMQProducer producer = new TransactionMQProducer(&quot;tx_producer_group&quot;);</li><li>// 设置事务监听器，用于执行本地事务和回查</li><li>producer.setTransactionListener(new TransactionListener() {</li><li>// 执行本地事务（比如：扣减库存、创建订单）</li><li>@Override</li><li>public LocalTransactionState executeLocalTransaction(Message msg, Object arg) {</li><li>try {</li><li>// 执行本地业务逻辑</li><li>orderService.createOrder(parseOrder(msg));</li><li>return LocalTransactionState.COMMIT_MESSAGE;</li><li>} catch (Exception e) {</li><li>return LocalTransactionState.ROLLBACK_MESSAGE;</li><li>// 回查本地事务状态（broker 长时间未收到确认时触发）</li><li>@Override</li><li>public LocalTransactionState checkLocalTransaction(MessageExt msg) {</li><li>Order order = orderService.getByOrderId(parseOrderId(msg));</li><li>// 订单存在说明本地事务已提交 → 提交消息</li><li>return order != null ? LocalTransactionState.COMMIT_MESSAGE</li><li>: LocalTransactionState.ROLLBACK_MESSAGE;</li><li>});</li><li>Message msg = new Message(&quot;ORDER_TOPIC&quot;, orderJson.getBytes());</li><li>// 发送事务消息（半消息）</li><li>producer.sendMessageInTransaction(msg, null);</li></ul>
+<p>工作原理：</p>
+<p>img</p>
+<p>上图展示了 RocketMQ 事务消息的完整流程，核心分为以下几个阶段：</p>
+<ul><li>阶段一（①②） ：Producer 发送 &quot;半消息&quot; 到 Broker，半消息对 Consumer 不可见。Broker 收到后返回确认，此时消息处于 &quot;待定&quot; 状态。</li><li>阶段二（本地事务） ：Producer 收到确认后执行本地事务（如创建订单、扣减库存），根据本地事务结果决定消息的最终状态。</li><li>阶段三（③④） ：Producer 根据本地事务结果发送 Commit 或 Rollback。Commit 后 Broker 才将消息投递给 Consumer；Rollback 则直接丢弃。</li><li>阶段四（⑤回查） ：如果 Broker 长时间未收到二次确认（比如 Producer 宕机），会主动回查 Producer 的事务状态，确保消息最终一致性。</li></ul>
+<p>关键点在于，半消息机制 + 事务回查保证了分布式场景下的最终一致性，无需引入额外的分布式事务框架（如 Seata），极大降低了系统复杂度。</p>
+<p>理由 2：高可靠性——金融级消息不丢失</p>
+<p>img</p>
+<p>上图展示了 RocketMQ 的同步双写机制：</p>
+<ul><li>同步刷盘 ：消息先写入内存（PageCache），再  fsync  刷到磁盘后才返回 ACK。即使机器断电，消息也不会丢失。</li><li>同步复制 ：Master 将消息同步到 Slave，Slave 确认写入后才返回成功。Master 宕机时 Slave 可以无缝接管。</li><li>双重保障 ：同步刷盘 + 同步复制，提供金融级别的消息可靠性保障。</li></ul>
+<p>相比之下，Kafka 默认异步刷盘（依赖操作系统 PageCache 刷盘），在 Broker 宕机时可能丢失未刷盘的消息。</p>
+<p>理由 3：延迟消息——天然支持定时触发</p>
+<ul><li>// RocketMQ 开源版支持 18 个固定延迟等级（5.0 后支持任意延迟）</li><li>// 等级：1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h</li><li>Message msg = new Message(&quot;ORDER_TOPIC&quot;, &quot;订单超时检查&quot;, orderJson.getBytes());</li><li>// 设置延迟等级为 16，即延迟 30 分钟</li><li>msg.setDelayTimeLevel(16);</li><li>producer.send(msg);</li><li>// RocketMQ 5.0+ 支持任意延迟时间</li><li>msg.setDelayTimeSec(600);  // 延迟 10 分钟</li></ul>
+<p>典型应用场景：</p>
+<ul><li>订单超时自动取消 ：下单 30 分钟未支付自动关单</li><li>延迟通知 ：用户注册 3 天后发送引导消息</li><li>重试机制 ：失败后延迟递增重试</li></ul>
+<p>Kafka 不支持延迟消息，需要借助外部定时任务框架（如定时轮询数据库），复杂度倍增。</p>
+<p>理由 4：顺序消息——保证消息的消费顺序</p>
+<p>img</p>
+<p>上图展示了 RocketMQ 顺序消息的核心原理：</p>
+<ul><li>发送端 ：相同业务 Key（如 orderId）的消息通过  MessageQueueSelector  进行 hash 路由，保证同一 Key 的消息进入同一个  MessageQueue 。</li><li>消费端 ：每个  MessageQueue  由 单线程 消费，天然保证同一队列内消息的顺序性。</li><li>不同 Key 之间 ：分布在不同队列，可以并行消费，不影响吞吐量。</li></ul>
+<p>理由 5：消息过滤——服务端过滤减少网络传输</p>
+<ul><li>// 发送消息时设置 Tag 和自定义属性</li><li>Message msg = new Message(&quot;TRADE_TOPIC&quot;, &quot;TAG_PAY&quot;, &quot;交易数据&quot;.getBytes());</li><li>msg.putUserProperty(&quot;level&quot;, &quot;important&quot;);</li><li>msg.putUserProperty(&quot;region&quot;, &quot;east&quot;);</li><li>// 消费者通过 Tag 过滤（服务端过滤，减少网络传输）</li><li>consumer.subscribe(&quot;TRADE_TOPIC&quot;, &quot;TAG_PAY || TAG_REFUND&quot;);</li><li>// 通过 SQL92 表达式过滤（更灵活）</li><li>consumer.subscribe(&quot;TRADE_TOPIC&quot;,</li><li>MessageSelector.bySql(&quot;level = &#x27;important&#x27; AND region = &#x27;east&#x27;&quot;));</li></ul>
+<p>RocketMQ 支持两种过滤方式：</p>
+<ul><li>Tag 过滤 ：Broker 端直接过滤，只将匹配的消息推送给 Consumer，大幅减少网络传输。</li><li>SQL92 过滤 ：支持更复杂的条件表达式，适合精细化订阅场景。</li></ul>
+<p>对比 Kafka 需要消费者拉取所有消息后自行过滤，浪费带宽和 CPU。</p>
+<p>理由 6：全 Java 技术栈——降低运维和排查成本</p>
+<ul><li>源码纯 Java，团队可以直接阅读源码定位问题</li><li>可以基于 RocketMQ 做二次开发（如自定义 Broker 插件、消息轨迹等）</li><li>JVM 生态监控工具全面（Arthas、Prometheus + Grafana 等）</li><li>阿里云商业版（ONS）提供企业级技术支持</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>选型决策树</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>大数据选 Kafka（与 Spark/Flink 深度集成），中小型系统选 RabbitMQ（轻量、路由灵活）。</li><li>业务消息场景只要满足事务/延迟/高可靠/Java 栈任一需求，RocketMQ 就是最优解。</li><li>消息不丢失：生产同步发送+重试，Broker 同步刷盘+复制，消费手动 ACK+死信队列。</li><li>口诀：大数据选 Kafka，轻量选 Rabbit，业务消息选 Rocket。</li></ul></div>
+<p>img</p>
+<p>上图展示了一个简化的消息队列选型决策树：</p>
+<ul><li>大数据场景 优先选 Kafka，因为其与 Spark、Flink 等大数据组件深度集成，吞吐量极致。</li><li>中小型系统 选 RabbitMQ，轻量级、开箱即用、路由规则灵活。</li><li>业务消息场景 （电商、金融、订单），只要满足 &quot;事务消息、延迟消息、高可靠、Java 栈&quot; 中任意一个需求，RocketMQ 就是最优解。</li></ul>
+<p>面试高频追问</p>
+<ul><li>追问一 ：RocketMQ 怎么保证消息不丢失？</li><li>生产端：同步发送 + 重试机制</li><li>Broker 端：同步刷盘 + 同步复制</li><li>消费端：手动 ACK，消费失败重试 + 死信队列</li><li>追问二 ：RocketMQ 的事务消息原理是什么？</li><li>半消息 → 本地事务 → 二次确认（Commit/Rollback）→ 事务回查，保证最终一致性</li><li>追问三 ：RocketMQ 和 Kafka 的吞吐量差多少？</li><li>单机差距不大（都是 10 万级 TPS），但 Kafka 在 partition 多、消息量大时更有优势。RocketMQ 在 单队列性能 上更优（优化了锁粒度）</li><li>追问四 ：项目中是怎么用 RocketMQ 的？能举几个实际场景吗？</li><li>订单超时取消（延迟消息）、分布式事务（事务消息）、异步解耦（普通消息）、数据同步（广播消费）</li></ul>
+<p>常见面试变体</p>
+<ul><li>变体一：&quot;RocketMQ、Kafka、RabbitMQ 有什么区别？怎么选？&quot;</li><li>变体二：&quot;为什么不用 Kafka 而用 RocketMQ？&quot;</li><li>变体三：&quot;RocketMQ 有哪些高级特性？项目中用到了哪些？&quot;</li><li>变体四：&quot;介绍一下你们项目中消息队列的使用场景&quot;</li></ul>
+<p>记忆口诀</p>
+<p>选型口诀：大数据选 Kafka，轻量选 Rabbit，业务消息选 Rocket。</p>
+<p>RocketMQ 优势：事务消息是杀手锏，同步双写保可靠，延迟消息免定时，全 Java 栈好排查。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>选型核心逻辑：业务消息场景下 RocketMQ 提供事务、延迟、同步双写等 Kafka/RabbitMQ 不具备或不擅长的特性。</li><li>面试应场景驱动选型，结合项目实际需求举例，而非泛泛罗列优点。</li></ul></div>
+<p>选择 RocketMQ 的核心逻辑是：在业务消息场景（电商、金融、订单等）下，RocketMQ 提供了事务消息、延迟消息、高可靠同步双写等 Kafka 和 RabbitMQ 不具备或不擅长的特性，同时全 Java 技术栈降低了团队的学习和运维成本。面试时不要泛泛罗列优点，而是要结合项目实际需求（如 &quot;我们订单系统需要 30 分钟超时取消，RocketMQ 原生支持延迟消息&quot;），做到场景驱动选型。</p>
+<p>加入小哈的星球，你将获得: 专属的项目实战（多个项目） / 1v1 提问 / Java 学习路线 / 学习打卡 / 每月赠书 / 社群讨论</p>
+<ul><li>新项目：《Spring AI 项目实战》 正在更新中..., 基于 Spring AI + Spring Boot 3.x + JDK 21;</li><li>《从零手撸：仿小红书（微服务架构）》  已完结，基于 Spring Cloud Alibaba + Spring Boot 3.x + JDK 17...,  点击查看项目介绍 ； 演示地址： http://116.62.199.48:7070/</li><li>《从零手撸：前后端分离博客项目（全栈开发）》  2期已完结,演示链接： http://116.62.199.48/ ;</li><li>专栏阅读地址： https://www.quanxiaoha.com/column</li></ul>
+<p>截止目前，累计输出 100w+ 字，讲解图 4013+ 张，还在持续爆肝中.. 后续还会上新更多项目，目标是将 Java 领域典型的项目都整一波，如秒杀系统, 在线商城, IM 即时通讯，Spring Cloud Alibaba 等等，戳我加入学习，解锁全部项目，已有4500+小伙伴加入</p>
+<h3 class="sub">1. 我的私密学习小圈子，从0到1手撸企业实战项目~</h3>
+<p>2. 滴滴二面：怎么解决 Redis 缓存和数据库的一致性问题？</p>
+<p>3. 得物二面：什么是缓存击穿、缓存穿透、缓存雪崩？（修订版）</p>
+<h3 class="sub">4. 阿里开源了一个顶级AI项目！</h3>
+<p>最近面试BAT，整理一份面试资料《Java面试BATJ通关手册》，覆盖了Java核心技术、JVM、Java并发、SSM、微服务、数据库、数据结构等等。</p>
+<p>PS：因公众号平台更改了推送规则，如果不想错过内容，记得读完点一下“在看”，加个“星标”，这样每次新文章推送才会第一时间出现在你的订阅列表里。</p>
+<p>点“在看”支持小哈呀，谢谢啦</p>
+<p>阅读原文</p>
+<p>Java架构师宝典</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>三高一丰核心优势</h4><p>高吞吐：单机 TPS 10 万+；高可靠：同步双写+同步刷盘；高一致：原生事务消息；功能丰富：延迟/顺序/回溯/过滤。</p></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>RocketMQ vs Kafka</h4><p>Kafka 定位大数据消息流平台、追求极致吞吐；RocketMQ 为业务消息而生，可靠性与功能更适配订单、支付场景。</p><a class="src-link" href="#sec-01">原文 → 主流 MQ 横向对比</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>RocketMQ vs RabbitMQ</h4><p>RabbitMQ 延迟最低（us 级）但吞吐万级、Erlang 栈难排查；RocketMQ 吞吐高一个数量级，全 Java 易定制。</p><a class="src-link" href="#sec-01">原文 → 主流 MQ 横向对比</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>事务消息回调</h4><p>executeLocalTransaction 执行本地事务，checkLocalTransaction 负责事务回查，发送半消息。</p><a class="src-link" href="#sec-02">原文 → 六大核心理由</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>半消息+回查</h4><p>半消息机制+事务回查保证分布式场景最终一致性，无需引入 Seata 等分布式事务框架。</p><a class="src-link" href="#sec-02">原文 → 六大核心理由</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>延迟消息等级</h4><p>开源版支持 18 个固定延迟等级（1s~2h）；5.0+ 支持任意延迟，setDelayTimeSec(600) 可延迟 10 分钟。</p><a class="src-link" href="#sec-02">原文 → 六大核心理由</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>顺序消息路由</h4><p>相同 orderId 经 MessageQueueSelector hash 路由到同一 MessageQueue，消费端单线程消费，保证同队列顺序。</p><a class="src-link" href="#sec-02">原文 → 六大核心理由</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>服务端消息过滤</h4><p>Tag 过滤与 SQL92（MessageSelector.bySql）均在 Broker 端过滤，只推匹配消息，减少网络传输。</p><a class="src-link" href="#sec-02">原文 → 六大核心理由</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Kafka 刷盘可靠性</h4><p>Kafka 默认异步刷盘、依赖 OS PageCache，Broker 宕机可能丢失未刷盘消息；RocketMQ 同步双写更可靠。</p><a class="src-link" href="#sec-02">原文 → 六大核心理由</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>选型决策树</h4><p>大数据选 Kafka（集成 Spark/Flink），中小型选 RabbitMQ（轻量灵活），业务消息满足任一高级特性需求即选 RocketMQ。</p><a class="src-link" href="#sec-03">原文 → 选型决策树</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>选型口诀</h4><p>大数据选 Kafka，轻量选 Rabbit，业务消息选 Rocket；事务消息是杀手锏，同步双写保可靠。</p><a class="src-link" href="#sec-03">原文 → 选型决策树</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>场景驱动选型</h4><p>面试别泛泛罗列优点，要结合项目需求，如&#x27;订单 30 分钟超时取消，RocketMQ 原生支持延迟消息&#x27;。</p><a class="src-link" href="#sec-04">原文 → 总结</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>选型别背参数：先判断场景——大数据 Kafka、轻量 RabbitMQ、业务消息 RocketMQ。</li>
+          <li>事务消息是杀手锏：半消息+回查实现最终一致性，可省掉 Seata 这类分布式事务框架。</li>
+          <li>面试答法要场景驱动：结合订单超时取消等真实需求说明选型，而非罗列优点。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzk0MzIxNTMxNA==&amp;mid=2247502450&amp;idx=1&amp;sn=d0f6cac8541a8d17cbed7d74150eeab9" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzk0MzIxNTMxNA==&amp;mid=2247502450&amp;idx=1&amp;sn=d0f6cac8541a8d17cbed7d74150eeab9</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

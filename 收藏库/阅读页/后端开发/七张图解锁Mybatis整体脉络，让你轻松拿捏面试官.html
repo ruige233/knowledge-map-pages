@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">七张图解锁Mybatis整体脉络，让你轻松拿捏面试官</h1>
+  <p class="lede">用七张图梳理 MyBatis 架构分层与 SQL 执行全流程</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 14 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>前言</a>
+          <a href="#sec-02"><span class="n">02</span>总览MyBatis</a>
+          <a href="#sec-03"><span class="n">03</span>配置文件解析</a>
+          <a href="#sec-04"><span class="n">04</span>代理构建</a>
+          <a href="#sec-05"><span class="n">05</span>SQL 执行</a>
+          <a href="#sec-06"><span class="n">06</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 前言</a>
+          <a href="#sec-02">02 总览MyBatis</a>
+          <a href="#sec-03">03 配置文件解析</a>
+          <a href="#sec-04">04 代理构建</a>
+          <a href="#sec-05">05 SQL 执行</a>
+          <a href="#sec-06">06 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>前言</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MyBatis 是轻量稳定的 ORM 框架，负责 Java 对象与关系数据库的映射</li><li>七大功能：SQL 映射配置、动态 SQL、参数/结果集映射、事务管理、连接池集成、二级缓存</li><li>SQL 映射配置将 SQL 与 Java 代码分离，提升可维护性</li></ul></div>
+<p>MyBatis是一款ORM（Object-Relational Mapping）框架，其主要用于将Java对象与关系数据库之间进行映射，凭借其轻量性、稳定性以及广泛的开源社区其受到了广大开发者的追捧。</p>
+<p>那MyBatis为我们做了哪些事情呢？其实，总结来看主要有如下几点：</p>
+<ul><li>SQL映射配置 ： MyBatis 使用 XML 或注解配置文件来定义 SQL 查询、插入、更新和删除操作，以及与数据库表之间的映射关系。这使得开发者能够将 SQL 语句与 Java 代码分离，提高了代码的可维护性。</li><li>动态SQL ： MyBatis 支持动态 SQL ，允许根据不同的条件生成不同的 SQL 语句。这使得构建复杂的查询变得更加灵活和方便。</li><li>参数映射 ： MyBatis 能够将 Java 对象的属性与SQL语句中的参数进行映射，无需手动编写繁琐的参数传递代码。</li><li>结果集映射 ： MyBatis 支持将 SQL 查询结果映射到 Java 对象，自动将数据库表中的列值赋给Java对象的属性，大大简化了数据的读取和处理。</li><li>事务管理 ： MyBatis 可以与 Java 的事务管理框架（如 Spring ）无缝集成，确保数据库操作的原子性和一致性。</li><li>连接池集成 ： MyBatis 可以与常见的 Java 连接池库（如 Apache DBCP、C3P0、HikariCP ）集成，以管理数据库连接的获取和释放。</li><li>二级缓存 ： MyBatis 支持二级缓存，可以在多个会话之间共享数据，提高性能。</li></ul>
+<p>知晓了MyBatis的功能特性后，接下来让我们一起来看看MyBatis内部是通过哪些组件来支撑起这些功能的。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>总览MyBatis</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>架构三层：基础支持层、核心处理层、接口层</li><li>使用主线：定义接口配 XML → 加载解析配置 → 生成代理执行 SQL</li><li>配置解析属基础支持层，代理与 SQL 执行属核心处理层</li><li>连接池与事务分别由数据源模块、事务管理模块承担</li></ul></div>
+<p>对于Mybatis的架构大致可以分为三层：基础支持层、核心处理层和接口层。</p>
+<p>或许，你会觉得上图过于复杂，难以理解。如果此刻你也有这样的疑惑，不要慌。不妨跟着笔者思路来进行梳理。</p>
+<p>首先，使用MyBatis概括来看大致包括如下几步：</p>
+<ul><li>定义接口，配置相关的 xml 文件信息</li><li>加载接口的配置文件，解析相关配置文件</li><li>生成接口代理类，执行相关 sql</li></ul>
+<p>由于在使用MyBatis过程中会编写相关的配置文件，所以Mybatis内部必然需要相应组件来支撑配置文件的解析，这些也就构成了底层的基础支撑层。既然会解析配置文件，那是不是必然会涉及到资源加载、配置解析等模块？</p>
+<p>进一步，当配置文件解析完成后，下一步就是生成代理，然后执行sql，此时所涉及的也就是核心处理层中的sql执行，sql解析等。更进一步，执行sql过程中为了避免Connection频繁创建，是不是需要对连接进行池化操作？所以MyBatis内部会抽象出一个数据源模块来统一管理连接。</p>
+<p>除此之外，对于sql执行过程中的事务是不是也需要控制？所以MyBatis还有事务管理模块来对sql执行过程中的事务进行管理。</p>
+<p>事实上，你只需要记住Mybatis的使用过程为：定义接口，提供配置文件，而后生成代理，执行Sql即可。以此进行发散，自然而然能扩展出上图所示内容，根本没必要死记硬背。</p>
+<p>熟悉了MyBatis的整体架构后，我们接下来看Mybatis内部执行sql的大致流程：</p>
+<p>接下来，我们将主要围绕这张图中内容进行总结分析。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>配置文件解析</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>加载 mybatis-config.xml 并创建 Configuration 对象</li><li>XML 解析器解析数据源、插件、类型别名、缓存等全局配置</li><li>XMLConfigBuilder、XMLMapperBuilder、XMLStatementBuilder 继承 BaseBuilder 各司其职</li><li>调用 SqlSessionFactory.build 加载解析，结果存入 Configuration</li></ul></div>
+<p>配置文件解析过程大致如下所示：</p>
+<p>事实上，MyBatis内部对于配置文件解析的过程可以概括如下：</p>
+<ul><li>加载配置文件 ：MyBatis首先加载主配置文件（通常是 mybatis-config.xml ），并创建一个 Configuration 对象来表示整个MyBatis配置。</li><li>解析主配置文件 ：MyBatis使用XML解析器解析主配置文件，该文件包含了关于数据源、插件、类型别名、缓存等全局配置信息。这些配置会被存储在 Configuration 对象中。</li></ul>
+<p>而参与配置文件解析的都继承与BaseBuilder，其体系结构如下所示：</p>
+<ul><li>XMLStatementBuilder ：这个类用于解析映射文件中的 &lt;select&gt; 、 &lt;insert&gt; 、 &lt;update&gt; 和 &lt;delete&gt; 等标签，构建与 SQL 语句相关的对象（如 MappedStatement ），包括 SQL 语句的解析、参数映射、结果映射等。</li><li>XMLMapperBuilder ： XMLMapperBuilder 用于解析映射文件（通常是 Mapper.xml 文件），负责构建与映射文件相关的对象，包括映射文件的解析、SQL 语句的构建、参数映射、结果映射、缓存配置等。</li><li>XMLConfigBuilder ： XMLConfigBuilder 用于解析主配置文件（通常是 mybatis-config.xml 文件），负责构建与全局配置相关的对象，包括数据源配置、类型别名配置、插件配置、缓存配置等。</li></ul>
+<p>总结来看，对于MyBatis的加载过程来说，其在处理配置文件信息时，首先，会传递配置文件所在位置信息，然后再调用框架提供的SqlSessionFactory的build方法便会根据传入路径信息去加载相关的配置文件，并进行解析。而解析的内容会存放到的configuration之中，进而方便后续组件的使用。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>代理构建</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>通过 SqlSession.getMapper 构建接口代理类</li><li>涉及组件：MapperProxyFactory、MapperRegistry、MapperProxy</li><li>本质是 JDK 动态代理返回接口实现实例</li></ul></div>
+<p>当配置文件解析，下一步就是通过SqlSession的getMapper方法来构建一个接口对应的代理类，这一过程大致如下：</p>
+<p>这一过程中涉及的组件主要包括MapperProxyFactory、MapperRegistry、MapperProxy，更加详细的分析可参考Mybatis流程分析(六): Mybatis中方法和sql语句的桥梁——MapperProxy， 总之这一过程的本质就是通过Jdk动态代理的方式返回一个实现接口的实例对象</p>
+<ul><li>传送门：https://juejin.cn/post/7273434821807947811</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>SQL 执行</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>底层逻辑是原生 JDBC 操作数据库的一套流程</li><li>创建 Statement、PreparedStatement 或 CallableStatement 执行不同类型 SQL</li><li>通过 ResultSet 处理查询结果数据</li></ul></div>
+<p>当配置文件解析完成，接口相应的代理类构建完毕后，下一步要做的就是sql的执行，这一过程逻辑大致如下所示：</p>
+<p>这一部分的底层逻辑就是原生JDBC操纵数据库的那一套逻辑，即</p>
+<ul><li>创建SQL语句 ：即创建 Statement 、 PreparedStatement 或 CallableStatement 对象，分别用于执行不同类型的 SQL 语句。</li><li>执行SQL查询 ：使用创建的 Statement 或 PreparedStatement 对象来执行SQL查询。</li><li>处理查询结果 ：通过 ResultSet 对象来处理查询的结果数据。</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>创建 SqlSessionFactory：读取主配置，负责创建连接与 SqlSession</li><li>创建 SqlSession：代表一次会话，通常每个线程创建自己的 SqlSession</li><li>执行 SQL：支持 selectOne、selectList、insert、update、delete</li><li>解析 SQL、执行 SQL 并把结果映射为 Java 对象返回</li></ul></div>
+<p>最后，我们再来一下Mybatis内部对于sql执行的大致步骤：</p>
+<ul><li>创建 SqlSessionFactory ：使用 Mybatis 首先需要创建一个 SqlSessionFactory 对象，这通常通过读取 MyBatis 的主配置文件（ mybatis-config.xml ）并使用 SqlSessionFactoryBuilder 来实现。 SqlSessionFactory 负责创建数据库连接和 SqlSession 对象。</li><li>创建 SqlSession ：通过 SqlSessionFactory 创建一个 SqlSession 对象。 SqlSession 代表了与数据库的一次会话，它可以执行 SQL 操作并管理数据库连接。通常，每个线程都会创建自己的 SqlSession 。</li><li>执行 SQL 语句 ：在 SqlSession 中，通过调用方法执行 SQL 语句。 MyBatis 支持多种方式来执行 SQL，包括 selectOne() 、 selectList() 、 insert() 、 update() 、 delete() 等方法。</li><li>SQL 语句解析 ： MyBatis 会解析 SQL 语句，包括动态 SQL ，参数映射和结果映射。这包括了将 Java 对象转化为 SQL 语句中的参数，以及将查询结果映射回 Java 对象。</li><li>执行 SQL ： MyBatis 将 SQL 语句发送到数据库，并执行相应的操作，如查询、插入、更新或删除。数据库返回结果或受影响的行数，这取决于 SQL 语句的类型。</li><li>处理结果 ： MyBatis 最终会将 SQL 的执行结果映射为 Java 对象，然后返回给调用者。映射过程通常基于映射文件中的配置。结果集的处理包括将数据库查询结果映射为 Java 对象的属性值。</li></ul>
+<p>进一步，上述步骤可总结概括总结为如下的流程。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>七大功能特性</h4><p>SQL 映射配置、动态 SQL、参数映射、结果集映射、事务管理、连接池集成、二级缓存。</p><a class="src-link" href="#sec-01">原文 → 前言</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>XML 配置 vs 注解配置</h4><p>SQL 映射配置可用 XML 或注解定义 SQL 与表映射，均实现 SQL 与 Java 代码分离。</p><a class="src-link" href="#sec-01">原文 → 前言</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>三层架构</h4><p>基础支持层、核心处理层、接口层；解析属基础支持层，代理与 SQL 执行属核心处理层。</p><a class="src-link" href="#sec-02">原文 → 总览MyBatis</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>MyBatis 使用主线</h4><p>定义接口配 XML → 加载解析配置 → 生成代理执行 SQL，据此发散即可，无需死记硬背。</p><a class="src-link" href="#sec-02">原文 → 总览MyBatis</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>配置解析组件体系</h4><p>XMLConfigBuilder 解析主配置，XMLMapperBuilder 解析 Mapper.xml，XMLStatementBuilder 解析增删改查标签，均继承 BaseBuilder。</p><a class="src-link" href="#sec-03">原文 → 配置文件解析</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>代理构建本质</h4><p>SqlSession.getMapper 经 JDK 动态代理返回接口实现，组件为 MapperProxyFactory、MapperRegistry、MapperProxy。</p><a class="src-link" href="#sec-04">原文 → 代理构建</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>原生 JDBC 三步</h4><p>创建 Statement/PreparedStatement/CallableStatement → 执行查询 → 用 ResultSet 处理结果。</p><a class="src-link" href="#sec-05">原文 → SQL 执行</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>SQL 执行六步</h4><p>创建 SqlSessionFactory → 创建 SqlSession → 执行 SQL → 解析 SQL → 执行 → 结果映射返回 Java 对象。</p><a class="src-link" href="#sec-06">原文 → 总结</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>记住使用主线：定义接口、配 XML、生成代理、执行 SQL，其余组件由此发散推导。</li>
+          <li>配置解析、代理构建、SQL 执行分别对应 Builder 体系、JDK 动态代理与原生 JDBC 逻辑。</li>
+          <li>完整流程六步：创建 SqlSessionFactory、创建 SqlSession、执行并解析 SQL、执行、结果映射。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzU4MDUyMDQyNQ==&amp;mid=2247520633&amp;idx=2&amp;sn=311879989cf480583886ba245ec950ea" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzU4MDUyMDQyNQ==&amp;mid=2247520633&amp;idx=2&amp;sn=311879989cf480583886ba245ec950ea</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

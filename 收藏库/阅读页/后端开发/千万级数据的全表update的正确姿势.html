@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">千万级数据的全表update的正确姿势</h1>
+  <p class="lede">千万级数据全表update：主键游标分批+绕开buffer pool</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 9 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>前言</a>
+          <a href="#sec-02"><span class="n">02</span>直接 update 的问题</a>
+          <a href="#sec-03"><span class="n">03</span>深度分页问题</a>
+          <a href="#sec-04"><span class="n">04</span>in 的效率</a>
+          <a href="#sec-05"><span class="n">05</span>最终版本</a>
+          <a href="#sec-06"><span class="n">06</span>其他问题</a>
+          <a href="#sec-07"><span class="n">07</span>结语</a>
+          <a href="#sec-08"><span class="n">08</span>群友问题</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 前言</a>
+          <a href="#sec-02">02 直接 update 的问题</a>
+          <a href="#sec-03">03 深度分页问题</a>
+          <a href="#sec-04">04 in 的效率</a>
+          <a href="#sec-05">05 最终版本</a>
+          <a href="#sec-06">06 其他问题</a>
+          <a href="#sec-07">07 结语</a>
+          <a href="#sec-08">08 群友问题</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>前言</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>线上 MySQL 用 row 格式 binlog 做主从同步</li><li>亿级表全表 update 会产生大量 binlog，从库阻塞执行，风险极高</li></ul><div class="pit"><ul><li>亿级表直接执行全表 update 不可行</li></ul></div></div>
+<p>有些时候在进行一些业务迭代时需要我们对Mysql表中数据进行全表update，如果是在数据量比较小的情况下（万级别），可以直接执行sql语句，但是如果数据量达到一个量级后，就会出现一些问题，比如主从架构部署的Mysql，主从同步需要需要binlog来完成，而binlog格式如下，其中使用statement和row格式的主从同步之间binlog在update情况下的展示：</p>
+<p>我们当前线上mysql是使用row格式binlog来进行的主从同步，因此如果在亿级数据的表中执行全表update，必然会在主库中产生大量的binlog，接着会在进行主从同步时，从库也需要阻塞执行大量sql，风险极高，因此直接update是不行的。本文就从我最开始的一个全表update sql开始，到最后上线的分批更新策略，如何优化和思考来展开说明。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>直接 update 的问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>业务是把用户信息从 http 换 https，数据量几千 w 级别</li><li>path 类字段不要存协议和域名前缀，便于替换且省容量</li></ul><div class="pit"><ul><li>直接 update 全表会给主从带来大量 binlog 压力</li><li>path 存了协议域名前缀，改协议就要批量 update</li></ul></div></div>
+<p>我们前段时间需要将用户的一些基本信息存储从http转换为https，库中数据大概在几千w的级别，需要对一些大表进行全表update，最开始我试探性的跟dba同事抛出了一个简单的 update 语句，想着流量低的时候执行，如下:</p>
+<p>update tb_user_info set user_img=replace(user_img,&#x27;http://&#x27;,&#x27;https://&#x27;)</p>
+<p>这里也给大家提一个醒，在存储图片等 path 路径时，尽量不要存储协议和域名之内的前缀部分。如果要改 http 协议、域名之类的就要涉及批量更新等操作，同时存储的容量也会不必要的增加。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>深度分页问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>limit 游标下沉到 B+ 树叶子节点向后遍历</li><li>limit 数据量大时效率接近全表扫描，即深度分页问题</li></ul><div class="pit"><ul><li>用 limit 游标分批做范围查找，大数据量下效率很低</li></ul></div></div>
+<p>上面肯定是不合理的，会给主库生成binlog、从库接收binlog写数据带来很大的压力，于是就想使用脚本分批处理如下所示：写一个这样的脚本，依次分批替换，limit的游标不断增加。大概一看是没有问题的，但是仔细一想mysql的limit游标进行的范围查找原理，是下沉到B+数的叶子节点进行的向后遍历查找，在limit数据比较小的情况下还好，limit数据量比较大的情况下，效率很低接近于全表扫描，这也就是我们常说的“深度分页问题”。</p>
+<p>update tb_user_info set user_img=replace(user_img,&#x27;http://&#x27;,&#x27;https://&#x27;) limit1,1000;</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>in 的效率</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>把 id 全查出后用 in 列表批量更新</li><li>mysql 对 in 有键值预测，但仍很低效</li></ul><div class="pit"><ul><li>id in 列表批量更新效率不佳</li></ul></div></div>
+<p>既然mysql的深分页有问题，那么我就把这批id全部查出来，然后更新的id in这些列表，进行批量更新可以吗？于是我又写了类似下面sql的脚本。结果是还不行，虽然mysql对于in这些查找有一些键值预测，但是仍然是很低效。</p>
+<p>select * from tb_user_info where id&gt; {index} limit100;</p>
+<p>update tb_user_info set user_img=replace(user_img,&#x27;http&#x27;,&#x27;https&#x27;)where id in {id1,id3,id2};</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>最终版本</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>SQL_NO_CACHE 让本次查询不走 buffer pool，防冷数据污染热点缓存</li><li>FORCE INDEX(PRIMARY) 强制主键索引并排序，按 id 范围查找更新</li><li>接口控制速率，线程池并行提高更新速率上限</li></ul><div class="pit"><ul><li>不强制主键索引时，mysql 可能按 io 成本选择其他索引</li></ul></div></div>
+<p>最终在与dba的多次沟通下，我们写了如下的sql及脚本，这里有几个问题需要注意，我们在select sql中使用了这个语法/*!40001 SQL_NO_CACHE */，这个语法的意思就是本次查询不使用innodb的buffer pool，也不会将本次查询的数据页放到buffer pool中作为热点数据的缓存。接着对于查询强制使用主键索引FORCE INDEX(PRIMARY)，并且根据主键索引排序，排序后的数据进行id游标的筛选。最后执行update更新时，由于我们在前面的sql中查询到的就是已经排序后的主键，因此可以对id执行范围查找。</p>
+<p>select/*!40001 SQL_NO_CACHE */id from tb_user_info FORCE INDEX(`PRIMARY`) where id&gt; &quot;1&quot;ORDER BY id limit 1000,1;</p>
+<p>update tb_user_info set user_img=replace(user_img,&#x27;http&#x27;,&#x27;https&#x27;) whereid &gt;&quot;{1}&quot;and id &lt;&quot;{2}&quot;;</p>
+<p>我们可以仅关注第一个sql，如下图所示，是buffer pool大概内容，我们可以通过这个no cache的关键字，对批量处理的数据进行强制指定不走buffer pool，不把这些冷数据影响到正常使用的缓存内容，防止效率的降低，其实mysql在一些备份的动作中。使用的数据扫描sql也会带上这个关键字，防止影响到正常的业务缓存；接着需要强制对当前查询指定的主键索引，然后进行排序，否则mysql有可能在计算io成本进行索引选择时，选择其他的索引。</p>
+<p>使用这样的方式对数据库进行批量更新可以通过一个接口来控制速率，对于数据库主从同步、iops、内存使用率等关键属性进行观察，手动调整刷库速率。这样看是单线程阻塞的操作，其实接口也可以定义线程个数等属性，接口中根据赋予的线程个数，通过线程池并行刷数据，从而提高全表更新速率的上限，同时对速率进行控制控制。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>其他问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>雪花算法或自增主键的记录按主键顺序插入，便于分片刷数</li><li>uuid 主键需业务预先替换，代码上线后再做全量更新</li></ul></div>
+<p>如果我们使用snowflake雪花算法或者自增主键来生成主键id的话，插入的记录都是根据主键id顺序插入的，如果使用uuid这种我们怎么处理？当然是业务中就预先处理了，先把入库的数据提前进行替换，进行代码上线后再进行的全量数据更新了。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>总结三点：binlog 同步问题、深分页效率、buffer pool 污染防护</li></ul></div>
+<p>刷数据本来是一个异常枯燥的工作内容，但是从这次数据量较大的数据更新从而与dba同事的多次沟通后，也对mysql有了一些新的理解，包括不限于下面几个，共同学习。</p>
+<ul><li>binlog格式带来的大数据量更新的主从同步问题；</li><li>Mysql深分页的效率问题；</li><li>全表扫数据如何防止对buffer pool污染到我们业务正常的热点数据。</li></ul>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>群友问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>读缓存和写缓存不一样，SQL_NO_CACHE 只影响读缓存</li><li>min/max 直接分片只有自增 id 才匀速，多线程任务分配也需保证</li><li>写缓存指 change buffer，本修改用得到</li></ul></div>
+<p>Q：第一个sql如果不走buffer pool，第二个更新sql也会把数据页载入到buffer pool吧？</p>
+<p>A：读缓存和写缓存是不一样的。</p>
+<p>Q：只要我知道min_id、max_id，只要序列差不多连续是不是可以直接分片执行，不需要一定要每次1000条执行的吧？</p>
+<p>A：min和max这样直接分片的话，除非是自增id，否则是不能保证匀速的，后续多线程执行的任务分配也不能得到保证。</p>
+<p>Q：写缓存指的是change buffer？这个修改应该用不了change buffer吧？</p>
+<p>A：是，用得到。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>直接全表 update 不可行</h4><p>row 格式 binlog 下亿级表全表 update 产生海量日志，从库阻塞执行，风险极高。</p><a class="src-link" href="#sec-01">原文 → 前言</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>path 别存协议域名前缀</h4><p>存 path 时不存 http:// 等前缀，否则改协议要批量 update 且浪费容量。</p><a class="src-link" href="#sec-02">原文 → 直接 update 的问题</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>深分页 vs 主键范围查找</h4><p>limit 游标靠 B+ 树叶子向后遍历，量大近似全表扫描；按排序主键 id 范围查找可避免。</p><a class="src-link" href="#sec-03">原文 → 深度分页问题</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>in 批量更新仍低效</h4><p>把 id 全查出来用 in 列表批量更新，虽有键值预测但效率仍很低。</p><a class="src-link" href="#sec-04">原文 → in 的效率</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>SQL_NO_CACHE + FORCE INDEX</h4><p>select/*!40001 SQL_NO_CACHE */id ... FORCE INDEX(PRIMARY) ORDER BY id limit 1000,1。</p><a class="src-link" href="#sec-05">原文 → 最终版本</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>每次 1000 条游标</h4><p>分批脚本每次 limit 1000 取排序后的 id，再按 id 范围执行 update。</p><a class="src-link" href="#sec-05">原文 → 最终版本</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>uuid vs snowflake/自增主键</h4><p>自增或雪花主键顺序插入便于分片刷数；uuid 无序，需业务预先替换。</p><a class="src-link" href="#sec-06">原文 → 其他问题</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>读缓存≠写缓存</h4><p>SQL_NO_CACHE 只绕开 buffer pool 读缓存，写缓存（change buffer）不同，更新仍用得到。</p><a class="src-link" href="#sec-08">原文 → 群友问题</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>千万级数据量</h4><p>用户信息数据量在几千 w 级别，需对多张大表做全表 update。</p><a class="src-link" href="#sec-02">原文 → 直接 update 的问题</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>全表 update 先按主键排序分段，用 id 范围替换 limit 游标，避免深分页。</li>
+          <li>用 SQL_NO_CACHE 让扫描数据绕开 buffer pool，别让冷数据污染热点缓存。</li>
+          <li>path 类字段别存协议域名前缀，源头规避未来批量改协议的成本。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzI1NDQ3MjQxNA==&amp;mid=2247511644&amp;idx=1&amp;sn=cdb5984bfdcdf6c55a140012cff87347" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzI1NDQ3MjQxNA==&amp;mid=2247511644&amp;idx=1&amp;sn=cdb5984bfdcdf6c55a140012cff87347</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

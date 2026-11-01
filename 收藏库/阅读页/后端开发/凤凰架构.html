@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">凤凰架构</h1>
+  <p class="lede">周志明《凤凰架构》导读：架构演进、分布式基石与程序员成长</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台 · 后台回复关键字</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 17 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>凤凰架构：构建可靠的大型分布式系统。 软件架构师本身就是最好的程序员，他们会一直编写代码，虽然可能不会像其他程序员输出的代码量那样多，但是只有持续地编程，才能确保他们遇见其他程序员所面对的问题，体会其他程序员心中的感受，因此如果不编程，他们亦将无法胜任软件架构这项工作。 这本《凤凰架构》，周佬自己对它的定位是这样的：给开发人员整理的关于软件架构方面的技能地图，同时系统的梳理自己的知识，并配备了对应技术方案的演示程序。 架构并不是被发明出来的，而是持续演进的结果。 如果说微服务架构是分布式系统这条路当前所能做到的极致，那无服务架构，也许就是“不分布式”的云端系统这条路的起点。 共识算法、服务发现、流量治理、网络通信、监控预警共同构成了分布式的基石。 不要轻视不直接产生实践价值的知识； 不要对陷入已经被你熟练掌握的技术中不能自拔。 可是当你一旦建立了相对完备稳固的知识框架，发现遇到的新知识、新技术，能够很自然地安放在已有知识体系的某个位置上，能够清楚感知到语言、技术、框架的设计意图和目标，甚至能共鸣到设计者当时所想，就会产生一种理所当然的感觉。 很多程序员都抱怨，自己是CRUD Boy，自己在业务逻辑中打滚，没有机会接触底层的或者前瞻性的技术，所以自己技术难以提升。 这里当然有客观原因的存在，但往往也是受到了主观原因放大。 学习一门具体的技术，也是为了用它解决好问题，然后把它忘掉，去掌握那些更深层次的、更前沿，而且自己还不会的技术。</th></tr></thead><tbody></tbody></table>
+<p>https://icyfenix.cn/</p>
+<p>先看一下我看了之后整理的思维导图吧：</p>
+<p>看不清没关系，文末会给你领取链接的。</p>
+<p>看完之后我个人的一个感受是：关于分布式架构方向，写的很多很全很系统。而且都是笔者一路走过来的经验之谈，浓缩在了文章里面。</p>
+<p>对得起首页的这一句口号：构建可靠的大型分布式系统。</p>
+<p>谁写的？</p>
+<p>那么这个开源书的作者是谁呢？</p>
+<p>周志明。</p>
+<p>是的，就是你想到的那个凭借一己之力拉高了 Java 开发者内功水平，把 JVM 带到了初级面试题环节的男人。</p>
+<p>其实你仔细看周佬写的自我介绍，很有小细节。</p>
+<p>程序员、研究员、作者、布道师这四个职业，排在第一的是最没有噱头的“程序员”一职。</p>
+<p>而在程序员里面，给自己的描述是：</p>
+<p>一名兼职一些管理与研究工作的程序员。</p>
+<p>其实关于这个点，我看过周佬的一些公开场合的自我介绍，都是说自己是一个“兼职一些管理工作的程序员”，给自己这样的人设标签。</p>
+<p>他在自己写的《程序员之路》一文中解释过这个标签。</p>
+<p>他想要透过这个标签表达的是对于一枚程序员，以后是想要发展为一个架构师还是研发管理者，都不要轻易地离开技术领域的一线前沿。</p>
+<p>离开技术、放弃编码的决定很可能会像你高考之后放下的数学、生物、地理等知识那样，一旦放手，毕生就很难有机会再重新捡起来。</p>
+<p>当你放下代码的时间越长，久而久之，你对代码、技术、产品状态与团队研发状态的理解，渐渐的会和团队成员产生了偏差错位，丧失了细节上给予指导的能力，丧失了专业问题上提出接地气解决方案的能力，只能在无法短期难以校验对错的大战略方向提意见。</p>
+<p>在会议、流程及团队管理措施上下功夫，在职业经理人式的宣讲与汇报上寻找存在感。</p>
+<p>此刻，你便从团队的导师变成了管理者，最终你与团队的关系，从携手并肩奋斗的伙伴，完全演变成只能靠公司制度与管理职位的权力来维系雇佣关系。</p>
+<p>我能理解周佬说的现象，其实是一个非常普遍的现象。甚至有的朋友走上管理岗位的目标就是不再写代码了，基于当前的市场和行业现状，这样的选择是无可厚非的。</p>
+<p>只是，有没有那么一点点可能，不要完全抛弃代码。这也需要是你和团队之间的最行之有效的纽带。</p>
+<p>就像《代码整洁之道》一书中说的：</p>
+<p>软件架构师本身就是最好的程序员，他们会一直编写代码，虽然可能不会像其他程序员输出的代码量那样多，但是只有持续地编程，才能确保他们遇见其他程序员所面对的问题，体会其他程序员心中的感受，因此如果不编程，他们亦将无法胜任软件架构这项工作。</p>
+<p>这本《凤凰架构》，周佬自己对它的定位是这样的：</p>
+<p>给开发人员整理的关于软件架构方面的技能地图，同时系统的梳理自己的知识，并配备了对应技术方案的演示程序。</p>
+<p>真的是一件利人利己的事情。</p>
+<p>我本来的想法是先带着你囫囵吞枣的走一圈这一本书，主要起到一个介绍的作用。</p>
+<p>但是越写越不得劲的感觉，于是我把写好的大部分都删除了。因为即使我写的这么卖力认真，都没有体现出这本书的价值的千分之一。</p>
+<p>你得自己去读，你才知道我没有骗你：这真的是个宝藏啊！</p>
+<p>所以我决定换个思路，告诉你这里面有什么就行了，其实就是书中的探索起步一小节。</p>
+<p>如果你对里面的某一部分感兴趣，自己主动打开网站去翻一下，那么我的目的就达到了。</p>
+<p>探索起步</p>
+<p>这是探索起步的更新日志部分，可以看到周佬对于该项目一直在进行维护新内容：</p>
+<p>而对于已有的内容，其中的错别字、不通顺的地方、含义不清的地方，他也在抽时间修改，最近的一次修改就是 6 月 6 日，昨天，上周日：</p>
+<p>所以，相比于其他的大部分网上的文章来说，会更加实时、系统、优质一点。</p>
+<p>全书分为五大部分和两个篇外，而为了让你快速定位到合适自己的部分，周佬也细心的介绍了每一部分对应的读者类型。</p>
+<ul><li>引导篇 探索起步 ： 这部分面向于准备对文档介绍的内容亲身实践的探索者。</li><li>第一部分 演进中的架构：这部分适合所有开发者，但尤其推荐刚刚从单体架构向微服务架构转型的开发者去阅读。</li><li>第二部分 架构师的视角：这部分讨论与风格无关的架构知识，适合所有技术架构师、系统设计、开发人员。</li><li>第三部分 分布式的基石：这部分面向于使用分布式架构的开发人员。</li><li>第四部分 不可变基础设施：这部分面向于基础设施运维人员、技术平台的开发者。</li><li>第五部分 技术方法论：这部分面向于在企业中能对重要技术决策进行拍板的决策者。</li><li>篇外 随笔文章：这部分无特定读者对象，内容是笔者日常文章的整理。</li><li>篇外 附录：这部分面向刚开始接触云原生环境的设计者、开发者。</li></ul>
+<p>演进中的架构</p>
+<p>其中第一部分我读完之后做的思维导图如下：</p>
+<p>我曾经就完整的经历过一个服务从单体系统时代，再到 SOA 时代，最后步入微服务时代的全过程。</p>
+<p>所以能比较深刻的理解到周老说的观点：</p>
+<p>架构并不是被发明出来的，而是持续演进的结果。</p>
+<p>可能你对于其中的后微服务时代和无服务时代稍微有点陌生，但是我换个英文名称，你就应该是非常熟悉了。</p>
+<p>后微服务时代其实就是云原生时代，Cloud Native。</p>
+<p>而无服务其实就是 Serverless。</p>
+<p>但是需要注意的是，周佬把 Serverless 排在了 Cloud Native 之后，其实它们两者并没有继承替代关系。不要因为周老对于两者的书写顺序产生了“无服务就会比微服务更加先进”的错误想法。</p>
+<p>周佬对于这两者之间的关系描述是这样的：</p>
+<p>如果说微服务架构是分布式系统这条路当前所能做到的极致，那无服务架构，也许就是“不分布式”的云端系统这条路的起点。</p>
+<p>架构师的视角</p>
+<p>第二部分的思维导图如下：</p>
+<p>这一部分主要聊了我们做分布式服务时，一定会涉及到的问题，比如：远程服务调用（RPC）、分布式事务的处理、多级分流、架构安全。</p>
+<p>我个人认为这一部分是干货满满的。</p>
+<p>其中访问远程服务，对 RPC 和 REST 从各自的起源开始进行了一个详尽的描述：</p>
+<p>事务处理小节，你可以看看“共享事务”的概念，其实我发现有一部分号称是微服务架构的项目，走向了“共享事务”的路线。其实这是一种伪分布式，或者说是“阉割版”的分布式。</p>
+<p>“共享事务”的提法和这里所列的两种处理方式在实际应用中并不值得提倡，鲜有采用这种方式的成功案例，能够查询到的资料几乎都发源于十余年前 Spring 的核心开发者Dave Syer撰写的文章《Distributed Transactions in Spring, with and without XA》。笔者把共享事务列为本章四种事务类型之一只是为了叙述逻辑的完备，尽管拆分微服务后仍然共享数据库的情况在现实中并不少见，但笔者个人不赞同将共享事务作为一种常规的解决方案来考量。</p>
+<p>透明多级分流系统从客户端到网络再到服务端的拆析，这是一种上帝视角的描述，对于一次请求的进过脉络梳理，清晰的了解到系统的方方面面。而这一部分的主题就是“架构师的视角”。</p>
+<p>架构师就应该是从这样的一个比较统筹规划的角度去看待系统，不必进入到具体系统的细枝末节中去：</p>
+<p>分布式的基石</p>
+<p>第三部分分布式的基石：</p>
+<p>共识算法、服务发现、流量治理、网络通信、监控预警共同构成了分布式的基石。</p>
+<p>可以说如果是一个分布式的服务，都能找到上面的这些关键词的影子。</p>
+<p>有些是应用系统自己做的，有些是开源框架就帮你搞定了，你甚至不知道它们的存在。</p>
+<p>但是我认为上面的诸如流量治理和监控预警（可观察性）并不是一个分布式服务一开始搭建时所必须的。</p>
+<p>大多数情况下，刚刚搭建好的分布式都处于一个蛮荒状态。随着时间推进和业务的发展，会慢慢补充上流量治理和监控预警。</p>
+<p>也就是说如果想要分布式服务发展的方向是可监控、可控制的，那么这些东西都是应该有的。</p>
+<p>所以“基石”一词，用的像是手术刀一样精准。</p>
+<p>接着来到了第四部分，不可变基础设施：</p>
+<p>到这里我们就要从微服务走向云原生了。</p>
+<p>在这一章，周佬以容器、编排系统和服务网格的发展为主线，介绍虚拟化容器与服务网格是如何模糊掉软件与硬件之间的界限，如何在基础设施与通讯层面上帮助微服务隐藏复杂性，解决原本只能由程序员通过软件编程来解决的分布式问题。</p>
+<p>接下来的“技术方法论”属于微服务避坑指南，从目的、前提、边界、治理四个角度去阐述如何更好的使用微服务。</p>
+<p>随笔文章</p>
+<p>最后一部分是“随笔文章”：</p>
+<p>其中的《云原生时代，Java 的危与机》和《程序员之路》这两篇文章，建议你反复观看。</p>
+<p>前者是技术方向的，后者是软技能方向的。</p>
+<p>读完《Java 的危与机》，我感受到的是一场关于 Java 的自我革命已经悄然开始了。</p>
+<pre><code>Java 并不是一个优秀的开发语言，这一点我是非常承认且确定的。但是 Java 有一个庞大的用户群体和异常丰富的生态，这是它的护城河。所以短时间内还倒不下来。</code></pre>
+<p>但是大风起于青萍之末。虽然风雨欲来，而包括我在内的很多人都浑然不知。</p>
+<p>在文章里面，周佬有这样的一段话：</p>
+<pre><code>Java 支持提前编译最大的困难在于它是一门动态链接的语言，它假设程序的代码空间是开放的（Open World），允许在程序的任何时候通过类加载器去加载新的类，作为程序的一部分运行。要进行提前编译，就必须放弃这部分动态性，假设程序的代码空间是封闭的（Closed World），所有要运行的代码都必须在编译期全部可知。这一点不仅仅影响到了类加载器的正常运作，除了无法再动态加载外，反射（通过反射可以调用在编译期不可知的方法）、动态代理、字节码生成库（如 CGLib）等一切会运行时产生新代码的功能都不再可用，如果将这些基础能力直接抽离掉，Helloworld 还是能跑起来，但 Spring 肯定跑不起来，Hibernate 也跑不起来，大部分的生产力工具都跑不起来，整个 Java 生态中绝大多数上层建筑都会轰然崩塌。</code></pre>
+<p>“整个 Java 生态中绝大多数上层建筑都会轰然崩塌。”</p>
+<p>所以，Java 的这次变革属于釜底抽薪。</p>
+<p>读完《Java 的危与机》之后，你再去看《Graal VM》一文，你就明白了：为什么说 Graal VM 的成功与否，与 Java 的前途命运息息相关。</p>
+<p>其实这场变革已然悄悄开始，比如说一个小点：</p>
+<p>大多数运行期对字节码的生成和修改操作，在 Graal VM 看来都是无法接受的。</p>
+<p>但是比如 CGLIB 就是通过运行时产生字节码（生成代理类的子类）来做动态代理的。</p>
+<p>这是目前的主流形式。</p>
+<p>现在因为Graal VM 支持不了，所以必须由和框架一起来共同解决。</p>
+<p>因此自 Spring Framework 5.2 起，@Configuration 注解中加入了一个新的 proxyBeanMethods 参数，设置为 false 则可避免 Spring 对与非接口类型的 Bean 进行代理。</p>
+<p>同样地，对应在 Spring Boot 2.2 中，@SpringBootApplication 注解也增加了 proxyBeanMethods 参数，通常采用 Graal VM 去构建的 Spring Boot 本地应用都需要设置该参数。</p>
+<p>可以看到的是为了推进 Java 生态向 Graal VM 兼容，Graal VM 主动拉拢了 Java 生态中最庞大的一个派系：Spring。</p>
+<p>这即使壮士断腕，也是唇亡齿寒。</p>
+<p>而我最喜欢的还是技术演示工程部分，并不是架空了去谈，而是直接把项目 Demo 都给你准备好了，开箱即用：</p>
+<p>我发现周佬写的这个开源项目还有个特点，引用的部分会给出具体的官方的地址。严谨又权威，比如写到项目中用到的技术组件的时候：</p>
+<p>真心推荐大家收藏起来，系统学习。</p>
+<p>一个问答</p>
+<p>在项目里面，我还发现了一个问答。</p>
+<p>问题和回答都非常的好，搬运过来给你看看。</p>
+<p>评论区：https://icyfenix.cn/methodology/forward-msa/prerequest.html</p>
+<p>问题如下：</p>
+<p>周大哥，看到了您说的马太效应。再联想到之前您讲的软件涅槃，而完善的微服务体系允许服务有涅槃的过程，有强大的容错能力。微服务发展又如此迅猛，觉得马太效应真的不远。</p>
+<p>我不禁对最需要掌握的技能进行了思考，并产生了更强的焦虑感。</p>
+<p>我是一名有七年工作经验的java开发工程师，28岁，目前在一家北京的传统信息软件技术公司，工资相对计算机行业偏低。</p>
+<p>局限在java语言来说，jvm调优与并发编程等比较高阶的能力，是不是就很不关键了？</p>
+<p>jvm我读了您写的《深入理解Java虚拟机：JVM高级特性与最佳实践》的第二版与第三版，由于工作中鲜有机会实践，只停留在一些理论理解，而缺失实践，理论知识也会淡忘。</p>
+<p>并发编程读过《Java并发编程实战》，对并发编程有些了解，也有一些实践，一般水平。</p>
+<p>微服务公司并没有用起来，实践经验也缺少。远程调用、分布式事务、注册中心、配置中心、熔断、限流等知识，通过看视频跟您的这个文档有一些了解。</p>
+<p>java基础知识，经过这些年的磨练，是挺扎实了，spring能熟练使用。</p>
+<p>常用设计模式有了解，也理解的比较到位。</p>
+<p>我不想沦为螺丝钉。</p>
+<p>我应该提升自己的哪些能力呢？</p>
+<p>这些年只是做到了胜任分配给自己的工作。</p>
+<p>现在发现自己缺少前瞻性思考，缺少对自己职业生涯的把控。</p>
+<p>我现在想把握自己的职业生涯，请周大哥给一些指导。</p>
+<p>我会通过招聘市场去挖掘市场需求，做整理，进行思考。</p>
+<p>但是迫不及待的想跟您述说一下，请您不吝赐教，希望我的请求不是很唐突。</p>
+<p>这个问题其实是很具有普遍性的：学了没地方实践，慢慢就忘记了。理论学了一大堆，聊起来可以谈笑风生，但是就是没有实际使用过。自己就是一颗螺丝钉。</p>
+<p>周佬的回复如下：</p>
+<p>写这文章不是为了贩卖焦虑，我也没有能力指导别人的职业生涯，但针对“应该提升自己的哪些能力”这类问题，我以前被问过很多次，这里可以重复一下。</p>
+<p>我的建议就两个：</p>
+<p>不要轻视不直接产生实践价值的知识； 不要对陷入已经被你熟练掌握的技术中不能自拔。</p>
+<p>为了便于你理解，我做一个很土的比喻，把程序员提升自己类比成武侠中的练功，软件中的技能其实有很明显的“内力”和“武功”之分，譬如你提到的Java虚拟机，这类知识不仅是你在工作中鲜有机会实践，我也是差不多的。</p>
+<p>大学计算机课程中，以“原理”二字结尾的课程，譬如计算机原理、操作系统原理、编译原理、数据库原理，等等，对绝大多数人而言，都不太会去设计处理器逻辑电路、设计程序语言和编译器，开发操作系统内核。</p>
+<p>这些都有很经典的书：编译原理的龙书，计算机体系结构和程序运行的CSAPP，分布式与数据库原理的DDIA、操作系统原理的MOS，等等。这些书系统严谨全面，但可读性并不优秀，在B站/Coursera刷这些书作者们的公开课翻译视频也许是更好的方法。</p>
+<p>这些技能能够辅助你去思考和分析问题，但是很难直接为你解决生产中的问题，以实践价值，就是以工作中是否有机会用到来衡量它们的作用是不合适的。</p>
+<p>但这些课程之所以会是必修，是因为学习它们，能够为一名程序员的知识框架构筑好基础。</p>
+<p>这话听起来很教条，可是当你一旦建立了相对完备稳固的知识框架，发现遇到的新知识、新技术，能够很自然地安放在已有知识体系的某个位置上，能够清楚感知到语言、技术、框架的设计意图和目标，甚至能共鸣到设计者当时所想，就会产生一种理所当然的感觉。</p>
+<p>这样你接受新知识的认知负荷就会比别人更低，掌握起来更快速，理解起来更深刻。</p>
+<p>我在这文档开篇中所说的，写这部文档是以整理自己的知识框架为目的，并非场面话，这点的确就是程序员如何学习新知识的关键，在知识快速迭代IT业界，这也是决定一名程序员能力上限有多高的根本因素。</p>
+<p>相对的，那些具体的、用来解决生产中问题的技术和方法，譬如你提到的Spring、设计模式，我将其类比为“武功”。</p>
+<p>这当然也是重要的，只有内力没有武功无法行走江湖，空有一身理论，但写不出代码来（包括那些只定大方向的架构师、设计者），我认为不肯定是合格的程序员，也很难指望能成为一名出色的技术领导（难以服众）。</p>
+<p>但是具体的“武功”应该是能够快速捡起的，也能快速“忘掉”的，就是避免将一件事情做熟了，就一直陷在这件事情里面，避免拿到一把好的锤子，就看着一切问题都像是钉子。</p>
+<p>很多程序员都抱怨，自己是CRUD Boy，自己在业务逻辑中打滚，没有机会接触底层的或者前瞻性的技术，所以自己技术难以提升。</p>
+<p>这里当然有客观原因的存在，但往往也是受到了主观原因放大。</p>
+<p>程序员其实与旧时代的手工技艺者差不多，骨子里就有天生的技术崇拜，你写的代码比别人的优雅健壮高性能，你杀BUG比别人快速干净利索，就会受到大家的认可。</p>
+<p>很自然地，更多偏向技术偏向深层次的工作就会落到你这里，至少你会有话语权，有选择做哪些事情的权利，是否要一直在围绕着你最熟悉的业务去打滚是由你决定的。</p>
+<p>学习武艺成为“武林高手”，是成为大BOSS之后才不必长期面对虾兵蟹将的纠缠。</p>
+<p>学习一门具体的技术，也是为了用它解决好问题，然后把它忘掉，去掌握那些更深层次的、更前沿，而且自己还不会的技术。</p>
+<p>最后还有个追问和回答如下：</p>
+<p>不知道你看到这个回答后的感受是怎么样的。</p>
+<p>至少对我而言，振聋发聩。</p>
+<p>特别是这两点：</p>
+<p>不要轻视不直接产生实践价值的知识； 不要对陷入已经被你熟练掌握的技术中不能自拔。</p>
+<p>已经放入手机标签中，时常提醒自己。</p>
+<p>与君共勉。</p>
+<p>最后说一句</p>
+<p>最后再放一次开源项目的地址：</p>
+<p>https://icyfenix.cn/</p>
+<p>我也下载了离线版本，和思维导图一起放到了网盘里面：</p>
+<p>吧，周更很累的，需要一点正反馈。</p>
+<p>推荐👍 ：曝光一个网站，我周末就耗在上面了。</p>
+<p>推荐👍 ：面试官：啥是请求重发啊？</p>
+<p>推荐👍 ：我被读者卷了...</p>
+<p>推荐👍 ：曾趟过微服务这条河，暗潮汹涌。</p>
+<p>推荐👍 ：414天前，我以为这是编程玄学...</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>架构是演进结果</h4><p>架构并不是被发明出来的，而是持续演进的结果。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>微服务 vs Serverless</h4><p>微服务是分布式系统这条路的极致；Serverless 是“不分布式”云端系统的起点，两者没有继承替代关系。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>全书结构：五大部分+两个篇外</h4><p>全书分引导篇与五个部分、两个篇外：演进中的架构、架构师的视角、分布式的基石、不可变基础设施、技术方法论，及随笔文章、附录。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>内力 vs 武功</h4><p>原理类知识（编译原理、操作系统、数据库原理等）类比“内力”，构筑知识框架；Spring、设计模式等具体技术类比“武功”，可快速捡起也应快速放下。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>共享事务是伪分布式</h4><p>部分号称微服务的项目走“共享事务”路线，实为伪分布式，鲜有成功案例，不提倡作为常规方案。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>proxyBeanMethods 参数</h4><p>Spring 5.2 与 Spring Boot 2.2 注解加 proxyBeanMethods，置 false 避免Bean代理，适配 Graal VM。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Java 的危与机</h4><p>Java 提前编译最大困难是动态链接的开放世界假设，抽离反射、动态代理、字节码生成后，Spring、Hibernate 等上层建筑会轰然崩塌。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>架构师应持续编程</h4><p>软件架构师本身就是最好的程序员，持续编程才能理解一线问题；离开技术、放弃编码后易丧失细节指导能力。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>架构不是发明而是演进的结果；微服务与 Serverless 是两条路线，无继承替代关系。</li>
+          <li>用内力（原理知识）搭框架，用武功（具体技术）解决问题，学完要能快速放下。</li>
+          <li>重视不直接产生实践价值的知识，别陷入已熟练掌握的技术中不能自拔。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247513796&amp;idx=1&amp;sn=6b65620f172c80fb3e50ca0125728c28" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247513796&amp;idx=1&amp;sn=6b65620f172c80fb3e50ca0125728c28</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

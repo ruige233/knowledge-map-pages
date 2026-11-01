@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">微服务架构下网关的技术选型</h1>
+  <p class="lede">微服务下网关技术选型全景：职责、设计重点与主流网关对比</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台 · Java项目精选</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 20 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>简介</a>
+          <a href="#sec-02"><span class="n">02</span>网关设计思路</a>
+          <a href="#sec-03"><span class="n">03</span>网关设计重点</a>
+          <a href="#sec-04"><span class="n">04</span>设计注意事项</a>
+          <a href="#sec-05"><span class="n">05</span>流量网关</a>
+          <a href="#sec-06"><span class="n">06</span>业务网关</a>
+          <a href="#sec-07"><span class="n">07</span>常见网关对比</a>
+          <a href="#sec-08"><span class="n">08</span>几种网关的对比</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 简介</a>
+          <a href="#sec-02">02 网关设计思路</a>
+          <a href="#sec-03">03 网关设计重点</a>
+          <a href="#sec-04">04 设计注意事项</a>
+          <a href="#sec-05">05 流量网关</a>
+          <a href="#sec-06">06 业务网关</a>
+          <a href="#sec-07">07 常见网关对比</a>
+          <a href="#sec-08">08 几种网关的对比</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>☞【干货】牛逼 Plus，又一款工具要爆了 ！</p>
+<p>☞【干货】清华学姐自学的Linux笔记，天花板级别！</p>
+<p>☞【干货】2万字系统总结，带你实现Linux命令自由</p>
+<p>☞【干货】ChatGPT中文版 4.0，人人都能用，快速稳定 ！</p>
+<p>作者：雪飘千里</p>
+<p>链接：https://www.jianshu.com/p/97324f7f3134</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>简介</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>单体应用通过负载均衡分发到同质实例，微服务拆分后不宜全部直接对外暴露。</li><li>客户端直连微服务存在 API 粒度不匹配、协议非 Web 友好、服务难以重构三大问题。</li><li>网关位于接入层之下、业务服务层之上，四大职能为请求接入、业务聚合、中介策略、统一管理。</li><li>网关粒度可细到单实例、粗到整个架构，可用多层 Gateway 组织成星型架构。</li></ul></div>
+<p>当使用单体应用程序架构时，客户端（Web 或移动端）通过向后端应用程序发起一次 REST 调用来获取数据。负载均衡器将请求路由给 N 个相同的应用程序实例中的一个。然后应用程序会查询各种数据库表，并将响应返回给客户端。微服务架构下，单体应用被切割成多个微服务，如果将所有的微服务直接对外暴露，势必会出现安全方面的各种问题，另外内外耦合严重。</p>
+<p>客户端可以直接向每个微服务发送请求，其问题主要如下：</p>
+<ul><li>客户端需求和每个微服务暴露的细粒度 API 不匹配。</li><li>部分服务使用的协议不是Web友好协议。可能使用 Thrift 二进制 RPC，也可能使用 AMQP 消息传递协议。</li><li>微服务难以重构。如果合并两个服务，或者将一个服务拆分成两个或更多服务，这类重构就非常困难了。</li></ul>
+<p>服务端的各个服务直接暴露给客户端调用势必会引起各种问题。同时，服务端的各个服务可扩展和伸缩性很差。API 网关是微服务架构中的基础组件，位于接入层之下和业务服务层之上，如前所述的这些功能适合在 API 网关实现。</p>
+<h3 class="sub">1.1 什么是网关？</h3>
+<p>网关的角色是作为一个API架构，用来保护、增强和控制对于API服务的访问。它是一个处于应用程序或服务（提供REST API接口服务）之前的系统，用来管理授权、访问控制和流量限制等。这样REST API接口服务就被网关保护起来，对所有的调用者透明。因此，隐藏在API网关后面的业务系统就可以专注于创建和管理服务，无需关心这些策略性的请求。</p>
+<h3 class="sub">1.2 API网关的四大职能</h3>
+<ul><li>请求接入：作为所有API接口服务请求的接入点，管理所有的接入请求。</li><li>业务聚合：作为所有后端业务服务的聚合点，所有的业务服务都可以在这里被调用。</li><li>中介策略：实现安全、验证、路由、过滤、流控、缓存等策略，进行一些必要的中介处理。</li><li>统一管理：提供配置管理工具，对所有API服务的调用生命周期和相应的中介策略进行统一管理。</li></ul>
+<h3 class="sub">1.3 微服务下网关作用</h3>
+<p>下面图介绍了网关(Gateway)作用，可知 Gateway 方式下的架构，可以细到为每一个服务的实例配置一个自己的 Gateway，也可以粗到为一组服务配置一个，甚至可以粗到为整个架构配置一个接入的 Gateway。于是，整个系统架构的复杂度就会变得简单可控起来。</p>
+<p>这张图展示了一个多层 Gateway 架构，其中有一个总的 Gateway 接入所有的流量(流量网关 )，并分发给不同的子系统，还有第二级 Gateway 用于做各个子系统的接入 Gateway(业务网关 )。可以看到，网关所管理的服务粒度可粗可细。通过网关，我们可以把分布式架构组织成一个星型架构，由网络对服务的请求进行路由和分发。下面来聊聊好的网关应该具备哪些功能，也就是网关设计模式。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>网关设计思路</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>网关应具备请求路由、服务注册、负载均衡、弹力设计、安全、灰度发布、API 聚合、API 编排等能力。</li><li>弹力设计含异步、重试、幂等、流控、熔断、监视，让应用只关注业务逻辑。</li><li>负载均衡可由 Round-Robin 轮询到权重分发再到 session 粘连逐步增强。</li><li>API 聚合将多个请求合并为一个，缓解客户端与后端频繁通信的性能问题。</li></ul></div>
+<p>API网关并不是一个典型的业务系统，而是一个为了让业务系统更专注于业务本身，给API服务提供更多附加能力的一个中间层。一个网关需要有以下的功能:</p>
+<ul><li>服务注册 为了能够代理后面的服务，并把请求路由到正确的位置上，网关应该有服务注册功能，也就是后端的服务实例可以把其提供服务的地址注册、取消注册。一般来说，注册也就是注册一些 API 接口。比如，HTTP 的 Restful 请求，可以注册相应 API 的 URI、方法、HTTP 头。这样，Gateway 就可以根据接收到的请求中的信息来决定路由到哪一个后端的服务上。</li><li>负载均衡 因为一个网关可以接收多个服务实例，所以网关还需要在各个对等的服务实例上做负载均衡策略。简单点就是直接 Round-Robin 轮询，复杂点的可以设置上权重进行分发，再复杂一点还可以做到 session 粘连。</li><li>弹力设计 网关还可以把弹力设计中的那些异步、重试、幂等、流控、熔断、监视等都可以实现进去。这样，同样可以像 Service Mesh 那样，让应用服务只关心自己的业务逻辑（或是说数据面上的事）而不是控制逻辑（控制面）。</li><li>安全方面 SSL 加密及证书管理、Session 验证、授权、数据校验，以及对请求源进行恶意攻击的防范。错误处理越靠前的位置就是越好，所以，网关可以做到一个全站的接入组件来对后端的服务进行保护。当然，网关还可以做更多更有趣的事情，比如：灰度发布、API聚合、API编排。</li><li>灰度发布 网关完全可以做到对相同服务不同版本的实例进行导流，还可以收集相关的数据。这样对于软件质量的提升，甚至产品试错都有非常积极的意义。</li><li>API 聚合 使用网关可以将多个单独请求聚合成一个请求。在微服务体系的架构中，因为服务变小了，所以一个明显的问题是，客户端可能需要多次请求才能得到所有的数据。这样一来，客户端与后端之间的频繁通信会对应用程序的性能和规模产生非常不利的影响。于是，我们可以让网关来帮客户端请求多个后端的服务（有些场景下完全可以并发请求），然后把后端服务的响应结果拼装起来，回传给客户端（当然，这个过程也可以做成异步的，但这需要客户端的配合）。</li><li>API 编排 同样在微服务的架构下，要走完一个完整的业务流程，我们需要调用一系列 API，就像一种工作流一样，这个事完全可以通过网页来编排这个业务流程。我们可能通过一个 DSL 来定义和编排不同的 API，也可以通过像 AWS Lambda 服务那样的方式来串联不同的 API。</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>网关设计重点</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>高性能：用 C/C++/Go/Java 等语言，前后端请求采用异步非阻塞 I/O，如 epoll、IOCP、Netty、Spring Reactor。</li><li>高可用：集群化（自行同步数据）、服务化（Admin API 运行时改配置）、持续化（优雅重启）。</li><li>高扩展：网关需可二次开发，如 Nginx Module 方式。</li><li>运维原则：业务松耦合协议紧耦合、应用监视提供分析数据、弹力设计保护后端、引入 DevOps。</li></ul><div class="pit"><ul><li>网关若不做好高可用设计会变成单点故障，影响所有服务稳定。</li></ul></div></div>
+<p>网关设计重点主要是三个， 高性能、高可用、高扩展:</p>
+<h3 class="sub">3.1 高性能</h3>
+<p>在技术设计上，网关不应该也不能成为性能的瓶颈。对于高性能，最好使用高性能的编程语言来实现，如 C、C++、Go 和 Java。网关对后端的请求，以及对前端的请求的服务一定要使用异步非阻塞的 I/O 来确保后端延迟不会导致应用程序中出现性能问题。C 和 C++ 可以参看 Linux 下的 epoll 和 Windows 的 I/O Completion Port 的异步 IO 模型，Java 下如 Netty、Spring Reactor 的 NIO 框架。</p>
+<h3 class="sub">3.2 高可用</h3>
+<p>因为所有的流量或调用经过网关，所以网关必须成为一个高可用的技术组件，它的稳定直接关系到了所有服务的稳定。网关如果没有设计，就会成变一个单点故障。因此，一个好的网关至少要做到以下几点。</p>
+<ul><li>集群化 。网关要成为一个集群，其最好可以自己组成一个集群，并可以自己同步集群数据，而不需要依赖于一个第三方系统来同步数据。</li><li>服务化 。网关还需要做到在不间断的情况下修改配置，一种是像 Nginx reload 配置那样，可以做到不停服务，另一种是最好做到服务化。也就是说，得要有自己的 Admin API 来在运行时修改自己的配置。</li><li>持续化 。比如重启，就是像 Nginx 那样优雅地重启。有一个主管请求分发的主进程。当我们需要重启时，新的请求被分配到新的进程中，而老的进程处理完正在处理的请求后就退出。</li></ul>
+<h3 class="sub">3.3 高扩展</h3>
+<p>因为网关需要承接所有的业务流量和请求，所以一定会有或多或少的业务逻辑。而我们都知道，业务逻辑是多变和不确定的。比如，需要在网关上加入一些和业务相关的东西。因此，一个好的 Gateway 还需要是可以扩展的，并能进行二次开发的。当然，像 Nginx 那样通过 Module 进行二次开发的固然可以。</p>
+<p>另外，在运维方面 ，网关应该有以下几个设计原则。</p>
+<ul><li>业务松耦合，协议紧耦合 。在业务设计上，网关不应与后面的服务之间形成服务耦合，也不应该有业务逻辑。网关应该是在网络应用层上的组件，不应该处理通讯协议体，只应该解析和处理通讯协议头。另外，除了服务发现外，网关不应该有第三方服务的依赖。</li><li>应用监视，提供分析数据 。网关上需要考虑应用性能的监控，除了有相应后端服务的高可用的统计之外，还需要使用 Tracing ID 实施分布式链路跟踪，并统计好一定时间内每个 API 的吞吐量、响应时间和返回码，以便启动弹力设计中的相应策略。</li><li>用弹力设计保护后端服务 。网关上一定要实现熔断、限流、重试和超时等弹力设计。如果一个或多个服务调用花费的时间过长，那么可接受超时并返回一部分数据，或是返回一个网关里的缓存的上一次成功请求的数据。你可以考虑一下这样的设计。</li><li>DevOps 。因为网关这个组件太关键了，所以需要 DevOps 这样的东西，将其发生故障的概率降到最低。这个软件需要经过精良的测试，包括功能和性能的测试，还有浸泡测试。还需要有一系列自动化运维的管控工具。</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>设计注意事项</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>聚合服务不应内置在网关核心代码，可用 Plugin 或网关后的 Serverless 实现。</li><li>网关应贴近后端同内网部署，静态内容放 CDN 靠近用户。</li><li>服务发现可做短时间缓存；简单系统可把服务发现集成进网关。</li><li>安全事宜：SSL 证书统一管理、校验用户请求需权衡协议体解析开销、检测异常访问并告警。</li></ul><div class="pit"><ul><li>在网关校验用户输入会使其从关心协议头变为解析协议体，拖慢性能，需做隔离。</li></ul></div></div>
+<ul><li>不要在网关中的代码里内置聚合后端服务的功能，而应考虑将聚合服务放在网关核心代码之外。可以使用 Plugin 的方式，也可以放在网关后面形成一个 Serverless 服务。</li><li>网关应该靠近后端服务，并和后端服务使用同一个内网，这样可以保证网关和后端服务调用的低延迟，并可以减少很多网络上的问题。这里多说一句，网关处理的静态内容应该靠近用户（应该放到 CDN 上），而网关和此时的动态服务应该靠近后端服务。</li><li>网关也需要做容量扩展，所以需要成为一个集群来分担前端带来的流量。这一点，要么通过 DNS 轮询的方式实现，要么通过 CDN 来做流量调度，或者通过更为底层的性能更高的负载均衡设备。</li><li>对于服务发现，可以做一个时间不长的缓存，这样不需要每次请求都去查一下相关的服务所在的地方。当然，如果你的系统不复杂，可以考虑把服务发现的功能直接集成进网关中。</li><li>为网关考虑 bulkhead 设计方式。用不同的网关服务不同的后端服务，或是用不同的网关服务前端不同的客户。</li><li>保持大规模的inbound请求接入能力（长短链接），比如基于Netty实现。</li><li>最大限度地复用outbound的HTTP连接能力，比如基于httpClietn4的异步实现。</li><li>方便灵活地实现安全、验证、过滤、聚合、限流、监控等各种策略。</li></ul>
+<p>另外，因为网关是为用户请求和后端服务的桥接装置，所以需要考虑一些安全方面的事宜。具体如下：</p>
+<ul><li>加密数据 。可以把 SSL 相关的证书放到网关上，由网关做统一的 SSL 传输管理。</li><li>校验用户的请求 。一些基本的用户验证可以放在网关上来做，比如用户是否已登录，用户请求中的 token 是否合法等。但是，我们需要权衡一下，网关是否需要校验用户的输入。因为这样一来，网关就需要从只关心协议头，到需要关心协议体。而协议体中的东西一方面不像协议头是标准的，另一方面解析协议体还要耗费大量的运行时间，从而降低网关的性能。对此，我想说的是，看具体需求，一方面如果协议体是标准的，那么可以干；另一方面，对于解析协议所带来的性能问题，需要做相应的隔离。</li><li>检测异常访问 。网关需要检测一些异常访问，比如，在一段比较短的时间内请求次数超过一定数值；还比如，同一客户端的 4xx 请求出错率太高……对于这样的一些请求访问，网关一方面要把这样的请求屏蔽掉，另一方面需要发出警告，有可能会是一些比较重大的安全问题，如被黑客攻击。</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>流量网关</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>流量网关控制进入集群的流量，拦截非法无效请求，降低集群流量压力。</li><li>流量网关专注全局 API 管理策略：全局流量监控、日志、全局限流、黑白名单、负载均衡，类似防火墙。</li><li>Kong 是典型流量网关；业务网关部署在流量网关之后、业务系统之前，二者无严格界线。</li></ul></div>
+<p>流量网关，顾名思义就是控制流量进入集群的网关，有很多工作需要在这一步做，对于一个服务集群，势必有很多非法的请求或者无效的请求，这时候要将请求拒之门外，降低集群的流量压力。</p>
+<p>定义全局性的、跟具体的后端业务应用和服务完全无关的策略网关就是上图所示的架构模型——流量网关。流量网关通常只专注于全局的Api管理策略，比如全局流量监控、日志记录、全局限流、黑白名单控制、接入请求到业务系统的负载均衡等，有点类似防火墙。Kong 就是典型的流量网关。</p>
+<p>下面是kong的架构图，来自官网：</p>
+<p>这里需要补充一点的是，业务网关一般部署在流量网关之后、业务系统之前，比流量网关更靠近业务系统。通常API网指的是业务网关。有时候我们也会模糊流量网关和业务网关，让一个网关承担所有的工作，所以这两者之间并没有严格的界线。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>业务网关</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>微服务拆分后权限、日志、加密、熔断限流等功能重复实现且差异大，维护成本高。</li><li>业务网关需具备接口管理、协议适配、熔断限流、安全防护等功能，如 Zuul。</li><li>业务网关更靠近业务，处理线程模型、协议适配、熔断限流、服务编排等应用层事项。</li><li>较成熟的框架产品有 Zuul1、Zuul2 与 Spring Cloud Gateway。</li></ul></div>
+<p>当一个单体应用被拆分成许许多多的微服务应用后，也带来了一些问题。一些与业务非强相关的功能，比如权限控制、日志输出、数据加密、熔断限流等，每个微服务应用都需要，因此存在着大量重复的代码实现。而且由于系统的迭代、人员的更替，各个微服务中这些功能的实现细节出现了较大的差异，导致维护成本变高。另一方面，原先单体应用下非常容易做的接口管理，在服务拆分后没有了一个集中管理的地方，无法统计已存在哪些接口、接口定义是什么、运行状态如何。</p>
+<p>网关就是为了解决上述问题。作为微服务体系中的核心基础设施，一般需要具备接口管理、协议适配、熔断限流、安全防护等功能，各种开源的网关产品（比如 zuul）都提供了优秀高可扩展性的架构、可以很方便的实现我们需要的一些功能、比如鉴权、日志监控、熔断限流等。</p>
+<p>与流量网关相对应的就是业务网关，业务网关更靠近我们的业务，也就是与服务器应用层打交道，那么有很多应用层需要考虑的事情就可以依托业务网关，例如在线程模型、协议适配、熔断限流，服务编排等。下面看看业务网关体系结构:</p>
+<p>从这个图中可以看出业务网关主要职责以及所做的事情， 目前业务网关比较成熟的 API 网关框架产品有三个 分别是:Zuul1、Zuul2 和 SpringCloud Gateway， 后面再进行对比。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>常见网关对比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>常见开源网关按语言分类：Nginx+Lua（OpenResty/Kong）、Java（Zuul 系列）、Go、Dotnet、NodeJS。</li><li>OpenResty 是基于 Nginx+Lua 的高性能 Web 平台，定位流量网关。</li><li>Kong 基于 OpenResty，插件化、可水平扩展，提供认证、流量管制、可视化监控等能力。</li><li>Zuul2 用 Netty 替代 Servlet/Http Client 实现前后端异步，Inbound/Endpoint/Outbound Filters 替换旧过滤器。</li><li>Spring Cloud Gateway 基于 Spring 5、Spring Boot 2、Project Reactor 与 WebFlux/Netty，目标替代 Zuul。</li></ul><div class="pit"><ul><li>Zuul2 异步模型编程复杂、call flow 不清晰，ThreadLocal 依赖的监控工具埋点困难。</li></ul></div></div>
+<p>目前常见的开源网关大致上按照语言分类有如下几类：</p>
+<ul><li>Nginx+lua ：OpenResty、Kong、Orange、Abtesting gateway 等</li><li>Java ：Zuul/Zuul2、Spring Cloud Gateway、Kaazing KWG、gravitee、Dromara soul 等</li><li>Go ：Janus、fagongzi、Grpc-gateway</li><li>Dotnet ：Ocelot</li><li>NodeJS ：Express Gateway、Micro Gateway</li></ul>
+<p>按照使用数量、成熟度等来划分，主流的有 4个：</p>
+<ul><li>OpenResty</li><li>Kong</li><li>Zuul/Zuul2</li><li>Spring Cloud Gateway</li></ul>
+<h3 class="sub">7.1 OpenResty</h3>
+<p>OpenResty是一个流量网关，根据前面对流量网关的介绍就可以知道流量网关的职责。</p>
+<p>OpenResty基于 Nginx与 Lua 的高性能 Web 平台，其内部集成了大量精良的 Lua 库、第三方模块以及大多数的依赖项。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关。</p>
+<p>通过揉和众多设计良好的 Nginx 模块，OpenResty 有效地把 Nginx 服务器转变为一个强大的 Web 应用服务器，基于它开发人员可以使用 Lua 编程语言对 Nginx 核心以及现有的各种 Nginx C 模块进行脚本编程，构建出可以处理一万以上并发请求的极端高性能的 Web 应用</p>
+<p>OpenResty 最早是顺应 OpenAPI 的潮流做的，所以 Open 取自“开放”之意，而Resty便是 REST 风格的意思。虽然后来也可以基于 ngx_openresty 实现任何形式的 web service 或者传统的 web 应用。</p>
+<p>也就是说 Nginx 不再是一个简单的静态网页服务器，也不再是一个简单的反向代理了。第二代的 openresty 致力于通过一系列 nginx 模块，把nginx扩展为全功能的 web 应用服务器。</p>
+<p>ngx_openresty 是用户驱动的项目，后来也有不少国内用户的参与，从 openresty.org 的点击量分布上看，国内和国外的点击量基本持平。</p>
+<p>ngx_openresty 目前有两大应用目标：</p>
+<ul><li>通用目的的 web 应用服务器。在这个目标下，现有的 web 应用技术都可以算是和 OpenResty 或多或少有些类似，比如 Nodejs， PHP 等等。ngx_openresty 的性能（包括内存使用和 CPU 效率）算是最大的卖点之一。</li><li>Nginx 的脚本扩展编程，用于构建灵活的 Web 应用网关和 Web 应用防火墙。有些类似的是 NetScaler。其优势在于 Lua 编程带来的巨大灵活性。</li></ul>
+<h3 class="sub">7.2 Kong</h3>
+<p>Kong基于OpenResty开发，也是流量层网关， 是一个云原生、快速、可扩展、分布式的Api 网关。继承了OpenResty的高性能、易扩展性等特点。Kong通过简单的增加机器节点，可以很容易的水平扩展。同时功能插件化，可通过插件来扩展其能力。而且在任何基础架构上都可以运行。具有以下特性：</p>
+<ul><li>提供了多样化的认证层来保护Api。</li><li>可对出入流量进行管制。</li><li>提供了可视化的流量检查、监视分析Api。</li><li>能够及时的转换请求和相应。</li><li>提供log解决方案</li><li>可通过api调用Serverless 函数。</li></ul>
+<p>Kong解决了什么问题</p>
+<p>当我们决定对应用进行微服务改造时，应用客户端如何与微服务交互的问题也随之而来，毕竟服务数量的增加会直接导致部署授权、负载均衡、通信管理、分析和改变的难度增加。</p>
+<p>面对以上问题，API GATEWAY是一个不错的解决方案，其所提供的访问限制、安全、流量控制、分析监控、日志、请求转发、合成和协议转换功能，可以解放开发者去把精力集中在具体逻辑的代码，而不是把时间花费在考虑如何解决应用和其他微服务链接的问题上。</p>
+<p>从下图可以看到Kong解决的问题。专注于全局的Api管理策略，全局流量监控、日志记录、全局限流、黑白名单控制、接入请求到业务系统的负载均衡等。</p>
+<p>Kong的优点以及性能</p>
+<p>在众多 API GATEWAY 框架中，Mashape 开源的高性能高可用API网关和API服务管理层——KONG（基于 NGINX+Lua）特点尤为突出，它可以通过插件扩展已有功能，这些插件（使用 lua 编写）在API请求响应循环的生命周期中被执行。于此同时，KONG本身提供包括 HTTP 基本认证、密钥认证、CORS、TCP、UDP、文件日志、API请求限流、请求转发及 NGINX 监控等基本功能。目前，Kong 在 Mashape 管理了超过 15，000 个 API，为 200，000 开发者提供了每月数十亿的请求支持。</p>
+<p>Kong架构</p>
+<p>首先最底层是基于Nginx， Nginx是高性能的基础层， 一个良好的负载均衡、反向代理器，然后在此基础上增加Lua脚本库，形成了OpenResty，拦截请求， 响应生命周期，可以通过Lua编写脚本，所以插件比较丰富。</p>
+<h3 class="sub">7.3 Zuul2.0</h3>
+<p>上图是Zuul2的架构，和Zuul1没有本质区别，两点变化：</p>
+<ul><li>前端用Netty Server代替Servlet，目的是支持前端异步。后端用Netty Client代替Http Client，目的是支持后端异步。</li><li>过滤器换了一下名字，用Inbound Filters代替Pre-routing Filters，用Endpoint Filter代替Routing Filter，用Outbound Filters代替Post-routing Filters。</li></ul>
+<p>Zuul2采用了异步模型</p>
+<p>优势：：是异步非阻塞模式启动的线程很少，基本上一个CPU core上只需启一个事件环处理线程，它使用的线程资源就很少，上下文切换(Context Switch)开销也少。非阻塞模式可以接受的连接数大大增加，可以简单理解为请求来了只需要进队列，这个队列的容量可以设得很大，只要不超时，队列中的请求都会被依次处理。</p>
+<p>不足：异步模式让编程模型变得复杂。一方面Zuul2本身的代码要比Zuul1复杂很多，Zuul1的代码比较容易看懂，Zuul2的代码看起来就比较费劲。另一方面异步模型没有一个明确清晰的请求-&gt;处理-&gt;响应执行流程(call flow)，它的流程是通过事件触发的，请求处理的流程随时可能被切换断开，内部实现要通过一些关联id机制才能把整个执行流再串联起来，这就给开发调试运维引入了很多复杂性，比如你在IDE里头调试异步请求流就非常困难。另外ThreadLocal机制在这种异步模式下就不能简单工作，因为只有一个事件环线程，不是每个请求一个线程，也就没有线程局部的概念，所以对于CAT这种依赖于ThreadLocal才能工作的监控工具，调用链埋点就不好搞(实际可以工作但需要进行特殊处理)。</p>
+<p>总体上，异步非阻塞模式比较适用于IO密集型(IO bound)场景，这种场景下系统大部分时间在处理IO，CPU计算比较轻，少量事件环线程就能处理。</p>
+<h3 class="sub">7.4 Spring Cloud Gateway</h3>
+<p>SpringCloud Gateway 是 Spring Cloud 的一个全新项目，该项目是基于 Spring 5.0，Spring Boot 2.0 和 Project Reactor 等技术开发的网关，它旨在为微服务架构提供一种简单有效的统一的 API 路由管理方式。</p>
+<p>SpringCloud Gateway 作为 Spring Cloud 生态系统中的网关，目标是替代 Zuul，在Spring Cloud 2.0以上版本中，没有对新版本的Zuul 2.0以上最新高性能版本进行集成，仍然还是使用的Zuul 2.0之前的非Reactor模式的老版本。而为了提升网关的性能，SpringCloud Gateway是基于WebFlux框架实现的，而WebFlux框架底层则使用了高性能的Reactor模式通信框架Netty。</p>
+<p>Spring Cloud Gateway 的目标，不仅提供统一的路由方式，并且基于 Filter 链的方式提供了网关基本的功能，例如：安全，监控/指标，和限流。Spring Cloud Gateway 底层使用了高性能的通信框架Netty 。</p>
+<p>SpringCloud Gateway 特征</p>
+<p>SpringCloud官方，对SpringCloud Gateway 特征介绍如下：</p>
+<p>（1）基于 Spring Framework 5，Project Reactor 和 Spring Boot 2.0</p>
+<p>（2）集成 Hystrix 断路器</p>
+<p>（3）集成 Spring Cloud DiscoveryClient</p>
+<p>（4）Predicates 和 Filters 作用于特定路由，易于编写的 Predicates 和 Filters</p>
+<p>（5）具备一些网关的高级功能：动态路由、限流、路径重写</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>几种网关的对比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>不同业务场景应选择不同网关组件，应对不同流量和并发。</li><li>Kong 性能好适合做流量网关，但复杂业务系统不建议用 Kong。</li><li>Spring Cloud Gateway/Zuul2 对 Java 技术栈方便，但对 Lua 开发不方便。</li></ul></div>
+<p>基于不同的业务场景，选择不同的API网关组件，应对不同的系统流量和并发数。不同的业务场景，在技术选型上也是及其重要的一环。例如：Kong的性能虽然非常不错，适合做流量网关，但是对于复杂的业务系统不建议用Kong，因为会给系统的性能带来缺陷。再如SpringCloud GateWay/Zuul2对于Java技术栈来说比较方便，但是对于lua开发语言不方便。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>流量网关 vs 业务网关</h4><p>流量网关管全局策略（限流、黑白名单、负载均衡）；业务网关更靠近业务，管接口、协议适配、熔断限流。二者无严格界线。</p><a class="src-link" href="#sec-05">原文 → 流量网关</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>网关定位</h4><p>API 网关位于接入层之下、业务服务层之上，是微服务基础组件，承担请求接入、业务聚合、中介策略、统一管理四大职能。</p><a class="src-link" href="#sec-01">原文 → 简介</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Kong 生产规模</h4><p>Kong 在 Mashape 管理超过 15,000 个 API，为 200,000 开发者提供每月数十亿的请求支持。</p><a class="src-link" href="#sec-07">原文 → 常见网关对比</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Zuul2 vs Zuul1</h4><p>前端用 Netty Server 代替 Servlet，后端用 Netty Client 代替 Http Client；过滤器改为 Inbound/Endpoint/Outbound。</p><a class="src-link" href="#sec-07">原文 → 常见网关对比</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>网关核心能力清单</h4><p>请求路由、服务注册、负载均衡、弹力设计、安全、灰度发布、API 聚合、API 编排是网关应具备的核心能力。</p><a class="src-link" href="#sec-02">原文 → 网关设计思路</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>网关单点故障</h4><p>所有流量经过网关，若不做集群化等高可用设计，网关会变成单点故障，拖垮所有服务。</p><a class="src-link" href="#sec-03">原文 → 网关设计重点</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>校验协议体的代价</h4><p>在网关校验用户输入会让其从只关心协议头变为解析协议体，耗费运行时间、降低性能，需隔离。</p><a class="src-link" href="#sec-04">原文 → 设计注意事项</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>聚合功能外置</h4><p>不要把聚合后端服务的功能写死在网关核心代码里，可用 Plugin 或网关后面的 Serverless 服务实现。</p><a class="src-link" href="#sec-04">原文 → 设计注意事项</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Zuul2 异步调试难</h4><p>Zuul2 异步模型无清晰 call flow，IDE 调试困难，ThreadLocal 机制失效，CAT 等监控埋点需特殊处理。</p><a class="src-link" href="#sec-07">原文 → 常见网关对比</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>网关选型建议</h4><p>Kong 性能好适合流量网关，但复杂业务系统不建议；Spring Cloud Gateway/Zuul2 对 Java 栈方便，对 Lua 不方便。</p><a class="src-link" href="#sec-08">原文 → 几种网关的对比</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>网关是微服务的基础组件，核心在请求路由、聚合、安全与弹力设计，并须保证高性能、高可用、高扩展。</li>
+          <li>流量网关管全局策略、业务网关管应用层业务事项，二者无严格界线，选型要按业务场景和流量取舍。</li>
+          <li>OpenResty/Kong 适合流量层，Java 栈选 Zuul2 或 Spring Cloud Gateway，复杂业务系统不建议用 Kong。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247489582&amp;idx=1&amp;sn=8c974db3061f5c92213641b12948e1f7" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247489582&amp;idx=1&amp;sn=8c974db3061f5c92213641b12948e1f7</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Java字符串拼接技术演进及阿里巴巴的贡献</h1>
+  <p class="lede">Java字符串拼接演进史：从StringBuilder到阿里的PR 20273</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 31 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>省流版</a>
+          <a href="#sec-02"><span class="n">02</span>关于使用+拼接</a>
+          <a href="#sec-03"><span class="n">03</span>JDK 8实现</a>
+          <a href="#sec-04"><span class="n">04</span>JEP 280实现</a>
+          <a href="#sec-05"><span class="n">05</span>实现细节与阿里贡献</a>
+          <a href="#sec-06"><span class="n">06</span>阿里其他贡献</a>
+          <a href="#sec-07"><span class="n">07</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 省流版</a>
+          <a href="#sec-02">02 关于使用+拼接</a>
+          <a href="#sec-03">03 JDK 8实现</a>
+          <a href="#sec-04">04 JEP 280实现</a>
+          <a href="#sec-05">05 实现细节与阿里贡献</a>
+          <a href="#sec-06">06 阿里其他贡献</a>
+          <a href="#sec-07">07 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>阿里妹导读</p>
+<p>本文主要讲述了Java字符串拼接技术的演进历程，以及阿里巴巴贡献的最新实现PR 20273。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>省流版</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>本文用一张图概览Java字符串拼接技术演进路线</li><li>最新实现PR 20273来自阿里巴巴贡献</li></ul></div>
+<p>下图是Java字符串拼接实现的技术演进路线，最新的实现 PR 20273是来自阿里巴巴的贡献。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>关于使用+拼接</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>旧文说+拼接性能差的结论已过时，JDK 9+的+比StringBuilder快</li><li>示例方法concatIndy用于对比JDK 8与JDK 9+的实现</li></ul></div>
+<p>一些古老的技术文章中会说，在Java中使用&quot;+&quot;做字符串拼接性能不好，但实际情况是JDK 9+之后的版本，使用&quot;+&quot;做字符串拼接会比StringBuilder快。</p>
+<p>如下是一个字符串拼接的的方法，我们基于这个方法来介绍JDK8和JDK9之后版本的性能以及背后的内部细节。</p>
+<ul><li>class Demo {</li><li>public static String concatIndy(int i) {</li><li>return  &quot;value &quot; + i;</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>JDK 8实现</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>JDK 8中+编译为new StringBuilder().append().toString()</li><li>非循环体内+与StringBuilder一致，代码更简洁推荐用+</li></ul></div>
+<h3 class="sub">2.1 编译并查看字节码</h3>
+<ul><li>jdk8/bin/javac Demo.java</li><li>jdk8/bin/javap -c Dem</li></ul>
+<p>javap输出的字节码：</p>
+<ul><li>class Demo {</li><li>Demo();</li><li>Code:</li><li>0: aload_0</li><li>1: invokespecial #1 // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</li><li>4: return</li><li>public static java.lang.String concatIndy(int);</li><li>Code:</li><li>0: new           #2 // class java/lang/StringBuilder</li><li>3: dup</li><li>4: invokespecial #3 // Method java/lang/StringBuilder.&quot;&lt;init&gt;&quot;:()V</li><li>7: ldc           #4 // String value</li><li>9: invokevirtual #5 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</li><li>12: iload_0</li><li>13: invokevirtual #6 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;</li><li>16: invokevirtual #7 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;</li><li>19: areturn</li></ul>
+<h3 class="sub">2.2 反编译后的Java代码</h3>
+<ul><li>public static String concatIndy(int i) {</li><li>return new StringBuilder(&quot;value &quot;)</li><li>.append(i)</li><li>.toString();</li></ul>
+<p>可以看出，在JDK 8中，在非循环体内使用&quot;+&quot;实现字符串拼接和使用StringBuilder是一样的，用&quot;+&quot;做拼接代码更简洁，推荐使用&quot;+&quot;而不是StringBuilder。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>JEP 280实现</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>JDK 11中+编译为invokedynamic调用makeConcatWithConstants</li><li>动态生成方法不创建StringBuilder、少一次数组拷贝</li><li>JMH显示JDK 11下+比StringBuilder快10.97%</li></ul><div class="pit"><ul><li>StringBuilder缺省LATIN1，append遇UTF16会inflate，拼接中文会多一次数组拷贝</li></ul></div></div>
+<p>如果我们使用JDK 9之后的版本，比如JDK 11，字符串拼接&quot;+&quot;编译后的字节码会不一样。</p>
+<h3 class="sub">3.1. 使用JDK 11编译后并查看字节码</h3>
+<ul><li>jdk11/bin/javac Demo.java</li><li>jdk11/bin/javap -c Demo</li><li>class Demo {</li><li>Demo();</li><li>Code:</li><li>0: aload_0</li><li>1: invokespecial #1 // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</li><li>4: return</li><li>public static java.lang.String concatIndy(int);</li><li>Code:</li><li>0: iload_0</li><li>1: invokedynamic #2,  0 // InvokeDynamic #0:makeConcatWithConstants:(I)Ljava/lang/String;</li><li>6: areturn</li></ul>
+<p>可以看到，JDK 11中编译后的字节码和JDK 8是不一样的，不再是基于StringBuilder实现，而是基于StringConcatFactory.makeConcatWithConstants动态生成一个方法来实现。这个会比StringBuilder更快，不需要创建StringBuilder对象，也会减少一次数组拷贝。</p>
+<p>这里由于是内部使用的数组，所以用了UNSAFE.allocateUninitializedArray的方式更快分配byte[]数组。通过：</p>
+<p>StringConcatFactory.makeConcatWithConstants</p>
+<p>而不是JavaC生成代码，是因为生成的代码无法使用JDK的内部方法进行优化，还有就是，如果有算法变化，存量的Lib不需要重新编译，升级新版本JDk就能提速。</p>
+<p>这个字节码相当如下手工调用：</p>
+<p>StringConcatFactory.makeConcatWithConstants</p>
+<ul><li>import java.lang.invoke.*;</li><li>static final MethodHandle STR_INT;</li><li>static {</li><li>try {</li><li>STR_INT = StringConcatFactory.makeConcatWithConstants(</li><li>MethodHandles.lookup(),</li><li>&quot;concat_str_int&quot;,</li><li>MethodType.methodType(String.class, int.class),</li><li>&quot;value \1&quot;</li><li>).dynamicInvoker();</li><li>} catch (Exception e) {</li><li>throw new Error(&quot;Bootstrap error&quot;, e);</li><li>static String concat_str_int(int value) throws Throwable {</li><li>return (String) STR_INT.invokeExact(value);</li></ul>
+<p>StringConcatFactory.makeConcatWithConstants是公开API，可以用来动态生成字符串拼接的方法，除了编译器生成字节码调用，也可以直接调用。调用生成方法一次大约需要1微秒（千分之一毫秒）。</p>
+<p>3.2. makeConcatWithConstants动态生成方法的代码</p>
+<p>makeConcatWithConstants使用recipe (&quot;value \1&quot;)动态生成的方法大致如下：</p>
+<ul><li>import java.lang.StringConcatHelper;</li><li>import static java.lang.StringConcatHelper.mix;</li><li>import static java.lang.StringConcatHelper.newArray;</li><li>import static java.lang.StringConcatHelper.prepend;</li><li>import static java.lang.StringConcatHelper.newString;</li><li>public static String invokeStatic(String str, int value) throws Throwable {</li><li>long lengthCoder = 0;</li><li>lengthCoder = mix(lengthCoder, str);</li><li>lengthCoder = mix(lengthCoder, value);</li><li>byte[] bytes = newArray(lengthCoder);</li><li>lengthCoder = prepend(lengthCoder, bytes, value);</li><li>lengthCoder = prepend(lengthCoder, bytes, str);</li><li>return newString(bytes, lengthCoder);</li><li>StringConcatHelper</li></ul>
+<p>StringConcatHelper是：</p>
+<p>StringConcatFactory.makeConcatWithConstants实现用到的内部类。</p>
+<ul><li>package java.lang;</li><li>class StringConcatHelper {</li><li>static String newString(byte[] buf, long indexCoder) {</li><li>// Use the private, non-copying constructor (unsafe!)</li><li>if (indexCoder == LATIN1) {</li><li>return new String(buf, String.LATIN1);</li><li>} else if (indexCoder == UTF16) {</li><li>return new String(buf, String.UTF16);</li><li>public class String {</li><li>String(byte[] value, byte coder) {</li><li>// 无拷贝构造</li><li>this.value = value;</li><li>this.coder = coder;</li></ul>
+<p>可以看出，生成的方法是通过如下步骤来实现：</p>
+<ul><li>StringConcatHelper的mix方法计算长度和字符编码 (将长度和coder组合放到一个long中)；</li><li>根据长度和编码构造一个byte[]；</li><li>然后把相关的值写入到byte[]中；</li><li>使用byte[]无拷贝的方式构造String对象。</li></ul>
+<p>上面的火焰图可以看到实现的细节。这样的实现，和使用StringBuilder相比，减少了StringBuilder以及StringBuilder内部byte[]对象的分配，可以减轻GC的负担。也能避免可能产生的StringBuilder在latin1编码到UTF16时的数组拷贝。</p>
+<p>-StringBuilder缺省编码是LATIN1(ISO_8859_1)，如果append过程中遇到UTF16编码，会有一个将LATIN1转换为UTF16的动作，这个动作实现的方法是inflate。如果拼接的参数如果是带中文的字符串，使用StringBuilder还会多一次数组拷贝。</p>
+<ul><li>class AbstractStringBuilder</li><li>private void inflate() {</li><li>if (!isLatin1()) {</li><li>return;</li><li>byte[] buf = StringUTF16.newBytesFor(value.length);</li><li>StringLatin1.inflate(value, 0, buf, 0, count);</li><li>this.value = buf;</li><li>this.coder = UTF16;</li></ul>
+<p>3.3 JMH比较字符串拼接和使用StringBuilder的性能</p>
+<ul><li>测试代码</li><li>public class ConcatBench {</li><li>public static String concatIndy(int i) {</li><li>return  &quot;value &quot; + i;</li><li>public static String concatSB(int i) {</li><li>return new StringBuilder(&quot;value &quot;)</li><li>.append(i)</li><li>.toString();</li><li>JDK 11下的测试结果</li><li>Benchmark                Mode  Cnt    Score   Error   Units</li><li>ConcatBench.concatIndy  thrpt    5  130.841 ± 1.127  ops/us</li><li>ConcatBench.concatSB    thrpt    5  117.897 ± 1.437  ops/us</li></ul>
+<p>上面的数据中，concatIndy是使用字符串拼接，concatSB是使用StringBuilder，可以看出在JDK 11下，使用&quot;+&quot;拼接字符串的性能比使用StringBuilder快10.97%。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>实现细节与阿里贡献</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MethodHandle实现参数多时中间类多、启动慢，C2编译极端需2G内存</li><li>JDK 23引入highArityThreshold默认20，超阈值回退StringBuilder</li><li>PR 20273用隐藏类动态字节码替代MethodHandle，兼顾性能与重用</li><li>PR 20273将成为JDK 24缺省实现</li></ul><div class="pit"><ul><li>JDK 11~23参数较多时拼接存在启动速度慢、JIT C2消耗资源多的问题</li></ul></div></div>
+<h3 class="sub">4.1 基于MethodHandlers API的实现</h3>
+<p>StringConcatFactory.makeConcatWithConstants是MethodHandles实现的。MethodHandle可以是一个方法引用，MethodHandles可以对MethodHandle做各种转换，包括过滤参数[filterAgument]、参数折叠[foldArgument]、添加参数[insertArguments]，最终生成的MethodHandle可以被认为是一个语法树。MethodHandles API功能强大，甚至可以认为它是图灵完备的。当然也有缺点，复杂的MethodHandle TreeExpress会生成大量中的中间类，JIT的开销也较大。</p>
+<p>StringConcatFactory.makeConcatWithConstants通过MethodHandles动态构建一个MethodHandle调用StringConcatHelper的方法，组装一个MethodHandle实现无拷贝的字符拼接实现。</p>
+<ul><li>package java.lang;</li><li>class StringConcatHelper {</li><li>static long initialCoder() { ... }</li><li>// T: boolean, char, int, long, String</li><li>static long mix(long lengthCoder, T value) { ... }</li><li>static byte[] newArray(long indexCoder) { ... }</li><li>static long prepend(long lengthCoder, byte[] buf, T value) { ... }</li><li>static String newString(byte[] buf, long indexCoder) { ... }</li><li>class StringConcatFactory {</li><li>static MethodHandle generateMHInlineCopy(MethodType mt, String[] constants) {</li><li>Class&lt;?&gt;[] ptypes = mt.erase().parameterArray();</li><li>MethodHandle mh = MethodHandles.dropArgumentsTrusted(newString(), 2, ptypes);</li><li>mh = filterInPrependers(mh, constants, ptypes);</li><li>MethodHandle newArrayCombinator = newArray();</li><li>mh = MethodHandles.foldArgumentsWithCombiner(mh, 0, newArrayCombinator,</li><li>1 // index</li><li>mh = filterAndFoldInMixers(mh, initialLengthCoder, ptypes);</li><li>if (objFilters != null) {</li><li>mh = MethodHandles.filterArguments(mh, 0, objFilters);</li><li>return mh;</li></ul>
+<h3 class="sub">4.2 基于MethodHandle表达式的问题</h3>
+<p>这种动态生成MethodHandle表达式在参数个数较多时，会遇到问题，它会生成大量中间转换类，并且生成MethodHandle消耗比较大，极端情况下，C2优化器需要高达2G的内存来编译复杂的字符串拼接:</p>
+<p>https://github.com/openjdk/jdk/pull/18953</p>
+<p>因此JDK 23引入了JVM启动参数java.lang.invoke.StringConcat.highArityThreshold，缺省值为20，当超过这个阈值时，使用StringBuilder实现。</p>
+<p>除了参数个数较多时编译消耗资源多之外，MethodHandle表达式还有启动速度比较慢的问题。</p>
+<h3 class="sub">4.3 阿里巴巴贡献的改进 (PR 20273)</h3>
+<p>阿里巴巴的工程师温绍锦在2024年7月提交了一个新的方案：</p>
+<p>https://github.com/openjdk/jdk/pull/20273</p>
+<p>通过动态字节码生成隐藏类来代替基于MethodHandle表达式的实现。它的实现逻辑和MethodHandle表达式类似，但不需要组合coder和length，有相似的运行性能，但它能显著提升启动性能，并且对C2优化器的开销较小。</p>
+<p>在8月5日召开的JVM Language Summit 2024，Oracle Java核心类库维护小组负责性能优化的Claes Redestad的Talk：</p>
+<p>《Re-thinking String Concatenation》 ：</p>
+<p>https://www.youtube.com/watch?v=tgX38gvMpjs&amp;list=PLX8CzqL3ArzUEYnTa6KYORRbP3nhsK0L1&amp;index=1</p>
+<p>介绍了PR 20273 ，这个将会是JDK 24的缺省实现。</p>
+<p>如下是PR 20273前后的代码实现对比：</p>
+<p>上图右边的字节码会用下面的代码生成一个Hidden Class来实现字符串拼接。</p>
+<ul><li>package java.lang.invoke;</li><li>class StringConcatFactory {</li><li>static final class InlineHiddenClassStrategy {</li><li>static MethodHandle generate(Lookup lookup, MethodType args, String[] constants) {</li><li>byte[] classBytes = ClassFile.of().build(...);</li><li>var hiddenClass = lookup.makeHiddenClassDefiner(CLASS_NAME, classBytes, Set.of(), DUMPER)</li><li>.defineClass(true, null);</li><li>var constructor = lookup.findConstructor(hiddenClass, CONSTRUCTOR_METHOD_TYPE);</li><li>var concat      = lookup.findVirtual(hiddenClass, METHOD_NAME, concatArgs);</li><li>var instance = hiddenClass.cast(constructor.invoke(constants));</li><li>return concat.bindTo(instance);</li></ul>
+<p>如下图，PR 20273的实现生成的中间类明显减少：</p>
+<p>PR 20273生成的ByteCode逻辑大致如下：</p>
+<ul><li>java.lang.StringConcatHelper中的基类 StringConcatBase。</li><li>package java.lang;</li><li>class StringConcatHelper {</li><li>static abstract class StringConcatBase {</li><li>@Stable</li><li>final String[] constants;</li><li>final int      length;</li><li>final byte     coder;</li><li>StringConcatBase(String[] constants) {</li><li>int  length = 0;</li><li>byte coder  = String.LATIN1;</li><li>for (String c : constants) {</li><li>length += c.length();</li><li>coder  |= c.coder();</li><li>this.constants = constants;</li><li>this.length    = length;</li><li>this.coder     = coder;</li><li>生成的代码。</li><li>import static java.lang.StringConcatHelper.newArrayWithSuffix;</li><li>import static java.lang.StringConcatHelper.prepend;</li><li>import static java.lang.StringConcatHelper.stringCoder;</li><li>import static java.lang.StringConcatHelper.stringSize;</li><li>class StringConcat extends java.lang.StringConcatHelper.StringConcatBase {</li><li>// super class defines</li><li>// String[] constants;</li><li>// int length;</li><li>// byte coder;</li><li>StringConcat(String[] constants) {</li><li>super(constants);</li><li>String concat(int arg0, long arg1, boolean arg2, char arg3, String arg4,</li><li>float arg5, double arg6, Object arg7</li><li>) {</li><li>// Types other than byte/short/int/long/boolean/String require a local variable to store</li><li>String str4 = stringOf(arg4);</li><li>String str5 = stringOf(arg5);</li><li>String str6 = stringOf(arg6);</li><li>String str7 = stringOf(arg7);</li><li>int coder  = coder(this.coder, arg0, arg1, arg2, arg3, str4, str5, str6, str7);</li><li>int length = length(this.length, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);</li><li>String[] constants = this.constants;</li><li>byte[] buf = newArrayWithSuffix(constants[paramCount], length. coder);</li><li>prepend(length, coder, buf, constants, arg0, arg1, arg2, arg3, str4, str5, str6, str7);</li><li>return new String(buf, coder);</li><li>static int length(int length, int arg0, long arg1, boolean arg2, char arg3,</li><li>String arg4, String arg5, String arg6, String arg7) {</li><li>return stringSize(stringSize(stringSize(stringSize(stringSize(stringSize(stringSize(stringSize(</li><li>length, arg0), arg1), arg2), arg3), arg4), arg5), arg6), arg7);</li><li>static int cocder(int coder, char arg3, String str4, String str5, String str6, String str7) {</li><li>return coder | stringCoder(arg3) | str4.coder() | str5.coder() | str6.coder() | str7.coder();</li><li>static int prepend(int length, int coder, byte[] buf, String[] constants,</li><li>int arg0, long arg1, boolean arg2, char arg3,</li><li>String str4, String str5, String str6, String str7) {</li><li>// StringConcatHelper. prepend</li><li>return prepend(prepend(prepend(prepend(</li><li>prepend(apppend(prepend(prepend(length,</li><li>buf, str7, constant[7]), buf, str6, constant[6]),</li><li>buf, str5, constant[5]), buf, str4, constant[4]),</li><li>buf, arg3, constant[3]), buf, arg2, constant[2]),</li><li>buf, arg1, constant[1]), buf, arg0, constant[0]);</li></ul>
+<p>从这个代码来看，由于采用非静态的字段来保存constants，这使得可以重用。和之前MH实现不同的是，没有将coder和length组合成一个long类型的lengthcoder，这使得C2优化器在内联是可以做优化处理。这样就兼顾了性能和可重用。</p>
+<h3 class="sub">4.4 PR 20273带来的启动性能提升显著</h3>
+<p>（具体细节看 PR 20273的comments）</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>阿里其他贡献</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>PR 20253优化simpleConcat单参数拼接性能约8%</li><li>PR 19730消除浮点toString内存分配，性能提升约48%~88%</li><li>PR 14699提升Integer/Long.toString及append性能</li></ul></div>
+<p>除了PR 20273这样大的改进之外，阿里巴巴还贡献了其他对字符串连接改进，包括：</p>
+<p>5.1 PR 20253 Optimize StringConcatHelper.simpleConcat</p>
+<p>PR地址：https://github.com/openjdk/jdk/pull/20253</p>
+<p>这个PR改进了非简单类型的单参数字符串拼接性能，通过简化计算coder和length的算法提升性能大约8%。</p>
+<p>5.2 PR 19730 Reduce object allocation for FloatToDecimal and DoubleToDecimal</p>
+<p>PR地址：https://github.com/openjdk/jdk/pull/19730</p>
+<p>这个PR通过消除过程中的内存分配提升float/double类型：</p>
+<p>toString和StringBuilder.append(float/double)的性能。</p>
+<p>测试表明性能显著提升：</p>
+<ul><li>-Benchmark                               Mode  Cnt    Score    Error  Units base</li><li>-StringBuilders.appendWithFloat8Latin1   avgt   15  317.144 ? 11.325  ns/op</li><li>-StringBuilders.appendWithFloat8Utf16    avgt   15  316.980 ? 17.955  ns/op</li><li>-StringBuilders.appendWithDouble8Latin1  avgt   15  440.853 ? 13.067  ns/op</li><li>-StringBuilders.appendWithDouble8Utf16   avgt   15  418.896 ?  4.610  ns/op</li><li>+Benchmark                               Mode  Cnt    Score    Error  Units (Webrevs 00 4c810154)</li><li>+StringBuilders.appendWithFloat8Latin1   avgt   15  168.231 ?  4.749  ns/op +88.51%</li><li>+StringBuilders.appendWithFloat8Utf16    avgt   15  213.981 ?  3.274  ns/op +48.13%</li><li>+StringBuilders.appendWithDouble8Latin1  avgt   15  241.536 ?  0.993  ns/op +82.52%</li><li>+StringBuilders.appendWithDouble8Utf16   avgt   15  284.863 ? 10.381  ns/op +47.05%</li></ul>
+<p>5.3 PR 14699 Optimization for Integer.toString</p>
+<p>PR地址：https://github.com/openjdk/jdk/pull/14699</p>
+<p>这个PR提升Integer/Long.toString以及StringBuilder.append(int/long)的性能，这个PR通过将两次求值和写入合并为一次提升性能，在JDK 22之后的版本被引入。</p>
+<p>测试表明性能提升显著：</p>
+<ul><li>-Benchmark               (size)  Mode  Cnt   Score   Error  Units (baseline)</li><li>-Integers.toStringBig       500  avgt   15  18.483 ± 2.771  us/op</li><li>-Integers.toStringSmall     500  avgt   15   4.435 ± 0.067  us/op</li><li>-Integers.toStringTiny      500  avgt   15   2.382 ± 0.063  us/op</li><li>+Benchmark               (size)  Mode  Cnt  Score   Error  Units (PR Update 20 c0f42a7c)</li><li>+Integers.toStringBig       500  avgt   15  5.392 ? 0.016  us/op (+242.78%)</li><li>+Integers.toStringSmall     500  avgt   15  3.201 ? 0.024  us/op (+38.55%)</li><li>+Integers.toStringTiny      500  avgt   15  2.141 ? 0.021  us/op (+11.25%)</li><li>-Benchmark            (size)  Mode  Cnt  Score   Error  Units (baseline)</li><li>-Longs.toStringBig       500  avgt   15  8.336 ± 0.025  us/op</li><li>-Longs.toStringSmall     500  avgt   15  4.389 ± 0.018  us/op</li><li>+Benchmark            (size)  Mode  Cnt  Score   Error  Units (PR Update 20 c0f42a7c)</li><li>+Longs.toStringBig       500  avgt   15  7.706 ? 0.015  us/op (+8.17%)</li><li>+Longs.toStringSmall     500  avgt   15  3.094 ? 0.021  us/op (+41.85%)</li><li>-Benchmark                            Mode  Cnt    Score    Error  Units (baseline)</li><li>-StringBuilders.toStringCharWithInt8  avgt   15  124.316 ± 61.017  ns/op</li><li>+Benchmark                            Mode  Cnt   Score    Error  Units (PR Update 20 c0f42a7c)</li><li>+StringBuilders.toStringCharWithInt8  avgt   15  44.497 ? 29.741  ns/op (+179.38%)</li></ul>
+<h3 class="sub">5.4 在字符串处理非拼接相关的其他贡献</h3>
+<ul><li>PR 14578 优化UUID.toString的性能；</li><li>PR 14751 优化String的UpperLower性能；</li><li>PR 15768 优化HexFormat.formatHex的性能；</li><li>PR 15776 优化String.format的性能；</li><li>PR 19513 优化java.text. Form at的性能；</li></ul>
+<p>还有其他一些较小的改进，就不一一罗列了。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>JDK 8中+与StringBuilder性能一致，升级到JDK 11后+更快且GC更少</li><li>JDK 11~23参数多时拼接存在启动慢、C2资源消耗高的问题</li><li>PR 20273解决上述问题，将成JDK 24的+运算缺省实现</li></ul></div>
+<p>1. 在JDK 8中，使用&quot;+&quot;拼接字符串性能的性能是和直接使用StringBuilder是一样的。</p>
+<p>2. 升级JDK 11后，将compiler.target修改为11，使用&quot;+&quot;拼接字符串性能会比StringBuilder更好，耗时和GC都会变少。</p>
+<p>3. JDK 11 ~ JDK23版本的字符串拼接，参数个数较多时的字符串拼接，存在启动速度慢和JIT C2消耗资源多的问题。</p>
+<p>4. 阿里巴巴提供了新的实现PR 20273，在保证运行性能的同时，解决了启动速度慢和可重用的问题，这个将会在JDK 24中引入，成为Java&quot;+&quot;运算符字符串拼接的缺省实现。</p>
+<p>5. 除了PR 20273之外，阿里巴巴还做了大量的OpenJDK其他的贡献，包括对GC、JIT、Runtime、RAS，以及核心类库等的改进，例如RISC-V架构支持、VectorAPI、Primitive Types类型和各种场景字符串处理性能改进等等。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>JDK 8 vs JDK 9+ 拼接实现</h4><p>JDK 8把+编译为StringBuilder；JDK 9+改用invokedynamic动态生成拼接方法，少建对象、少一次拷贝</p><a class="src-link" href="#sec-04">原文 → JEP 280实现</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>非循环体内推荐用+拼接</h4><p>JDK 8中+与StringBuilder性能一致，+代码更简洁；JDK 11下+比StringBuilder快约10.97%</p><a class="src-link" href="#sec-03">原文 → JDK 8实现</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>JDK 11 JMH 性能对比</h4><p>concatIndy（+）130.841 ops/us vs concatSB（StringBuilder）117.897 ops/us，+快约10.97%</p><a class="src-link" href="#sec-04">原文 → JEP 280实现</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>MethodHandle 的 C2 编译开销</h4><p>参数较多时极端情况下C2优化器需要高达2G内存来编译复杂字符串拼接</p><a class="src-link" href="#sec-05">原文 → 实现细节与阿里贡献</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>StringBuilder 的 inflate 拷贝</h4><p>StringBuilder缺省LATIN1，append遇到UTF16会inflate转换；拼接带中文字符串会多一次数组拷贝</p><a class="src-link" href="#sec-04">原文 → JEP 280实现</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>makeConcatWithConstants 手工调用</h4><p>公开API可动态生成拼接方法，编译器之外也可直接调用，生成方法一次约1微秒</p><a class="src-link" href="#sec-04">原文 → JEP 280实现</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>PR 20273 新方案</h4><p>用动态字节码生成隐藏类替代MethodHandle表达式，启动性能显著提升、C2开销小，将成为JDK 24缺省实现</p><a class="src-link" href="#sec-05">原文 → 实现细节与阿里贡献</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>PR 20273 生成代码</h4><p>非静态字段保存constants实现重用；coder与length不再合并成long，便于C2内联优化</p><a class="src-link" href="#sec-05">原文 → 实现细节与阿里贡献</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>PR 19730 浮点转换提速</h4><p>appendWithFloat8Latin1从317.144ns/op降至168.231ns/op，提升88.51%；Double最高提升82.52%</p><a class="src-link" href="#sec-06">原文 → 阿里其他贡献</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>PR 14699 Integer/Long.toString</h4><p>Integers.toStringBig从18.483降至5.392us/op（+242.78%）；Longs.toStringSmall提升41.85%</p><a class="src-link" href="#sec-06">原文 → 阿里其他贡献</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>JDK 9+ 直接用+拼接即可，不必再迷信手写StringBuilder。</li>
+          <li>参数极多的拼接在JDK 11~23启动慢，可关注JDK 24的PR 20273修复。</li>
+          <li>升级JDK时把compiler.target同步升到新版本，才能获得新拼接实现的红利。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247540622&amp;idx=1&amp;sn=06610c8ac15bd6748bf21ad1a022efae" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247540622&amp;idx=1&amp;sn=06610c8ac15bd6748bf21ad1a022efae</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

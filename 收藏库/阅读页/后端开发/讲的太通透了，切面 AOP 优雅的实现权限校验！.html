@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">讲的太通透了，切面 AOP 优雅的实现权限校验！</h1>
+  <p class="lede">Spring AOP 从概念到实战：自定义注解+切面优雅实现权限校验</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 32 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>理解AOP</a>
+          <a href="#sec-02"><span class="n">02</span>AOP实例</a>
+          <a href="#sec-03"><span class="n">03</span>AOP相关注解</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 理解AOP</a>
+          <a href="#sec-02">02 AOP实例</a>
+          <a href="#sec-03">03 AOP相关注解</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>理解AOP</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AOP 是 Spring 三大核心思想之一，另两个是 IOC（控制反转）、DI（依赖注入）。</li><li>权限校验、日志等横切需求散落业务代码中，冗余且不利于维护。</li><li>抽成公共方法仍需逐一手动调用，AOP 则自动寻找节点切入业务代码。</li><li>切点分 execution 与 annotation 两种方式，连接点在 Spring AOP 中代表方法执行。</li></ul></div>
+<h3 class="sub">1.1 什么是AOP</h3>
+<p>AOP（Aspect Oriented Programming），面向切面思想，是Spring的三大核心思想之一（另外两个：IOC-控制反转、DI-依赖注入）。</p>
+<p>那么AOP为何那么重要呢？在我们的程序中，经常存在一些系统性的需求，比如权限校验、日志记录、统计等，这些代码会散落穿插在各个业务逻辑中，非常冗余且不利于维护。例如下面这个示意图：</p>
+<p>有多少业务操作，就要写多少重复的校验和日志记录代码，这显然是无法接受的。当然，用面向对象的思想，我们可以把这些重复的代码抽离出来，写成公共方法，就是下面这样：</p>
+<p>这样，代码冗余和可维护性的问题得到了解决，但每个业务方法中依然要依次手动调用这些公共方法，也是略显繁琐。有没有更好的方式呢？有的，那就是AOP，AOP将权限校验、日志记录等非业务代码完全提取出来，与业务代码分离，并寻找节点切入业务代码中：</p>
+<h3 class="sub">1.2 AOP体系与概念</h3>
+<p>简单地去理解，其实AOP要做三类事：</p>
+<ul><li>在哪里切入，也就是权限校验等非业务操作在哪些业务代码中执行。</li><li>在什么时候切入，是业务代码执行前还是执行后。</li><li>切入后做什么事，比如做权限校验、日志记录等。</li></ul>
+<p>因此，AOP的体系可以梳理为下图：</p>
+<p>一些概念详解：</p>
+<ul><li>「Pointcut」 ：切点，决定处理如权限校验、日志记录等在何处切入业务代码中（即织入切面）。切点分为execution方式和annotation方式。前者可以用路径表达式指定哪些类织入切面，后者可以指定被哪些注解修饰的代码织入切面。</li><li>「Advice」 ：处理，包括处理时机和处理内容。处理内容就是要做什么事，比如校验权限和记录日志。处理时机就是在什么时机执行处理内容，分为前置处理（即业务代码执行前）、后置处理（业务代码执行后）等。</li><li>「Aspect」 ：切面，即Pointcut和Advice。</li><li>「Joint point」 ：连接点，是程序执行的一个点。例如，一个方法的执行或者一个异常的处理。在 Spring AOP 中，一个连接点总是代表一个方法执行。</li><li>「Weaving」 ：织入，就是通过动态代理，在目标对象方法中执行处理内容的过程。</li></ul>
+<p>网络上有张图，我觉得非常传神，贴在这里供大家观详：</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>AOP实例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>引入 spring-boot-starter-aop 依赖，用 @Aspect + @Component 定义切面类。</li><li>自定义注解作切点，@Pointcut 拦截标注该注解的方法。</li><li>多个切面类用 @Order 管理顺序，数字越小越先执行。</li><li>Around 方法第一个形参必须是 ProceedingJoinPoint，调 proceed 才执行目标方法。</li></ul><div class="pit"><ul><li>proceed 传入的 Object[] 长度或元素类型与目标方法参数不匹配会抛异常。</li><li>没有调用 ProceedingJoinPoint.proceed 时，目标方法不会执行。</li></ul></div></div>
+<p>实践出真知，接下来我们就撸代码来实现一下AOP。完整项目已上传至：GitHub AOP demo项目，该项目是关于springboot的集成项目，AOP部分请关注【aop-demo】模块。</p>
+<p>使用 AOP，首先需要引入 AOP 的依赖。</p>
+<ul><li>&lt;dependency&gt;</li><li>&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</li><li>&lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;</li><li>&lt;/dependency&gt;</li></ul>
+<h3 class="sub">2.1 第一个实例</h3>
+<p>接下来，我们先看一个极简的例子：所有的get请求被调用前在控制台输出一句&quot;get请求的advice触发了&quot;。</p>
+<p>具体实现如下：</p>
+<p>1.创建一个AOP切面类，只要在类上加个 @Aspect 注解即可。@Aspect 注解用来描述一个切面类，定义切面类的时候需要打上这个注解。@Component 注解将该类交给 Spring 来管理。在这个类里实现advice：</p>
+<ul><li>package com.mu.demo.advice;</li><li>import org.aspectj.lang.annotation.Aspect;</li><li>import org.aspectj.lang.annotation.Before;</li><li>import org.aspectj.lang.annotation.Pointcut;</li><li>import org.springframework.stereotype.Component;</li><li>@Aspect</li><li>@Component</li><li>public class LogAdvice {</li><li>// 定义一个切点：所有被GetMapping注解修饰的方法会织入advice</li><li>@Pointcut(&quot;@annotation(org.springframework.web.bind.annotation.GetMapping)&quot;)</li><li>private void logAdvicePointcut() {}</li><li>// Before表示logAdvice将在目标方法执行前执行</li><li>@Before(&quot;logAdvicePointcut()&quot;)</li><li>public void logAdvice(){</li><li>// 这里只是一个示例，你可以写任何处理逻辑</li><li>System.out.println(&quot;get请求的advice触发了&quot;);</li></ul>
+<h3 class="sub">2.创建一个接口类，内部创建一个get请求：</h3>
+<ul><li>package com.mu.demo.controller;</li><li>import com.alibaba.fastjson.JSON;</li><li>import com.alibaba.fastjson.JSONObject;</li><li>import org.springframework.web.bind.annotation.*;</li><li>@RestController</li><li>@RequestMapping(value = &quot;/aop&quot;)</li><li>public class AopController {</li><li>@GetMapping(value = &quot;/getTest&quot;)</li><li>public JSONObject aopTest() {</li><li>return JSON.parseObject(&quot;{\&quot;message\&quot;:\&quot;SUCCESS\&quot;,\&quot;code\&quot;:200}&quot;);</li><li>@PostMapping(value = &quot;/postTest&quot;)</li><li>public JSONObject aopTest2(@RequestParam(&quot;id&quot;) String id) {</li><li>return JSON.parseObject(&quot;{\&quot;message\&quot;:\&quot;SUCCESS\&quot;,\&quot;code\&quot;:200}&quot;);</li></ul>
+<p>项目启动后，请求http://localhost:8085/aop/getTest接口：</p>
+<p>请求http://localhost:8085/aop/postTest接口，控制台无输出，证明切点确实是只针对被GetMapping修饰的方法。</p>
+<h3 class="sub">2.2 第二个实例</h3>
+<p>下面我们将问题复杂化一些，该例的场景是：</p>
+<ul><li>自定义一个注解PermissionsAnnotation</li><li>创建一个切面类，切点设置为拦截所有标注PermissionsAnnotation的方法，截取到接口的参数，进行简单的权限校验</li><li>将PermissionsAnnotation标注在测试接口类的测试接口test上</li></ul>
+<p>具体的实现步骤：</p>
+<p>1.使用@Target、@Retention、@Documented自定义一个注解（关于这三个注解详情请见：元注解详解）：</p>
+<ul><li>@Target(ElementType.METHOD)</li><li>@Retention(RetentionPolicy.RUNTIME)</li><li>@Documented</li><li>public @interface PermissionAnnotation{</li></ul>
+<p>2.创建第一个AOP切面类，，只要在类上加个 @Aspect 注解即可。@Aspect 注解用来描述一个切面类，定义切面类的时候需要打上这个注解。@Component 注解将该类交给 Spring 来管理。在这个类里实现第一步权限校验逻辑：</p>
+<ul><li>package com.example.demo;</li><li>import com.alibaba.fastjson.JSON;</li><li>import com.alibaba.fastjson.JSONObject;</li><li>import org.aspectj.lang.ProceedingJoinPoint;</li><li>import org.aspectj.lang.annotation.Around;</li><li>import org.aspectj.lang.annotation.Aspect;</li><li>import org.aspectj.lang.annotation.Pointcut;</li><li>import org.springframework.core.annotation.Order;</li><li>import org.springframework.stereotype.Component;</li><li>@Aspect</li><li>@Component</li><li>@Order(1)</li><li>public class PermissionFirstAdvice {</li><li>// 定义一个切面，括号内写入第1步中自定义注解的路径</li><li>@Pointcut(&quot;@annotation(com.mu.demo.annotation.PermissionAnnotation)&quot;)</li><li>private void permissionCheck() {</li><li>@Around(&quot;permissionCheck()&quot;)</li><li>public Object permissionCheckFirst(ProceedingJoinPoint joinPoint) throws Throwable {</li><li>System.out.println(&quot;===================第一个切面===================：&quot; + System.currentTimeMillis());</li><li>//获取请求参数，详见接口类</li><li>Object[] objects = joinPoint.getArgs();</li><li>Long id = ((JSONObject) objects[0]).getLong(&quot;id&quot;);</li><li>String name = ((JSONObject) objects[0]).getString(&quot;name&quot;);</li><li>System.out.println(&quot;id1-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot; + id);</li><li>System.out.println(&quot;name1-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot; + name);</li><li>// id小于0则抛出非法id的异常</li><li>if (id &lt; 0) {</li><li>return JSON.parseObject(&quot;{\&quot;message\&quot;:\&quot;illegal id\&quot;,\&quot;code\&quot;:403}&quot;);</li><li>return joinPoint.proceed();</li></ul>
+<p>3.创建接口类，并在目标方法上标注自定义注解 PermissionsAnnotation：</p>
+<ul><li>package com.example.demo;</li><li>import com.alibaba.fastjson.JSON;</li><li>import com.alibaba.fastjson.JSONObject;</li><li>import org.springframework.web.bind.annotation.*;</li><li>@RestController</li><li>@RequestMapping(value = &quot;/permission&quot;)</li><li>public class TestController {</li><li>@RequestMapping(value = &quot;/check&quot;, method = RequestMethod.POST)</li><li>// 添加这个注解</li><li>@PermissionsAnnotation()</li><li>public JSONObject getGroupList(@RequestBody JSONObject request) {</li><li>return JSON.parseObject(&quot;{\&quot;message\&quot;:\&quot;SUCCESS\&quot;,\&quot;code\&quot;:200}&quot;);</li></ul>
+<p>在这里，我们先进行一个测试。首先，填好请求地址和header：</p>
+<p>其次，构造正常的参数：</p>
+<p>可以拿到正常的响应结果：</p>
+<p>然后，构造一个异常参数，再次请求：</p>
+<p>响应结果显示，切面类进行了判断，并返回相应结果：</p>
+<p>有人会问，如果我一个接口想设置多个切面类进行校验怎么办？这些切面的执行顺序如何管理？</p>
+<p>很简单，一个自定义的AOP注解可以对应多个切面类，这些切面类执行顺序由@Order注解管理，该注解后的数字越小，所在切面类越先执行。</p>
+<p>下面在实例中进行演示：</p>
+<p>创建第二个AOP切面类，在这个类里实现第二步权限校验：</p>
+<ul><li>package com.example.demo;</li><li>import com.alibaba.fastjson.JSON;</li><li>import com.alibaba.fastjson.JSONObject;</li><li>import org.aspectj.lang.ProceedingJoinPoint;</li><li>import org.aspectj.lang.annotation.Around;</li><li>import org.aspectj.lang.annotation.Aspect;</li><li>import org.aspectj.lang.annotation.Pointcut;</li><li>import org.springframework.core.annotation.Order;</li><li>import org.springframework.stereotype.Component;</li><li>@Aspect</li><li>@Component</li><li>@Order(0)</li><li>public class PermissionSecondAdvice {</li><li>@Pointcut(&quot;@annotation(com.mu.demo.annotation.PermissionAnnotation)&quot;)</li><li>private void permissionCheck() {</li><li>@Around(&quot;permissionCheck()&quot;)</li><li>public Object permissionCheckSecond(ProceedingJoinPoint joinPoint) throws Throwable {</li><li>System.out.println(&quot;===================第二个切面===================：&quot; + System.currentTimeMillis());</li><li>//获取请求参数，详见接口类</li><li>Object[] objects = joinPoint.getArgs();</li><li>Long id = ((JSONObject) objects[0]).getLong(&quot;id&quot;);</li><li>String name = ((JSONObject) objects[0]).getString(&quot;name&quot;);</li><li>System.out.println(&quot;id-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot; + id);</li><li>System.out.println(&quot;name-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot; + name);</li><li>// name不是管理员则抛出异常</li><li>if (!name.equals(&quot;admin&quot;)) {</li><li>return JSON.parseObject(&quot;{\&quot;message\&quot;:\&quot;not admin\&quot;,\&quot;code\&quot;:403}&quot;);</li><li>return joinPoint.proceed();</li></ul>
+<p>重启项目，继续测试，构造两个参数都异常的情况：</p>
+<p>响应结果，表面第二个切面类执行顺序更靠前：</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>AOP相关注解</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>@Pointcut 支持 execution() 路径与 annotation() 注解两种表达式。</li><li>@Around 可改参数和返回值、控制执行时机，但需线程安全环境。</li><li>@Before/@After 在方法前后执行，可记录日志、URL、IP。</li><li>@AfterReturning/@AfterThrowing 分别捕获返回值与异常做增强。</li></ul><div class="pit"><ul><li>@AfterReturning 的 returning 属性值必须与参数名一致，否则检测不到。</li><li>@AfterThrowing 的 throwing 属性值必须与参数一致，否则会报错。</li></ul></div></div>
+<p>上面的案例中，用到了诸多注解，下面针对这些注解进行详解。</p>
+<h3 class="sub">3.1 @Pointcut</h3>
+<p>@Pointcut 注解，用来定义一个切点，即上文中所关注的某件事情的入口，切入点定义了事件触发时机。</p>
+<ul><li>@Aspect</li><li>@Component</li><li>public class LogAspectHandler {</li><li>/**</li><li>* 定义一个切面，拦截 com.mutest.controller 包和子包下的所有方法</li><li>@Pointcut(&quot;execution(* com.mutest.controller..*.*(..))&quot;)</li><li>public void pointCut() {}</li></ul>
+<p>@Pointcut 注解指定一个切点，定义需要拦截的东西，这里介绍两个常用的表达式：一个是使用 execution()，另一个是使用 annotation()。</p>
+<p>execution表达式：</p>
+<p>以 execution(* com.mutest.controller...(..))) 表达式为例：</p>
+<ul><li>第一个 * 号的位置 ：表示返回值类型，* 表示所有类型。</li><li>包名 ：表示需要拦截的包名，后面的两个句点表示当前包和当前包的所有子包，在本例中指 com.mutest.controller包、子包下所有类的方法。</li><li>第二个 * 号的位置 ：表示类名，* 表示所有类。</li><li>*(..) ：这个星号表示方法名，* 表示所有的方法，后面括弧里面表示方法的参数，两个句点表示任何参数。</li></ul>
+<p>annotation() 表达式：</p>
+<p>annotation() 方式是针对某个注解来定义切点，比如我们对具有 @PostMapping 注解的方法做切面，可以如下定义切面：</p>
+<ul><li>@Pointcut(&quot;@annotation(org.springframework.web.bind.annotation.PostMapping)&quot;)</li><li>public void annotationPointcut() {}</li></ul>
+<p>然后使用该切面的话，就会切入注解是 @PostMapping 的所有方法。这种方式很适合处理 @GetMapping、@PostMapping、@DeleteMapping不同注解有各种特定处理逻辑的场景。</p>
+<p>还有就是如上面案例所示，针对自定义注解来定义切面。</p>
+<ul><li>@Pointcut(&quot;@annotation(com.example.demo.PermissionsAnnotation)&quot;)</li><li>private void permissionCheck() {}</li></ul>
+<h3 class="sub">3.2 @Around</h3>
+<p>@Around注解用于修饰Around增强处理，Around增强处理非常强大，表现在：</p>
+<ul><li>@Around可以自由选择增强动作与目标方法的执行顺序，也就是说可以在增强动作前后，甚至过程中执行目标方法。这个特性的实现在于，调用ProceedingJoinPoint参数的procedd()方法才会执行目标方法。</li><li>@Around可以改变执行目标方法的参数值，也可以改变执行目标方法之后的返回值。</li></ul>
+<p>Around增强处理有以下特点：</p>
+<ul><li>当定义一个Around增强处理方法时，该方法的第一个形参必须是 ProceedingJoinPoint 类型（至少一个形参）。在增强处理方法体内，调用ProceedingJoinPoint的proceed方法才会执行目标方法：这就是@Around增强处理可以完全控制目标方法执行时机、如何执行的关键；如果程序没有调用ProceedingJoinPoint的proceed方法，则目标方法不会执行。</li><li>调用ProceedingJoinPoint的proceed方法时，还可以传入一个Object[ ]对象，该数组中的值将被传入目标方法作为实参——这就是Around增强处理方法可以改变目标方法参数值的关键。如果传入的Object[ ]数组长度与目标方法所需要的参数个数不相等，或者Object[ ]数组元素与目标方法所需参数的类型不匹配，程序就会出现异常。</li></ul>
+<p>@Around功能虽然强大，但通常需要在线程安全的环境下使用。因此，如果使用普通的Before、AfterReturning就能解决的问题，就没有必要使用Around了。如果需要目标方法执行之前和之后共享某种状态数据，则应该考虑使用Around。尤其是需要使用增强处理阻止目标的执行，或需要改变目标方法的返回值时，则只能使用Around增强处理了。</p>
+<p>下面，在前面例子上做一些改造，来观察@Around的特点。</p>
+<p>自定义注解类不变。首先，定义接口类：</p>
+<ul><li>package com.example.demo;</li><li>import com.alibaba.fastjson.JSON;</li><li>import com.alibaba.fastjson.JSONObject;</li><li>import org.springframework.web.bind.annotation.*;</li><li>@RestController</li><li>@RequestMapping(value = &quot;/permission&quot;)</li><li>public class TestController {</li><li>@RequestMapping(value = &quot;/check&quot;, method = RequestMethod.POST)</li><li>@PermissionsAnnotation()</li><li>public JSONObject getGroupList(@RequestBody JSONObject request) {</li><li>return JSON.parseObject(&quot;{\&quot;message\&quot;:\&quot;SUCCESS\&quot;,\&quot;code\&quot;:200,\&quot;data\&quot;:&quot; + request + &quot;}&quot;);</li></ul>
+<p>唯一切面类（前面案例有两个切面类，这里只需保留一个即可）：</p>
+<ul><li>package com.example.demo;</li><li>import com.alibaba.fastjson.JSONObject;</li><li>import org.aspectj.lang.ProceedingJoinPoint;</li><li>import org.aspectj.lang.annotation.Around;</li><li>import org.aspectj.lang.annotation.Aspect;</li><li>import org.aspectj.lang.annotation.Pointcut;</li><li>import org.springframework.core.annotation.Order;</li><li>import org.springframework.stereotype.Component;</li><li>@Aspect</li><li>@Component</li><li>@Order(1)</li><li>public class PermissionAdvice {</li><li>@Pointcut(&quot;@annotation(com.example.demo.PermissionsAnnotation)&quot;)</li><li>private void permissionCheck() {</li><li>@Around(&quot;permissionCheck()&quot;)</li><li>public Object permissionCheck(ProceedingJoinPoint joinPoint) throws Throwable {</li><li>System.out.println(&quot;===================开始增强处理===================&quot;);</li><li>//获取请求参数，详见接口类</li><li>Object[] objects = joinPoint.getArgs();</li><li>Long id = ((JSONObject) objects[0]).getLong(&quot;id&quot;);</li><li>String name = ((JSONObject) objects[0]).getString(&quot;name&quot;);</li><li>System.out.println(&quot;id1-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot; + id);</li><li>System.out.println(&quot;name1-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot; + name);</li><li>// 修改入参</li><li>JSONObject object = new JSONObject();</li><li>object.put(&quot;id&quot;, 8);</li><li>object.put(&quot;name&quot;, &quot;lisi&quot;);</li><li>objects[0] = object;</li><li>// 将修改后的参数传入</li><li>return joinPoint.proceed(objects);</li></ul>
+<p>同样使用JMeter调用接口，传入参数：{&quot;id&quot;:-5,&quot;name&quot;:&quot;admin&quot;}，响应结果表明：@Around截取到了接口的入参，并使接口返回了切面类中的结果。</p>
+<h3 class="sub">3.3 @Before</h3>
+<p>@Before 注解指定的方法在切面切入目标方法之前执行，可以做一些 Log 处理，也可以做一些信息的统计，比如获取用户的请求 URL 以及用户的 IP 地址等等，这个在做个人站点的时候都能用得到，都是常用的方法。例如下面代码：</p>
+<ul><li>@Aspect</li><li>@Component</li><li>@Slf4j</li><li>public class LogAspectHandler {</li><li>/**</li><li>* 在上面定义的切面方法之前执行该方法</li><li>* @param joinPoint jointPoint</li><li>@Pointcut(&quot;execution(* com.mutest.controller..*.*(..))&quot;)</li><li>public void pointCut() {}</li><li>@Before(&quot;pointCut()&quot;)</li><li>public void doBefore(JoinPoint joinPoint) {</li><li>log.info(&quot;====doBefore方法进入了====&quot;);</li><li>// 获取签名</li><li>Signature signature = joinPoint.getSignature();</li><li>// 获取切入的包名</li><li>String declaringTypeName = signature.getDeclaringTypeName();</li><li>// 获取即将执行的方法名</li><li>String funcName = signature.getName();</li><li>log.info(&quot;即将执行方法为: {}，属于{}包&quot;, funcName, declaringTypeName);</li><li>// 也可以用来记录一些信息，比如获取请求的 URL 和 IP</li><li>ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</li><li>HttpServletRequest request = attributes.getRequest();</li><li>// 获取请求 URL</li><li>String url = request.getRequestURL().toString();</li><li>// 获取请求 IP</li><li>String ip = request.getRemoteAddr();</li><li>log.info(&quot;用户请求的url为：{}，ip地址为：{}&quot;, url, ip);</li></ul>
+<p>JointPoint 对象很有用，可以用它来获取一个签名，利用签名可以获取请求的包名、方法名，包括参数（通过 joinPoint.getArgs() 获取）等。</p>
+<h3 class="sub">3.4 @After</h3>
+<p>@After 注解和 @Before 注解相对应，指定的方法在切面切入目标方法之后执行，也可以做一些完成某方法之后的 Log 处理。</p>
+<ul><li>@Aspect</li><li>@Component</li><li>@Slf4j</li><li>public class LogAspectHandler {</li><li>/**</li><li>* 定义一个切面，拦截 com.mutest.controller 包下的所有方法</li><li>@Pointcut(&quot;execution(* com.mutest.controller..*.*(..))&quot;)</li><li>public void pointCut() {}</li><li>/**</li><li>* 在上面定义的切面方法之后执行该方法</li><li>* @param joinPoint jointPoint</li><li>@After(&quot;pointCut()&quot;)</li><li>public void doAfter(JoinPoint joinPoint) {</li><li>log.info(&quot;==== doAfter 方法进入了====&quot;);</li><li>Signature signature = joinPoint.getSignature();</li><li>String method = signature.getName();</li><li>log.info(&quot;方法{}已经执行完&quot;, method);</li></ul>
+<p>到这里，我们来写个 Controller 测试一下执行结果，新建一个 AopController 如下：</p>
+<ul><li>@RestController</li><li>@RequestMapping(&quot;/aop&quot;)</li><li>public class AopController {</li><li>@GetMapping(&quot;/{name}&quot;)</li><li>public String testAop(@PathVariable String name) {</li><li>return &quot;Hello &quot; + name;</li></ul>
+<p>启动项目，在浏览器中输入：localhost:8080/aop/csdn，观察一下控制台的输出信息：</p>
+<ul><li>====doBefore 方法进入了====</li><li>即将执行方法为: testAop，属于com.itcodai.mutest.AopController包</li><li>用户请求的 url 为：http://localhost:8080/aop/name，ip地址为：0:0:0:0:0:0:0:1</li><li>==== doAfter 方法进入了====</li><li>方法 testAop 已经执行完</li></ul>
+<p>从打印出来的 Log 中可以看出程序执行的逻辑与顺序，可以很直观的掌握 @Before 和 @After 两个注解的实际作用。</p>
+<h3 class="sub">3.5 @AfterReturning</h3>
+<p>@AfterReturning 注解和 @After 有些类似，区别在于 @AfterReturning 注解可以用来捕获切入方法执行完之后的返回值，对返回值进行业务逻辑上的增强处理，例如：</p>
+<ul><li>@Aspect</li><li>@Component</li><li>@Slf4j</li><li>public class LogAspectHandler {</li><li>/**</li><li>* 在上面定义的切面方法返回后执行该方法，可以捕获返回对象或者对返回对象进行增强</li><li>* @param joinPoint joinPoint</li><li>* @param result result</li><li>@AfterReturning(pointcut = &quot;pointCut()&quot;, returning = &quot;result&quot;)</li><li>public void doAfterReturning(JoinPoint joinPoint, Object result) {</li><li>Signature signature = joinPoint.getSignature();</li><li>String classMethod = signature.getName();</li><li>log.info(&quot;方法{}执行完毕，返回参数为：{}&quot;, classMethod, result);</li><li>// 实际项目中可以根据业务做具体的返回值增强</li><li>log.info(&quot;对返回参数进行业务上的增强：{}&quot;, result + &quot;增强版&quot;);</li></ul>
+<p>需要注意的是，在 @AfterReturning 注解 中，属性 returning 的值必须要和参数保持一致，否则会检测不到。该方法中的第二个入参就是被切方法的返回值，在 doAfterReturning 方法中可以对返回值进行增强，可以根据业务需要做相应的封装。我们重启一下服务，再测试一下：</p>
+<ul><li>方法 testAop 执行完毕，返回参数为：Hello CSDN</li><li>对返回参数进行业务上的增强：Hello CSDN 增强版</li></ul>
+<h3 class="sub">3.6 @AfterThrowing</h3>
+<p>当被切方法执行过程中抛出异常时，会进入 @AfterThrowing 注解的方法中执行，在该方法中可以做一些异常的处理逻辑。要注意的是 throwing 属性的值必须要和参数一致，否则会报错。该方法中的第二个入参即为抛出的异常。</p>
+<ul><li>@Aspect</li><li>@Component</li><li>@Slf4j</li><li>public class LogAspectHandler {</li><li>/**</li><li>* 在上面定义的切面方法执行抛异常时，执行该方法</li><li>* @param joinPoint jointPoint</li><li>* @param ex ex</li><li>@AfterThrowing(pointcut = &quot;pointCut()&quot;, throwing = &quot;ex&quot;)</li><li>public void afterThrowing(JoinPoint joinPoint, Throwable ex) {</li><li>Signature signature = joinPoint.getSignature();</li><li>String method = signature.getName();</li><li>// 处理异常的逻辑</li><li>log.info(&quot;执行方法{}出错，异常为：{}&quot;, method, ex);</li></ul>
+<p>完整的项目已上传至Gtihub：</p>
+<p>❝https://github.com/ThinkMugz/aopDemo</p>
+<p>1. Java8 Stream 一行代码实现数据分组统计、排序、最大值、最小值、平均值、总数、合计</p>
+<h3 class="sub">2. 面试官：post为什么会发送两次请求？</h3>
+<h3 class="sub">3. Spring 在多线程环境下如何确保事务一致性?</h3>
+<p>4. 告别复杂逻辑，项目终于用上了 Spring 状态机，非常优雅！</p>
+<p>最近面试BAT，整理一份面试资料《Java面试BATJ通关手册》，覆盖了Java核心技术、JVM、Java并发、SSM、微服务、数据库、数据结构等等。</p>
+<p>PS：因公众号平台更改了推送规则，如果不想错过内容，记得读完点一下“在看”，加个“星标”，这样每次新文章推送才会第一时间出现在你的订阅列表里。</p>
+<p>点“在看”支持小哈呀，谢谢啦</p>
+<p>人划线</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Pointcut 与 Advice</h4><p>Pointcut 决定在哪切入，Advice 决定何时切入、做什么；Aspect 即 Pointcut+Advice。</p><a class="src-link" href="#sec-01">原文 → 理解AOP</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>execution 与 annotation</h4><p>execution() 用路径表达式指定拦截哪些类方法；annotation() 指定被哪些注解修饰的方法织入。</p><a class="src-link" href="#sec-03">原文 → AOP相关注解</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>AOP 的价值</h4><p>公共方法抽离仍需逐一手动调用；AOP 把非业务代码完全提取并与业务分离，自动切入。</p><a class="src-link" href="#sec-01">原文 → 理解AOP</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>@Order 管理切面顺序</h4><p>一个自定义 AOP 注解可对应多个切面类，@Order 数字越小越先执行。</p><a class="src-link" href="#sec-02">原文 → AOP实例</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>定义切点</h4><p>@Pointcut(&quot;@annotation(com.mu.demo.annotation.PermissionAnnotation)&quot;) 拦截被自定义注解修饰的方法。</p><a class="src-link" href="#sec-02">原文 → AOP实例</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Around 权限校验</h4><p>public Object xxx(ProceedingJoinPoint joinPoint){ 取 getArgs() 校验，放行则 return joinPoint.proceed(); }</p><a class="src-link" href="#sec-02">原文 → AOP实例</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>proceed 参数不匹配</h4><p>proceed 传入的 Object[] 长度或元素类型与目标方法参数不匹配，程序会抛异常。</p><a class="src-link" href="#sec-03">原文 → AOP相关注解</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>returning 不一致</h4><p>@AfterReturning 的 returning 属性值必须与方法参数名一致，否则检测不到返回值。</p><a class="src-link" href="#sec-03">原文 → AOP相关注解</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>throwing 不一致</h4><p>@AfterThrowing 的 throwing 属性值必须与参数名一致，否则会报错。</p><a class="src-link" href="#sec-03">原文 → AOP相关注解</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Around 使用边界</h4><p>普通 Before/AfterReturning 能解决就不必用 Around；需阻止目标执行或改返回值时才用。</p><a class="src-link" href="#sec-03">原文 → AOP相关注解</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>execution 表达式</h4><p>execution(* com.mutest.controller..*.*(..))：返回值*、包名及子包、类名*、方法名*、任意参数。</p><a class="src-link" href="#sec-03">原文 → AOP相关注解</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>用自定义注解 + @Around 切面做权限校验：切点拦注解、getArgs() 取参判断、放行时调 proceed()。</li>
+          <li>多个切面类用 @Order 控制执行顺序，数字越小越先执行。</li>
+          <li>@Around 需在线程安全环境使用；@AfterReturning/@AfterThrowing 的 returning/throwing 值须与参数名一致。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzU4MDUyMDQyNQ==&amp;mid=2247519262&amp;idx=1&amp;sn=3d6e105a9a0780bccdab395221df4869" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzU4MDUyMDQyNQ==&amp;mid=2247519262&amp;idx=1&amp;sn=3d6e105a9a0780bccdab395221df4869</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">JDK11升级后竟让内存利用率飙升到90%以上？</h1>
+  <p class="lede">JDK11 下 G1 分区策略与记忆集占用把堆用满，缩堆即可解决</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 50 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>升级背景</a>
+          <a href="#sec-02"><span class="n">02</span>故障现象</a>
+          <a href="#sec-03"><span class="n">03</span>临时处置</a>
+          <a href="#sec-04"><span class="n">04</span>持续观察</a>
+          <a href="#sec-05"><span class="n">05</span>解决方案</a>
+          <a href="#sec-06"><span class="n">06</span>GC 基础</a>
+          <a href="#sec-07"><span class="n">07</span>回收算法与分代</a>
+          <a href="#sec-08"><span class="n">08</span>吞吐与延迟</a>
+          <a href="#sec-09"><span class="n">09</span>策略演进</a>
+          <a href="#sec-10"><span class="n">10</span>CMS 收集器</a>
+          <a href="#sec-11"><span class="n">11</span>G1GC 特性</a>
+          <a href="#sec-12"><span class="n">12</span>Region 分区</a>
+          <a href="#sec-13"><span class="n">13</span>回收循环</a>
+          <a href="#sec-14"><span class="n">14</span>Young-only 阶段</a>
+          <a href="#sec-15"><span class="n">15</span>空间回收阶段</a>
+          <a href="#sec-16"><span class="n">16</span>三种 GC 类型</a>
+          <a href="#sec-17"><span class="n">17</span>G1 vs CMS</a>
+          <a href="#sec-18"><span class="n">18</span>性能数据</a>
+          <a href="#sec-19"><span class="n">19</span>内存复盘</a>
+          <a href="#sec-20"><span class="n">20</span>总结</a>
+          <a href="#sec-21"><span class="n">21</span>解决方案</a>
+          <a href="#sec-22"><span class="n">22</span>参数调优</a>
+          <a href="#sec-23"><span class="n">23</span>IHOP 详解</a>
+          <a href="#sec-24"><span class="n">24</span>Netty 优化</a>
+          <a href="#sec-25"><span class="n">25</span>参考资料</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 升级背景</a>
+          <a href="#sec-02">02 故障现象</a>
+          <a href="#sec-03">03 临时处置</a>
+          <a href="#sec-04">04 持续观察</a>
+          <a href="#sec-05">05 解决方案</a>
+          <a href="#sec-06">06 GC 基础</a>
+          <a href="#sec-07">07 回收算法与分代</a>
+          <a href="#sec-08">08 吞吐与延迟</a>
+          <a href="#sec-09">09 策略演进</a>
+          <a href="#sec-10">10 CMS 收集器</a>
+          <a href="#sec-11">11 G1GC 特性</a>
+          <a href="#sec-12">12 Region 分区</a>
+          <a href="#sec-13">13 回收循环</a>
+          <a href="#sec-14">14 Young-only 阶段</a>
+          <a href="#sec-15">15 空间回收阶段</a>
+          <a href="#sec-16">16 三种 GC 类型</a>
+          <a href="#sec-17">17 G1 vs CMS</a>
+          <a href="#sec-18">18 性能数据</a>
+          <a href="#sec-19">19 内存复盘</a>
+          <a href="#sec-20">20 总结</a>
+          <a href="#sec-21">21 解决方案</a>
+          <a href="#sec-22">22 参数调优</a>
+          <a href="#sec-23">23 IHOP 详解</a>
+          <a href="#sec-24">24 Netty 优化</a>
+          <a href="#sec-25">25 参考资料</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>升级背景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>7 月通过集团流水线从 JDK8 升级到 JDK11</li><li>预发测试通过后上线，GC 次数明显下降</li></ul></div>
+<p>7 月份的时候，由于发现集团已经提供 JDK11 的流水线升级，可以通过流水线快速升级 JDK11，并解决相关的依赖问题。于是我欢天喜地地升级了 JDK11，在预发经过测试后没有问题后，顺利发布上线，GC 次数有了明显下降。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>故障现象</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>上线稳定半个月后内存利用率超 85% 告警</li><li>现象：内存利用率一天内不降、G1 Old GC 升高不回收</li><li>JVM 参数只保留了 -Xms12g -Xmx12g</li></ul></div>
+<p>线上稳定运行了半个月，突然开始触发告警，内存利用率超过 85%。一看监控，发现出现了几个现象。</p>
+<h3 class="sub">1.内存利用率不断升高，提升到 85%，一天内没有下降。</h3>
+<h3 class="sub">2.G1 Old GC 不断升高，没有进行回收。</h3>
+<p>当时我设置的 JVM 参数非常简单，只保留了 CMS 的堆内存设置，最大最小堆内存都是 12G。</p>
+<ul><li>-Xms12g -Xmx12g</li></ul>
+<p>通过 jmap 查看 heap 情况（jhsdb jmap --heap --pid 185579）：</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>临时处置</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>保留一台 beta 机器观察，其余批量重启</li><li>重启后内存下降，初步认定 G1_OLD 区未触发回收</li></ul></div>
+<p>1.保留一台 beta 环境机器进行观察，其他环境机器批量重启。</p>
+<p>2.重启机器后，内存利用率下降，因此初步认定，造成告警的原因是 G1_OLD 区未触发回收。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>持续观察</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>beta 机器未重启，内存利用率最终超过 90%</li><li>内存随运行时间持续增长，重启只能临时缓解</li></ul></div>
+<p>beta 机器在未重启的情况下，内存使用率不断提高，最后超过 90%（这也是本文标题由来）。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>解决方案</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>将堆内存缩减到 8G 后问题解决</li><li>经验：8G 容器堆建议 4G，16G 容器堆建议 8G</li></ul></div>
+<p>经过查询资料之后，最后的解决方案就是调整 JVM 参数，将堆内存缩减到8G，问题解决。</p>
+<p>简单结论：一般8G容器的堆内存建议设置4G，16G容器堆内存建议设置8G。</p>
+<p>那么从 JDK8 升级到 JDK11 之后，发生了什么呢？为什么同样的参数在 CMS 上一点问题没有，上到 G1GC 之后却有这样的问题呢？接下来我们好好介绍 G1GC。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>GC 基础</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>指针碰撞靠移动空闲指针分配，回收后只能继续往后分配</li><li>空闲列表记录空闲块，查找合适大小分配</li><li>多线程下 TLAB 每线程独立分配，TLAB 不足才进 Eden</li></ul></div>
+<p>内存中创建对象时发生了什么？</p>
+<p>内存分配的两种手段</p>
+<pre><code>Java 最核心的一点特性就是它的内存管理机制。要聊 GC，我们先从内存分配开始。每个 Java 对象都需要在内存中有一个空间，用于保存它的数据和引用关系。那么创建对象时，怎么在内存中划出一份空间给对象呢？最直觉的方法跟数组的使用是一致的。把内存认为是一个数组，用一个内存指针作为索引指向当前空闲空间的开头，当需要为对象分配空间时，由于对象的大小是确定的，因此可以直接把指针后面的空间直接分给当前对象，只需要将指针移动指定大小的位置即可完成分配。这种方式就叫做指针碰撞。</code></pre>
+<p>指针碰撞：它通过维护一个指针，指向空闲内存的起始位置。当需要分配内存时，只需将该指针向前移动所需内存大小的距离即可。</p>
+<p>通过这种技术进行内存分配后，当出现对象被回收的情况时，因为指针只有一个，因此无法把前面回收的部分进行再次分配，它只能继续往后分配。因此又出现了一种新的技术。空闲列表技术。它的本质正如它的名字一样，使用一个列表来记录内存中的空闲位置，每次分配对象时，就会查找这个列表，找到一块大小可以分配当前对象的空闲空间，然后把对象放到这块空间里，再从空闲列表中把这块空闲区域去掉。</p>
+<p>空闲列表：它维护一个列表，记录所有可用的内存块信息。当需要分配内存时，从列表中查找合适大小的空闲块进行分配。</p>
+<p>多线程分配时怎么办？</p>
+<p>以上两种技术，遇到多线程时要怎么处理呢？对于指针碰撞这种方案，最简单的方式就是给每个线程划分一个空间，每个线程在自己的空间中进行内存分配，这样就不会发生冲突。这也就是 JVM 中 TLAB 的由来，（Thread Local Allocation Buffer）线程本地分配缓存区，每次 GC 结束后，每个线程都会申请一块 TLAB 进行内存分配，当 TLAB 申请不到时，线程会尝试在 Eden 区分配，若 Eden 也不足，则可能触发 Young GC。</p>
+<p>而对于空闲列表，多线程的分配方案就是乐观锁机制，也就是CAS+失败重试。</p>
+<p>TLAB （Thread Local Allocation Buffer）：线程本地分配缓存区，每次 GC 结束后，每个线程都会申请一块 TLAB 进行内存分配。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>回收算法与分代</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>标记-清除产生碎片；标记-复制内存只能用一半，改进为 8:1:1 三区</li><li>标记-整理向一端移动，无碎片但需 STW</li><li>新生代用标记-复制，老年代用空闲列表分配回收</li></ul></div>
+<p>内存回收的算法</p>
+<p>只有了解了内存的分配方式，我们才能更加深刻地理解内存回收的方案。针对前面我们说的两种内存分配方式，我们可以提出以下这些内存回收的方案。</p>
+<p>1.标记-清除算法：标记出使用的对象，然后将没有标记的对象清理。</p>
+<ul><li>缺点：随着对象增多，标记和清理时间增加；会产生内存碎片。</li></ul>
+<p>2.标记-复制算法：为了解决面对大量可回收对象时，清理时间增加的情况。出现了一种半区复制的算法。也就是将内存分成两部分，每次使用其中一部分，回收时，将少量剩余的存活对象按顺序复制到另一部分。</p>
+<ul><li>优点：执行简单，回收效率高</li><li>缺点：内存只能使用一半，对内存是一种浪费。</li><li>后续改进：将内存分为三部分，伊甸园区、幸存者 1 区 、幸存者 2 区，也就是我们 GC 参数中常见的 8:1:1 的由来。</li></ul>
+<p>3.标记-整理：这个跟标记-复制有点像，核心差异点是，标记复制的对象移动是在两个区来回移动的。而标记整理只会往内存的一端移动。</p>
+<ul><li>优点：没有空间碎片</li><li>缺点：移动时需要暂停用户程序，也就是触发 STW</li></ul>
+<p>分代回收</p>
+<p>分代回收，是指将内存区域分为新生代和老年代，不同代使用不同的回收手段。而这个分代回收是建立在两条原则上的</p>
+<h3 class="sub">1.绝大多数对象都是朝生夕死的。</h3>
+<h3 class="sub">2.熬过越多次垃圾收集过程的对象就越难以消亡。</h3>
+<p>如果一个区域中大多数对象都是朝生夕灭，难以熬过垃圾收集过程的话，那么把它们集中放在一起，每次回收时只关注如何保留少量存活而不是去标记那些大量将要被回收的对象，就能以较低代价回收到大量的空，因此使用标记-复制算法。</p>
+<p>对于老年代的对象，由于他们难以使用消亡，频繁的挪动成本非常的高，使用空闲列表的方式进行内存的分配和回收往往是性价比更高的方案。</p>
+<p>CMS 回收就是使用标记清除算法，标记垃圾，然后清除，再使用空闲列表记录空闲区域。但是这样，当内存碎片很多时，会存在总体空闲内存足够多，但是却不能给对象分配空间的情况。这个时候，CMS 就会使用标记-整理算法，进行一次内存空间整理。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>吞吐与延迟</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>高吞吐是单位时间回收量，低延迟是暂停时间短</li><li>二者权衡：提吞吐可能加长单次回收，降延迟可能增加次数</li></ul></div>
+<p>高吞吐（High Throughput）</p>
+<p>高吞吐是指GC系统在单位时间内能够处理的内存回收量。</p>
+<p>低延迟（Low Latency）</p>
+<p>低延迟是指垃圾回收过程中应用程序暂停的时间尽可能短。在低延迟的GC策略下，系统会尽量减少每次垃圾回收操作的停顿时间，即减少应用程序因等待GC完成而停止响应的时间。</p>
+<p>不可兼得</p>
+<p>高吞吐和低延迟之间存在一种权衡关系。通常情况下，为了实现高吞吐，GC可能会采取一些策略，比如增加垃圾回收的频率或者扩大垃圾回收的范围，这可能会导致每次垃圾回收的时间变长，从而增加了延迟。</p>
+<p>相反，为了实现低延迟，GC可能会采取减少每次垃圾回收的范围或者优化垃圾回收算法来减少停顿时间，但这可能会增加垃圾回收的总次数，从而降低了吞吐量。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>策略演进</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>演进方向：CMS → G1 → ZGC，逐步优化低延迟</li><li>硬件内存提升使更频繁 GC 换取稳定响应成为可能</li></ul></div>
+<p>回顾内存管理技术的发展历程，GC 策略的演进呈现出明显的方向性转变：从追求高吞吐量逐步转向对低延迟的优化，以适配现代互联网服务的性能要求。早期的垃圾收集算法以提升系统吞吐量为首要目标，其设计理念导致在极端场景下可能产生较高的延迟波动。随着Java语言在互联网服务领域的广泛应用，加之硬件成本下降带来的内存容量提升，系统架构逐渐能够承载更频繁的垃圾回收操作，以此换取更稳定的服务响应。</p>
+<p>这一技术演变路径在主流垃圾收集器的迭代中清晰可见：从采用并发标记清除（CMS）机制，到引入分代式收集器（G1），直至实现亚毫秒级停顿的ZGC无停顿收集器，每一种 GC 机制的出现都标志着对对延迟控制的进一步优化。</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>CMS 收集器</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>CMS 首个关注 STW 停顿，mark-sweep 标记清除</li><li>三色标记改进可达性分析，标记清除阶段可与用户线程并行</li><li>碎片多时 CMS 触发标记-整理压缩堆</li></ul><div class="pit"><ul><li>碎片化时 CMS 必须 STW 压缩堆，违背并发回收初衷</li></ul></div></div>
+<p>CMS（Concurrent Mark Sweep）垃圾收集器是第一个关注 GC 停顿时间（STW 的时间）的垃圾收集器。</p>
+<p>MS 就是 mark-sweep 的缩写，即标记-清除算法。</p>
+<p>CMS 垃圾收集器之所以能够实现对 GC 停顿时间的控制，其本质来源于对「可达性分析算法」的改进，即三色标记算法。在 CMS 出现之前，它们在进行垃圾回收的时候都需要 Stop the World，无法实现垃圾回收线程与用户线程的并发执行。而 CMS 将整个回收过程分为了四步，在最耗时的标记和清除阶段都可以跟用户线程并行执行，这也是为什么它延迟低的原因。</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>G1GC 特性</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>G1 追求软实时，偶尔超期可接受（如网银场景）</li><li>两个功能：设置期望暂停时间与可预测性</li></ul></div>
+<p>G1GC 最大的特征是非常重视实时性，G1GC 的实时性是软实时性，即处理多用于稍微超出几次最后期限也没什么问题的系统中，例如网络银行系统。用户总会期待所有的交易都能完美地处理好，但是稍微超出几次最后期限，比如交易完成界面的展示慢了一些，应该也不会构成致命的问题。</p>
+<p>为了实现软实时性，它具备以下两个功能。</p>
+<h3 class="sub">1.设置期望暂停时间（最后期限）</h3>
+<h3 class="sub">2.可预测性</h3>
+<p>G1 如何实现可预测性</p>
+<p>G1 会分步并行进行空间回收。G1 通过跟踪先前应用行为和垃圾收集暂停的信息，建立相关成本模型，从而实现可预测性。它利用这些信息来确定暂停期间的工作量。</p>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>Region 分区</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>堆划分为相同大小 Region，类型 Eden/Survivor/Old/Humongous</li><li>对象大于 Region 50% 视为大对象，放 Humongous 减少拷贝</li></ul></div>
+<p>G1 的老年代和年轻代不再是一块连续的空间，整个堆被划分成若干个大小相同的 Region，也就是区。</p>
+<p>Region 的类型有 Eden、Survivor、Old、Humongous 四种，而且每个 Region 都可以单独进行管理。</p>
+<p>Humongous 是用来存放大对象的，如果一个对象的大小大于一个 Region 的 50%（默认值），那么我们就认为这个对象是一个大对象。为了防止大对象的频繁拷贝，我们可以将大对象直接放到 Humongous 中。</p>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>回收循环</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>G1 在 Young-only 与 Space-reclamation 两阶段交替</li><li>Young-only 逐步用晋升对象填满老年代</li><li>空间回收阶段增量回收老年代，不必一次 STW</li></ul></div>
+<p>G1 回收的实际过程可以概括为一个循环，以下的官方文档的介绍。</p>
+<p>On a high level, the G1 collector alternates between two phases. The young-only phase contains garbage collections that fill up the currently available memory with objects in the old generation gradually. The space-reclamation phase is where G1 reclaims space in the old generation incrementally, in addition to handling the young generation. Then the cycle restarts with a young-only phase.</p>
+<p>翻译：在高层次上，G1收集器在两个阶段之间交替进行。young only 阶段包含了垃圾收集，这些收集逐渐用老年代中的对象填满当前可用的内存。space-reclamation (空间回收)阶段是G1在处理年轻代的同时，逐步回收老年代的空间。然后，周期以young only 阶段重新开始。</p>
+<p>怎么理解这段话？</p>
+<h3 class="sub">1.G1收集器的两个主要阶段：</h3>
+<ul><li>仅年轻代阶段（Young-only phase）</li><li>空间回收阶段（Space-reclamation phase）</li></ul>
+<h3 class="sub">2.仅年轻代阶段（Young-only phase）：</h3>
+<ul><li>这个阶段主要进行年轻代的垃圾回收（Minor GC）。</li><li>存活对象可能会被提升到Survivor 区或老年代。</li><li>“逐渐用老年代对象填满当前可用内存”的意思是：</li><li>新生代 GC 过程中，部分长生命周期的对象晋升到老年代。</li><li>经过多次 Minor GC，老年代会逐渐被这些晋升对象占据。</li><li>“当前可用内存”指的是整个堆（Heap）中分配给老年代的部分。</li></ul>
+<p>3.空间回收阶段（Space-reclamation phase）：</p>
+<ul><li>这个阶段进行Mixed GC（混合回收），同时清理年轻代和部分老年代。</li><li>目标是回收老年代中的垃圾对象，避免其占满整个堆。</li><li>由于 G1 采用Region（分区）管理，可以增量地清理老年代，不必一次性 STW 整个老年代。</li><li>这种增量老年代回收机制是 G1 相较于 CMS 的一大优势。</li></ul>
+<h3 class="sub">4.循环过程：</h3>
+<ul><li>G1 在 Young-only Phase 和 Space-reclamation Phase 之间交替运行。</li><li>在年轻代的对象逐渐晋升到老年代后，G1 进入空间回收阶段，进行Mixed GC来回收老年代。</li><li>这一过程不断循环，确保垃圾回收既高效又低延迟。</li></ul>
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>Young-only 阶段</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Young-only 主要做 Minor GC，存活对象晋升老年代</li><li>老年代达 IHOP 阈值触发并发标记周期</li><li>并发标记完成后经 Remark 与 Cleanup 决定是否进入 Mixed GC</li></ul></div>
+<ul><li>这个阶段主要进行 Minor GC（年轻代回收），存活对象晋升到老年代。</li><li>当老年代使用率达到InitiatingHeapOccupancyPercent (IHOP)阈值（称为&quot;初始堆占用阈值&quot;），G1 会启动并发标记周期（Concurrent Marking Cycle），进入空间回收阶段（Mixed GC 阶段）的准备过程。</li><li>这一转换的关键点是&quot;并发开始&quot;（Concurrent Start）GC，它是 Young GC但额外启动了并发标记。</li></ul>
+<p>三个阶段的介绍：</p>
+<h3 class="sub">1.并发开始（Concurrent Start）：</h3>
+<ul><li>既执行普通的年轻代回收（Young GC），又启动老年代的并发标记。</li><li>并发标记（Concurrent Marking）的作用是：</li><li>确定老年代中哪些对象是存活的，为后续的Mixed GC 选择要清理的 Region。</li><li>在并发标记完成之前，普通的 Young GC 仍然会继续发生。</li><li>标记阶段的结束伴随着STW 的 重新标记（Remark） 和 清理（Cleanup） 阶段，确保准确性。</li><li>这是从 Young-only 阶段向 Mixed GC 阶段转换的关键步骤。</li></ul>
+<h3 class="sub">2.重新标记（Remark）：</h3>
+<ul><li>用于完成并发标记的最终校正，需要Stop-The-World（STW）暂停</li><li>主要作用：</li><li>确保在最终标记时，所有存活对象的信息是一致的（避免遗漏存活对象）。</li><li>计算Region 存活率，预估回收成本，预测 Mixed GC 的影响。</li><li>这一步暂停时间较短，因为 G1 采用了SATB（Snapshot-At-The-Beginning）作为可达性分析的基础，减少了需要重新扫描的对象数量。</li></ul>
+<h3 class="sub">3.清理（Cleanup）：</h3>
+<ul><li>决定是否正式进入 Mixed GC（空间回收阶段）。</li><li>关键点：</li><li>如果老年代的存活对象太多，G1 可能不会进入 Mixed GC，而是继续 Young GC。</li><li>如果老年代垃圾足够多，G1 进入 Mixed GC，并在下一次 Young GC 时，执行&quot;Prepare Mixed&quot;。</li><li>&quot;Prepare Mixed&quot; 这一步会标记哪些老年代的 Region 将参与下一次 GC，确保混合回收的效率。</li></ul>
+<h3 class="sub">4.总结：</h3>
+<p>仅年轻代阶段（Young-only Phase）主要进行 Minor GC（Young GC），不断将存活对象晋升到老年代。当老年代占用率超过IHOP阈值时，G1 触发并发开始 GC（Concurrent Start GC），启动并发标记（Concurrent Marking），用于检测老年代中的存活对象。并发标记完成后，G1 进入STW 的重新标记（Remark）和清理（Cleanup）阶段，最终决定是否进入Mixed GC（空间回收阶段）。如果老年代回收效率足够高，G1 进入Mixed GC，否则继续 Young GC。</p>
+      </section>
+
+      <section class="src" id="sec-15">
+        <h2 class="sec"><span class="n">15</span>空间回收阶段</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Mixed GC 同时清理年轻代与部分老年代</li><li>按回收性价比选 Region，疏散存活对象后释放</li></ul><div class="pit"><ul><li>分配过快、Mixed GC 回收不及时会触发代价极高的 Full GC</li></ul></div></div>
+<p>混合回收（Mixed Collections, Mixed GC）：这个阶段，G1不仅清理年轻代，还会增量回收部分老年代，以防止老年代占用率过高导致 Full GC。</p>
+<p>这里的关键点是“混合”：</p>
+<h3 class="sub">1.继续执行年轻代 GC（Minor GC）。</h3>
+<p>2.选取部分老年代 Region进行存活对象疏散（Evacuation），将存活对象复制到其他 Region，然后回收已清理的 Region。这样，G1避免了 CMS 那种碎片化问题，确保老年代的可用空间更整齐。</p>
+<p>具体流程：</p>
+<h3 class="sub">1.Mixed GC 如何进行：</h3>
+<ul><li>G1 会根据“老年代回收效率”选择适合清理的老年代 Region，并按照回收性价比排序。</li><li>每次 Mixed GC 仅回收部分老年代 Region，并不会一次性清理整个老年代，以减少 STW（Stop-The-World）时间。</li><li>存活对象会被疏散（Evacuate）到 Survivor 区、老年代，甚至 Humongous 区（超大对象区），然后回收腾空的 Region。</li><li>这个过程可以并发执行，降低应用程序停顿时间。</li></ul>
+<h3 class="sub">2.结束条件：</h3>
+<ul><li>G1 会持续执行 Mixed GC，直到“继续清理老年代”变得不值得。</li><li>主要判断标准：</li><li>回收的内存空间不足以抵消 GC 的成本。</li><li>通过参数 G1MixedGCLiveThresholdPercent 控制老年代存活率的阈值，当存活率过高时，不再清理这些 Region。</li><li>G1MixedGCCountTarget 控制一次标记周期内 Mixed GC 的最大次数，超过后就结束。</li></ul>
+<h3 class="sub">3.循环重启：</h3>
+<p>空间回收阶段（Mixed GC）结束后，G1 重新进入 Young-only 阶段。</p>
+<p>这个过程不断循环：Young-only Phase（仅年轻代阶段） → Space-reclamation Phase（空间回收阶段） → Young-only Phase</p>
+<p>如果 Mixed GC 不能及时回收足够的老年代空间，并且应用程序继续分配对象导致堆空间耗尽，G1 会触发 Full GC（STW 进行全堆压缩整理）。Full GC 代价极高，一般是 G1 最不希望发生的情况。</p>
+<h3 class="sub">4.总结：</h3>
+<p>空间回收阶段（Space-reclamation Phase）主要通过Mixed GC（混合回收）逐步回收老年代。G1 选择部分老年代 Region，将存活对象疏散到其他区域后释放这些 Region，从而避免碎片化。Mixed GC 会持续进行，直到回收效率下降到设定阈值，之后进入新的 Young-only 阶段。如果在这个过程中应用程序分配过快，G1 无法及时回收足够的空间，就会触发代价极高的Full GC。</p>
+      </section>
+
+      <section class="src" id="sec-16">
+        <h2 class="sec"><span class="n">16</span>三种 GC 类型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Young GC 只回收新生代，STW 且 young 区动态调整</li><li>Mixed GC 先全局并发标记，再选高收益 Region 回收</li><li>Full GC 用 Serial Old 单线程原地压缩，应尽量避免</li></ul></div>
+<p>G1 GC中涉及的几种GC包括：</p>
+<h3 class="sub">1.Young GC（新生代回收）：</h3>
+<p>Young GC主要负责回收新生代中的对象。新生代包含新创建的对象，这些对象更有可能在短时间内变成垃圾。Young GC执行过程相对较快，因为它只涉及新生代中对象的扫描和回收。在Young GC过程中，Eden区和Survivor区的存活对象会被复制到另一个Survivor区或者晋升到老年代。这个过程是Stop-The-World（STW）的，意味着在回收过程中，应用程序的所有线程都会被暂停。</p>
+<p>年轻代GC会选择所有的年轻代区域加入回收集合中，但是为了满足用户停顿时间的配置，在每次GC后会调整这个最大年轻代区域的数量，每次回收的区域数量可能是变化的，换言之，young 区的大小是会动态调整的。</p>
+<h3 class="sub">2.Mixed GC（混合回收）：</h3>
+<p>Mixed GC是G1收集器特有的回收策略，它不仅回收新生代中的所有Region，还会回收部分老年代中的Region。这种策略的目标是在保证停顿时间不超过预期的情况下，尽可能地回收更多的垃圾对象。在Mixed GC过程中，首先会进行全局并发标记（global concurrent marking），这个过程是并发的，与应用程序线程同时执行，用于标记出所有存活的对象。然后，在回收阶段，G1会根据标记结果选择收益较高的部分老年代Region和新生代Region一起进行回收。这个选择过程是基于对Region中垃圾对象的数量和回收价值的评估。</p>
+<h3 class="sub">3.Full GC：</h3>
+<p>Full GC是指对整个Java堆（包括年轻代、老年代和元空间）的垃圾回收。在G1中，通常尽量避免Full GC的发生，因为Full GC会导致较长时间的停顿。G1通过Mixed GC来回收部分老年代的Region，以减少Full GC的需要。但如果Mixed GC无法跟上内存分配的速度，导致老年代空间不足，或者在某些特殊情况下，比如巨型对象分配失败时，就会触发Full GC。G1中的Full GC使用的是Serial Old GC的代码，这意味着它会暂停所有应用线程，并执行效率相对较慢的单线程垃圾回收。它是原地（in-place）进行的，意味着在同一内存空间内移动和压缩对象。</p>
+<p>总结：G1 GC通过Young GC和Mixed GC来优化垃圾回收性能，减少停顿时间，而Full GC是作为最后的手段，在必要时对整个堆进行回收。</p>
+      </section>
+
+      <section class="src" id="sec-17">
+        <h2 class="sec"><span class="n">17</span>G1 vs CMS</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>CMS 自 JDK11 正式废弃，不鼓励在 JDK8 使用</li><li>G1 自动整理堆内存减少碎片，官方推荐替代 CMS</li></ul><div class="pit"><ul><li>CMS 标记-清除不能在后台压缩堆</li></ul></div></div>
+<p>CMS垃圾回收器是第一个并发垃圾回收器。像其他算法一样，CMS使用多个线程来执行回收操作。CMS垃圾回收器自JDK 11被正式废弃，而且不鼓励在JDK 8中使用。从实际的角度来看，由于CMS使用的是标记-清除算法，导致它不能在后台处理过程中压缩堆。如果堆变得碎片化，那么CMS必须停止所有的应用程序线程并压缩堆，也就是执行标记-整理算法，这就违背了使用并发垃圾回收器的初衷。因为这个原因，并且 G1 GC 具备自动整理堆内存的能力，减少了碎片问题，因此官方推荐使用 G1 GC 替代 CMS。</p>
+      </section>
+
+      <section class="src" id="sec-18">
+        <h2 class="sec"><span class="n">18</span>性能数据</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>JDK11+G1 较 JDK8+CMS：max-jOPS +17%</li><li>critical-jOPS 提升 105%，YGC 暂停降至 177ms</li><li>吞吐 92.7% 升至 94.7%</li></ul></div>
+<p>整体而言 JDK11 优于 JDK8，G1 优于 CMS。在两个 JDK 版本默认状态下(JDK11 + G1 V.S JDK8 + CMS)，JDK11 max-jOPS 分数提升 17%，critical-jOPS 分数提升 105%</p>
+<table><thead><tr><th></th><th>GC</th><th>运行 SPECJbb2015 性能分析</th></tr></thead><tbody><tr><td></td><td>YGC平均暂停时间</td><td>吞吐量</td><td>max-jOPS （纯吞吐量）</td><td>critical-jOPS （限制响应时间下的吞吐量）</td></tr><tr><td>JDK8+CMS（基线数据）</td><td>311ms</td><td>92.7%</td><td>15706</td><td>3898</td></tr><tr><td>JDK8+G1</td><td>187ms</td><td>94.7%</td><td>17098</td><td>5338</td></tr><tr><td>JDK11+CMS</td><td>274ms</td><td>94.2%</td><td>15905</td><td>4821</td></tr><tr><td>JDK11+G1</td><td>177ms (↓43%)</td><td>94.7%(↑2pt)</td><td>18376 (↑17%)</td><td>7980(↑105%)</td></tr></tbody></table>
+<p>数据来自：AArch64版JDK8/11性能分析﻿</p>
+      </section>
+
+      <section class="src" id="sec-19">
+        <h2 class="sec"><span class="n">19</span>内存复盘</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>物理内存按需分配，只有写入虚拟内存才真正分配</li><li>G1 Region 启发式尽量填满堆，比 CMS 更快 touch 全部堆内存</li><li>G1 每 Region 有 RSet 记录谁引用我，CMS 卡表记录我引用谁</li><li>跨区引用经写屏障进 DCQ，由 Refine 线程过滤后写入 RSet</li></ul></div>
+<p>内存分配原理</p>
+<p>物理内存指的是PSS或RSS, 包括堆内的物理内存和堆外的, 小于等于预留的内存. 物理内存的分配方式通常是按需分配, 也就是只有写入虚拟内存的时候，内核才进行物理内存分配 (又叫touch)。读取虚拟内存或者预留 (mmap) 虚拟内存, 进程当时都不会产生物理内存。</p>
+<p>换言之，通过JVM的参数-Xmx和-Xms可以设置JVM的堆大小，但是此时操作系统分配的只是虚拟内存，只有JVM真正要使用该内存时，才会被分配物理内存。</p>
+<p>内存分配过程</p>
+<p>1.对象首先会先分配在年轻代，因为之前分配的只是虚拟内存，所以每次新建对象都需要操作系统来先分配物理内存，只有等第一次新生代GC后，该被分配的内存空间都已经分配了，之后分配对象的速度才会加快。</p>
+<p>2.那么老年代也是同理，老年代的空间何时真正使用，自然是对象需要晋升到老年代时，所以新生代GC的时候，对象要从新生代晋升到老年代，操作系统也需要为老年代先分配物理内存。</p>
+<p>为什么升级后内存占用率提升</p>
+<p>不同分区策略导致的</p>
+<p>G1老区占用比CMS多, 原因是</p>
+<p>1.CMS 采用的是 按地址顺序分配老年代内存，并且固定老年代的回收阈值。在低负载下，老年代内存的某些区域可能长时间不会被触及，造成碎片化，直到内存压力较高时才开始回收。</p>
+<p>2.G1 GC使用Region-based 分配策略，这种策略采用了启发式算法，尝试尽量填满堆内存，避免老年代有空闲区域而造成内存浪费。因此，G1 的区域分配比 CMS 更加灵活，它会自动调整阈值并较快touch所有堆内存。</p>
+<p>记忆集的占用</p>
+<p>CMS 中有一个结构叫 card table，卡表，它是一种记录老年代对新生代引用的机制，卡表是为了解决了在新生代垃圾收集时，如何快速找到老年代中引用新生代对象的问题。它的工作原理：将老年代内存空间划分为固定大小的卡页。使用一个字节数组（卡表）来标记每个卡页的状态。如果一个卡页中的对象可能引用了新生代对象，该卡页就被标记为&quot;脏&quot;。在进行新生代垃圾收集时，只需要扫描被标记为脏的卡页，而不是整个老年代。</p>
+<p>像 G1 这种分区回收算法，有些 Region 可能被选入 CSet，有些则不会。所以，我们需要知道当一个 Region 需要被回收时，有哪些其他的 Region 引用了自己。相应地，为了加快定位速度，分区回收算法为每个 Region 都引入了记录集（Remembered Set，RSet），每个 Region 都有自己的专属 RSet。和 Card table 不同的是，RSet 记录谁引用了我，这种记录集被人们称为 point-in 型的，而 Card table 则记录我引用了谁，这种记录集被称为 point-out 型。</p>
+<h3 class="sub">1.不需要记录的引用：</h3>
+<ul><li>同一个Region内的引用： 因为它们都在同一个区域内，所以不需要在RSet中记录。</li><li>年轻代Region到其他Region的引用： 在垃圾回收时，年轻代的所有Region都会被清理，这意味着所有年轻代对象都会被检查，因此不需要在RSet中记录这些引用。</li><li>CSet集合的Region到其他Region的引用： CSet是即将被回收的Region集合，这些Region中的对象也会被完全检查，所以同样不需要记录。</li></ul>
+<h3 class="sub">2.需要记录的引用：</h3>
+<ul><li>非CSet老年代Region到年轻代Region的引用： 这些引用需要被记录，以便在回收年轻代时知道哪些老年代对象正在引用年轻代对象。</li><li>非CSet老年代Region到CSet老年代Region的引用： 这些引用也需要被记录，以便在回收CSet中的老年代Region时，知道哪些其他老年代对象还在引用它们。</li></ul>
+<p>3.记录引用的方式：通过写屏障（Write Barrier）机制，当对象A在Region1中引用对象B在Region2时，这个引用信息（称为“dirty card”）会被添加到Region2的RSet中。在 G1 中，我们把这种 card 称为 dirty card。业务线程也不是直接将 dirty card 放到 RSet 中的。而是在业务线程中引入一个叫做 dirty card queue（DCQ）的队列，在写屏障中，业务线程只需要将 dirty card 放入 DCQ 中。接下来， G1 GC 中的 Refine 线程，会从 DCQ 中找到这种 dirty card，然后再去做更精细的检查，只有确实不属于上面所描述的三种情况的跨区引用，才真正放到专属 RSet 中去。</p>
+<p>值得一提的是，Java 一直在尝试优化记忆集的占用，下图是 P99 CONF-G1:To Infinity and Beyond 的一个对比，在 16G 的堆内存情况下，高版本的的 JDK 的记忆集大小有了明显的改善。</p>
+      </section>
+
+      <section class="src" id="sec-20">
+        <h2 class="sec"><span class="n">20</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>12g 堆 + 2.25g 记忆集 + 700m 全局内存 + 非堆 ≈ 16g，逼近容器上限</li><li>CMS 固定老年代回收阈值，低负载下部分内存不被触碰</li></ul><div class="pit"><ul><li>12G 堆沿用 CMS 配置被 G1 用满；JDK11 下 G1 记忆集占用较大</li></ul></div></div>
+<p>1.由于设置了 12G 的堆内存，且 G1 修改了内存管理方式，导致 G1 能够占用满这 12G 的堆内存，而 CMS 由于有固定old区回收阈值, 如果低压力下, old区末尾的部分内存几乎永远不会被用到，因此即使分配了 12G 内存也不会真正占用 12G 内存。</p>
+<h3 class="sub">2.JDK11 下的 G1 的记忆集占用了较大的空间。</h3>
+<p>因此，12g 堆内存+2.25g记忆集+700m 的全局内存+非堆内存 ≈ 16g，这也是为什么最后能升到 95% 以上的原因。</p>
+      </section>
+
+      <section class="src" id="sec-21">
+        <h2 class="sec"><span class="n">21</span>解决方案</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>-XX:+AlwaysPreTouch 启动时预分配物理内存，避免运行时延迟</li><li>G1 下缩小堆通常不会 OOM，堆内存约占容器一半较合适</li></ul><div class="pit"><ul><li>AlwaysPreTouch 会显著增加 JVM 启动时间</li></ul></div></div>
+<p>启动时 touch</p>
+<p>如果想要避免内存逐渐增加并导致突发的延迟，JVM 提供了-XX:+AlwaysPreTouch 参数。该参数能够在服务启动时预先将虚拟内存映射为物理内存，避免后续因按需分配物理内存而导致的延迟。这样可以提高程序在运行时的内存分配效率，避免由于内存分配引起的卡顿或停顿。但它的缺点是会显著增加 JVM 启动时间，毕竟把分配物理内存的事提前放到JVM进程启动时做了，尤其是在内存较大的情况下，启动时间可能会大幅增加。</p>
+<p>缩小堆内存</p>
+<p>虽然在 G1 下老年代内存使用较高，但通常不会引发 OOM（内存溢出）风险，因为即使在长时间运行中，G1 也会调整回收策略以避免内存溢出。如果内存使用率已经达到警戒线，建议适当缩小堆大小。通常认为在 JDK11中，对于许多 Java 应用而言，堆内存占总内存的一半是比较合适的选择。</p>
+      </section>
+
+      <section class="src" id="sec-22">
+        <h2 class="sec"><span class="n">22</span>参数调优</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>堆大小建议调低 5-8% 以留出 G1 堆外开销</li><li>-Xmn 替换为 -XX:MaxNewSize，G1 不要固定 Xmn</li><li>IHOP 建议 40 并关闭自适应，G1HeapWastePercent 可降到 2</li></ul><div class="pit"><ul><li>G1 不要设置 -Xmn，会限制 Young 区灵活调整</li><li>-XX:MaxGCPauseMillis 设太短会限制 young 区并退化为 Full GC</li></ul></div></div>
+<p>CMS切换成G1的参数替换</p>
+<table><thead><tr><th>CMS原参数</th><th>G1替换参数 (加粗为必改, 否则选改)</th><th>解释</th></tr></thead><tbody><tr><td>-Xms10g -Xmx10g</td><td>-Xms10g-Xmx10g 或 -Xms9500m-Xmx9500m</td><td>G1堆外内存稍高, 且使用region-based的管理算法, 导致footprint稍高, 为了不出现意外容器OOM, 适当降低5-8%的堆大小 比如buy2本来内存已经到82%了, 再高就要破90%了, 需要调小以应对风险 注: 内存水线是视业务行为而定的, 比如ump2不用调堆, 也可以保持原来的水线 注2: 这个幅度调小堆一般不会导致Java OOM, 因为G1对Survivor区的利用率比CMS高不少, 碎片化风险也比CMS低</td></tr><tr><td>-Xmn6g</td><td>-XX:MaxNewSize=6g</td><td>把-Xmn替换成-XX:MaxNewSize即可, 数字不变 也可以省略这个参数, 因为默认MaxNewSize就是60%, 所以相当于10g x 60% = 6g, 但是必须要记得把Xmn删掉 总之G1需要灵活调整Young区, 所以G1不要设置Xmn</td></tr><tr><td></td><td>-XX:G1HeapRegionSize=32m</td><td>G1跟CMS的一个巨大差别就是他用region-based的管理算法, 超过region大小的一半会当成&quot;大对象&quot;, 大对象太多了有损性能，原因是 G1 对于大对象的处理非常消极，基本上不会怎么处理</td></tr><tr><td>-XX:+CMSScavengeBeforeRemark -XX:+UseConcMarkSweepGC -XX:CMSMaxAbortablePrecleanTime=5000 -XX:+CMSClassUnloadingEnabled</td><td>-XX:+UseG1GC</td><td>CMS相关参数, 不需要</td></tr><tr><td>-XX:CMSInitiatingOccupancyFraction=80 -XX:+UseCMSInitiatingOccupancyOnly</td><td>-XX:InitiatingHeapOccupancyPercent=40 -XX:-G1UseAdaptiveIHOP</td><td>控制Old区大小, 比如原来CMS大约在 (0.8*(10g-6g)=3277m) 触发Old区GC, G1配置成在 (0.4*9500=3800m) 触发 因为G1会把大对象也往老区放, 所以我们会倾向于把这个设置得比CMS高一点</td></tr><tr><td></td><td>-XX:G1HeapWastePercent=2</td><td>G1默认会接受5%的&quot;浪费&quot;, 把他减少到2%, 可以大约挤出200-300m的空间, 当然这个是有代价的, G1回收成本会变高, 视情况加</td></tr></tbody></table>
+<p>推荐参数介绍</p>
+<ul><li>let JVM_HEAP = &quot;-Xms8g -Xmx8g -XX:MetaspaceSize=1024m -XX:MaxMetaspaceSize=1024m -XX:ReservedCodeCacheSize=512m -XX:MaxDirectMemorySize=512m&quot;</li><li>let JVM_GC = &quot;-XX:+UseG1GC -XX:G1HeapRegionSize=16m -XX:InitiatingHeapOccupancyPercent=40 -XX:-G1UseAdaptiveIHOP -XX:+ExplicitGCInvokesConcurrent -XX:ParallelGCThreads=8 -Dio.netty.tryReflectionSetAccessible=true --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED&quot;</li></ul>
+<p>-XX:MaxGCPauseMillis</p>
+<p>设置期望的最大GC停顿时间指标，G1收集器会尽力在这个时间内完成垃圾回收，以减少应用程序的停顿时间。默认值是200毫秒，调整这个参数可以影响GC的停顿时间</p>
+<p>无论是 young GC 还是 mixed GC，都会回收全部的年轻代，因此这个参数如果设置得太短，会限制 young 区占用的 region数量，可能会导致G1跟不上垃圾产生的速度，最终退化成Full GC。</p>
+<p>-XX:ReservedCodeCacheSize</p>
+<p>作用：</p>
+<ul><li>存储编译后的本地代码：当 JVM 运行时，它会将频繁执行的 Java 字节码编译成本地机器代码以提高性能。这些编译后的代码被存储在代码缓存中。</li><li>影响性能：适当大小的代码缓存可以提高应用程序的性能，因为它允许更多的代码被编译和优化。</li></ul>
+<p>-XX:MaxDirectMemorySize</p>
+<p>定义：MaxDirectMemorySize 指定了 JVM 可以分配的最大直接内存大小。</p>
+<p>直接内存（Direct Memory）：</p>
+<ul><li>这是在 Java 堆外分配的内存，不受 Java 堆大小限制。</li><li>主要用于 NIO（New I/O）操作，如 DirectByteBuffer。</li><li>可以减少垃圾回收的压力，因为它不在 Java 堆中。</li></ul>
+<p>默认值：如果不指定，默认值通常等于 -Xmx（最大堆大小）。</p>
+<p>-XX:G1HeapRegionSize</p>
+<p>设置每个Region的大小，G1的目标是根据最小的Java堆大小划分出约2048个这样的区域。这个值必须是2的幂，范围在1MB到32MB之间。默认情况下，这个值是堆内存的1/2000，这意味着G1收集器管理的最小堆内存应该是2GB以上，最大堆内存为64GB。调整这个参数可以影响G1的内存管理效率和垃圾回收的性能。</p>
+<p>-XX:+ExplicitGCInvokesConcurrent</p>
+<p>用于控制显式垃圾回收（Explicit GC）调用的行为。当这个参数被启用时，它会使得通过 System.gc() 或者其他形式的显式垃圾回收请求触发并发（concurrent）的垃圾回收操作，而不是完全停止（full stop-the-world）的应用程序线程进行垃圾回收。</p>
+<p>-XX:ParallelGCThreads</p>
+<p>1.定义：-XX:ParallelGCThreads 用于设置并行垃圾收集器的线程数。这些线程用于执行 Stop-The-World（STW）垃圾收集阶段。</p>
+<h3 class="sub">2.默认值：</h3>
+<ul><li>如果 CPU 核心数小于等于 8：ParallelGCThreads = CPU 核心数</li><li>如果 CPU 核心数大于 8：ParallelGCThreads = 8 + ((CPU 核心数 - 8) * 5/8)</li></ul>
+<p>-XX:G1NewSizePercent &amp; -XX:G1MaxNewSizePercent</p>
+<p>分别用于设置新生代最小和最大容量的百分比。这两个参数可以控制新生代的大小，影响垃圾收集的频率和性能。一般不推荐修改。</p>
+      </section>
+
+      <section class="src" id="sec-23">
+        <h2 class="sec"><span class="n">23</span>IHOP 详解</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>IHOP 是触发初始标记的老年代占用百分比阈值</li><li>默认自适应 IHOP 动态调整，默认初始值 45%</li><li>关闭自适应后由 InitiatingHeapOccupancyPercent 固定阈值</li></ul><div class="pit"><ul><li>默认表现良好时不要禁用自适应 IHOP</li></ul></div></div>
+<p>The Initiating Heap Occupancy Percent (IHOP) is the threshold at which an Initial Mark collection is triggered and it is defined as a percentage of the old generation size.</p>
+<p>G1 by default automatically determines an optimal IHOP by observing how long marking takes and how much memory is typically allocated in the old generation during marking cycles. This feature is called Adaptive IHOP. If this feature is active, then the option -XX:InitiatingHeapOccupancyPercent determines the initial value as a percentage of the size of the current old generation as long as there aren&#x27;t enough observations to make a good prediction of the Initiating Heap Occupancy threshold. Turn off this behavior of G1 using the option-XX:-G1UseAdaptiveIHOP. In this case, the value of -XX:InitiatingHeapOccupancyPercent always determines this threshold.</p>
+<p>Internally, Adaptive IHOP tries to set the Initiating Heap Occupancy so that the first mixed garbage collection of the space-reclamation phase starts when the old generation occupancy is at a current maximum old generation size minus the value of -XX:G1HeapReservePercent as the extra buffer.</p>
+<p>翻译：初始堆占用百分比（IHOP）是触发初始标记收集的阈值，它被定义为老年代大小的百分比。</p>
+<p>G1默认会通过观察标记过程所需的时间以及在标记周期期间通常在老年代中分配的内存量来自动确定最佳的IHOP。这个特性被称为自适应IHOP。如果这个特性是激活的，那么 -XX:InitiatingHeapOccupancyPercent 选项会决定初始值，作为当前老年代大小的百分比，这种情况会持续到有足够的观察数据来做出良好的初始堆占用阈值预测为止。使用 -XX:-G1UseAdaptiveIHOP 选项可以关闭G1的这种行为。在这种情况下，-XX:InitiatingHeapOccupancyPercent 的值将始终决定这个阈值。</p>
+<p>在内部，自适应IHOP试图设置初始堆占用，使得空间回收阶段的第一次混合垃圾收集在老年代占用达到当前最大老年代大小减去 -XX:G1HeapReservePercent 值作为额外缓冲区时开始。</p>
+<h3 class="sub">1.自适应IHOP：</h3>
+<ul><li>G1默认使用自适应IHOP机制。</li><li>它通过观察标记过程的时间和老年代内存分配情况来动态调整IHOP。</li><li>目的是找到最优的IHOP值，以平衡垃圾收集频率和效率。</li></ul>
+<p>2.-XX:InitiatingHeapOccupancyPercent：</p>
+<ul><li>这个参数设置IHOP的初始值。</li><li>在自适应IHOP有足够数据之前，这个值会被使用。</li><li>如果禁用自适应IHOP，这个值将始终决定IHOP阈值。</li></ul>
+<h3 class="sub">3.禁用自适应IHOP：</h3>
+<ul><li>使用 -XX:-G1UseAdaptiveIHOP 可以关闭自适应IHOP。</li><li>关闭后，IHOP将固定为 -XX:InitiatingHeapOccupancyPercent 指定的值。</li></ul>
+<h3 class="sub">4.自适应IHOP的内部工作：</h3>
+<ul><li>目标是在老年代占用达到特定水平时开始混合收集。</li><li>这个水平是： 当前最大老年代大小 - G1HeapReservePercent。</li><li>G1HeapReservePercent 作为一个额外的缓冲区。</li></ul>
+<p>-XX:InitiatingHeapOccupancyPercent</p>
+<p>这个参数指定触发在老年代的内存空间达到一定百分比之后，启动并发标记。默认值是 45%，当然，这更进一步是为了触发 mixed GC，以此来回收老年代。如果一个应用老年代对象产生速度较快，可以尝试适当调小 IHOP。</p>
+<h3 class="sub">1.并发标记的目的：</h3>
+<ul><li>并发标记的主要目的是为后续的 Mixed GC 做准备，识别整个堆中的存活对象。</li><li>Mixed GC 会同时收集年轻代和部分老年代。</li></ul>
+<h3 class="sub">2.G1 收集器的工作流程：</h3>
+<ul><li>通常顺序是： 若干次 Young GC → 并发标记 → Mixed GC</li><li>并发标记后，G1 可能会执行一系列 Mixed GC 来回收标记的区域。</li></ul>
+<p>-XX:-G1UseAdaptiveIHOP</p>
+<p>UseAdaptiveIHOP 是 G1 垃圾收集器的一个功能，它根据堆内存晋升速率自动调节 IHOP（Initiating Heap Occupancy Percent）。IHOP 决定了触发并发标记周期的堆占用阈值。使用 -XX:-G1UseAdaptiveIHOP 参数可以禁用这个自动调节功能，此时 IHOP 值将固定为初始设置，通常由 -XX:InitiatingHeapOccupancyPercent 参数指定。这种做法类似于使用 -Xmn 参数固定年轻代大小。</p>
+<p>关于是否应该禁用 UseAdaptiveIHOP，存在不同观点。有建议关闭此功能以防止频繁的并发 GC，而另一种观点认为除非 G1 的自动调节表现不佳，否则不应更改。</p>
+<p>我的看法是，如果应用程序在默认设置下表现良好，就保持 UseAdaptiveIHOP 启用。只有在遇到明确的性能问题时，才考虑禁用它。在做出任何更改之前，最好先收集详细的 GC 日志进行分析，然后根据分析结果决定是否需要调整。需要注意的是，更改 IHOP 设置可能会影响 GC 的频率和停顿时间，因此调整后需要进行充分的测试和监控。</p>
+<p>-XX:G1HeapWastePercent</p>
+<p>1.参数定义：-XX:G1HeapWastePercent 设置了 G1 垃圾收集器在停止回收之前允许的堆内存浪费百分比。</p>
+<p>2.默认值：默认值是 5%，意味着 G1 允许最多 5% 的堆内存被浪费（即未被使用）。</p>
+<h3 class="sub">3.参数作用：</h3>
+<ul><li>控制空间回收阶段（Space-reclamation phase）的结束时机。</li><li>影响混合收集（Mixed Collections）的次数。</li></ul>
+<h3 class="sub">4.工作原理：</h3>
+<ul><li>在空间回收阶段，G1 执行混合收集，回收老年代和年轻代的区域。</li><li>G1 会持续进行混合收集，直到堆内存中的自由空间（未使用空间）百分比达到 100% - G1HeapWastePercent。</li><li>一旦达到这个阈值，G1 认为继续回收的收益不大，就会停止当前的空间回收阶段。</li></ul>
+<h3 class="sub">5.调优考虑：</h3>
+<ul><li>降低这个值会导致 G1 执行更多的混合收集，可能会增加总的 GC 时间，但可以得到更紧凑的堆。</li><li>提高这个值会减少混合收集的次数，可能会减少 GC 时间，但可能会留下更多未使用的空间。</li></ul>
+<h3 class="sub">6.使用场景：</h3>
+<ul><li>对于内存敏感的应用，可以考虑降低这个值，以更充分地利用堆空间。</li><li>对于更关注吞吐量的应用，可以考虑略微提高这个值，以减少 GC 的频率。</li></ul>
+      </section>
+
+      <section class="src" id="sec-24">
+        <h2 class="sec"><span class="n">24</span>Netty 优化</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>必须加 tryReflectionSetAccessible 与 add-opens 参数</li><li>该设置解决堆外内存增加 600M 的问题</li></ul></div>
+<ul><li>-Dio.netty.tryReflectionSetAccessible=true --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED</li></ul>
+<p>必须设置，解决堆外内存增加 600M 的问题。</p>
+      </section>
+
+      <section class="src" id="sec-25">
+        <h2 class="sec"><span class="n">25</span>参考资料</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>G1 官方介绍与调优文档</li><li>深入理解 JVM、Java 性能权威指南等书籍</li></ul></div>
+<p>1.G1GC官方介绍：Garbage-First Garbage Collector</p>
+<p>https://docs.oracle.com/en/java/javase/11/gctuning/garbage-first-g1-garbage-collector1.html#GUID-ED3AB6D3-FD9B-4447-9EDF-983ED2F7A573</p>
+<p>2.G1GC官方调优推荐：Garbage-First Garbage Collector Tuning﻿</p>
+<p>https://docs.oracle.com/en/java/javase/11/gctuning/garbage-first-garbage-collector-tuning.html</p>
+<p>3.深入理解Java虚拟机（第3版）：https://book.douban.com/subject/34907497/</p>
+<p>4.Java 性能权威指南：https://www.ituring.com.cn/book/2774</p>
+<p>5.P99 CONF-G1:To Infinity and Beyond：https://www.p99conf.io/session/g1-to-infinity-and-beyond/﻿</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>指针碰撞 vs 空闲列表</h4><p>指针碰撞移动指针分配、只能顺序往后分配；空闲列表记录空闲块、可复用回收后的空间</p><a class="src-link" href="#sec-06">原文 → GC 基础</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>标记-复制 vs 标记-整理</h4><p>复制在双区/三区之间来回移动，整理只向一端移动、无碎片但需 STW</p><a class="src-link" href="#sec-07">原文 → 回收算法与分代</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Card table vs RSet</h4><p>卡表记录我引用了谁（point-out）；RSet 记录谁引用了我（point-in）</p><a class="src-link" href="#sec-19">原文 → 内存复盘</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>升级前后性能对比</h4><p>JDK11+G1 较 JDK8+CMS：max-jOPS +17%、critical-jOPS +105%，YGC 暂停 311ms→177ms</p><a class="src-link" href="#sec-18">原文 → 性能数据</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>内存构成复盘</h4><p>12g 堆 + 2.25g 记忆集 + 700m 全局内存 + 非堆 ≈ 16g，致利用率 95% 以上</p><a class="src-link" href="#sec-20">原文 → 总结</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>堆内存经验值</h4><p>8G 容器堆建议设 4G，16G 容器堆建议设 8G，约为容器一半</p><a class="src-link" href="#sec-05">原文 → 解决方案</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>G1 替代 CMS 是官方方向</h4><p>CMS 在 JDK11 废弃，G1 自动整理堆内存、减少碎片，官方推荐使用</p><a class="src-link" href="#sec-17">原文 → G1 vs CMS</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>G1 不要设 -Xmn</h4><p>继续用 -Xmn 固定年轻代会限制 G1 灵活调整 Young 区，应删掉或换 -XX:MaxNewSize</p><a class="src-link" href="#sec-22">原文 → 参数调优</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Mixed GC 跟不上会 Full GC</h4><p>分配过快、回收不及时会退化为 Serial Old 单线程 Full GC，停顿代价极高</p><a class="src-link" href="#sec-15">原文 → 空间回收阶段</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>推荐 JVM 参数</h4><p>-Xms8g -Xmx8g 搭配 UseG1GC、G1HeapRegionSize=16m、IHOP=40、关闭自适应 IHOP</p><a class="src-link" href="#sec-22">原文 → 参数调优</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>CMS 堆参数直接套到 G1</h4><p>沿用 12G 堆与 CMS 回收阈值，导致 G1 填满堆、Old GC 不回收</p><a class="src-link" href="#sec-02">原文 → 故障现象</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>JDK11 默认 G1 会尽量填满堆并更快分配物理内存，12G 堆叠加上记忆集后逼近 16G 容器上限。</li>
+          <li>升级 G1 后要重配堆参数：堆约为容器一半，删掉 -Xmn，IHOP 设 40 并关闭自适应。</li>
+          <li>G1 的 Full GC 是最后手段、代价极高，调优目标是让 Mixed GC 及时回收老年代。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247545804&amp;idx=1&amp;sn=eccb711291d075823dbf523a13bb1e72" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247545804&amp;idx=1&amp;sn=eccb711291d075823dbf523a13bb1e72</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

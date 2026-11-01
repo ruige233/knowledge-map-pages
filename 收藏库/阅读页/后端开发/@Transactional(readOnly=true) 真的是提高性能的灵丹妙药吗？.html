@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">@Transactional(readOnly=true) 真的是提高性能的灵丹妙药吗？</h1>
+  <p class="lede">readOnly=true 如何优化性能，又为何可能耗尽数据库连接</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 18 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>工作原理</a>
+          <a href="#sec-02"><span class="n">02</span>服务层使用的取舍</a>
+          <a href="#sec-03"><span class="n">03</span>回顾与结论</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 工作原理</a>
+          <a href="#sec-02">02 服务层使用的取舍</a>
+          <a href="#sec-03">03 回顾与结论</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>@Transactional(readOnly = true) 是如何工作的，为什么使用它可以提高性能？ 我在服务层测试了两个方法，一个是@Transactional(readOnly = true)，另一个是存储库层中的@Transactional (readOnly = true)（在 SimpleJpaRepository 中，它是 Jpa Respitory 的默认实现，在类的顶部有@Transformational(ready Only)，因此 findAll()方法在默认情况下有@transactional(read only = True)）。 正如您所看到的，@Transactional(readOnly = true)一旦查询结果到达，存储库层就会释放连接。 然而，@Transactional(readOnly = true)在服务层的方法中直到服务层的方法结束才释放连接。 因此，当服务层的方法有需要大量时间的逻辑时要小心，因为它可以长时间持有数据库连接，这可能会导致数据库连接匮乏。 当我们使用 JPA 时，是否应该总是将 @Transactional(readOnly = true) 添加到服务层的只读方法？有什么取舍吗？ 很明显，@Transactional(readOnly = true)有很多优点。 性能改进：只读实体不进行脏检查 节省内存：不维护持久状态的快照 数据一致性：只读实体的更改不会持久化 当我们使用主从或读写副本集（或集群）时， @Transactional(readOnly = true) 使我们能够连接到只读数据库 但是，您还应该记住，@Transactional(readOnly = true)在服务层的方法中可能会导致数据库死锁、性能低下和数据库连接匮乏！ 当您需要将只读查询仅仅作为一个事务执行时，请毫不犹豫选择的在服务层的方法中使用@Transactional(readOnly = true)，如果你的服务层的方法中有大量其他逻辑方法时，就要做取舍了！</th></tr></thead><tbody></tbody></table>
+<p>今天，我想谈谈 Spring 提供的@Transactional(readOnly = true)。</p>
+<p>之所以聊这个是因为我公司项目的代码里有很多@Transactional(readOnly = true)，用过的同学都说@Transactional(readOnly = true)提高了性能。先思考以下几点：</p>
+<ul><li>@Transactional(readOnly = true) 是如何工作的，为什么使用它可以提高性能？</li><li>当我们使用 JPA 时，是否应该总是将 @Transactional(readOnly = true) 添加到服务层的只读方法？有什么取舍吗？</li></ul>
+<p>在开始之前，我们使用 Hibernate 来实现 JPA。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>工作原理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>readOnly 是提示而非强制，事务管理器可能静默忽略</li><li>JpaDialect 在 readOnly 时把 FlushMode 设为 MANUAL 禁止刷新</li><li>setDefaultReadOnly(true) 使实体不脏检查、不维护快照</li><li>只读实体的修改不会被持久化</li></ul><div class="pit"><ul><li>误以为 readOnly 一定阻止写操作，实际只是提示</li></ul></div></div>
+<p>首先，让我们看一下事务接口。</p>
+<ul><li>/**</li><li>* A boolean flag that can be set to {@code true} if the transaction is</li><li>* effectively read-only, allowing for corresponding optimizations at runtime.</li><li>* &lt;p&gt;Defaults to {@code false}.</li><li>* &lt;p&gt;This just serves as a hint for the actual transaction subsystem;</li><li>* it will &lt;i&gt;not necessarily&lt;/i&gt; cause failure of write access attempts.</li><li>* A transaction manager which cannot interpret the read-only hint will</li><li>* &lt;i&gt;not&lt;/i&gt; throw an exception when asked for a read-only transaction</li><li>* but rather silently ignore the hint.</li><li>* @see org.springframework.transaction.interceptor.TransactionAttribute#isReadOnly()</li><li>* @see org.springframework.transaction.support.TransactionSynchronizationManager#isCurrentTransactionReadOnly()</li><li>boolean readOnly() default false;</li></ul>
+<p>我们可以看到 readOnly = true 选项允许优化。事务管理器将使用只读选项作为提示。让我们看看用于事务管理器的JpaTransactionManager。</p>
+<ul><li>@Override</li><li>protected void doBegin(Object transaction, TransactionDefinition definition) {</li><li>JpaTransactionObject txObject = (JpaTransactionObject) transaction;</li><li>// .</li><li>// Delegate to JpaDialect for actual transaction begin.</li><li>int timeoutToUse = determineTimeout(definition);</li><li>Object transactionData = getJpaDialect().beginTransaction(em,</li><li>new JpaTransactionDefinition(definition, timeoutToUse, txObject.isNewEntityManagerHolder()));</li><li>//...</li></ul>
+<p>在JpaTransactionManager中，doBegin方法委托JpaDialect来开始实际的事务，并在JpaDialect中调用beginTransaction。让我们来看看HibernateJpaDialect类。</p>
+<ul><li>@Override</li><li>public Object beginTransaction(EntityManager entityManager, TransactionDefinition definition)</li><li>throws PersistenceException, SQLException, TransactionException {</li><li>// ...</li><li>// Adapt flush mode and store previous isolation level, if any.</li><li>FlushMode previousFlushMode = prepareFlushMode(session, definition.isReadOnly());</li><li>if (definition instanceof ResourceTransactionDefinition &amp;&amp;</li><li>((ResourceTransactionDefinition) definition).isLocalResource()) {</li><li>// As of 5.1, we explicitly optimize for a transaction-local EntityManager,</li><li>// aligned with native HibernateTransactionManager behavior.</li><li>previousFlushMode = null;</li><li>if (definition.isReadOnly()) {</li><li>session.setDefaultReadOnly(true);</li><li>// ...</li><li>protected FlushMode prepareFlushMode(Session session, boolean readOnly) throws PersistenceException {</li><li>FlushMode flushMode = session.getHibernateFlushMode();</li><li>if (readOnly) {</li><li>// We should suppress flushing for a read-only transaction.</li><li>if (!flushMode.equals(FlushMode.MANUAL)) {</li><li>session.setHibernateFlushMode(Flusode.MANUAL);</li><li>return flushMode;</li><li>else {</li><li>// We need AUTO or COMMIT for a non-read-only transaction.</li><li>if (flushMode.lessThan(FlushMode.COMMIT)) {</li><li>session.setHibernateFlushMode(FlushMode.AUTO);</li><li>return flushMode;</li><li>// No FlushMode change needed...</li><li>return null;</li></ul>
+<p>在JpaDialect中，我们可以看到JpaDialect使用只读选项准备刷新模式。当 readOnly = true 时， JpaDialect 禁止刷新。此外，您还可以看到，在准备刷新模式后，session.setDefaultReadOnly(true)将session的readOnly属性设置为true。</p>
+<ul><li>/**</li><li>* Change the default for entities and proxies loaded into this session</li><li>* from modifiable to read-only mode, or from modifiable to read-only mode.</li><li>* Read-only entities are not dirty-checked and snapshots of persistent</li><li>* state are not maintained. Read-only entities can be modified, but</li><li>* changes are not persisted.</li><li>* When a proxy is initialized, the loaded entity will have the same</li><li>* read-only/modifiable setting as the uninitialized</li><li>* proxy has, regardless of the session&#x27;s current setting.</li><li>* To change the read-only/modifiable setting for a particular entity</li><li>* or proxy that is already in this session:</li><li>* @see Session#setReadOnly(Object,boolean)</li><li>* To override this session&#x27;s read-only/modifiable setting for entities</li><li>* and proxies loaded by a Query:</li><li>* @see Query#setReadOnly(boolean)</li><li>* @param readOnly true, the default for loaded entities/proxies is read-only;</li><li>*                 false, the default for loaded entities/proxies is modifiable</li><li>void setDefaultReadOnly(boolean readOnly);</li></ul>
+<p>在Session接口中，通过将readOnly属性设置为true，将不会对只读实体进行脏检查，也不会维护持久状态的快照。此外，只读实体的更改也不会持久化。</p>
+<p>总而言之，这些是在 Hibernate 中使用@Transactional(readOnly = true)所得到的结果</p>
+<ul><li>性能改进：只读实体不进行脏检查</li><li>节省内存：不维护持久状态的快照</li><li>数据一致性：只读实体的更改不会持久化</li><li>当我们使用主从或读写副本集（或集群）时， @Transactional(readOnly = true) 使我们能够连接到只读数据库</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>服务层使用的取舍</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>存储库层事务：查询结果一到就释放连接</li><li>服务层事务：直到方法结束才释放连接</li><li>服务层方法含耗时逻辑会长期占连接，可能连接匮乏</li><li>无限制使用事务可能导致死锁、性能与吞吐下降</li></ul><div class="pit"><ul><li>服务层长逻辑方法加只读事务易导致连接饥饿</li></ul></div></div>
+<p>我看到，当使用@Transactional(readOnly = true)时，我们可以有很多优势。但是，将@Transactional(readOnly = true)添加到服务层的只读方法是否合适？以下是我担心的事情</p>
+<ul><li>无限制地使用事务可能会导致数据库死锁、性能和吞吐量下降。</li><li>由于一个事务占用一个DB连接，所以 @Transactional(readOnly = true) 添加到Service层的方法可能会导致DB连接饥饿。</li></ul>
+<p>第一个问题很难重现，所以我做了一些测试来检查第二个问题。</p>
+<ul><li>@Transactional(readOnly = true)</li><li>public List&lt;UserDto&gt; transactionalReadOnlyOnService(){</li><li>List&lt;UserDto&gt; userDtos = userRepository.findAll().stream()</li><li>.map(userMapper::toDto)</li><li>.toList();</li><li>timeSleepAndPrintConnection();</li><li>return userDtos;</li><li>public List&lt;UserDto&gt; transactionalReadOnlyOnRepository(){</li><li>List&lt;UserDto&gt; userDtos = userRepository.findAll().stream()</li><li>.map(userMapper::toDto)</li><li>.toList();</li><li>timeSleepAndPrintConnection();</li><li>return userDtos;</li></ul>
+<p>我在服务层测试了两个方法，一个是@Transactional(readOnly = true)，另一个是存储库层中的@Transactional (readOnly = true)（在 SimpleJpaRepository 中，它是 Jpa Respitory 的默认实现，在类的顶部有@Transformational(ready Only)，因此 findAll()方法在默认情况下有@transactional(read only = True)）。</p>
+<p>我从DB中获取userInfo并保持线程5秒钟，然后检查该方法何时释放连接。</p>
+<p>结果如下：</p>
+<p>对于服务层方法中的@Transactional(readOnly = true)，</p>
+<ul><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li><li>start transactionalReadOnlyOnService!!</li><li>Hibernate:</li><li>select</li><li>u1_0.id,</li><li>u1_0.email,</li><li>u1_0.name,</li><li>u1_0.profile_file_name</li><li>from</li><li>users u1_0</li><li>activeConnections:1, IdleConnections:9, TotalConnections:10</li><li>activeConnections:1, IdleConnections:9, TotalConnections:10</li><li>activeConnections:1, IdleConnections:9, TotalConnections:10</li><li>activeConnections:1, IdleConnections:9, TotalConnections:10</li><li>activeConnections:1, IdleConnections:9, TotalConnections:10</li><li>end transactionalReadOnlyOnService!!</li><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li></ul>
+<p>对于存储库层方法中的@Transactional(readOnly = true)，</p>
+<ul><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li><li>start transactionalReadOnlyOnRepository!!</li><li>Hibernate:</li><li>select</li><li>u1_0.id,</li><li>u1_0.email,</li><li>u1_0.name,</li><li>u1_0.profile_file_name</li><li>from</li><li>users u1_0</li><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li><li>end transactionalReadOnlyOnRepository!!</li><li>activeConnections:0, IdleConnections:10, TotalConnections:10</li></ul>
+<p>正如您所看到的，@Transactional(readOnly = true)一旦查询结果到达，存储库层就会释放连接。</p>
+<p>然而，@Transactional(readOnly = true)在服务层的方法中直到服务层的方法结束才释放连接。</p>
+<p>因此，当服务层的方法有需要大量时间的逻辑时要小心，因为它可以长时间持有数据库连接，这可能会导致数据库连接匮乏。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>回顾与结论</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>readOnly=true 优点明确：性能、内存、一致性、只读库路由</li><li>服务层使用也可能死锁、性能低下、连接匮乏</li><li>只读查询单独作为事务时放心用，混大量逻辑要取舍</li></ul></div>
+<p>很明显，@Transactional(readOnly = true)有很多优点。</p>
+<ul><li>性能改进：只读实体不进行脏检查</li><li>节省内存：不维护持久状态的快照</li><li>数据一致性：只读实体的更改不会持久化</li><li>当我们使用主从或读写副本集（或集群）时， @Transactional(readOnly = true) 使我们能够连接到只读数据库</li></ul>
+<p>但是，您还应该记住，@Transactional(readOnly = true)在服务层的方法中可能会导致数据库死锁、性能低下和数据库连接匮乏！</p>
+<p>当您需要将只读查询仅仅作为一个事务执行时，请毫不犹豫选择的在服务层的方法中使用@Transactional(readOnly = true)，如果你的服务层的方法中有大量其他逻辑方法时，就要做取舍了！</p>
+<p>慌了！新来的同事问我 where 1=1 是什么意思</p>
+<p>微服务框架之争：Quarkus 是 SpringBoot 的替代品吗？</p>
+<p>别再用 BeanUtils 了，这款 PO VO DTO 转换神器不香么？</p>
+<p>select...for update 锁表了？</p>
+<p>等了7年，VS Code史上呼声最高的特性终于实现了！</p>
+<pre><code>Java 线程池详解，图文并茂，还有谁不会？！</code></pre>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>服务层 vs 存储库层事务</h4><p>存储库层查询结果一到就释放连接；服务层直到方法结束才释放，耗时逻辑会长期占连接。</p><a class="src-link" href="#sec-02">原文 → 服务层使用的取舍</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>readOnly 禁用 flush</h4><p>JpaDialect 在 readOnly=true 时把 FlushMode 设为 MANUAL，并调用 setDefaultReadOnly(true)。</p><a class="src-link" href="#sec-01">原文 → 工作原理</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>readOnly 只是提示</h4><p>它是事务子系统的提示，无法解释该提示的事务管理器会静默忽略，也不一定阻止写。</p><a class="src-link" href="#sec-01">原文 → 工作原理</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>连接池实验数字</h4><p>线程 sleep 5 秒：服务层 activeConnections 保持 1，存储库层保持 0，服务层结束才释放。</p><a class="src-link" href="#sec-02">原文 → 服务层使用的取舍</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>只读实体三项收益</h4><p>不做脏检查、不维护持久状态快照、修改不会持久化。</p><a class="src-link" href="#sec-01">原文 → 工作原理</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>服务层长逻辑占连接</h4><p>方法里有大量耗时逻辑时，事务会一直占住连接，可能导致数据库连接匮乏。</p><a class="src-link" href="#sec-02">原文 → 服务层使用的取舍</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>主从副本集路由</h4><p>使用主从或读写副本集时，readOnly=true 可连接到只读数据库。</p><a class="src-link" href="#sec-03">原文 → 回顾与结论</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>使用建议</h4><p>只读查询单独作为一个事务执行时放心用；方法里混大量其他逻辑时要取舍。</p><a class="src-link" href="#sec-03">原文 → 回顾与结论</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>readOnly=true 是提示而非强制：靠跳过脏检查、不维护快照并路由只读库来优化。</li>
+          <li>事务加在服务层会持有连接直到方法结束，含耗时逻辑时慎用以免连接饥饿。</li>
+          <li>只读查询独占一个事务时放心用；方法里混大量逻辑则权衡后再加。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzU2OTMyMTAxNA==&amp;mid=2247525350&amp;idx=2&amp;sn=3403618c41fd9e4293e44beb6100ba78" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzU2OTMyMTAxNA==&amp;mid=2247525350&amp;idx=2&amp;sn=3403618c41fd9e4293e44beb6100ba78</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
