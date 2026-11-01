@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>别再乱写了，Controller 层代码这样写才足够规范！ · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">别再乱写了，Controller 层代码这样写才足够规范！</h1>
+  <p class="lede">Controller 层统一返回、校验、响应的规范化改造方案</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 38 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>Controller 参数接收</a>
+          <a href="#sec-02"><span class="n">02</span>统一状态码</a>
+          <a href="#sec-03"><span class="n">03</span>统一参数校验</a>
+          <a href="#sec-04"><span class="n">04</span>统一响应包装</a>
+          <a href="#sec-05"><span class="n">05</span>统一异常处理</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 Controller 参数接收</a>
+          <a href="#sec-02">02 统一状态码</a>
+          <a href="#sec-03">03 统一参数校验</a>
+          <a href="#sec-04">04 统一响应包装</a>
+          <a href="#sec-05">05 统一异常处理</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>本篇主要要介绍的就是controller层的处理，一个完整的后端请求由4部分组成：</p>
+<ul><li>接口地址(也就是URL地址)</li><li>请求方式(一般就是get、set，当然还有put、delete)</li><li>请求数据(request，有head跟body)</li><li>响应数据(response)</li></ul>
+<p>本篇将解决以下3个问题：</p>
+<ul><li>当接收到请求时，如何优雅的校验参数</li><li>返回响应数据该如何统一的进行处理</li><li>接收到请求，处理业务逻辑时抛出了异常又该如何处理</li></ul>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>Controller 参数接收</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>完整请求由 URL、请求方式、请求数据、响应数据四要素组成</li><li>@RestController=@Controller+ResponseBody，@RequestMapping 为类级前缀</li><li>@GetMapping/@PostMapping 标记 get/post，VO 参数由 JSON 自动映射</li></ul></div>
+<p>常见的请求就分为 get 跟 post 两种</p>
+<ul><li>@RestController</li><li>@RequestMapping(&quot;/product/product-info&quot;)</li><li>public class ProductInfoController {</li><li>@Autowired</li><li>ProductInfoService productInfoService;</li><li>@GetMapping(&quot;/findById&quot;)</li><li>public ProductInfoQueryVo findById(Integer id) {</li><li>@PostMapping(&quot;/page&quot;)</li><li>public IPage findPage(Page page, ProductInfoQueryVo vo) {</li><li>@RestController： 之前解释过，@RestController = @Controller + ResponseBody。加上这个注解，springboot就会吧这个类当成controller进行处理，然后把所有返回的参数放到ResponseBody中</li><li>@RequestMapping： 请求的前缀，也就是所有该Controller下的请求都需要加上/product/product-info的前缀</li><li>@GetMapping(&quot;/findById&quot;)： 标志这是一个get请求，并且需要通过/findById地址才可以访问到</li><li>@PostMapping(&quot;/page&quot;)： 同理，表示是个post请求</li><li>参数： 至于参数部分，只需要写上ProductInfoQueryVo，前端过来的json请求便会通过映射赋值到对应的对象中，例如请求这么写，productId就会自动被映射到vo对应的属性当中</li><li>size : 1</li><li>current : 1</li><li>productId : 1</li><li>productName : 泡脚</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>统一状态码</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>返回统一包装 code/msg/data，约定 1000 为成功</li><li>状态码用 StatusCode 接口 + ResultCode 枚举定义，不写死常量</li><li>ResultVo 提供默认成功、指定状态码、只返回状态码等构造方法</li></ul><div class="pit"><ul><li>状态码直接写死常量 1000，不利于维护</li><li>枚举上用 @Data 会生成 setter，应改用 @Getter</li></ul></div></div>
+<h3 class="sub">1. 返回格式</h3>
+<p>为了跟前端妹妹打好关系，我们通常需要对后端返回的数据进行包装一下，增加一下状态码，状态信息，这样前端妹妹接收到数据就可以根据不同的状态码，判断响应数据状态，是否成功是否异常进行不同的显示。当然这让你拥有了更多跟前端妹妹的交流机会，假设我们约定了1000就是成功的意思</p>
+<p>如果你不封装，那么返回的数据是这样子的</p>
+<ul><li>&quot;productId&quot;: 1,</li><li>&quot;productName&quot;: &quot;泡脚&quot;,</li><li>&quot;productPrice&quot;: 100.00,</li><li>&quot;productDescription&quot;: &quot;中药泡脚加按摩&quot;,</li><li>&quot;productStatus&quot;: 0,</li></ul>
+<p>经过封装以后时这样子的</p>
+<ul><li>&quot;code&quot;: 1000,</li><li>&quot;msg&quot;: &quot;请求成功&quot;,</li><li>&quot;data&quot;: {</li><li>&quot;productId&quot;: 1,</li><li>&quot;productName&quot;: &quot;泡脚&quot;,</li><li>&quot;productPrice&quot;: 100.00,</li><li>&quot;productDescription&quot;: &quot;中药泡脚加按摩&quot;,</li><li>&quot;productStatus&quot;: 0,</li></ul>
+<h3 class="sub">2. 封装ResultVo</h3>
+<p>这些状态码肯定都是要预先编好的，怎么编呢？写个常量1000？还是直接写死1000？要这么写就真的书白读的了，写状态码当然是用枚举拉</p>
+<p>首先先定义一个状态码的接口，所有状态码都需要实现它，有了标准才好做事</p>
+<ul><li>public interface StatusCode {</li><li>public int getCode();</li><li>public String getMsg();</li></ul>
+<p>然后去找前端妹妹，跟他约定好状态码（这可能是你们唯一的约定了）枚举类嘛，当然不能有setter方法了，因此我们不能在用@Data注解了，我们要用@Getter</p>
+<ul><li>@Getter</li><li>public enum ResultCode implements StatusCode{</li><li>SUCCESS(1000, &quot;请求成功&quot;),</li><li>FAILED(1001, &quot;请求失败&quot;),</li><li>VALIDATE_ERROR(1002, &quot;参数校验失败&quot;),</li><li>RESPONSE_PACK_ERROR(1003, &quot;response返回包装失败&quot;);</li><li>private int code;</li><li>private String msg;</li><li>ResultCode(int code, String msg) {</li><li>this.code = code;</li><li>this.msg = msg;</li></ul>
+<p>写好枚举类，就开始写ResultVo包装类了，我们预设了几种默认的方法，比如成功的话就默认传入object就可以了，我们自动包装成success</p>
+<ul><li>@Data</li><li>public class ResultVo {</li><li>// 状态码</li><li>private int code;</li><li>// 状态信息</li><li>private String msg;</li><li>// 返回对象</li><li>private Object data;</li><li>// 手动设置返回vo</li><li>public ResultVo(int code, String msg, Object data) {</li><li>this.code = code;</li><li>this.msg = msg;</li><li>this.data = data;</li><li>// 默认返回成功状态码，数据对象</li><li>public ResultVo(Object data) {</li><li>this.code = ResultCode.SUCCESS.getCode();</li><li>this.msg = ResultCode.SUCCESS.getMsg();</li><li>this.data = data;</li><li>// 返回指定状态码，数据对象</li><li>public ResultVo(StatusCode statusCode, Object data) {</li><li>this.code = statusCode.getCode();</li><li>this.msg = statusCode.getMsg();</li><li>this.data = data;</li><li>// 只返回状态码</li><li>public ResultVo(StatusCode statusCode) {</li><li>this.code = statusCode.getCode();</li><li>this.msg = statusCode.getMsg();</li><li>this.data = null;</li></ul>
+<p>使用，现在的返回肯定就不是return data;这么简单了，而是需要new ResultVo(data);</p>
+<ul><li>@PostMapping(&quot;/findByVo&quot;)</li><li>public ResultVo findByVo(@Validated ProductInfoVo vo) {</li><li>ProductInfo productInfo = new ProductInfo();</li><li>BeanUtils.copyProperties(vo, productInfo);</li><li>return new ResultVo(productInfoService.getOne(new QueryWrapper(productInfo)));</li></ul>
+<p>最后返回就会是上面带了状态码的数据了</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>统一参数校验</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>手写 if 校验冗长，改用 @Validated 加 @NotNull/@Min 注解</li><li>校验失败抛 BindException，默认返回 400 结构不符合约定</li><li>@RestControllerAdvice 拦截 BindException，包装成 1002 校验失败码</li></ul><div class="pit"><ul><li>把 Spring 默认 400 校验错误直接返回给前端</li><li>自己写 AOP 拦截异常，忽略 @RestControllerAdvice 能力</li></ul></div></div>
+<h3 class="sub">1. 原始做法</h3>
+<p>假设有一个添加ProductInfo的接口，在没有统一校验时，我们需要这么做</p>
+<ul><li>@Data</li><li>public class ProductInfoVo {</li><li>// 商品名称</li><li>private String productName;</li><li>// 商品价格</li><li>private BigDecimal productPrice;</li><li>// 上架状态</li><li>private Integer productStatus;</li><li>@PostMapping(&quot;/findByVo&quot;)</li><li>public ProductInfo findByVo(ProductInfoVo vo) {</li><li>if (StringUtils.isNotBlank(vo.getProductName())) {</li><li>throw new APIException(&quot;商品名称不能为空&quot;);</li><li>if (null != vo.getProductPrice() &amp;&amp; vo.getProductPrice().compareTo(new BigDecimal(0)) &lt; 0) {</li><li>throw new APIException(&quot;商品价格不能为负数&quot;);</li><li>ProductInfo productInfo = new ProductInfo();</li><li>BeanUtils.copyProperties(vo, productInfo);</li><li>return new ResultVo(productInfoService.getOne(new QueryWrapper(productInfo)));</li></ul>
+<p>这if写的人都傻了，能忍吗？肯定不能忍啊</p>
+<h3 class="sub">2. @Validated参数校验</h3>
+<p>好在有@Validated，又是一个校验参数必备良药了。有了@Validated我们只需要再vo上面加一点小小的注解，便可以完成校验功能</p>
+<ul><li>@Data</li><li>public class ProductInfoVo {</li><li>@NotNull(message = &quot;商品名称不允许为空&quot;)</li><li>private String productName;</li><li>@Min(value = 0, message = &quot;商品价格不允许为负数&quot;)</li><li>private BigDecimal productPrice;</li><li>private Integer productStatus;</li><li>@PostMapping(&quot;/findByVo&quot;)</li><li>public ProductInfo findByVo(@Validated ProductInfoVo vo) {</li><li>ProductInfo productInfo = new ProductInfo();</li><li>BeanUtils.copyProperties(vo, productInfo);</li><li>return new ResultVo(productInfoService.getOne(new QueryWrapper(productInfo)));</li></ul>
+<p>运行看看，如果参数不对会发生什么？</p>
+<p>我们故意传一个价格为-1的参数过去。</p>
+<ul><li>productName : 泡脚</li><li>productPrice : -1</li><li>productStatus : 1</li><li>&quot;timestamp&quot;: &quot;2020-04-19T03:06:37.268+0000&quot;,</li><li>&quot;status&quot;: 400,</li><li>&quot;error&quot;: &quot;Bad Request&quot;,</li><li>&quot;errors&quot;: [</li><li>&quot;codes&quot;: [</li><li>&quot;Min.productInfoVo.productPrice&quot;,</li><li>&quot;Min.productPrice&quot;,</li><li>&quot;Min.java.math.BigDecimal&quot;,</li><li>&quot;Min&quot;</li><li>&quot;arguments&quot;: [</li><li>&quot;codes&quot;: [</li><li>&quot;productInfoVo.productPrice&quot;,</li><li>&quot;productPrice&quot;</li><li>&quot;defaultMessage&quot;: &quot;productPrice&quot;,</li><li>&quot;code&quot;: &quot;productPrice&quot;</li><li>&quot;defaultMessage&quot;: &quot;商品价格不允许为负数&quot;,</li><li>&quot;objectName&quot;: &quot;productInfoVo&quot;,</li><li>&quot;field&quot;: &quot;productPrice&quot;,</li><li>&quot;rejectedValue&quot;: -1,</li><li>&quot;bindingFailure&quot;: false,</li><li>&quot;code&quot;: &quot;Min&quot;</li><li>&quot;message&quot;: &quot;Validation failed for object\u003d\u0027productInfoVo\u0027. Error count: 1&quot;,</li><li>&quot;trace&quot;: &quot;org.springframework.validation.BindException: org.springframework.validation.BeanPropertyBindingResult: 1 errors\nField error in object \u0027productInfoVo\u0027 on field \u0027productPrice\u0027: rejected value [-1]; codes [Min.productInfoVo.productPrice,Min.productPrice,Min.java.math.BigDecimal,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [productInfoVo.productPrice,productPrice]; arguments []; default message [productPrice],0]; default message [商品价格不允许为负数]\n\tat org.springframework.web.method.annotation.ModelAttributeMethodProcessor.resolveArgument(ModelAttributeMethodProcessor.java:164)\n\tat org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:121)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:167)\n\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:134)\n\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879)\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)\n\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\n\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)\n\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)\n\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)\n\tat org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)\n\tat javax.servlet.http.HttpServlet.service(HttpServlet.java:660)\n\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)\n\tat javax.servlet.http.HttpServlet.service(HttpServlet.java:741)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\n\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\n\tat com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:124)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\n\tat org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\n\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\n\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)\n\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)\n\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)\n\tat org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)\n\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)\n\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)\n\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)\n\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)\n\tat org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)\n\tat org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)\n\tat org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)\n\tat org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1594)\n\tat org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)\n\tat java.base/java.lang.Thread.run(Thread.java:830)\n&quot;,</li><li>&quot;path&quot;: &quot;/leilema/product/product-info/findByVo&quot;</li></ul>
+<p>大功告成了吗？虽然成功校验了参数，也返回了异常，并且带上&quot;商品价格不允许为负数&quot;的信息。但是你要是这样返回给前端，前端妹妹就提刀过来了，当年约定好的状态码，你个负心人说忘就忘？用户体验小于等于0啊！所以我们要进行优化一下，每次出现异常的时候，自动把状态码写好，不负妹妹之约！</p>
+<h3 class="sub">3. 优化异常处理</h3>
+<p>首先我们先看看校验参数抛出了什么异常</p>
+<ul><li>Resolved [org.springframework.validation.BindException: org.springframework.validation.BeanPropertyBindingResult: 1 errors</li></ul>
+<p>我们看到代码抛出了org.springframework.validation.BindException的绑定异常，因此我们的思路就是AOP拦截所有controller，然后异常的时候统一拦截起来，进行封装！完美！</p>
+<p>玩你个头啊完美，这么呆瓜的操作springboot不知道吗？spring mvc当然知道拉，所以给我们提供了一个@RestControllerAdvice来增强所有@RestController，然后使用@ExceptionHandler注解，就可以拦截到对应的异常。</p>
+<p>这里我们就拦截BindException.class就好了。最后在返回之前，我们对异常信息进行包装一下，包装成ResultVo，当然要跟上ResultCode.VALIDATE_ERROR的异常状态码。这样前端妹妹看到VALIDATE_ERROR的状态码，就会调用数据校验异常的弹窗提示用户哪里没填好</p>
+<ul><li>@RestControllerAdvice</li><li>public class ControllerExceptionAdvice {</li><li>@ExceptionHandler({BindException.class})</li><li>public ResultVo MethodArgumentNotValidExceptionHandler(BindException e) {</li><li>// 从异常对象中拿到ObjectError对象</li><li>ObjectError objectError = e.getBindingResult().getAllErrors().get(0);</li><li>return new ResultVo(ResultCode.VALIDATE_ERROR, objectError.getDefaultMessage());</li></ul>
+<p>来康康效果，完美。1002与前端妹妹约定好的状态码</p>
+<ul><li>&quot;code&quot;: 1002,</li><li>&quot;msg&quot;: &quot;参数校验失败&quot;,</li><li>&quot;data&quot;: &quot;商品价格不允许为负数&quot;</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>统一响应包装</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>ResponseBodyAdvice 在响应时统一包装成 ResultVo</li><li>String 返回类型需用 ObjectMapper 转 JSON 特殊处理</li><li>supports 过滤已是 ResultVo 或带豁免注解的方法</li></ul><div class="pit"><ul><li>String 返回值直接包装会报错</li><li>健康检测等第三方约定接口被统一包装导致校验失败</li></ul></div></div>
+<h3 class="sub">1. 统一包装响应</h3>
+<p>再回头看一下controller层的返回</p>
+<ul><li>return new ResultVo(productInfoService.getOne(new QueryWrapper(productInfo)));</li></ul>
+<p>开发小哥肯定不乐意了，谁有空天天写new ResultVo(data)啊，我就想返回一个实体！怎么实现我不管！好把，那就是AOP拦截所有Controller，再@After的时候统一帮你封装一下咯</p>
+<p>怕是上一次脸打的不够疼，springboot能不知道这么个操作吗？</p>
+<ul><li>@RestControllerAdvice(basePackages = {&quot;com.bugpool.leilema&quot;})</li><li>public class ControllerResponseAdvice implements ResponseBodyAdvice&lt;Object&gt; {</li><li>@Override</li><li>public boolean supports(MethodParameter methodParameter, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; aClass) {</li><li>// response是ResultVo类型，或者注释了NotControllerResponseAdvice都不进行包装</li><li>return !methodParameter.getParameterType().isAssignableFrom(ResultVo.class);</li><li>@Override</li><li>public Object beforeBodyWrite(Object data, MethodParameter returnType, MediaType mediaType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; aClass, ServerHttpRequest request, ServerHttpResponse response) {</li><li>// String类型不能直接包装</li><li>if (returnType.getGenericParameterType().equals(String.class)) {</li><li>ObjectMapper objectMapper = new ObjectMapper();</li><li>try {</li><li>// 将数据包装在ResultVo里后转换为json串进行返回</li><li>return objectMapper.writeValueAsString(new ResultVo(data));</li><li>} catch (JsonProcessingException e) {</li><li>throw new APIException(ResultCode.RESPONSE_PACK_ERROR, e.getMessage());</li><li>// 否则直接包装成ResultVo返回</li><li>return new ResultVo(data);</li><li>@RestControllerAdvice(basePackages = {&quot;com.bugpool.leilema&quot;}) 自动扫描了所有指定包下的controller，在Response时进行统一处理</li><li>重写supports方法，也就是说，当返回类型已经是ResultVo了，那就不需要封装了，当不等与ResultVo时才进行调用beforeBodyWrite方法，跟过滤器的效果是一样的</li><li>最后重写我们的封装方法beforeBodyWrite，注意除了String的返回值有点特殊，无法直接封装成json，我们需要进行特殊处理，其他的直接new ResultVo(data);就ok了</li></ul>
+<p>打完收工，康康效果</p>
+<ul><li>@PostMapping(&quot;/findByVo&quot;)</li><li>public ProductInfo findByVo(@Validated ProductInfoVo vo) {</li><li>ProductInfo productInfo = new ProductInfo();</li><li>BeanUtils.copyProperties(vo, productInfo);</li><li>return productInfoService.getOne(new QueryWrapper(productInfo));</li></ul>
+<p>此时就算我们返回的是po，接收到的返回就是标准格式了，开发小哥露出了欣慰的笑容</p>
+<ul><li>&quot;code&quot;: 1000,</li><li>&quot;msg&quot;: &quot;请求成功&quot;,</li><li>&quot;data&quot;: {</li><li>&quot;productId&quot;: 1,</li><li>&quot;productName&quot;: &quot;泡脚&quot;,</li><li>&quot;productPrice&quot;: 100.00,</li><li>&quot;productDescription&quot;: &quot;中药泡脚加按摩&quot;,</li><li>&quot;productStatus&quot;: 0,</li></ul>
+<h3 class="sub">2. NOT统一响应</h3>
+<p>「不开启统一响应原因」</p>
+<p>开发小哥是开心了，可是其他系统就不开心了。举个例子：我们项目中集成了一个健康检测的功能，也就是这货</p>
+<ul><li>@RestController</li><li>public class HealthController {</li><li>@GetMapping(&quot;/health&quot;)</li><li>public String health() {</li><li>return &quot;success&quot;;</li></ul>
+<p>公司部署了一套校验所有系统存活状态的工具，这工具就定时发送get请求给我们系统</p>
+<ul><li>“兄弟，你死了吗？”</li><li>“我没死，滚”</li><li>“兄弟，你死了吗？”</li><li>“我没死，滚”</li></ul>
+<p>是的，web项目的本质就是复读机。一旦发送的请求没响应，就会给负责人发信息（企业微信或者短信之类的），你的系统死啦！赶紧回来排查bug吧！让大家感受一下。每次看到我都射射发抖，早上6点！我tm！！！！！</p>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 01" width="283" height="238" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 01</figcaption></figure>
+<p>好吧，没办法，人家是老大，人家要的返回不是</p>
+<ul><li>&quot;code&quot;: 1000,</li><li>&quot;msg&quot;: &quot;请求成功&quot;,</li><li>&quot;data&quot;: &quot;success&quot;</li></ul>
+<p>人家要的返回只要一个success，人家定的标准不可能因为你一个系统改。俗话说的好，如果你改变不了环境，那你就只能我****</p>
+<p>「新增不进行封装注解」</p>
+<p>因为百分之99的请求还是需要包装的，只有个别不需要，写在包装的过滤器吧？又不是很好维护，那就加个注解好了。所有不需要包装的就加上这个注解。</p>
+<ul><li>@Target({ElementType.METHOD})</li><li>@Retention(RetentionPolicy.RUNTIME)</li><li>public @interface NotControllerResponseAdvice {</li></ul>
+<p>然后在我们的增强过滤方法上过滤包含这个注解的方法</p>
+<ul><li>@RestControllerAdvice(basePackages = {&quot;com.bugpool.leilema&quot;})</li><li>public class ControllerResponseAdvice implements ResponseBodyAdvice&lt;Object&gt; {</li><li>@Override</li><li>public boolean supports(MethodParameter methodParameter, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; aClass) {</li><li>// response是ResultVo类型，或者注释了NotControllerResponseAdvice都不进行包装</li><li>return !(methodParameter.getParameterType().isAssignableFrom(ResultVo.class)</li><li>|| methodParameter.hasMethodAnnotation(NotControllerResponseAdvice.class));</li></ul>
+<p>最后就在不需要包装的方法上加上注解</p>
+<ul><li>@RestController</li><li>public class HealthController {</li><li>@GetMapping(&quot;/health&quot;)</li><li>@NotControllerResponseAdvice</li><li>public String health() {</li><li>return &quot;success&quot;;</li></ul>
+<p>这时候就不会自动封装了，而其他没加注解的则依旧自动包装</p>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 02" width="814" height="230" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 02</figcaption></figure>
+<p>每个系统都会有自己的业务异常，比如库存不能小于0子类的，这种异常并非程序异常，而是业务操作引发的异常，我们也需要进行规范的编排业务异常状态码，并且写一个专门处理的异常类，最后通过刚刚学习过的异常拦截统一进行处理，以及打日志</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>统一异常处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AppCode 业务状态码实现 StatusCode 接口</li><li>APIException 区分 code（状态码）、msg（大类）、message（详情）</li><li>统一拦截 APIException，业务代码只抛异常不关心返回与日志</li></ul><div class="pit"><ul><li>业务异常与程序异常混用，未独立 APIException</li><li>未在统一拦截处集中打印日志</li></ul></div></div>
+<p>1.异常状态码枚举，既然是状态码，那就肯定要实现我们的标准接口StatusCode</p>
+<ul><li>@Getter</li><li>public enum  AppCode implements StatusCode {</li><li>APP_ERROR(2000, &quot;业务异常&quot;),</li><li>PRICE_ERROR(2001, &quot;价格异常&quot;);</li><li>private int code;</li><li>private String msg;</li><li>AppCode(int code, String msg) {</li><li>this.code = code;</li><li>this.msg = msg;</li></ul>
+<p>2.异常类，这里需要强调一下，code代表AppCode的异常状态码，也就是2000；msg代表业务异常，这只是一个大类，一般前端会放到弹窗title上；最后super(message);这才是抛出的详细信息，在前端显示在弹窗体中，在ResultVo则保存在data中</p>
+<ul><li>@Getter</li><li>public class APIException extends RuntimeException {</li><li>private int code;</li><li>private String msg;</li><li>// 手动设置异常</li><li>public APIException(StatusCode statusCode, String message) {</li><li>// message用于用户设置抛出错误详情，例如：当前价格-5，小于0</li><li>super(message);</li><li>// 状态码</li><li>this.code = statusCode.getCode();</li><li>// 状态码配套的msg</li><li>this.msg = statusCode.getMsg();</li><li>// 默认异常使用APP_ERROR状态码</li><li>public APIException(String message) {</li><li>super(message);</li><li>this.code = AppCode.APP_ERROR.getCode();</li><li>this.msg = AppCode.APP_ERROR.getMsg();</li></ul>
+<p>3.最后进行统一异常的拦截，这样无论在service层还是controller层，开发人员只管抛出API异常，不需要关系怎么返回给前端，更不需要关心日志的打印</p>
+<ul><li>@RestControllerAdvice</li><li>public class ControllerExceptionAdvice {</li><li>@ExceptionHandler({BindException.class})</li><li>public ResultVo MethodArgumentNotValidExceptionHandler(BindException e) {</li><li>// 从异常对象中拿到ObjectError对象</li><li>ObjectError objectError = e.getBindingResult().getAllErrors().get(0);</li><li>return new ResultVo(ResultCode.VALIDATE_ERROR, objectError.getDefaultMessage());</li><li>@ExceptionHandler(APIException.class)</li><li>public ResultVo APIExceptionHandler(APIException e) {</li><li>// log.error(e.getMessage(), e); 由于还没集成日志框架，暂且放着，写上TODO</li><li>return new ResultVo(e.getCode(), e.getMsg(), e.getMessage());</li></ul>
+<h3 class="sub">4.最后使用，我们的代码只需要这么写</h3>
+<ul><li>if (null == orderMaster) {</li><li>throw new APIException(AppCode.ORDER_NOT_EXIST, &quot;订单号不存在：&quot; + orderId);</li><li>&quot;code&quot;: 2003,</li><li>&quot;msg&quot;: &quot;订单不存在&quot;,</li><li>&quot;data&quot;: &quot;订单号不存在：1998&quot;</li></ul>
+<p>就会自动抛出AppCode.ORDER_NOT_EXIST状态码的响应，并且带上异常详细信息订单号不存在：xxxx。</p>
+<p>作者：bugpool</p>
+<p>https://bugpool.blog.csdn.net/article/details/105610962</p>
+<p>公众号“Java精选”所发表内容注明来源的，版权归原出处所有（无法查证版权的或者未注明出处的均来自网络，系转载，转载的目的在于传递更多信息，版权属于原作者。如有侵权，请联系，笔者会第一时间删除处理！</p>
+<p>Java精选面试题（微信小程序）：3000+道面试题，包含Java基础、并发、JVM、线程、MQ系列、Redis、Spring系列、Elasticsearch、Docker、K8s、Flink、Spark、架构设计等，在线随时刷题！</p>
+<p>------ 特别推荐 ------</p>
+<p>文章有帮助的话，点在看，转发吧！</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>未封装与封装后返回</h4><p>未封装返回裸业务字段；封装后为 code/msg/data，code=1000 表示成功</p><a class="src-link" href="#sec-02">原文 → 统一状态码</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>状态码用枚举定义</h4><p>@Getter 枚举实现 StatusCode，SUCCESS(1000)、FAILED(1001) 等</p><a class="src-link" href="#sec-02">原文 → 统一状态码</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>枚举误用 @Data</h4><p>枚举加 @Data 会生成 setter，状态码应不可变，改用 @Getter</p><a class="src-link" href="#sec-02">原文 → 统一状态码</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>@Validated 参数校验</h4><p>@Validated 参数 + @NotNull/@Min 字段注解替代手写 if 校验</p><a class="src-link" href="#sec-03">原文 → 统一参数校验</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>校验失败默认返回</h4><p>默认返回 status 400 Bad Request 的 Spring 错误结构</p><a class="src-link" href="#sec-03">原文 → 统一参数校验</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>校验异常统一拦截</h4><p>@RestControllerAdvice + @ExceptionHandler(BindException.class) 包装成 1002</p><a class="src-link" href="#sec-03">原文 → 统一参数校验</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>响应自动包装</h4><p>ResponseBodyAdvice 重写 supports/beforeBodyWrite，统一 new ResultVo</p><a class="src-link" href="#sec-04">原文 → 统一响应包装</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>String 返回包装</h4><p>String 类型无法直接包装成 JSON，需 ObjectMapper 转换</p><a class="src-link" href="#sec-04">原文 → 统一响应包装</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>统一响应与豁免</h4><p>99% 接口自动包装，健康检测等特殊接口用注解豁免</p><a class="src-link" href="#sec-04">原文 → 统一响应包装</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>APIException 三层信息</h4><p>code 状态码、msg 大类标题、message 详情，super(message) 传详情</p><a class="src-link" href="#sec-05">原文 → 统一异常处理</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Controller 规范四件套</h4><p>统一返回 ResultVo、校验 @Validated、响应 Advice、异常 APIException</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>返回结构统一为 code/msg/data，状态码用枚举定义并与前端约定好。</li>
+          <li>参数校验用 @Validated 加注解，异常交给 @RestControllerAdvice 统一包装。</li>
+          <li>业务异常统一抛 APIException，响应包装与日志集中在 Advice 中处理。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzAwMTE3MDY4MQ==&amp;mid=2652471639&amp;idx=1&amp;sn=b9b830b071df968457f6072e38074fc0" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAwMTE3MDY4MQ==&amp;mid=2652471639&amp;idx=1&amp;sn=b9b830b071df968457f6072e38074fc0</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
