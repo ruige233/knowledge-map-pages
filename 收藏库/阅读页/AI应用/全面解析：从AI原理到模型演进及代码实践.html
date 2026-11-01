@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">全面解析：从AI原理到模型演进及代码实践</h1>
+  <p class="lede">从神经网络原理到 Transformer 与 PyTorch 工程实践的系统解析</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI应用</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 80 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>神经网络原理</a>
+          <a href="#sec-02"><span class="n">02</span>Transformer 机制</a>
+          <a href="#sec-03"><span class="n">03</span>工程实践</a>
+          <a href="#sec-04"><span class="n">04</span>结语</a>
+          <a href="#sec-05"><span class="n">05</span>参考资料</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 神经网络原理</a>
+          <a href="#sec-02">02 Transformer 机制</a>
+          <a href="#sec-03">03 工程实践</a>
+          <a href="#sec-04">04 结语</a>
+          <a href="#sec-05">05 参考资料</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>本文从原理、模型演进到代码工程实践，全面探讨了人工智能领域的核心内容。通过深入浅出的讲解，笔者不仅介绍了神经网络的基本原理，还详细阐述了Transformer模型的实现机制及其在自然语言处理（NLP）中的应用。文章结合了实际案例和代码示例，旨在帮助读者理解AI技术的全貌，并能够在实际项目中应用这些知识。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>神经网络原理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>神经元以 f(x)=x*w+b 拟合输入输出，W 为权重、B 为阈值</li><li>损失函数（MSELoss）判断收敛，梯度下降按一阶导数定方向</li><li>lr 过大跳过最优、过小陷入局部极小且耗时</li><li>Sigmoid 两侧导数趋 0 易梯度消失，ReLU 等更利训练</li></ul><div class="pit"><ul><li>lr 设置不当：过大震荡不收敛，过小陷局部极小值</li><li>Sigmoid 易梯度消失；多元函数只能求局部最优</li></ul></div></div>
+<p>神经网络</p>
+<p>讨论ChatGPT前，需要从神经网络开始，看最简单的“鹦鹉学舍”是怎么实现的。</p>
+<p>上图就是一个人脑的神经元，由多个树突、轴突和细胞核构成，其中树突用来接收电信号、经细胞核加工（激活）信号、最后由轴突输出电信号，人脑大概860亿个神经元细胞，突触相互连接，形成拓扑结构。</p>
+<p>每个神经元大约有1163～11628个突触，突触总量在14～15个数量级，放电频繁大约在400～500Hz，每秒最高计算量大约40万亿次，换算成当前流行词汇，大脑大概等价于100T参数模型（140B逊爆了），而且有别当前大模型中ReLU激活函数，大脑惰性计算是不用算0值的，效率更高。</p>
+<p>神经网络就是借鉴了人脑神经元输入、计算、输出架构和拓扑设计，下面以一个求解数学问题的例子，看神经网络的实现原理：</p>
+<p>当X为</p>
+<p>时，Y为</p>
+<p>，通过训练神经网络，以求得X和Y的隐含关系，并给出X为</p>
+<p>时，Y的值。</p>
+<p>为了看训练过程，我们提前知道 f(x)=x1*w1+x2*w2+b，其中w1=w2=1， b=6.6260693，实际上是可以任意 f(x)</p>
+<p>训练过程如下：</p>
+<ul><li>对输入的X，分解成n个向量（举例方便，实际是直接矩阵计算，实现batch），对每个向量的X1和X2元素，假定一个函数 f(x)=x1*w1+x2*w2+b进行计算（其中w1、w2和b用随机值初始化）。</li><li>用假定的f(x) 计算X，得到结果和样本Y进行比照，如果有差异，调整w1、w2和b的值，重复计算。</li></ul>
+<h3 class="sub">3. 直到差异收敛到某个程度后（比如小于1），训练结束。</h3>
+<p>从训练过程看，经过99轮重复计算和调整W/B值后（训练），在100轮通过瞎猜求得 f(x)=x1*0.9991+x2*0.9853+6.3004，用最后一个组数据 X 计算得到的已经很接近样本数据，说明这些参数（模型）在这个场景已经对 f(x)求得最优解了。</p>
+<p>对X (-6.8579 7.6980)进行预测Y为 7.0334，和最初假定（w1=w2=1，b=6.6260693）参数计算得到的结果仅相差0.2左右，预测结束。</p>
+<p>上述代码如下：</p>
+<ul><li>from torch import nn</li><li>from torch.optim import Adam</li><li>import torch</li><li>model = nn.Linear(2, 1)  # 模型定义，内部是 2 * 1的矩阵</li><li>optimizer = Adam(model.parameters(), lr=1e-1)</li><li>loss_fn = nn.MSELoss()</li><li>## 输入是 10 * 2矩阵，可以理解为10个样本输入，每个样本是一对值组成，譬如:样本A(0.3,0,6) 样本B(0.2,0,8)</li><li>## 目标是 10 * 1矩阵，可以理解为10个样本对应的值， 这里简单把每个样本的两个值相加，并加入一个随机变量。</li><li>## 对于单个变量， Y = sum[x1,x2] + 随机值， 希望模型能够学会的是 Y = w1 * x1 + w2 * x2，这里的w1, w2就是模型的2*1矩阵的两个值，希望w1、w2最终学为1</li><li>input = torch.randn(10,2) * 10</li><li>#普朗克常数</li><li>bias = 6.6260693</li><li>target = torch.add(input.sum(dim=1, keepdim=True),bias)</li><li>print(&#x27;训练样本输入&#x27;,input,&#x27;\n训练样本输入-偏移量&#x27;, bias, &#x27;\n训练样本目标值&#x27;, target)</li><li>print(&quot;\n模型内部参数的初始随机值&quot;)</li><li>for name, param in model.named_parameters():</li><li>print(name, param.data)</li><li>print(&quot;\n开始训练，会发现差异值越来越小，说明模型在收敛&quot;)</li><li>for epoch in range(100): # 练习100轮</li><li>pred = model(input) # 输入 10*2 乘积模型的 2*1 得到预测值 10*1</li><li>loss = loss_fn(pred, target) # 和目标值差异</li><li># 根据差异，修正模型参数。就是调w1, w2两个参数</li><li>optimizer.zero_grad()</li><li>loss.backward()</li><li>optimizer.step()</li><li>if epoch%10==9:</li><li>print (f&quot;Epoch: {epoch} | loss: {loss:.2f}&quot;)</li><li># 拿一对随机值，测下模型， 是否产出值 = sum([x1,x2])</li><li>test = torch.randn(1,2) * 10</li><li>target = test.sum(dim=1, keepdim=True)</li><li>pred = model(test)</li><li>print(&#x27;\n训练完毕，测试模型。\n可以看到预测值和目标值近似，说明模型训练成功\n测试输入:&#x27;,test, &#x27;模型预测:&#x27;,pred.detach(), &#x27;目标值:&#x27;, target)</li><li>print(&quot;\n可以看到经过训练后的模型值w1、w2接近于1&quot;)</li><li>for name, param in model.named_parameters():</li><li>print(name, param.data)</li></ul>
+<p>损失函数&amp;梯度下降</p>
+<p>在训练过程中，会不断的通过调整W和B参数进行模型构建，进行目标拟合，得出参数过程需要解决两个问题：</p>
+<ul><li>如何判断收敛状态</li><li>如何参数调整方向和值</li></ul>
+<p>判断参数在每轮的收敛状态是通过一个叫损失函数（Loss Function）来完成的。即，判断f(x)=w*x+b 的w和b是否最优解，只需要衡量真实值（训练样本值）g(x)和测量值（训练结算值）f(x)的均方误差</p>
+<p>是否是最小值（显然趋于0为最小时）。</p>
+<p>上面代码中的loss_fn = nn.MSELoss()，这里的MSELoss就是指均方误差损失函数：</p>
+<p>参数的调整（加多少，减多少）是通过梯度下降方式实现的，也就是通过求一阶导数，来看函数单调性（一阶导数&gt;0，函数单调递增，函数值随自变量的增大而增大）。</p>
+<p>比如只看w时，对</p>
+<p>求w导数，即</p>
+<p>，当w初始值为1.8时，L&#x27;=11.417163316&gt;0，在局部单调递减下，w值的调整方向应该是左，也就是w=1.8-s（比如1.5）。</p>
+<p>方向确定后，每次迭代调整的值，就变成在w轴上无限趋近极值的导数值</p>
+<p>，在曲率大的地方大幅快速，小的地方小幅趋近。</p>
+<p>当函数变复杂起来，极值的查找，靠的是初始值运气，不一定每次都能找到最优解。</p>
+<p>在更复杂的场景，比如上面的二元函数拥有两个主要自变量（x1，x2），在图像上表现如下：</p>
+<p>这个时候准确来说</p>
+<p>，L&#x27;是多元中w1的偏导。</p>
+<p>无法同时得出w1、w2和b的最优解，也就是全局最优解是无法得出的，最理想的情况就是假定w2和b为最优解的情况下，求w1最优解，然后再已w1最优解和假定b为最优解的情况下，求w2最优解，这样求出来的是局部最优解。</p>
+<p>为了防止L&#x27;导致迭代幅度过大，会再乘以一个小数，最终</p>
+<p>（lr：learning rate，一般设置0.01~0.001）。</p>
+<p>lr的设定大小会影响效果和成本，简要说设大了会导致每次猜测幅度过大而导致的忽略了很多候选参数，跳过了最优值，这是对训练效果而言，同时对成本也会造成参数选值的震荡（围绕极优值来回摆动）而无法收敛，而设置小了容易在L(w1,w2,b) 函数曲线多凸情况下，陷入局部的极小值，而无法发现整体的极小值，同时也导致了训练时长和深度的增加，也会在局部极小值消耗过多成本。</p>
+<p>W 和 B</p>
+<p>上面的例子是最简单的单层（浅层）神经网络，其中神经元是神经网络中最基本的单元，最小设定就是f(x)=x*w+b，通过拓扑设计来满足不同输入输出矩阵形状和拟合度（对可能的任意f(x)拟合）。</p>
+<p>这个模型对问题求可能的解、接近最优解的解以及最优解，不是函数在数学意义的上解。模型中W代表着权重（weight），B代表着阈值（threshold），当一或者多个input经过一个神经元最终输出一个output过程中，通过W调整不同input做加权，最后通过B控制输出的偏移完成整个计算的抽象。</p>
+<p>举个例子，城里正在举办一年一度的动漫展，你在犹豫要不要参加，考虑的因素有天气、价格、有没有同伴，规则是只要天气不好，不管价格和同伴都不去，如果天气还不错，但价格不合适，有朋友也不去。</p>
+<table><thead><tr><th>因子x</th><th>权重w</th><th>这个事情决策规则</th><th>模型</th></tr></thead><tbody><tr><td>天气</td><td>4</td><td>天气（0）&amp;价格（0｜1）&amp;同伴（0｜1）=不去 天气（1）&amp;价格（1）&amp;同伴（0｜1）=去 天气（1）&amp;价格（0）&amp;同伴（0｜1）=不去</td><td>天气*4+价格*2+同伴*1-6 &gt;=0：去 &lt;0：不去</td></tr><tr><td>价格</td><td>2</td><td></td><td></td></tr><tr><td>同伴</td><td>1</td><td></td><td></td></tr></tbody></table>
+<p>（权重举例1、2、4可以保证三因子之和可枚举所有规则，方便设阈值，不是真正权重比例，四因子是1248）</p>
+<p>模型：y（去不去）=x1（天气）*w1+x2（价格）*w2+x3（同伴）*w3+b</p>
+<p>激活函数</p>
+<p>上面例子只需要只输出0和1，但是训练多层网络，不断迭代微调W和B时，只返回0和1是无法实现0到1之间的状态决策逻辑（输出太不敏感了）。</p>
+<p>为了让输出能够平滑0到1的中间态，需要对结果进行连续性，对y进行改造成</p>
+<p>，改造后，原先[0,1]被转换成(0,1)，形成一个连续性结果。</p>
+<p>这个就是Sigmoid激活函数</p>
+<p>，优点输出空间在(0, 1)，缺点是左右两侧导数趋0，会出现梯度消失（下文讲），不利于训练，其他的主流的激活函数还有ReLUf(x)= max(0, x)，tanh、ELU等函数。</p>
+<p>激活函数主要是讲结果非线性化，放大参数对特征识别的灵敏和多样性，不同的激活函数除了非线性转换外，主要的区别是计算效率，解决梯度消失，中心值偏移这些问题。</p>
+<p>前面的例子是1x2的矩阵输入，1x1的矩阵输出，当输入是多维信息，例如一个人身高、年龄、工作、发量等等的时候，期望输出也是多维，例如感兴趣科目、愿意购买商品等等时，就需要讲神经元重新规划拓扑结构，实现线性变化，形成类似下面复杂的网状结构。</p>
+<p>当为了更好的拟合，以及引入运行时中间计算，也会调整拓扑，所以实际上整个网络会变得异常庞大（深层神经网络），例如ChatGPT4有1.8万亿的参数，这里的参数就是指训练后W和B的总和（红线部分），一共1.8万亿。</p>
+<p>这些训练后（包括fine-tuning）的参数被全部持久化后，大概代表已经吸收多少知识储备和推理潜力。</p>
+<p>这就是最基础的神经网络实现原理。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>Transformer 机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>CNN 聚焦局部丢全局、RNN 无法并行，Transformer 复杂度最低</li><li>Embedding 低维稠密向量化并叠加位置编码，gpt2 默认 768 维</li><li>多头注意力：QK^T 缩放 softmax 后乘 V，多头并行聚焦</li><li>残差+Norm 防退化，前馈层引入非线性；Decoder 用 mask 并行训练</li></ul><div class="pit"><ul><li>不缩放会数值过大导致 softmax 梯度消失</li><li>位置编码用整数或 [-1,1] 各有缺陷，改用 sin/cos</li></ul></div></div>
+<p>在此gpt之前，图片识别、NLP等场景已经有成熟的CNN、RNN等神经网络模型，但这两种神经网络存在的两个问题限制了模型应用的突破。</p>
+<p>卷积神经网络（Convolutional Neural Networks，CNN）</p>
+<p>循环神经网络（Recurrent Neural Network, RNN）</p>
+<p>CNN和RNN已经具备通过神经网络实现分类、预测能力，但是存在两个典型问题：</p>
+<h3 class="sub">1. CNN聚焦局部信息，丢失全局信息。</h3>
+<p>2. RNN无法并行计算（串行模式理论上确实也可以做到窗口无限大，然后从左到右把全部信息带过来，效率太差）。</p>
+<p>在2017年的时候，Google的翻译团队发布了一篇 Attention Is All You Need论文，提出了Transformer模型，相比CNN和RNN，Transformer在复杂度是最低的，效率极高，他的核心就是 Attention Mechanism（2017年前是有各种百花齐放和CNN、RNN结合的Attention），相比RNN，可以从整文视角看每个词以及这个词在上下文的意义是什么，比如“你太卷了和“把报纸卷起来”。</p>
+<p>（每层的总计算量、可以并行计算的计算量、长程依赖之间的路径长度）</p>
+<p>和前面讲的神经网络一样，transformer也是通过训练（瞎猜）构建f(x)，实现包括文本分类（mode1）、生成下个句子预测（mode2）、翻译任务（mode3），下面以GPT2为例，一步步分解实现原理。</p>
+<p>输入的处理（Embedding）</p>
+<p>在计算之前需要对输入进行处理来解决几个问题：</p>
+<ul><li>输入可被用于数学计算</li><li>编码信息“足够稠密”，能够承载训练过程中，学习的知识图谱</li></ul>
+<p>例如对“半”、“臧”、“真”、“帅”这4个词编码形成字典表（也可以“半”=1，“臧”=2，序列编码，one-hot只是为了计算简单）可以解决计算问题，但基于5个维度编码，并且每个元素只有0/1是不够支持训练过程中产生的内容，eg.&quot;半&quot;和&quot;臧&quot;连起可以表示一个人名，&quot;真&quot;是形容词等，最简单的解决方法是把维度扩充，再增加词性、关联性维度，当训练内容复杂后，会指数级增加计算量。</p>
+<p>所以最适中的方式是控制维度，稠密元素，也就是把[1 0 0 0]降维成[0.39847]，也就是“低维稠密”向量化了（实际上降低1维是不够的，gpt2默认时768维）。</p>
+<p>当输入被向量化，可以承载的内容也就变得很多，比如说向量的空间特性，cosine两个向量，可以从空间上判断其相似性，值接近1表示相似，反之依然，0为相交或不相关。</p>
+<p>当我们把每个字/词，都向量化后，比如“半”，按照名词、动作、是否王室、阿里4个维度向量化后形成一个[-0.1596, 0.3930, 0.6364, 0.2324]词向量，同样完成“臧”字的词向量，就可以在判断“半”和“臧”之间的在表述一个事物、是否王室成员上存不存在联系。</p>
+<p>用斯坦福的GloVe模型embedding后的英文单词编码，用一些可视化方法可以看到：</p>
+<ul><li>所有这些单词都有一条直的红色列，它们在这个维度上是相似的（名词维度）</li><li>“woman”和“girl”在很多地方是相似的，“man”和“boy”也是一样（性别维度）</li><li>“boy”和“girl”也有彼此相似的地方，但这些地方却与“woman”或“man”不同。（年龄维度）</li></ul>
+<p>所以当我们有了这样一份词向量表后，再去训练模型时，已经包含了词与词之前的某种联系，可以更好的达到训练目标，比如说我们训练一个模型，能够把各种夸张描述的娱乐新闻都转换成“谁干了啥”的时候，先把所有中文进行名字维度、动词维度、名词维度向量化后训练，然后再给予样本进行监督训练，将更准确。</p>
+<p>实际上，在tranformer中，虽然不是一定需要这些已经训练好(Pre-training)的向量表，但思路是一样的。</p>
+<p>Tranfromer本身就可以训练这样的词向量表，已满足下一个词的预测目标，当我们有明确的训练目标，也不需要这样按照预定目标训练的词向量表，比如说我们自己训练一个类似BERT的模型，通过周围的词来预测完形填空试卷，____是法国的首都，通过一个模型训练词的上下文联系性之后，形成特定的词向量表。</p>
+<p>（不仅文字，包括图片、视频、商品等等，一切皆可Embedding，其实就是说Embedding用一个低维稠密的向量“表示”一个对象）</p>
+<p>以翻译“LLM with banzang”为例， 在gpt2中，整个Embedding过程如下：</p>
+<ul><li>对输入X（LLM with banzang）进行分词：&quot;LL&quot;,&quot;M&quot;,&quot;with&quot;,&quot;ban&quot;,&quot;z&quot;,&quot;ang&quot;；</li><li>查询分词在gpt词库中的索引列表：3069, 44, 351, 3958, 89, 648；</li><li>对索引列表向量化：经过一个全连接层（后面讲，可以理解经过 x*w+b ），形成6*768的矩阵。</li></ul>
+<p>过程有三点补充说明：</p>
+<ul><li>分词有多种方式，广泛使用的子词分割（subword）方式，空间和效率更加平衡，在gpt2使用的是BPE（Byte-Pair Encoding）。</li></ul>
+<p>为什么通过subword分词？</p>
+<p>基于单词的分词：因为有running和run，dogs和dog等会形成大量的token，因为没有覆盖全导致标记unk，会降低拟合度。</p>
+<p>基于字母的分词：没有意义，比如一个中文字符，包含太多的信息。</p>
+<p>基于子词的分词：将不常见的词拆解成多个常见词，tokenization被拆分token和ization，一方面tokenization意义被整体保留，另一方面因为token都是出现频率较高的词，所以整个词汇表会缩减到很小而覆盖全。</p>
+<ul><li>向量化不一定非得从头训练产出，也可以使用GloVe这类预训练好，含有某些联系的模型数据。</li><li>6*768，768个维度是gpt2默认设置，向量化后的作用在第一部已经说过，不再重复。</li></ul>
+<p>Embedding过程代码如下：</p>
+<p>实际上更底层，索引被向量化的过程，还包含两个细节：</p>
+<ul><li>索引到向量过程，并没有按论文算法实现，而是直接随机初始了w参数，然后起了一层前馈层训练出768维度的最终值（暴力美学）</li><li>出了词向量外，还叠加了词位置向量（position embedding），来解决相同词在不同位置的语意不同，例如“你真狗”，“这是狗，不是豹子”。</li></ul>
+<p>论文中词位置向量细节</p>
+<p>引入词位置的时候，还需要解决两个问题：</p>
+<p>1. 如果是用整数数值表示，推理时可能会遇到比训练时还要长的序列；而且随着序列长度的增加，位置值会越来越大。</p>
+<p>2. 如果用[-1,+1]之间进行表示，要解决序列长度不同时，能表示token在序列中的绝对位置；而且在序列长度不同时，也要在不同序列中token的相对位置/距离保持一致。</p>
+<p>所以最后的实现是，对奇数维度，sin（词的index去除以10000的2*维度*词向量维度（768）），偶数cos，这样会将不管长度为多少的句子都是固定的长度的位置编码，以及位置编码都会被缩放在[-1, 1]的平滑范围，对模型非常理想的，最重要的是由于正弦和余弦函数的周期性（且是不同周期），对于任意固定偏移量 k，PE(pos+k)可以表示为 PE(pos) 的线性函数。这意味着模型可以很容易地通过学习注意力权重来关注相对位置，因为相对位置的编码可以通过简单的线性变换来获得。即我知道了绝对距离，也能知道相对距离。</p>
+<p>最后向量直接相加得出embedding后的值。</p>
+<p>上面是transform论文内容，但实际上gpt2没有按照sin和cos去计算，而是直接通过一个前馈层直接训练得出的，然后和词向量直接相加，最终训练过程也不再还原位置信息，而是以这种隐含的方式将位置信息参与后续训练，提高参数拟合度。</p>
+<p>最后把整个embedding过程的工程图贴一下：</p>
+<p>▐注意力和多头注意力机制（Attention Mechanism&amp;Multi-Head Attention）</p>
+<p>Attention不是Transformer提出的，在2017年以前的时候，各种Attention方式被广泛应用在NLP任务上，例如Bahdanau Attention等，单都以RNN、CNN结合形式出现，只不过到了2017年的 Attention Is All You Need论文发表，解决了上述说的两个核心问题后，才被活跃起来。</p>
+<p>Attention的大概原理，鲁老师的文章，有个例子讲注意力机制是非常生动的，引用一下：</p>
+<p>比如看到下面这张图，短时间内大脑可能只对图片中的“锦江饭店”有印象，即注意力集中在了“锦江饭店”处。短时间内，大脑可能并没有注意到锦江饭店上面有一串电话号码，下面有几个行人，后面还有“喜运来大酒家”等信息。</p>
+<p>大脑在短时间内处理信息时，主要将图片中最吸引人注意力的部分读出来了，类似下面：</p>
+<p>Attention的核心实现就是论文中的公式：</p>
+<p>其中Q为查询意图、K为检索内容、V为被查询全部信息，例如上图中：Q为“好奇看看照片是个啥”、K为“招牌的几个字”，V为“整个图片”，通过计算Q和Key的Attention Score，也就是最吸引人注意力的招牌，解析出招牌对应的值。</p>
+<p>这是抽象的说法，还是以翻译“LLM with banzang”为例，分解实现细节。</p>
+<p>&quot;LLM with banzang&quot;经过embedding后，形成以下的6*768（seq.len, embed.dim）矩阵，分别代表着LL、M、with、ban、z、ang这5个token的768维度的向量：</p>
+<p>然后分别乘以3个768*768（embed.dim, embed.dim）的Wq、Wk、Wv矩阵，得到的还是3个6*768的矩阵，分别是Q、K、V</p>
+<p>然后将Q和</p>
+<p>相乘（可以简单理解成 矩阵X乘以矩阵X的倒置），得到一个6*6的矩阵Z（seq.len，seq.len），Z代表着 [LL、M、with、ban、z、ang] 每个token之间的向量距离，换个说法就是把输入和输入的倒置矩阵相乘代表着LL、MM、with、ban、zang的token之间两两所有维度叠加后的“相似度”，这个是Attention最核心部分。</p>
+<p>两个矩阵点积表达相似度的数学原理，假设LL、M和with三个向量分别是[1 2] [3 3] [-2 1]映射到象限表后，相似肉眼看夹角度数，如下：</p>
+<p>数学定义是向量A和B的顶点距离</p>
+<p>，比如说LL和M的顶点距离是</p>
+<p>因为cos结果区间是[-1, 1]，所以两个矩阵的相似度也就相当于 两个矩阵的点积通过模长和cos给归一成[-1, 1]的值，等价于LL和M两个矩阵相似度，先算点积再归一，比如简化下上面的Q、K、Z矩阵。</p>
+<p>回想下，上一篇讲到的词向量，LL和M、以及M和with之间的相似度是不一样的，经过的训练后，已经包含了某种挂链，比如下图中cat与kitten在所有维度的接近，要高于dog和houses</p>
+<p>其中缩放目的是：</p>
+<ul><li>避免数值过大，再最后归一的时候会导致梯度消失（vanishing gradients）回归效果差。</li><li>归一函数的输入如果太大会导致梯度非常的小，训练会很难。</li></ul>
+<p>其中归一函数</p>
+<p>实现很简单，就是对向量中所有元素，指数放大后，算了一个出现概率（指数用e的原因是e的-1次方是0.3679，也在(0, 1)的区间）</p>
+<p>再乘以V矩阵，得到一个6*6的矩阵Z&#x27;，也就是token两两关系在每个维度下，和token序列的关系度。</p>
+<p>（具体的值实际上不需要理解，我们无法读懂某个参数W和B的值，也无法理解计算后的值，我们只关心这些值之间的关系，是不是预期就够）</p>
+<p>图例如下，最后得到的矩阵Z（6*768）如果降维到Z&#x27;（6,），第一行代表LL在&quot;LLM with banzang&quot;整句中和每个词的关联度，比如下图中ll和m紧密度高于with，第二行是M如此类推，实际上如果把6*1的矩阵在softmax后，取某个概率阈值，可以得到&quot;LLM with banzang&quot;这句中，最重要的两个单词是什么（当然是训练后）。</p>
+<p>回顾下Attention机制，</p>
+<p>，整个过程如下：</p>
+<p>这部分独立的流程的实现被称为Encoder module。</p>
+<p>实际上transformer论文中，一次查询可以是并行的，也就是第一维是batch，然后第二维seq.len，第三维是把embed.dim拆成了n份（论文中是12份，任意份都可以，但我怀疑12是一个经验值），然后第四维是n份后的token维度，还是按照上面例子从（6, 768）最终变换成（4, 12, 6, 64），再加上一个linear后，拼接成最终的（4, 12, 6, 768），这里的12就是多头（Multi-Head）概念。</p>
+<p>多头在工程上的意义在于：</p>
+<ul><li>比起单头，多头可以在不同维度空间聚焦信息处理，也可以降低单头在聚合多维度时的不稳定。</li><li>拟合度更好，单头的</li></ul>
+<p>▐残差网络（Residual Network，ResNet）&amp; 前馈网络（FeedForward Neural Network， FFNN）</p>
+<p>前面输入的X从embedding开始，到多头QKV，再还原Z，经过了多层的网络，每经过一层就会增加训练的性能要求，梯度下降的特别多，会剑走偏锋，第一部里Loss Function中梯度下降中，和LR类似，会跳过最优值，或者在最优值附近震荡，反复消耗资源，有个可视化训练的小工具很有意思建议大家玩耍一下。</p>
+<p>（在选择这个识别银河系一样的黄绿点范围的时候，我们增加了6个隐藏层后，traning loss在反复横跳，训练过程非常的长）</p>
+<p>2015年微软亚洲研究院提出了基于CNN架构的ResNet，在transformer中可以借鉴来解决这个“退化”问题，核心是引入了“跳跃连接”或“捷径连接”（训练场景，梯度直接反向传播最原始层），将输入除了做为X给每层外，还跳过这层网络直接和这层输出Y叠加，让后面的层可以学习到这层处理和原始输入的差异，而不是直接上层处理结果Y，这种设计允许网络学习到恒等映射（identity mapping），即输出与输入相同，从而使得网络可以通过更简单的路径来学习到正确的映射关系。</p>
+<p>X和Y因为维度相同，这里叠加就是直接相加，</p>
+<p>，但每层的输出其实是对X不同维度和力度的调整，需归一成正态分布后再相加，实现原理也很简单：</p>
+<h3 class="sub">1. 求矩阵每行所有列的均值</h3>
+<p>（例如上面例子，取LL的768维度的均值）</p>
+<h3 class="sub">2. 算出每行所有列的方差</h3>
+<p>3. 最后用矩阵每行每列，减去这行的均值，再除以这行的标准差（𝜖是一个小的常数，防止除0），然后再引入a和b训练参数，抵消这个过程的损失</p>
+<p>经过ADD和Norm后，Transformer的第一段处理基本结束，因为前面都是线性处理，需要再增加一个非线性层进行变化，让结果更丰富（或者让训练能够有一定的“基因突变”），这层非常的简单就是在第一部中讲的最简单的单向神经网络（f(x)=x*w+b），然后再过一次Norm。</p>
+<p>小结一下第一阶段的所有流程，见下图，这个流程在tranformer里被独立出一个模块，叫encoder，至此tranformer具备识别一个句子中每个词和整句的关联性，也就是每次token都包含了全部token信息以及关联度。</p>
+<p>▐训练过程</p>
+<p>Transformer仅一个Encoder模块就可以工作，可以处理信息抽取、识别、主体识别等任务，比如 BERT（Bidirectional Encoder Representations from Transformers）是只使用了Encoder，可以从给定的文本段落中找到并提取出回答问题的文本片段，目标是识别或检索信息，而不是生成新的文本序列。</p>
+<p>实际上，只通过Encoder直接连接一个全连接层去求f(x) 也不是不可以，但不连接其他模块性能会差很多，同时也没有办法实现并行训练（Teacher Forcing方式），所以又设计了Decoder模块，这两种模块的组合可以实现下面的场景：</p>
+<ul><li>文本分类（仅使用Encoder模块） ，label=f(tokens)</li><li>下一个token预测（仅使用Decoder模块） ，next_token=f(token)。比如给定一些词，做出下一个词的预测，而且是逐字向后推测</li><li>文本翻译（Encoder+Decoder模块） ，中文=f(英文)</li></ul>
+<p>通过最初“LLM with banzang”翻译的例子，上面已经完成了token之间的关注力计算，下面从观察训练过程了解Decoder的构成。</p>
+<p>整个训练过程还是求</p>
+<p>，即输入&quot;LL、M、with、ban、z、ang&quot;（此时的输入相比Encoder已经包含了token之间的相互关注信息），调整参数计算出结果和&quot;大模型、与、半臧&quot;比较，loss收敛后结束，但实现上有两个特别的点：</p>
+<p>第一个是在训练时词序引入了，翻译是以“大”、“大模型”、“大模型与”、“大模型与半臧”这样的顺序进行输出的，这样token之间的注意力加上词序的训练，在翻译（预测）场景会更贴合上下文场景，变得准确。</p>
+<p>但是在技术上，引入词序会导致训练任务必须得到前一个任务的输出结果做输入进行串行，无法并行执行，所以transformer引入mask来解决这个问题，具体是把本来串行的任务，通过直接将完整的预期结果按词序做了mask覆盖，分成多个可以并行执行的任务。</p>
+<p>mask的主要实现就是对样本输入做了右上三角形的掩码（覆盖了一个非常小的数，可以让softmax归一后趋0），在做Decoder的QKV的时候忽略了。</p>
+<p>任务并行后，同时任务也变成了“Teacher Forcing”方式，可以让loss收敛更快。</p>
+<p>Teacher Forcing</p>
+<p>RNN模型逐字推测训练过程，产生大量预测分支计算，比如“大”-&gt;[模型(90%)、小(4%)、量(1%)...]，可能在某个迭代会推测出下个词是“小”，倒置推测从大模型走向大小变量的分支，越走越远，loss收敛不了。</p>
+<p>Teacher Forcing概念是仍正常推测训练，但下个token不采纳推测实际结果，按照训练样本直接指定正确值，进行下个token预测。</p>
+<p>在transformer中，完整token序列参与训练，但屏蔽每个token后面信息，形成可并行执行任务，每个token序列推测过程无视其他任务推测结果，采用训练样本值进行前序context推测下个token。</p>
+<p>另外一个特别点是Decoder含有两层注意力，第一层是和Encoder一样的实现（自注意力），接受来自训练文本的真实输出，形成token的相互关注信息，第二层注意力QKV中Q来自上一个Decoder，KV并非由上一层Decoder结果计算来的，而是来自Encoder的KV结果（非同源，非自注意力），这样的设计是将来自Encoder的训练文本输入和训练真实输出（按词序mask）的相互关注都整合在一起预测被mask的值。</p>
+<p>论文中Encoder和Decoder是可以堆叠的，即输入通过堆叠n层Encoder（论文中使用了2/4/6/8层，只有6层效果最好，但实际在只有一行训练样本场景下，n_layers=1是效果最好的）处理后在传递到n层Deocder继续处理，同时每层Deocder的KV都来自最后一层的Encoder的输出。</p>
+<p>整个训练过程如下：</p>
+<p>1. 训练文本（输入/输出）[&#x27;LLM with banzang&#x27;, &#x27;大模型和半臧&#x27;]的输入[&#x27;LLM with banzang&#x27;]进行分词和embedding</p>
+<p>2. Encoder计算训练文本输入X的Self-AttentionScore，形成输入X的token间关注信息带入Decoder</p>
+<p>3. 训练文本（输入/输出）[&#x27;LLM with banzang&#x27;, &#x27;大模型和半臧&#x27;]的输出[&#x27;大模型和半臧&#x27;]进行分词和embedding</p>
+<p>4. 第一层Decoder对训练文本输出X&#x27;进行右上三角形MASK遮盖操作后进行Self-AttentionScore，形成输出X&#x27;从左往右词序的token间关注信息（即只能了解过去信息，无法提前知道未来词序，因为要预测），事实上形成了训练输出长度为m（</p>
+<p>）的并行任务</p>
+<p>5. 第二层Decoder将第一层Deocder输出的结果做为输入Q，使用Encoder的KV参数，拼接训练输入和输出再次做AttentionScore</p>
+<p>6. 预测下一个结果和训练输出对比后，反向传播调整各层参数，直到Loss收敛到预期结果。</p>
+<p>小结一下流程：</p>
+<p>▐预测过程</p>
+<p>相比训练过程，切换到预测模式后，原本训练的并行输入由最后一个Decoder输出取代，然后开始串行循环，直至&lt;EOS&gt;标记结束。就和RNN一样，逐一预测到底，例如：</p>
+<ul><li>LL -&gt; LLM</li><li>LLM -&gt; LLM with</li><li>LLM with -&gt; LLM with ban</li><li>LLM with ban -&gt; LLM with banz</li><li>LLM with banz -&gt; LLM with banzang</li></ul>
+<p>实际上预测下一个token是按照softmax后概率挑选的，在串行循环时，选取不同概率的词会形成不同的预测分支，例如：</p>
+<p>预测结果因概率挑选以及前馈层的非线性激活函数，将整个预测变的更加丰富，有点像基因突变，可能未来会产生艺术创造的价值，当前基于transfomer的各个模型都有会有多个预测输出分支待采用。</p>
+<p>▐输出的处理</p>
+<p>当输入X被Encoder和Decoder*2处理完后，形成token_size*embedding_size大小的矩阵，每行代表着一个token，每列是这个token在不同维度的某个magic number，最后再经过一个全连接层（Linear Layer，</p>
+<p>），对输入矩阵做线形变化成token_size*logits_size，同时引入训练参数做拟合，再经过一个softmax归一，拟合每个token在字典表中最高概率的index，拿index还原最终token。</p>
+<p>至此Transformer整个工作流程全部结束，图例回顾：</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>工程实践</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>手写 PyTorch Transformer：Embedding、多头注意力、Encoder/Decoder</li><li>MiniRBT：全词掩码+两段式蒸馏，6 层窄而深结构下游更优</li><li>HuggingFace 用 Trainer 或 AdamW 手写循环做文本分类微调</li><li>本地执行需装依赖、可离线下载模型、注意 Trainer 版本</li></ul><div class="pit"><ul><li>HuggingFace 在线模型可能网络不通，需离线模式下载</li><li>Trainer 依赖版本问题可注释 trainer.train()/metric.compute()</li></ul></div></div>
+<p>▐案例通过Transformer模型的实现</p>
+<p>上面贯穿的翻译“LLM with banzang”翻译案例，完整的代码实现如下（参考了https://adaning.github.io/posts/63679.html#toc-heading-16）：</p>
+<ul><li>import torch</li><li>from torch import nn</li><li>from torch import optim</li><li>from torch.utils import data as Data</li><li>import numpy as np</li><li>d_model = 6 # Embedding的大小</li><li>max_len = 1024 # 输入序列的最长大小</li><li>d_ff = 12 # 前馈神经网络的隐藏层大小, 一般是d_model的四倍</li><li>d_k = d_v = 3 # 自注意力中K和V的维度, Q的维度直接用K的维度代替, 因为这二者必须始终相等</li><li>n_layers = 1 # Encoder和Decoder的层数</li><li>n_heads = 8 # 自注意力多头的头数</li><li>p_drop = 0.1 # propability of dropout</li><li># 对encoder_input的PAD(0)做Mask，可以支持对训练样本打掩码</li><li>def get_attn_pad_mask(seq_q, seq_k):</li><li>batch, len_q = seq_q.size()</li><li>batch, len_k = seq_k.size()</li><li># we define index of PAD is 0, if tensor equals (zero) PAD tokens</li><li>pad_attn_mask = seq_k.data.eq(0).unsqueeze(1) # [batch, 1, len_k]</li><li>return pad_attn_mask.expand(batch, len_q, len_k) # [batch, len_q, len_k]</li><li># 在deocder_input做上三角掩码</li><li>def get_attn_subsequent_mask(seq):</li><li>attn_shape = [seq.size(0), seq.size(1), seq.size(1)] # [batch, target_len, target_len]</li><li>subsequent_mask = np.triu(np.ones(attn_shape), k=1) # [batch, target_len, target_len]</li><li>subsequent_mask = torch.from_numpy(subsequent_mask)</li><li>return subsequent_mask # [batch, target_len, target_len]</li><li># 做encoder_input添加位置编码</li><li>class PositionalEncoding(nn.Module):</li><li>def __init__(self, d_model, dropout=.1, max_len=1024):</li><li>super(PositionalEncoding, self).__init__()</li><li>self.dropout = nn.Dropout(p=p_drop)</li><li>positional_encoding = torch.zeros(max_len, d_model) # [max_len, d_model]</li><li>position = torch.arange(0, max_len).float().unsqueeze(1) # [max_len, 1]</li><li>div_term = torch.exp(torch.arange(0, d_model, 2).float() *</li><li>(-torch.log(torch.Tensor([10000])) / d_model)) # [max_len / 2]</li><li>positional_encoding[:, 0::2] = torch.sin(position * div_term) # even</li><li>positional_encoding[:, 1::2] = torch.cos(position * div_term) # odd</li><li># [max_len, d_model] -&gt; [1, max_len, d_model] -&gt; [max_len, 1, d_model]</li><li>positional_encoding = positional_encoding.unsqueeze(0).transpose(0, 1)</li><li># register_buffer能够申请一个缓冲区中的常量, 并且它不会被加入到计算图中, 也就不会参与反向传播.</li><li>self.register_buffer(&#x27;pe&#x27;, positional_encoding)</li><li>def forward(self, x):</li><li># x: [seq_len, batch, d_model]</li><li># we can add positional encoding to x directly, and ignore other dimension</li><li>x = x + self.pe[:x.size(0), ...]</li><li>return self.dropout(x)</li><li># Encoder和Deocder后的前馈层（含归一层）</li><li>class FeedForwardNetwork(nn.Module):</li><li>def __init__(self):</li><li>super(FeedForwardNetwork, self).__init__()</li><li>self.ff1 = nn.Linear(d_model, d_ff)</li><li># 线性变化还原</li><li>self.ff2 = nn.Linear(d_ff, d_model)</li><li>self.relu = nn.ReLU()</li><li>self.dropout = nn.Dropout(p=p_drop)</li><li>self.layer_norm = nn.LayerNorm(d_model)</li><li>def forward(self, x):</li><li>x = self.ff1(x)</li><li>x = self.relu(x)</li><li>x = self.ff2(x)</li><li>return self.layer_norm(x)</li><li># 多头注意力（含归一层）</li><li>class MultiHeadAttention(nn.Module):</li><li>def __init__(self, n_heads=8):</li><li>super(MultiHeadAttention, self).__init__()</li><li># do not use more instance to implement multihead attention</li><li># it can be complete in one matrix</li><li>self.n_heads = n_heads</li><li># we can&#x27;t use bias because there is no bias term in formular</li><li># 多头放在同一个矩阵计算</li><li>self.W_Q = nn.Linear(d_model, d_k * n_heads, bias=False)</li><li>self.W_K = nn.Linear(d_model, d_k * n_heads, bias=False)</li><li>self.W_V = nn.Linear(d_model, d_v * n_heads, bias=False)</li><li>self.fc = nn.Linear(d_v * n_heads, d_model, bias=False)</li><li>self.layer_norm = nn.LayerNorm(d_model)</li><li>def forward(self, input_Q, input_K, input_V, attn_mask):</li><li>&#x27;&#x27;&#x27;</li><li>To make sure multihead attention can be used both in encoder and decoder,</li><li>we use Q, K, V respectively.</li><li>input_Q: [batch, len_q, d_model]</li><li>input_K: [batch, len_k, d_model]</li><li>input_V: [batch, len_v, d_model]</li><li>&#x27;&#x27;&#x27;</li><li>residual, batch = input_Q, input_Q.size(0)</li><li># [batch, len_q, d_model] -- matmul W_Q --&gt; [batch, len_q, d_q * n_heads] -- view --&gt;</li><li># [batch, len_q, n_heads, d_k,] -- transpose --&gt; [batch, n_heads, len_q, d_k]</li><li>Q = self.W_Q(input_Q).view(batch, -1, n_heads, d_k).transpose(1, 2) # [batch, n_heads, len_q, d_k]</li><li>K = self.W_K(input_K).view(batch, -1, n_heads, d_k).transpose(1, 2) # [batch, n_heads, len_k, d_k]</li><li>V = self.W_V(input_V).view(batch, -1, n_heads, d_v).transpose(1, 2) # [batch, n_heads, len_v, d_v]</li><li>attn_mask = attn_mask.unsqueeze(1).repeat(1, n_heads, 1, 1) # [batch, n_heads, seq_len, seq_len]</li><li># prob: [batch, n_heads, len_q, d_v] attn: [batch, n_heads, len_q, len_k]</li><li>prob, attn = ScaledDotProductAttention()(Q, K, V, attn_mask)</li><li>prob = prob.transpose(1, 2).contiguous() # [batch, len_q, n_heads, d_v]</li><li>prob = prob.view(batch, -1, n_heads * d_v).contiguous() # [batch, len_q, n_heads * d_v]</li><li>output = self.fc(prob) # [batch, len_q, d_model]</li><li>return self.layer_norm(residual + output), attn</li><li># 点积，QKV</li><li>class ScaledDotProductAttention(nn.Module):</li><li>def __init__(self):</li><li>super(ScaledDotProductAttention, self).__init__()</li><li>def forward(self, Q, K, V, attn_mask):</li><li>&#x27;&#x27;&#x27;</li><li>Q: [batch, n_heads, len_q, d_k]</li><li>K: [batch, n_heads, len_k, d_k]</li><li>V: [batch, n_heads, len_v, d_v]</li><li>attn_mask: [batch, n_heads, seq_len, seq_len]</li><li>&#x27;&#x27;&#x27;</li><li>scores = torch.matmul(Q, K.transpose(-1, -2)) / np.sqrt(d_k) # [batch, n_heads, len_q, len_k]</li><li># -1e9是用很大的负数，使得其在Softmax中可以被忽略，实现mask效果</li><li>scores.masked_fill_(attn_mask, -1e9)</li><li>attn = nn.Softmax(dim=-1)(scores) # [batch, n_heads, len_q, len_k]</li><li>prob = torch.matmul(attn, V) # [batch, n_heads, len_q, d_v]</li><li>return prob, attn</li><li># Encoder层，可以构建多层Encoder，由多头注意力和前馈层构成</li><li>class EncoderLayer(nn.Module):</li><li>def __init__(self):</li><li>super(EncoderLayer, self).__init__()</li><li>self.encoder_self_attn = MultiHeadAttention()</li><li>self.ffn = FeedForwardNetwork()</li><li>def forward(self, encoder_input, encoder_pad_mask):</li><li>&#x27;&#x27;&#x27;</li><li>encoder_input: [batch, source_len, d_model]</li><li>encoder_pad_mask: [batch, n_heads, source_len, source_len]</li><li>encoder_output: [batch, source_len, d_model]</li><li>attn: [batch, n_heads, source_len, source_len]</li><li>&#x27;&#x27;&#x27;</li><li>encoder_output, attn = self.encoder_self_attn(encoder_input, encoder_input, encoder_input, encoder_pad_mask)</li><li>encoder_output = self.ffn(encoder_output) # [batch, source_len, d_model]</li><li>return encoder_output, attn</li><li># Encoder</li><li>class Encoder(nn.Module):</li><li>def __init__(self):</li><li>super(Encoder, self).__init__()</li><li>self.source_embedding = nn.Embedding(source_vocab_size, d_model)</li><li>self.positional_embedding = PositionalEncoding(d_model)</li><li>self.layers = nn.ModuleList([EncoderLayer() for layer in range(n_layers)])</li><li>def forward(self, encoder_input):</li><li># encoder_input: [batch, source_len]</li><li>encoder_output = self.source_embedding(encoder_input) # [batch, source_len, d_model]</li><li>encoder_output = self.positional_embedding(encoder_output.transpose(0, 1)).transpose(0, 1) # [batch, source_len, d_model]</li><li>encoder_self_attn_mask = get_attn_pad_mask(encoder_input, encoder_input) # [batch, source_len, source_len]</li><li>encoder_self_attns = list()</li><li>for layer in self.layers:</li><li># encoder_output: [batch, source_len, d_model]</li><li># encoder_self_attn: [batch, n_heads, source_len, source_len]</li><li>encoder_output, encoder_self_attn = layer(encoder_output, encoder_self_attn_mask)</li><li>encoder_self_attns.append(encoder_self_attn)</li><li>return encoder_output, encoder_self_attns</li><li># Decoder层，可以构建多层Decoder，由多头注意力和前馈层构成</li><li>class DecoderLayer(nn.Module):</li><li>def __init__(self):</li><li>super(DecoderLayer, self).__init__()</li><li>self.decoder_self_attn = MultiHeadAttention()</li><li>self.encoder_decoder_attn = MultiHeadAttention()</li><li>self.ffn = FeedForwardNetwork()</li><li>def forward(self, decoder_input, encoder_output, decoder_self_mask, decoder_encoder_mask):</li><li>&#x27;&#x27;&#x27;</li><li>decoder_input: [batch, target_len, d_mdoel]</li><li>encoder_output: [batch, source_len, d_model]</li><li>decoder_self_mask: [batch, target_len, target_len]</li><li>decoder_encoder_mask: [batch, target_len, source_len]</li><li>&#x27;&#x27;&#x27;</li><li># masked mutlihead attention</li><li># Q, K, V all from decoder it self</li><li># decoder_output: [batch, target_len, d_model]</li><li># decoder_self_attn: [batch, n_heads, target_len, target_len]</li><li>decoder_output, decoder_self_attn = self.decoder_self_attn(decoder_input, decoder_input, decoder_input, decoder_self_mask)</li><li># Q from decoder, K, V from encoder</li><li># decoder_output: [batch, target_len, d_model]</li><li># decoder_encoder_attn: [batch, n_heads, target_len, source_len]</li><li>decoder_output, decoder_encoder_attn = self.encoder_decoder_attn(decoder_output, encoder_output, encoder_output, decoder_encoder_mask)</li><li>decoder_output = self.ffn(decoder_output) # [batch, target_len, d_model]</li><li>return decoder_output, decoder_self_attn, decoder_encoder_attn</li><li># Decoder</li><li>class Decoder(nn.Module):</li><li>def __init__(self):</li><li>super(Decoder, self).__init__()</li><li>self.target_embedding = nn.Embedding(target_vocab_size, d_model)</li><li>self.positional_embedding = PositionalEncoding(d_model)</li><li>self.layers = nn.ModuleList([DecoderLayer() for layer in range(n_layers)])</li><li>def forward(self, decoder_input, encoder_input, encoder_output):</li><li>&#x27;&#x27;&#x27;</li><li>decoder_input: [batch, target_len]</li><li>encoder_input: [batch, source_len]</li><li>encoder_output: [batch, source_len, d_model]</li><li>&#x27;&#x27;&#x27;</li><li>decoder_output = self.target_embedding(decoder_input) # [batch, target_len, d_model]</li><li>decoder_output = self.positional_embedding(decoder_output.transpose(0, 1)).transpose(0, 1) # [batch, target_len, d_model]</li><li>decoder_self_attn_mask = get_attn_pad_mask(decoder_input, decoder_input) # [batch, target_len, target_len]</li><li>decoder_subsequent_mask = get_attn_subsequent_mask(decoder_input) # [batch, target_len, target_len]</li><li>decoder_encoder_attn_mask = get_attn_pad_mask(decoder_input, encoder_input) # [batch, target_len, source_len]</li><li>decoder_self_mask = torch.gt(decoder_self_attn_mask + decoder_subsequent_mask, 0)</li><li>decoder_self_attns, decoder_encoder_attns = [], []</li><li>for layer in self.layers:</li><li># decoder_output: [batch, target_len, d_model]</li><li># decoder_self_attn: [batch, n_heads, target_len, target_len]</li><li># decoder_encoder_attn: [batch, n_heads, target_len, source_len]</li><li>decoder_output, decoder_self_attn, decoder_encoder_attn = layer(decoder_output, encoder_output, decoder_self_mask, decoder_encoder_attn_mask)</li><li>decoder_self_attns.append(decoder_self_attn)</li><li>decoder_encoder_attns.append(decoder_encoder_attn)</li><li>return decoder_output, decoder_self_attns, decoder_encoder_attns</li><li>class Transformer(nn.Module):</li><li>def __init__(self):</li><li>super(Transformer, self).__init__()</li><li>self.encoder = Encoder()</li><li>self.decoder = Decoder()</li><li>self.fc = nn.Linear(d_model, target_vocab_size, bias=False)</li><li>def forward(self, encoder_input, decoder_input):</li><li>&#x27;&#x27;&#x27;</li><li>encoder_input: [batch, source_len]</li><li>decoder_input: [batch, target_len]</li><li>&#x27;&#x27;&#x27;</li><li># encoder_output: [batch, source_len, d_model]</li><li># encoder_attns: [n_layers, batch, n_heads, source_len, source_len]</li><li>encoder_output, encoder_attns = self.encoder(encoder_input)</li><li># decoder_output: [batch, target_len, d_model]</li><li># decoder_self_attns: [n_layers, batch, n_heads, target_len, target_len]</li><li># decoder_encoder_attns: [n_layers, batch, n_heads, target_len, source_len]</li><li>decoder_output, decoder_self_attns, decoder_encoder_attns = self.decoder(decoder_input, encoder_input, encoder_output)</li><li>decoder_logits = self.fc(decoder_output) # [batch, target_len, target_vocab_size]</li><li># decoder_logits: [batch * target_len, target_vocab_size]</li><li>return decoder_logits.view(-1, decoder_logits.size(-1))</li><li>class Tokenizer:</li><li>def __init__(self, sentences):</li><li>super(Tokenizer, self).__init__()</li><li>self.sentences = sentences</li><li>def get_source_vocab(self):</li><li>return self.source_vocab</li><li>def get_target_vocab(self):</li><li>return self.target_vocab</li><li>def convert_token_to_ids(self):</li><li>source_inputs = &quot; &quot;.join([sentences[i][0] for i in range(len(sentences))]).replace(&#x27;E&#x27;, &#x27;&#x27;).split()</li><li>source_inputs.insert(0, &#x27;E&#x27;)</li><li>self.source_vocab = {k: v for v, k in enumerate(source_inputs)}</li><li>target_inputs = &quot; &quot;.join([sentences[i][1] for i in range(len(sentences))]).replace(&#x27;E&#x27;, &#x27;&#x27;).replace(&#x27;S&#x27;, &#x27;&#x27;).split()</li><li>target_inputs.insert(0, &#x27;E&#x27;)</li><li>target_inputs.insert(1, &#x27;S&#x27;)</li><li>self.target_vocab = {k: v for v, k in enumerate(target_inputs)}</li><li>encoder_inputs, decoder_inputs, decoder_outputs = [], [], []</li><li>for i in range(len(sentences)):</li><li>encoder_input = [self.source_vocab[word] for word in sentences[i][0].split()]</li><li>decoder_input = [self.target_vocab[word] for word in sentences[i][1].split()]</li><li>decoder_output = [self.target_vocab[word] for word in sentences[i][2].split()]</li><li>encoder_inputs.append(encoder_input)</li><li>decoder_inputs.append(decoder_input)</li><li>decoder_outputs.append(decoder_output)</li><li>return torch.LongTensor(encoder_inputs), torch.LongTensor(decoder_inputs), torch.LongTensor(decoder_outputs)</li><li>def convert_ids_to_source_sentences(self, ids, split_word=&#x27; &#x27;):</li><li>return split_word.join([key for key in self.source_vocab][ids[i].item()] for i in range(len(ids)))</li><li>def convert_ids_to_target_sentences(self, ids, split_word=&#x27; &#x27;):</li><li>return split_word.join([key for key in self.target_vocab][ids[i].item()] for i in range(len(ids)))</li><li># 训练</li><li>device = torch.device(&#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;)</li><li>epochs = 400</li><li>lr = 1e-1</li><li>model = Transformer().to(device)</li><li>criterion = nn.CrossEntropyLoss()</li><li>optimizer = optim.Adam(model.parameters(), lr=lr)</li><li>sentences = [</li><li># Encoder的输入          Decoder的输入（teaching force）   #Decoder的输出（样本值）</li><li>[&#x27;LLM with banzang E&#x27;,  &#x27;S 半臧 和 大模型&#x27;,               &#x27;半臧 和 大模型 E&#x27;]</li><li>tokenizer = Tokenizer(sentences)</li><li>encoder_inputs, decoder_inputs, decoder_outputs = tokenizer.convert_token_to_ids()</li><li>dataset = Seq2SeqDataset(encoder_inputs, decoder_inputs, decoder_outputs)</li><li>data_loader = Data.DataLoader(dataset, 2, True)</li><li>source_vocab_size = len(tokenizer.get_source_vocab())</li><li>target_vocab_size = len(tokenizer.get_target_vocab())</li><li>for epoch in range(epochs):</li><li>for encoder_input, decoder_input, decoder_output in data_loader:</li><li>encoder_input = encoder_input.to(device)</li><li>decoder_input = decoder_input.to(device)</li><li>decoder_output = decoder_output.to(device)</li><li>output = model(encoder_input, decoder_input)</li><li>loss = criterion(output, decoder_output.view(-1))</li><li>print(&#x27;Epoch:&#x27;, &#x27;%04d&#x27; % (epoch + 1), &#x27;loss =&#x27;, &#x27;{:.6f}&#x27;.format(loss), &#x27;\t预测:&#x27;, tokenizer.convert_ids_to_target_sentences(output.max(dim=1, keepdim=False)[1].data), &#x27;\t(训练样本:&#x27;, tokenizer.convert_ids_to_target_sentences(decoder_output.view(-1).data), &#x27;)&#x27;)</li><li>optimizer.zero_grad()</li><li>loss.backward()</li><li>optimizer.step()</li><li># 预测</li><li>output_len = len(decoder_outputs.squeeze(0))</li><li>for encoder_input, decoder_input, decoder_output in data_loader:</li><li>encoder_input = encoder_input.to(device)</li><li>decoder_input = torch.zeros(1, output_len).type_as(encoder_input.data)</li><li># 从&quot;S&quot;开始，source_vocab={&#x27;E&#x27;:0, &#x27;S&#x27;:1, ...}</li><li>next_symbol = 1</li><li>print(&#x27;输入:&#x27;, tokenizer.convert_ids_to_source_sentences(encoder_input.data.squeeze(0)))</li><li>for i in range(output_len):</li><li>decoder_input[0][i] = next_symbol</li><li>output = model(encoder_input, decoder_input)</li><li>prob = output.max(dim=1, keepdim=False)[1]</li><li>next_symbol = prob.data[i].item()</li><li>print(&#x27;输出:&#x27;, tokenizer.convert_ids_to_target_sentences(prob.data[:i+1], &#x27;&#x27;))</li><li>if next_symbol == 0:</li><li>break</li></ul>
+<p>训练过程（在400轮的时候，已经收敛）：</p>
+<p>预测过程：</p>
+<p>具体代码实现有兴趣学习或者在解疑过程可以仔细参考，所有抽象过程全部在上述文字描述中，重点行做了中文注释，需要补充说明的有两点内容：</p>
+<ul><li>代码中Encoder和Deocder有Layer的实现，意思是Encoder或者Decoder可以堆叠执行，Encoder堆叠后的输出统一提供给每个Decoder（论文中使用了2/4/6/8层，只有6层效果最好，但实际在只有一行训练样本场景下，n_layers=1是效果最好的）</li><li>#第一层的Encoder的输出会做为第二层Encoder的输入</li><li>for layer in self.layers:</li><li>encoder_output, encoder_self_attn = layer(encoder_output, encoder_self_attn_mask)</li><li>encoder_self_attns.append(encoder_self_attn)</li><li>包括多头n_heads = 8的实现，也不是对input拆分成8份分别计算，而是和Layer一样直接合并在一个矩阵中做一次计算（并行实现）</li></ul>
+<p>▐通过开源模型处理实际案例</p>
+<p>大淘宝技术项目需求管理中，有一环是维护每个需求的子技术PM，但这个字段并不是必填，容易被漏填，案例目标：</p>
+<ul><li>通过训练已经存在的“子技术PM”需求列表（1000+），求出剩余（1000+）需求的“子技术PM”字段</li></ul>
+<p>不必再从头写一份训练代码，得益于&quot;HUB&quot;潮流，可以通过https://huggingface.co/获取大量的开源模型及训练数据（甚至可以快速体验效果），比如我们选择一个可以处理中文的文本分类模型：</p>
+<p>Hugging Face Transformers 是一个开源 Python 库，其提供了数以千计的预训练 transformer 模型，可广泛用于自然语言处理 (NLP) 、计算机视觉、音频等各种任务。它通过对底层 ML 框架 (如 PyTorch、TensorFlow 和 JAX) 进行抽象，简化了 transformer 模型的实现，从而大大降低了 transformer 模型训练或部署的复杂性。</p>
+<p>选择的是“哈工大讯飞联合实验室（HFL）”的MiniRBT，hfl/minirbt-h288</p>
+<p>目前预训练模型存在参数量大，推理时间长，部署难度大的问题，为了减少模型参数及存储空间，加快推理速度，我们推出了实用性强、适用面广的中文小型预训练模型MiniRBT，我们采用了如下技术：</p>
+<p>全词掩码技术：全词掩码技术（Whole Word Masking）是预训练阶段的训练样本生成策略。简单来说，原有基于WordPiece的分词方式会把一个完整的词切分成若干个子词，在生成训练样本时，这些被分开的子词会随机被mask（替换成[MASK]；保持原词汇；随机替换成另外一个词）。而在WWM中，如果一个完整的词的部分WordPiece子词被mask，则同属该词的其他部分也会被mask。更详细的说明及样例请参考：Chinese-BERT-wwm，本工作中我们使用哈工大LTP作为分词工具。</p>
+<p>两段式蒸馏：相较于教师模型直接蒸馏到学生模型的传统方法，我们采用中间模型辅助教师模型到学生模型蒸馏的两段式蒸馏方法，即教师模型先蒸馏到助教模型（Teacher Assistant），学生模型通过对助教模型蒸馏得到，以此提升学生模型在下游任务的表现。并在下文中贴出了下游任务上两段式蒸馏与一段式蒸馏的实验对比，结果表明两段式蒸馏能取得相比一段式蒸馏更优的效果。</p>
+<p>构建窄而深的学生模型。相较于宽而浅的网络结构，如TinyBERT结构（4层，隐层维数312），我们构建了窄而深的网络结构作为学生模型MiniRBT（6层，隐层维数256和288），实验表明窄而深的结构下游任务表现更优异。</p>
+<p>MiniRBT目前有两个分支模型，分别为MiniRBT-H256和MiniRBT-H288，表示隐层维数256和288，均为6层Transformer结构，由两段式蒸馏得到。同时为了方便实验效果对比，我们也提供了TinyBERT结构的RBT4-H312模型下载。</p>
+<p>在CoLab上使用huggingface非常简单，如下：</p>
+<ul><li>import torch</li><li>from transformers import AdamW, AutoTokenizer, AutoModelForSequenceClassification</li><li>from torch.utils.data import Dataset, DataLoader</li><li>from tqdm.auto import tqdm</li><li>checkpoint = &quot;hfl/minirbt-h288&quot;</li><li>tokenizer = AutoTokenizer.from_pretrained(checkpoint)</li><li>model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=3)</li><li>device = torch.device(&#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;)</li><li>model.to(device)</li><li># 1. 训练和评估数据准备</li><li>class TrainDataset(Dataset):</li><li>def __init__(self, sentences):</li><li>self.sentences = sentences</li><li>def __len__(self):</li><li>return len(self.sentences)</li><li>def __getitem__(self, idx):</li><li>return sentences[&#x27;train&#x27;][idx][0], sentences[&#x27;train&#x27;][idx][1], sentences[&#x27;train&#x27;][idx][2]</li><li>class ValidationDataset(Dataset):</li><li>def __init__(self, sentences):</li><li>self.sentences = sentences</li><li>def __len__(self):</li><li>return len(self.sentences)</li><li>def __getitem__(self, idx):</li><li>return sentences[&#x27;validation&#x27;][idx][0], sentences[&#x27;validation&#x27;][idx][1], sentences[&#x27;validation&#x27;][idx][2]</li><li>def data_collator(batch):</li><li>sentence ,labels = [],[]</li><li>for item in batch:</li><li>sentence.append([item[0], item[1]])</li><li>labels.append(item[2])</li><li>inputs = tokenizer(sentence, padding=True, truncation=True, return_tensors=&quot;pt&quot;)</li><li>inputs[&#x27;labels&#x27;] = torch.tensor(labels)</li><li>return inputs</li><li># 2. 准备训练和评估数据</li><li>sentences = {</li><li>&quot;train&quot;: [</li><li>[&quot;I have a green apple&quot;, &quot;apple&quot;, 0],</li><li>[&quot;I have a black apple&quot;, &quot;apple&quot;, 1],</li><li>[&quot;I have a red apple&quot;, &quot;apple&quot;, 2],</li><li>[&quot;I have a red banner&quot;, &quot;banner&quot;, 2]</li><li>&quot;validation&quot;: [</li><li>[&quot;I have a black apple&quot;, &quot;apple&quot;, 1],</li><li>[&quot;I have a green banner&quot;, &quot;banner&quot;, 0]</li><li># 3. 评估模型</li><li>import evaluate</li><li>from transformers import TrainingArguments</li><li>from transformers import Trainer</li><li>import numpy as np</li><li>def compute_metrics(eval_preds):</li><li>metric = evaluate.load(&quot;glue&quot;, &quot;mrpc&quot;)</li><li>logits, labels = eval_preds</li><li>predictions = np.argmax(logits, axis=-1)</li><li>return metric.compute(predictions=predictions, references=labels)</li><li>training_args = TrainingArguments(&quot;test-trainer&quot;, evaluation_strategy=&quot;epoch&quot;)</li><li>trainer = Trainer(</li><li>model,</li><li>training_args,</li><li>train_dataset = TrainDataset(sentences),</li><li>eval_dataset = ValidationDataset(sentences),</li><li>data_collator = data_collator,</li><li>tokenizer = tokenizer,</li><li>compute_metrics=compute_metrics</li><li>trainer.train()</li><li># 4. 进行训练</li><li>train_dataset = TrainDataset(sentences)</li><li>train_dataloader = DataLoader(train_dataset, shuffle=True, batch_size=8, collate_fn=data_collator)</li><li>num_epochs = 10</li><li>progress_bar = tqdm(range(num_epochs))</li><li>model.train()</li><li># 观测指标</li><li>metric = evaluate.load(&quot;glue&quot;, &quot;mrpc&quot;)</li><li>optimizer = AdamW(model.parameters(), lr=5e-5)</li><li>for epoch in range(num_epochs):</li><li>for batch in train_dataloader:</li><li>optimizer.zero_grad()</li><li>output = model(**batch)</li><li>loss, logits = output[:2]</li><li>loss.backward()</li><li>optimizer.step()</li><li>predictions = torch.argmax(logits, dim=-1)</li><li>metric.add_batch(predictions=predictions, references=batch[&quot;labels&quot;])</li><li># 过程日志</li><li>print(f&quot;Epoch {epoch + 1}, Loss: {loss.item()}&quot;)</li><li>progress_bar.update(1)</li><li># 观测指标结果</li><li>metric.compute()</li><li># 5. 预测</li><li>model.eval()</li><li>sentences = [&quot;I have a black banner&quot;, &quot;banner&quot;]</li><li>logits = model(**tokenizer(sentences[0], sentences[1], return_tensors=&quot;pt&quot;)).logits</li><li>pred = torch.argmax(logits,dim=-1)</li><li>print(pred)</li></ul>
+<p>代码整体分五个部分：</p>
+<ul><li>模型引入 ：</li></ul>
+<p>AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=3)（num_labels在案例中，等于“子技术PM”的去重数）</p>
+<ul><li>checkpoint = &quot;hfl/minirbt-h288&quot;</li><li>tokenizer = AutoTokenizer.from_pretrained(checkpoint)</li><li>model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=3)</li><li>训练样本准备 ：分成两部分Train和Validation两个训练集，每个训练集分成三个维度，前两个是文本的两个普通维度，最后一个是lables表明了文本的分类，在案例中就是“子技术PM”值</li><li>模型评估 ：使用Transformer的高级工具Trainer，看模型对数据的准确性指标（evaluate需要安装，预设了指标）</li><li>训练 ：同样对整个训练结束增加指标观测（evaluation_strategy=&quot;epoch&quot;），tqdm实现进度条</li><li>预测 ：</li></ul>
+<p>因为数据安全的原因，没有办法把案例的需求数据进行上传，所以需要在本地执行，Colab提供代码在本机执行的能力，前提需要安装Jupyter，具体步骤参考https://research.google.com/colaboratory/local-runtimes.html</p>
+<p>连接本地执行后，运行时会出现一些问题：</p>
+<p>1. 依赖的包通过pip，按错误提示在本机上挨个安装一遍，比如说 pip install torch</p>
+<p>2. 通过hugginface在线引入的模型，可能会遇到网络连接问题，遇到的话，下载模型到本地https://huggingface.co/docs/transformers/installation#offline-mode</p>
+<p>3. Trainer包可能出现依赖版本问题，指标观察部分可以注释掉，包括trainer.train()、metric.compute()</p>
+<p>本地执行的代码：</p>
+<ul><li>import torch</li><li>from transformers import AdamW, AutoTokenizer, AutoModelForSequenceClassification</li><li>from torch.utils.data import Dataset, DataLoader</li><li>from tqdm.auto import tqdm</li><li>from datasets import load_dataset</li><li>device = &#x27;mps&#x27; if torch.backends.mps.is_available() else &#x27;cpu&#x27;</li><li>class UniqueLabelsDataset(Dataset):</li><li>def __init__(self, data, labels):</li><li>self.data = data</li><li>self.labels = labels</li><li>def __len__(self):</li><li>return len(self.data)</li><li>def __getitem__(self, idx):</li><li>return self.labels[idx], pre_process_input(self.data[idx].values())</li><li># 训练和评估数据准备</li><li>def data_collator(batch):</li><li>sentence, labels = [],[]</li><li>for l, item in batch:</li><li>sentence.append(item)</li><li>labels.append(l.item())</li><li>inputs = tokenizer(sentence, padding=True, truncation=True, return_tensors=&quot;pt&quot;)</li><li>inputs[&#x27;labels&#x27;] = torch.tensor(labels)</li><li>return inputs</li><li>def pre_process_input(inputs):</li><li>return f&quot; &quot;.join([str(value).replace(&#x27; &#x27;, &#x27;&#x27;) for value in inputs])</li><li># 准备训练和评估数据</li><li>&#x27;&#x27;&#x27;</li><li>&#x27;标题&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;需求指派人&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;int64&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;子需求技术pm&#x27;: Value(dtype=&#x27;int64&#x27;, id=None),</li><li>&#x27;team_alias&#x27;: Value(dtype=&#x27;string&#x27;, id=None)}</li><li>&#x27;&#x27;&#x27;</li><li>train_dataset = load_dataset(&quot;csv&quot;, data_files = &quot;./tt_l_demands.csv&quot;, delimiter=&quot;,&quot;)[&#x27;train&#x27;]</li><li>labels_vocab, unique_labels = torch.unique(torch.tensor(train_dataset[&#x27;子需求技术pm&#x27;]), return_inverse=True)</li><li>num_labels = len(labels_vocab)</li><li>train_dataset.remove_columns([&quot;子需求技术pm&quot;])</li><li>train_dataloader = DataLoader(UniqueLabelsDataset(train_dataset, unique_labels), shuffle=True, batch_size=64, collate_fn=data_collator)</li><li># 初始化模型</li><li>checkpoint = &quot;/Users/nanzhang/minirbt-h288&quot;</li><li>tokenizer = AutoTokenizer.from_pretrained(checkpoint)</li><li>model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=num_labels)</li><li>model.to(device)</li><li>from transformers import get_scheduler</li><li># 进行训练</li><li>num_epochs = 100</li><li># 显示训练进度，dynamic_ncols=True保持在一行</li><li>progress_bar = tqdm(range(num_epochs), dynamic_ncols=True)</li><li>#  lr从 1e-1 的预热，爬坡到 5e-5</li><li>num_training_steps = num_epochs * len(train_dataloader)</li><li>lr_scheduler = get_scheduler(</li><li>&quot;linear&quot;,</li><li>optimizer=optimizer,</li><li>num_warmup_steps=1e-1,</li><li>num_training_steps=num_training_steps,</li><li>model.train()</li><li># 观测指标</li><li>optimizer = AdamW(model.parameters(), lr=5e-5)</li><li>for epoch in range(num_epochs):</li><li>for batch in train_dataloader:</li><li>batch = {k: v.to(device) for k, v in batch.items()}</li><li>output = model(**batch)</li><li>loss, logits = output[:2]</li><li>loss.backward()</li><li>optimizer.step()</li><li>lr_scheduler.step()</li><li>optimizer.zero_grad()</li><li># 显示进度</li><li>#print(f&quot;Epoch {epoch + 1}, Loss: {loss.item()}&quot;)</li><li>progress_bar.set_postfix(loss=loss.item())</li><li>progress_bar.update(1)</li><li># 持久化训练好的参数</li><li>model.save_pretrained(&#x27;./model&#x27;)</li><li>tokenizer.save_pretrained(&#x27;./model&#x27;)</li><li># 预测</li><li>sentences = [&quot;***&quot;, &#x27;407080&#x27;, &#x27;407080&#x27;, &#x27;2722&#x27;, &#x27;4066&#x27;, &#x27;淘天项目&#x27;, &#x27;50932674&#x27;, &#x27;***&#x27;]</li><li>input = tokenizer(pre_process_input(sentences), padding=True, truncation=True, return_tensors=&quot;pt&quot;)</li><li>input.to(device)</li><li>logits = model(**input).logits</li><li>pred = torch.argmax(logits,dim=-1)</li><li>print(labels_vocab[pred.item()])</li></ul>
+<p>和colab上的代码有一些不同，补充说明几点，剩余大家看代码理解：</p>
+<p>1. device = &#x27;mps&#x27; if torch.backends.mps.is_available() else &#x27;cpu&#x27;，是启用M3的GPU加速</p>
+<p>2. 训练的数据结构中，“子需求技术PM”字段是labels，即“分类值”，训练目标</p>
+<ul><li>&#x27;标题&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;需求指派人&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;int64&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;子需求pd&#x27;: Value(dtype=&#x27;string&#x27;, id=None),</li><li>&#x27;子需求技术pm&#x27;: Value(dtype=&#x27;int64&#x27;, id=None),</li><li>&#x27;***&#x27;: Value(dtype=&#x27;string&#x27;, id=None)</li><li>lr_scheduler，是预热LR值，保持动态的LR（1e-1到5e-5范围），加速收敛</li></ul>
+<p>大概训练100轮后，loss收敛到预期目标：</p>
+<p>最后拿了一条没有填写技术子PM的数据做输入后，给出了预期团队，但非预测同学的结果（还算可以，训练样本太少）</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>总结从神经网络原理到 Transformer 再到开源模型实践的完整路径</li><li>强调理论与代码结合，帮助读者从理论走向实战</li></ul></div>
+<p>本文从神经网络的基本原理出发，逐步深入探讨了神经网络模型的演进，特别是Transformer模型的实现原理及其在自然语言处理领域的应用。通过对神经网络的输入处理、注意力机制、残差网络、前馈网络等关键组件的详细解析，以及实际的代码实现，读者可以全面理解AI模型的工作机制。此外，文章还介绍了如何利用开源模型进行实际任务的开发，为读者提供了从理论到实践的完整指南。希望本文能够帮助读者更好地掌握AI技术，激发对技术的热情，推动AI领域的发展。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>参考资料</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>列出虎嗅、知乎、阮一峰、HuggingFace 课程等参考链接</li></ul></div>
+<ul><li>https://m.huxiu.com/article/812076.html</li><li>https://mp.weixin.qq.com/s/eMrv15yOO0oYQ-o-wiuSyw</li><li>https://mp.weixin.qq.com/s/7N3HveaIfn2N-zKjBoRL1A</li><li>https://www.53ai.com/news/qianyanjishu/1279.html</li><li>https://zhuanlan.zhihu.com/p/59678480</li><li>https://blog.csdn.net/Winterfell01/article/details/132779240</li><li>https://www.ruanyifeng.com/blog/2017/07/neural-network.html</li><li>https://huggingface.co/learn/nlp-course/zh-CN/chapter0/1?fw=pt http://www.alphacalculus.com/cpage28.html</li><li>https://zh.d2l.ai/chapter_natural-language-processing-pretraining/word2vec.html</li><li>https://adaning.github.io/posts/6744.html#toc-heading-1 https://lulaoshi.info/deep-learning/attention/transformer-attention.html#%E7%AC%AC%E4%B8%80%E4%B8%AAmulti-head-attention</li></ul>
+<p>¤ 拓展阅读 ¤</p>
+<p>3DXR技术 | 终端技术 | 音视频技术</p>
+<p>服务端技术 | 技术质量 | 数据算法</p>
+<p>大淘宝技术</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>人脑 vs 大模型算力</h4><p>人脑约860亿神经元、每秒最高约40万亿次计算，约等价100T参数模型；ChatGPT4约1.8万亿参数。</p><a class="src-link" href="#sec-01">原文 → 神经网络原理</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>损失函数 vs 梯度下降</h4><p>MSELoss 衡量预测与真实值的均方误差判断收敛；梯度下降求一阶导数定调整方向，lr 控步长。</p><a class="src-link" href="#sec-01">原文 → 神经网络原理</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>学习率 lr 的坑</h4><p>lr 过大跳过最优值并震荡不收敛；lr 过小易陷入局部极小值，且训练时长与成本增加。</p><a class="src-link" href="#sec-01">原文 → 神经网络原理</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Sigmoid vs ReLU</h4><p>Sigmoid 输出(0,1)但两侧导数趋0易梯度消失；ReLU=f(x)=max(0,x) 等更利于训练。</p><a class="src-link" href="#sec-01">原文 → 神经网络原理</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Encoder vs Decoder</h4><p>Encoder 自注意力抽取信息，可用于文本分类；Decoder 含 mask 自注意力与 Encoder-KV 交叉注意力，用于生成。</p><a class="src-link" href="#sec-02">原文 → Transformer 机制</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>CNN/RNN vs Transformer</h4><p>CNN 聚焦局部丢全局，RNN 无法并行；Transformer 复杂度最低，靠 Attention 看整文上下文。</p><a class="src-link" href="#sec-02">原文 → Transformer 机制</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Embedding 与位置编码</h4><p>索引经全连接层向量化为 6*768 矩阵（gpt2 默认768维），再叠加位置编码保留顺序语义。</p><a class="src-link" href="#sec-02">原文 → Transformer 机制</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Attention QKV 计算</h4><p>Q查询、K检索、V信息；QK^T 缩放后 softmax 再乘 V，得 token 两两关注度矩阵。</p><a class="src-link" href="#sec-02">原文 → Transformer 机制</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Attention 缩放与梯度</h4><p>点积值过大会使 softmax 梯度极小、训练困难，需除以 sqrt(d_k) 缩放后再归一。</p><a class="src-link" href="#sec-02">原文 → Transformer 机制</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>mask 与 Teacher Forcing</h4><p>右上三角掩码屏蔽未来 token 实现并行训练；Teacher Forcing 用样本真值做下一步输入加速收敛。</p><a class="src-link" href="#sec-02">原文 → Transformer 机制</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>MiniRBT 微调</h4><p>AutoTokenizer/AutoModelForSequenceClassification 加载 hfl/minirbt-h288，num_labels 为分类数，Trainer 或 AdamW 微调。</p><a class="src-link" href="#sec-03">原文 → 工程实践</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>MiniRBT 结构</h4><p>6层 Transformer，隐层 256/288，全词掩码+两段式蒸馏，窄而深结构下游任务表现更优。</p><a class="src-link" href="#sec-03">原文 → 工程实践</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>训练即调参：损失函数判断收敛，梯度下降定方向，lr 控步长，参数是反复“瞎猜”后的最优拟合。</li>
+          <li>Transformer 的突破在 Attention：QK^T 缩放 softmax 后乘 V，多头并行聚焦，mask 让训练可并行。</li>
+          <li>工程落地优先复用开源模型：HuggingFace 加载 MiniRBT 微调即可做文本分类，注意依赖与网络坑。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzAxNDEwNjk5OQ==&amp;mid=2650536910&amp;idx=1&amp;sn=bcf4d4d610994835124e6d7b68aed802" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzAxNDEwNjk5OQ==&amp;mid=2650536910&amp;idx=1&amp;sn=bcf4d4d610994835124e6d7b68aed802</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI应用 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

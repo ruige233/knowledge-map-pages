@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">AI Infra入门干货总结：大模型是如何高效推理的</h1>
+  <p class="lede">以Llama 3为例，逐环节拆解vLLM推理流程与张量维度变化</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI应用</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 44 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>连续批处理</a>
+          <a href="#sec-02"><span class="n">02</span>Paged Attention</a>
+          <a href="#sec-03"><span class="n">03</span>推理流程</a>
+          <a href="#sec-04"><span class="n">04</span>总结</a>
+          <a href="#sec-05"><span class="n">05</span>模型配置参数</a>
+          <a href="#sec-06"><span class="n">06</span>运行时变量</a>
+          <a href="#sec-07"><span class="n">07</span>权重组成</a>
+          <a href="#sec-08"><span class="n">08</span>调度详细流程</a>
+          <a href="#sec-09"><span class="n">09</span>参考</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 连续批处理</a>
+          <a href="#sec-02">02 Paged Attention</a>
+          <a href="#sec-03">03 推理流程</a>
+          <a href="#sec-04">04 总结</a>
+          <a href="#sec-05">05 模型配置参数</a>
+          <a href="#sec-06">06 运行时变量</a>
+          <a href="#sec-07">07 权重组成</a>
+          <a href="#sec-08">08 调度详细流程</a>
+          <a href="#sec-09">09 参考</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：binnnliu</p>
+<p>看了很多的文章和视频，我以为我理解大模型的工作原理了，直到看了vLLM的代码，我发现很多地方理解的太过表面。因此花了大概2个月的业余时间，深入阅读了vLLM的源码，本文算是对于学习代码的一个总结。另外由于当前主流LLM都是 Decoder-Only 架构，本文会聚焦LLM，不会像网络上其他介绍Transformers的文章从原始论文的 Encoder-Decoder架构讲起。</p>
+<p>在阅读 vLLM 源码的过程中发现，追踪推理过程中每一步的张量维度变化，对于理解大模型工作原理非常有用。因此，本文将以 Llama 3为例，介绍推理过程中的每个计算环节，在每个计算环节都会标注Tensor的维度变化。</p>
+<p>我们知道通过批处理可以提高GPU的利用率：本质是提升计算强度，即通过复用权重数据来均摊内存访问开销；而减少Kernel启动开销与通过海量warp充分发挥隐藏延迟仅是随之而来的次要优化。而批处理内的请求要步调一致，同时开始，同时结束。而对于LLM这类生成式任务，其核心矛盾在于每个请求的输出序列长度是不可预测且差异巨大的。那怎么办呢？</p>
+<p>有没有可能将调度的从request level下沉到token level呢？ 恭喜你发明了continuous batching。</p>
+<p>那每个请求的KV Cache显存申请是不是应该也是token level，不要一次申请所有的显存。搞一个地址数组(block table)来维护每个请求的KV Cache地址就好？ 恭喜你发明了Paged Attention。</p>
+<p>没错，以上两个概念是当今大模型得以高性能运行的关键。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>连续批处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>调度不区分 Prefill/Decode，让已算 token 数追上总 token 数。</li><li>四项硬约束：并发请求数、token 预算、模型最大长度、空闲 KV blocks。</li><li>按 token 级调度，输入是 Flattened 的 input_ids，消除 Padding。</li></ul></div>
+<p>在vLLM调度器的视角中，不存在Prefill 阶段和Decode阶段的区分。 每个请求主要关注：</p>
+<ul><li>num_computed_tokens：已经计算过的 token 数（含 Prefix Cache 命中的部分）</li><li>num_tokens：该请求当前总共拥有的 token 数（prompt + 已生成的 output）</li></ul>
+<p>每一步调度的目标就是：让num_computed_tokens追上num_tokens。差多少就调度多少——当然要受限于 token 预算。</p>
+<p>调度受4个硬性约束限制：</p>
+<ul><li>最大并发请求数 self.max_num_running_reqs = scheduler_config.max_num_seqs</li><li>token budget   单步最多计算多少 token（所有请求之和），控制 GPU 计算量上限</li><li>self.max_num_scheduled_tokens = (</li><li>self.scheduler_config.max_num_scheduled_tokens       # 优先用这个</li><li>if self.scheduler_config.max_num_scheduled_tokens</li><li>else self.scheduler_config.max_num_batched_tokens    # fallback</li><li>模型最大序列长度 self.max_model_len = model_config.max_model_len</li><li>是否还有空闲的KV Cache blocks</li></ul>
+<p>如上图所示，vLLM的每轮推理都会基于token level调度，后续的执行的输入都是类似input_ids这种打平的token数组，即Flattened。(这里的调度逻辑是在Tokenize之后, 本文后续的num_sched_tokens都对应上图中的total_num_scheduled_tokens)</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>Paged Attention</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>KV Cache 按块分配，block_table 记录物理块 ID，解决显存碎片问题。</li><li>slot_mapping 与 block_table 不带层维度，各层 KV 存同一物理块相同位置。</li><li>用 block_size=16 保证块内连续，以少量带宽折损换取吞吐量跃升。</li></ul><div class="pit"><ul><li>block_table 间接寻址带来离散访存，对 Memory Controller 不友好。</li></ul></div></div>
+<p>vLLM启动时会申请显存 kv_cache shape为：[num_layers, 2, num_blocks, block_size, num_kv_heads, head_dim]，每一层key_cache和value_cache的shape都是[num_blocks, block_size, num_kv_heads, head_dim]。</p>
+<p>block_table会记录每个请求分配到的物理块ID，shape为[max_num_reqs, max_num_blocks_per_req]，请求0分配了块[5, 8, 12]，请求1分配了块[3, 7]</p>
+<p>为什么 slot_mapping 和 block_table 不需要 num_layers 维度？如果一个请求的第 25 个 Token 被分配到了物理块 ID 为 8 的位置，那么在模型的第 0 层到第 31 层，这个 Token 的 KV 值都会被存储在物理块 8 的相同位置。</p>
+<p>而推理过程中，通过slot_mapping告诉kernel 把新产生的 KV 写到哪个 slot，通过block_table告诉 kernel 去哪些物理 block 读取 KVCache。</p>
+<ul><li># slot_idx对应token对应的最终存储位置:  slot_idx = block_idx * block_size + block_offset</li><li>const int64_t slot_idx = slot_mapping[token_idx];</li><li>const int64_t block_idx = slot_idx / block_size;     // 计算块索引</li><li>const int64_t block_offset = slot_idx % block_size;  // 计算块内偏移</li></ul>
+<p>比如：block_size = 16（每个块存储16个token）,请求0的block_table为：[5, 8, 12]，token位置为25，计算过程：</p>
+<ul><li>block_idx = 25 // 16 = 1（属于第1个虚拟块）</li><li>block_idx = block_table[0, 1] = 8（从页表查找物理块ID）</li><li>block_offset = 25 % 16 = 9</li><li>slot_idx = 8 * 16 + 9 = 137</li></ul>
+<p>PagedAttention 的虚拟页表机制解决了显存碎片的问题，极大地提升了 GPU 的显存利用率，是支撑 Continuous Batching 高性能推理的基础。</p>
+<p>然而PagedAttention 引入的 block_table 间接寻址机制，打破了一个请求在物理显存上的绝对连续性。当 Attention Kernel 跨越 block 读取历史 KVCache 时，会触发离散访存（Uncoalesced Access），这在底层对 Memory Controller 是非常不友好的，同时也会导致 L2 Cache 的命中率下降，带来一定的带宽折损。当然，系统设计从来都是 Trade-off。</p>
+<p>vLLM 通过设置合理的 block_size（默认通常是 16）来缓解这个问题：在一个 block 内部的 16 个 Token 的物理显存依然是连续的，能够保证高效率的合并访存。相比于因显存碎片导致的OOM，牺牲少部分的访存带宽换取整个系统吞吐量（Throughput）的大幅跃升，在 LLM 推理的整体逻辑中是划算的。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>推理流程</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Tokenize 用 BPE；Embedding 查表把 token ID 变成特征矩阵。</li><li>QKV 按列拼接成宽 GEMM；RoPE 用 cos_sin_cache 免算 sin/cos。</li><li>FlashAttention 用融合、分块与 Online Softmax 避免矩阵读写 HBM。</li><li>Prefill 计算密集，Decode 访存密集；Attention 无法跨请求摊薄访存。</li></ul><div class="pit"><ul><li>Attention 是请求内部运算，不同请求的 KV Cache 不能交叉，需按请求维度隔离。</li></ul></div></div>
+<p>Tokenize</p>
+<p>对用户输入提示词进行分词并转换为数字表示。目前主流 LLM 几乎全部使用 BPE（Byte Pair Encoding）。</p>
+<p>BPE的词表训练方式如下：</p>
+<p>Embedding Lookup</p>
+<p>Embedding Lookup 本质上是一个查表操作，它将一维的 Token ID 数组[num_sched_tokens]直接转化为 [num_sched_tokens, hidden_size] 的特征矩阵，作为进入大模型真正意义上的数学输入。</p>
+<p>理论实现</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入  维度</th><th>权重矩阵  维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>Embedding</td><td></td><td>[batch_size, seq_len]</td><td>[V, hidden_size]</td><td>[batch_size, seq_len, hidden_size]</td><td>本质是索引取值，而非矩阵乘法</td></tr></tbody></table>
+<p>vLLM中的实现</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入   维度</th><th>权重矩阵  维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>Embedding</td><td></td><td>[num_sched_tokens]</td><td>[V, hidden_size]</td><td>[num_sched_tokens, hidden_size]</td><td>Flattened 布局</td></tr></tbody></table>
+<p>将 Batch 中所有请求的有效 Token 拼接为一维长向量，彻底消除 Padding。</p>
+<p>Transformer Block</p>
+<p>Attention Module (以标准GQA + RoPE为例)</p>
+<p>RMSNorm</p>
+<p>为了保证大模型在神经网络中的数值稳定性，必须引入特征归一化（Normalization）机制。与传统 LayerNorm 要求同时缩放与平移不同，为了提升计算效率，现代大模型广泛为采用了 RMSNorm ：砍掉平移操作，仅沿特征维度对数据进行尺度缩放，能够有效防止前向传播中的方差膨胀与硬件数值溢出，从而极大缓解反向传播时的梯度异常（消失或爆炸）问题，为深层网络的稳定训练提供基础保障。</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入  维度</th><th>权重维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>RMSNorm</td><td></td><td>[num_sched_tokens, hidden_size]</td><td>[hidden_size]</td><td>[num_sched_tokens, hidden_size]</td><td>是一维向量而非矩阵，做的是逐通道缩放而非 GEMM</td></tr></tbody></table>
+<p>Q/K/V Linear Proj - Fused QKV</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入 X 维度</th><th>权重矩阵  维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>Fused QKV</td><td></td><td>[num_sched_tokens, hidden_size]</td><td>[hidden_size,qkv_proj_size]</td><td>[num_sched_tokens, qkv_proj_size]</td><td>权重按列拼接，执行单次宽矩阵 GEMM 4096 (Q) + 1024 (K) + 1024 (V) = 6144</td></tr></tbody></table>
+<p>Reshape &amp; Cache</p>
+<table><thead><tr><th>目标矩阵</th><th>Q, K, V Slice</th><th>RoPE(维度不变)</th><th>Multi-Head Reshape</th><th>备注</th></tr></thead><tbody><tr><td>Query ()</td><td>[num_sched_tokens, hidden_size]</td><td></td><td>[num_sched_tokens,num_heads,head_dim]</td><td>前 4096 列</td></tr><tr><td>Key ()</td><td>[num_sched_tokens, kv_channels]</td><td></td><td>[num_sched_tokens,num_kv_heads,head_dim]</td><td>中间 1024 列</td></tr><tr><td>Value ()</td><td>[num_sched_tokens, kv_channels]</td><td></td><td>[num_sched_tokens,num_kv_heads,head_dim]</td><td>最后 1024 列</td></tr></tbody></table>
+<p>注：是一个块对角旋转矩阵，实际实现中通过元素级 sin/cos 运算避免矩阵乘法。</p>
+<p>这个阶段的大概流程： QKV 按列拆分 -&gt; 对Q、K进行RoPE计算 -&gt; Q、K、V Reshape多头视角  -&gt; 然后reshape_and_cache按照slot_mapping Scatter写入Paged KVCache。</p>
+<p>RoPE 的核心思想就是：用旋转的角度来代表 Token 的位置。 虽然不是矩阵乘法，sin/cos 属于超越函数，在 GPU 上由 SM 内的特殊函数单元（SFU, Special Function Unit）执行。SFU 的吞吐量通常仅为 FP32 ALU 的 1/4。所以VLLM中不在 RoPE kernel实时计算sin/cos ，而是引擎初始化时按模型配置预计算好 cos_sin_cache，shape 为 [max_position_embeddings, rotary_dim]。 RoPE kernel 运行时按 positions 索引出对应的 cos/sin 行，与 Q/K 做逐元素乘加即可。本质是用一份小表（典型大小几 MB 到几十 MB）换掉每次 forward 几百万次的 sin/cos 调用——经典的空间换时间 /访存换算力。</p>
+<p>Attention (FlashAttention, Scaled Dot-Product Attention)</p>
+<p>读取请求对应 KV Cache 进行 FlashAttention 计算。</p>
+<p>Softmax 的核心原理可以用一句话概括：将一组任意的实数（通常称为 Logits），转化为一套总和为 1 的概率分布，同时放大差异。ps: 这里的为head_dim。</p>
+<p>感觉Attention的逻辑是整个LLM推理最复杂的地方了：</p>
+<ul><li>Attention 的数学逻辑并不复杂，但是为了提升计算强度，打破内存墙，业界在这里做了非常多的优化，比如FlashAttention；</li><li>其他阶段基本都是Token维度打平的，而Attention计算必须要在请求维度进行运算。</li></ul>
+<p>特别注意: 在进入Attention kernel之前，需要从全局Flattened视角[num_sched_tokens, ...]切换到请求维度视角[batch_size, ...]。这是因为Attention计算本质上是请求内部的操作，不同请求的KV Cache不能交叉。vLLM/FlashAttention通过cu_seqlens（累积序列长度）数组来实现这种变长序列的请求级隔离，而无需真正Reshape为[batch_size, ...]的规整张量。 这里的K和V Shape算子逻辑上为[batch_size, num_kv_heads, seq_len, head_dim]，而不同请求的seq_len肯定不一致。实际上在cuda算子层已经确保了不同请求不会分配到同一个 thread block，即保证这里的运算是请求维度隔离的。</p>
+<p>K的Shape为[seq_lens, num_kv_heads, head_dim]，包含当前请求所有历史的KCache，seq_lens是所有历史KV对应的Token长度，但物理上，由于Paged Attention机制，这些历史K Cache并非连续存储，而是离散分布在HBM的物理块中（即底层实际Shape为[num_blocks, block_size, num_kv_heads, head_dim]）。Kernel在执行时，会通过 block_table 动态间接寻址，在片上SRAM中将其拼凑为逻辑上的连续序列参与计算。</p>
+<p>V的Shape为[seq_lens, num_kv_heads, head_dim]，包含当前请求所有历史的VCache</p>
+<p>Q的Shape为[query_lens, num_heads, head_dim]，query_lens是本次Q对应的Token长度</p>
+<table><thead><tr><th>操作名称</th><th>数学公式</th><th>逻辑说明 / 目的</th></tr></thead><tbody><tr><td>GQA分组共享</td><td>1 KV Head 映射给 4 Q Head</td><td>把KV的Shape从[seq_lens, num_kv_heads, head_dim]变为[seq_lens, num_heads, head_dim] 逻辑上等价于将1个KV Head的数据广播给4个Q Head；物理实现中通过索引映射kv_head_idx = q_head_idx // (num_heads // num_kv_heads)避免显存复制。</td></tr><tr><td>Q-K Dot Product</td><td></td><td>查询Query和该请求所有Key的点积，注意力原始分数。-&gt;[query_lens, num_heads, seq_lens]</td></tr><tr><td>Scale</td><td></td><td>对原始分数进行数值缩放（ 为向量维度），防止 Softmax 函数进入梯度极小的区域。</td></tr><tr><td>Mask</td><td></td><td>注入因果逻辑，通过加上掩码矩阵 （通常将未来位置设为 ），阻止模型“看到”未来的信息。</td></tr><tr><td>Softmax</td><td></td><td>将处理后的分数转化为总和为 1 的注意力权重（概率）。-&gt;[query_lens, num_heads, seq_lens]</td></tr><tr><td>MatMul</td><td></td><td>根据注意力权重  对值向量（Value）进行加权求和，得到最终的输出特征表示。 V的Shape为[seq_lens, num_heads, head_dim]   -&gt; [query_lens, num_heads, head_dim]</td></tr></tbody></table>
+<p>Attention 的数学逻辑非常清晰，但在大模型推理（尤其是长文本 Prefill 阶段）中，如果严格按照数学公式分步执行，会在 GPU 的 HBM（全局显存）中产生庞大的中间矩阵 （注意力分数）和 （Softmax概率），其  的内存访问量会严重影响性能，即所谓的内存墙问题。</p>
+<p>为了打破这个瓶颈，vLLM 默认采用 FlashAttention 及其变体（如 Flash-Decoding）。FlashAttention 的核心思想是 Kernel 融合 (Kernel Fusion) 与 分块计算 (Tiling)。但分块计算面临一个致命的数学障碍：Softmax 操作需要知道全局的最大值和指数和才能计算，这通常要求完整的中间矩阵驻留在显存中。FlashAttention 巧妙地引入了 Online Softmax 算法，通过维护局部的当前最大值（Running Max）和当前指数和（Running Sum），并在读入新块时利用动态缩放因子（Rescaling Factor）对旧结果进行修正。</p>
+<p>正是凭借 Online Softmax，FlashAttention 成功解除了全局数据依赖，将从 Q-K 点积、Softmax 到乘 V 的整个逻辑步骤，融合成了一个单一的 CUDA Kernel。在物理执行上，它一块一块地在 SRAM 中完成计算，彻底避免了将庞大的中间矩阵  和  读写 HBM，从而大幅打破了内存墙限制。</p>
+<p>Prefill 阶段，seq_lens 和 query_lens 都是num_prompt_tokens。当前 Prompt 计算出的 KV 向量先被 reshape_and_cache_flash 按 slot_mapping 写入 Paged KV Cache，随后 attention kernel 通过block_table 从 cache 中读取 K/V 完成本层 attention 计算；这份写入同时也作为该序列的 KV Cache，供后续 decode 步骤复用。</p>
+<p>vLLM v0中prefill和decode 走两条独立分支：prefill 通过 attn_metadata.is_prompt == True 调 flash_attn_varlen_func，kernel直接读临时的物理上连续的HBM buffer 里的 K/V，不读 cache；decode 走 paged_attention_v1/v2，K/V 全部从 cache 读。v1 把两路统一成一次 flash_attn_varlen_func 调用，K/V 全部走 paged cache + block_table，代价是 prefill 多一次&quot;写 cache → 读 cache&quot;的间接寻址，换来对 prefix cache / chunked prefill 的天然支持。只有v0版本 FlashAttention不读KV Cache，因为 v0 没有 prefix cache / chunked prefill。</p>
+<p>V1中即便某些 backend（如 FlashInfer、MLA-sparse）把混合 batch 物理拆分成prefill / decode 两个独立 kernel 调用,prefill 仍然从 paged cache 读 K/V - 因为 v1 需要支持 prefix cache 和 chunked prefill 。</p>
+<p>Decode阶段，seq_lens为已计算的历史 token 总数， query_lens为1。</p>
+<p>对比Prefill和Decode，可以发现：</p>
+<ul><li>Prefill阶段：QKV_Proj、Attention、O_Proj、MLP 本质上都是稠密矩阵乘法（GEMM），其实就是通过请求内token-level计算复用模型权重，因此算术强度极高，使得 GPU 在 Prefill 阶段主要受限于 Tensor Cores 的物理算力峰值，属于计算密集型（Compute-bound）。</li><li>Decode阶段：由于自回归特性，每次只处理一个 Token（ query_lens = 1 ），若无优化，此时QKV_Proj、Attention、O_Proj、MLP全都退化为矩阵向量乘法（GEMV）。虽然计算量不大，但需要把巨大的 KV Cache和模型权重 从 HBM 搬运到 SRAM，非常吃显存带宽，因此Decode阶段是典型的访存密集型（Memory-bound）。</li></ul>
+<p>而 Continuous Batching 的价值在于在Prefill实现请求内复用模型权重的基础上，进一步通过token-level的调度让多个请求复用模型权重，将 QKV_Proj、O_Proj、MLP 重新变回矩阵乘法，极大地摊薄了读取权重的显存开销。</p>
+<p>但是Attention则比较特殊，由于每个请求必须读取自己独占的 KV Cache（无法跨请求共享），而且Decode每次只处理一个 Token，Attention 计算始终无法均摊访存开销。此外，由于当前 Query 必须与所有历史 Key/Value 交互，哪怕有KVCache的存在，其计算与访存量也是随着上下文长度  呈  线性膨胀。这里特别注意其实Prefill阶段每次处理num_prompt_tokens个Token，Attention 计算是可以均摊访存开销的。</p>
+<p>ps: 所以其实我们日常所说的Prefill是Compute-bound，Decode是Memory-bound，主要是基于 1. 从 HBM 读取模型权重的访存摊销， 2. 从 HBM 读取模型KV的访存摊销。</p>
+<p>Multi-Head Concatenation</p>
+<table><thead><tr><th>操作名称</th><th>逻辑说明</th><th>vLLM 输入维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>Concat / Flatten</td><td>消除多头维度，恢复隐藏层维度</td><td>[num_sched_tokens, num_heads, head_dim]</td><td>[num_sched_tokens, hidden_size]</td><td>物理内存通常已经是连续的，这里本质上是一个改变 Tensor View 的操作。 (hidden_size = num_heads * head_dim)</td></tr></tbody></table>
+<p>O_Proj - 线性融合 (Output Projection)</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入 维度</th><th>权重矩阵  维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>O_Proj</td><td></td><td>[num_sched_tokens, hidden_size]</td><td>[hidden_size, hidden_size]</td><td>[num_sched_tokens, hidden_size]</td><td>跨 Head 的信息交互与融合。这也是一次标准的稠密矩阵乘法（GEMM / GEMV）。</td></tr></tbody></table>
+<p>Residual Connection</p>
+<p>不要推翻重来，而是在原有的基础上学习“修正值”（Delta）。如果没有 ResNet 证明网络可以堆到 100 层以上且不梯度消失，后来的 BERT (24层) 和 GPT (96层+) 根本不敢设计得那么深。它是“Scaling Law”在架构上的物理基础。</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入  维度</th><th>输入  维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>Residual Add</td><td></td><td>[num_sched_tokens, hidden_size]</td><td>[num_sched_tokens, hidden_size]</td><td>[num_sched_tokens, hidden_size]</td><td>是进入这一层 RMSNorm 之前的原始输入。将注意力机制提取的新特征“加回”主干数据流中。</td></tr></tbody></table>
+<p>实际vLLM中，Residual Add会和下一步的RMSNorm融合成一个 CUDA kernel。</p>
+<p>FFN</p>
+<p>RMSNorm</p>
+<p>对  再进行一次归一化。在 vLLM 中，通常与上一层残差相加（Residual Add）融合，减少 HBM 读写。</p>
+<p>Gate_Proj &amp; Up_Proj</p>
+<p>通常 intermediate_size 是 hidden_size 的 4 倍左右 (或 8/3 倍)。</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入 X 维度</th><th>权重 W 维度</th><th>输出维度</th></tr></thead><tbody><tr><td>Gate Proj</td><td></td><td>[num_sched_tokens, hidden_size]</td><td>[hidden_size, intermediate_size]</td><td>[num_sched_tokens, intermediate_size]</td></tr><tr><td>Up Proj</td><td></td><td>[num_sched_tokens, hidden_size]</td><td>[hidden_size, intermediate_size]</td><td>[num_sched_tokens, intermediate_size]</td></tr></tbody></table>
+<p>vLLM 工程实现（Fused Gate/Up）</p>
+<p>为了减少 GPU 核函数启动（Kernel Launch）次数并充分利用内存带宽，vLLM 在加载模型时会将  和  按列拼接。这样原本两次中等规模的矩阵乘法，就变成了一次宽矩阵 GEMM。</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入 X 维度</th><th>权重 Wgate_up 维度</th><th>输出维度</th></tr></thead><tbody><tr><td>Fused Gate/Up</td><td></td><td>[num_sched_tokens, hidden_size]</td><td>[hidden_size, 2*intermediate_size]</td><td>[num_sched_tokens, 2*intermediate_size]</td></tr></tbody></table>
+<p>Activation</p>
+<p>SiLU(Gate) * Up。vLLM 使用 silu_and_mul kernel 在片上（SRAM）直接输出点乘结果，极大节省了显存带宽。</p>
+<table><thead><tr><th>操作名称</th><th>数学公式</th><th>物理实现说明</th></tr></thead><tbody><tr><td>Slice &amp; Act</td><td></td><td>为  前一半， 为后一半。</td></tr></tbody></table>
+<p>Down_Proj</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入  维度</th><th>权重  维度</th><th>输出结果维度</th></tr></thead><tbody><tr><td>Down Proj</td><td></td><td>[num_sched_tokens, intermediate_size]</td><td>[intermediate_size, hidden_size]</td><td>[num_sched_tokens, hidden_size]</td></tr></tbody></table>
+<p>Residual Connection</p>
+<p>x = x + FFN_Output</p>
+<ul><li>class LlamaMLP(nn.Module):</li><li>def __init__(self, config):</li><li>super().__init__()</li><li># 通常 intermediate_size 是 hidden_size 的 4 倍左右 (或 8/3 倍)</li><li>self.gate_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)</li><li>self.up_proj   = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)</li><li>self.down_proj = nn.Linear(self.intermediate_size, self.hidden_size, bias=False)</li><li>self.act_fn = nn.SiLU()</li><li>def forward(self, x):</li><li># 1. Gate 和 Up 分别进行 Linear 变换</li><li># 2. Gate 经过 SiLU 激活</li><li># 3. 两者相乘 (Element-wise multiplication) -&gt; 这就是 GLU (Gated Linear Unit)</li><li># 4. 最后经过 Down 投影回原维度</li><li>return self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))</li></ul>
+<p>LM Head</p>
+<p>将隐藏层特征映射到整个词表空间，输出未归一化的原始得分，即 Logits。</p>
+<p>在前面的 Transformer Block 中，Prefill 阶段的 num_sched_tokens 是所有 Prompt 长度的总和。但实际上vLLM LM Head只需要每个请求序列的最后一个 Token 的特征用来预测下一个词，因此进入LM Head前会执行一次 Gather 操作。（Speculative Decoding、prompt_logprobs除外）</p>
+<p>更近一步，Prefill阶段Transformer Block的最后一层，attention 输出是 [num_sched_tokens, hidden_dim]，但实际上只需要最后一个 token 的 hidden_state 来做 logits 计算（因为之后没有更多的 layer 需要完整的 hidden_states 了）。所以理论上最后一层的MLP（以及 LayerNorm）可以只对需要采样的 token 计算，节省大量计算。如果只需要最后一个 token 的生成结果，那么在最后一层（Last Layer）：</p>
+<ul><li>必须要算的部分：所有 token 的   和  （因为这层的 KV cache 要存下来，供后续 Decode 阶段使用）。</li><li>理论上可以只算最后一个 token：  的投影、Attention 的计算（其实退化成了 Decode 阶段的 Flash-Decoding 计算）、LayerNorm、以及庞大的 MLP。</li></ul>
+<p>但是vLLM中最后一层还是老老实实把所有 query_lens 都算了一遍，本质上是工程与物理极限的 Trade-off。</p>
+<p>RMSNorm</p>
+<p>最后再来一次归一化（防止数值过大）。</p>
+<p>Linear (LM Head)</p>
+<table><thead><tr><th>目标矩阵</th><th>计算公式</th><th>输入  维度</th><th>权重矩阵  维度</th><th>输出结果维度</th><th>备注</th></tr></thead><tbody><tr><td>LM Head</td><td></td><td>[num_reqs, hidden_size]</td><td>[hidden_size, vocab_size]</td><td>[num_reqs, vocab_size]</td><td>num_reqs 即当前 Batch 中的请求数量。 以 Llama-3-8B 为例，vocab_size 高达 128256，这是一个极庞大的矩阵，vLLM 通常会使用张量并行（TP）按列切分该权重以加速计算。</td></tr></tbody></table>
+<p>Sampling</p>
+<p>保存原始 Logprobs</p>
+<p>如果用户请求了 logprobs（对数概率），Sampler 会在任何处理之前，先对原始 logits 做一次 log_softmax 快照保存。这样返回给用户的概率分布反映的是模型的真实输出，不受后续 penalties / temperature 等采样参数的干扰。</p>
+<ul><li>&quot;token&quot;: &quot;Hello&quot;,          // 实际被选中的 token</li><li>&quot;logprob&quot;: -0.01523,       // 该 token 的对数概率 (log_softmax 的结果)</li><li>&quot;bytes&quot;: [72, 101, ...],   // token 的 UTF-8 字节表示</li><li>&quot;top_logprobs&quot;: [          // 概率最高的前 N 个 token (用户通过 logprobs=N 指定)</li><li>&quot;token&quot;: &quot;Hello&quot;,</li><li>&quot;logprob&quot;: -0.01523    // ln(0.985) ≈ -0.015, 即 98.5% 概率</li><li>&quot;token&quot;: &quot;Hi&quot;,</li><li>&quot;logprob&quot;: -4.32185    // ln(0.013) ≈ -4.32, 即 1.3% 概率</li></ul>
+<p>Logits Process</p>
+<p>在得到原始 Logits 后、进行 Softmax 概率转化前，会经过一系列后处理操作，用于干预最终的生成结果：</p>
+<ul><li>白名单过滤</li><li>结构化输出（JSON schema）：配合 grammar bitmask，每一步动态计算当前合法的 token 集合。</li><li>情感分类：只允许输出  &quot;positive&quot;  /  &quot;negative&quot;  /  &quot;neutral&quot;  对应的 token。</li><li>多选题：只允许输出  A B C D 。</li><li>黑名单过滤</li><li>Non-argmax-invariant Logit Processors</li><li>Repetition Penalty (重复惩罚): 根据历史 Token，对已生成过的词汇扣除分数，防止模型变成“复读机”。</li></ul>
+<p>每个请求的采样策略可以是Greedy或Random，由用户设置的 temperature 决定</p>
+<ul><li>@cached_property</li><li>def sampling_type(self) -&gt; SamplingType:</li><li>if self.temperature &lt; 1e-5:       # &lt; 0.00001 就是 greedy</li><li>return SamplingType.GREEDY</li><li>return SamplingType.RANDOM</li><li>Greedy 先行：在 temperature 缩放之前，先对当前 logits 执行一次  argmax ，保存为  greedy_sampled 。</li><li>如果整个 batch  全是 greedy （所有请求的  ），到这里就直接返回，后续步骤全部跳过。</li><li>这一步必须在 temperature 之前做，否则 greedy 请求的 logits 会被不必要地除以 temperature 导致精度损失。</li><li>Temperature Scaling： Logits = Logits / Temperature 。</li></ul>
+<p>: 拉大分数差距。高分越明显，低分被压得更低。模型变得保守、确定。: 缩小分数差距。分布趋向均匀。模型变得随机、有创造力（但也容易胡说八道）。对于 的 greedy 请求，此处会用  跳过除法（避免除以零），它们的最终结果由 Step 1 的 greedy_sampled 决定。</p>
+<ul><li>Argmax-invariant Processors（如 min_p）： min_p是目前唯一的 argmax-invariant 处理器。其规则为：概率不到token最高概率的 min_p倍的 token，全部淘汰。&gt;公式：阈值 =  ，低于阈值的 token 得分设为  。</li></ul>
+<p>示例（min_p = 0.1，，阈值 = 0.04）：</p>
+<p>min_p 的核心价值在于自适应：最高概率的 token 自身永远不会被砍（因为 ），所以 argmax 结果不变。</p>
+<ul><li>模型很确定时（ ）：阈值 = 0.09，砍得多，几乎只剩最优解。</li><li>模型不确定时（ ）：阈值 = 0.008，砍得少，保留充分的探索空间。</li><li>Top-K 截断：只保留分数最高的   个 Token，其余得分全部设为  。</li><li>Top-P  Masking：按分数从高到低排序并累加 softmax 概率，保留累积概率刚好超过   的前若干 Token，尾部 Token 得分设为  。</li><li>Softmax + Gumbel-Max 采样  确保结果的随机性         公式：  ，其中 Gumbel-Max 用加噪求最大值替代了传统的轮盘赌算法。它将原本需要串行计算前缀和的采样过程，转化为完全独立的 element-wise 并行运算，打破了超大词表下的全局数据依赖。</li><li>probs = logits.softmax(dim=-1)</li><li>q.exponential_()</li><li>probs.div_(q).argmax(dim=-1)</li><li>最终选择：逐请求按 temperature 决定使用哪个结果</li><li>final = where(temperature &lt; 1e-5,</li><li>greedy_sampled,    # 该请求用贪心结果</li><li>random_sampled)    # 该请求用随机结果</li></ul>
+<p>output得到 Next Token ID，并将其追加到 Input 序列中，进入下一轮循环。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>理解推理流程的关键是跟踪 shape 变化，经典推理原理并不高深。</li><li>内存墙催生 FlashAttention、MLA/DSA；MoE 是把 FFN 拆成专家按需激活。</li><li>chunked prefill、Flash-Decoding、SP 解决超长 prompt 问题。</li><li>TP 的列切分与行切分可借助本文 shape 变化理解。</li></ul></div>
+<p>是的，戛然而至。本文主要讲述了经典的大模型推理的全流程，想要真正理解大模型的推理流程理解shape的变化真的很重要。笔者有意克制发散的思维，专注整个推理流程，很多的原理和概念都没有提。后续可以围绕这个基础展开，</p>
+<p>比如数学基础：Softmax、RMSNorm原理、RoPE</p>
+<p>比如Attention计算遇到了内存墙问题</p>
+<ul><li>导致了 DeepSeek MLA/DSA、线性注意力等的产生，本质是减少KVCache的读取；</li><li>导致了FlashAttention的产生的，本质上是利用IO Aware、重计算提升计算强度；</li></ul>
+<p>比如为什么要MoE  scaling law模型不断增大，计算量随参数线性增大，而参数占比的大头又在MLP层，那就把MLP层拆分，美其名曰不同专家，每次执行仅激活部分参数, 其本质就是将现有FFN层拆分成多个，然后增加路由，每次可以激活不同专家组。</p>
+<p>比如模型太大了，TP、PP、DP、EP、SP、CP，了解了本文的数据流shape变化，TP理解就变的相当容易。</p>
+<ul><li>Column Parallelism (列切分)：  Fused QKV 和 FFN 的 Fused Gate/Up 都是列切分。例如 QKV 的权重维度在单卡上会变成  [hidden_size, qkv_proj_size / TP_size] ，输出也相应变成  [num_sched_tokens, qkv_proj_size / TP_size] 。</li><li>Row Parallelism (行切分)：  O_Proj 和 FFN 的 Down_Proj 是行切分。权重变为  [hidden_size / TP_size, hidden_size] 。计算完成后，通过  AllReduce  算子来聚合跨卡结果。</li></ul>
+<p>比如长上下文时， chunked prefill 到 Flash-Decoding 到 SP 本质是不同维度的prompt的拆分，不过是在解决不同问题，chunked prefill 避免超长 Prompt的新请求影响其他请求，无论是正在处理的 decode 请求还是待处理的其他 prefill 请求， Flash-Decoding 通过 KV 维度的切块（Split-K）提升了 Decode 阶段的 SM（流处理器）利用率，SP (Sequence Parallelism) 则是解决单卡显存塞不下超长上下文的问题。（Flash-Decoding，Sequence Parallelism靠Log-Sum-Exp实现跨 SM或者跨卡的归一化）</p>
+<p>再来感叹一句，单从推理来看，大模型的原理其实真没那么高深莫测，最难的数学公式怕是要数RoPE了。但是AI Infra的东西真的多～～ 根本学不完，不像agent方向整天重命名上下文工程🐶。（提示词工程、function calling、 rag、mcp、memory、agent开发、skills、openclaw、上下文工程、harness工程、hermes）</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>模型配置参数</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>hidden_size=4096，32 个 Q 头、8 个 KV 头，GQA 用于压缩缓存。</li><li>Fused QKV 宽 6144，FFN 宽 14336，词表 128256。</li></ul></div>
+<table><thead><tr><th>标准变量名</th><th>数值 (Llama-3-8B)</th><th>物理含义说明</th></tr></thead><tbody><tr><td>hidden_size</td><td>4096</td><td>隐藏层总维度，也是 Q 向量的总宽度。</td></tr><tr><td>num_heads/num_q_heads</td><td>32</td><td>Query 的头数。决定了注意力机制的并行度。</td></tr><tr><td>num_kv_heads</td><td>8</td><td>Key/Value 的头数。GQA 架构中用于压缩缓存。</td></tr><tr><td>head_dim/head_size</td><td>128</td><td>单个头的维度。公式  中的 。</td></tr><tr><td>kv_channels/kv_dim</td><td>1024</td><td>单侧（K 或 V）矩阵的总宽度 (num_kv_heads*head_dim)。</td></tr><tr><td>qkv_proj_size</td><td>6144</td><td>Fused QKV 层的输出总宽度 (hidden_size + kv_channels*2)。</td></tr><tr><td>intermediate_size</td><td>14336</td><td>FFN 内部升维后的维度（通常为 ）。</td></tr><tr><td>fused_ffn_size/gate_up_proj_size</td><td>28672</td><td>Fused Gate/Up 层的输出总宽度 (intermediate_size*2)。</td></tr><tr><td>vocab_size</td><td>128256</td><td>词表大小。决定了 LM Head 的输出矩阵尺寸。</td></tr><tr><td>num_hidden_layers</td><td>32</td><td>Transformer Block 的层数。</td></tr><tr><td>rope_theta</td><td>500000.0</td><td>RoPE 旋转位置编码的 base theta 值。</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>运行时变量</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>prompt=100，num_tokens=105，decode 算 1 个 token。</li><li>seq_lens 为 KV Cache 总长度，等于历史 token 数加新 token。</li></ul></div>
+<table><thead><tr><th>标准变量名</th><th>数值 (Llama-3-8B)</th><th>物理含义说明</th></tr></thead><tbody><tr><td>num_prompt_tokens</td><td>100</td><td>prompt 长度</td></tr><tr><td>num_tokens</td><td>105</td><td>prompt + 已生成 output</td></tr><tr><td>num_computed_tokens</td><td>105</td><td>已计算的历史 token 总数</td></tr><tr><td>num_sched_tokens</td><td>1</td><td>本次要计算 1 个新 token（decode），其实就是flatten的query_lens</td></tr><tr><td>seq_lens</td><td>106</td><td>KV Cache 总长度 = 105 + 1</td></tr><tr><td>query_lens</td><td>1</td><td>本次 Q 的长度</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>权重组成</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MLP 参数占比约 70%、FLOPs 约 70%，是绝对的计算大头。</li><li>Attention 参数占比仅约 16%，却是读取动态 KV Cache 的访存带宽大头。</li><li>Embedding 与 LM Head 各约 6.5%，维度一致但独立不共享。</li></ul></div>
+<p>LLM是有多层的，以Llama3 8B为例模型的权重组成如下：</p>
+<table><thead><tr><th>组件</th><th>权重名称</th><th>参数量维度</th><th>占比</th><th>本质与说明</th></tr></thead><tbody><tr><td>Embedding</td><td>embed_tokens.weight</td><td>[128256, 4096]</td><td>~6.5%</td><td>查表矩阵</td></tr><tr><td>Attention</td><td>q_proj</td><td>[4096, 4096] (×32层)</td><td>~15.9%</td><td>4 个 Linear 矩阵，无 bias 。 由于 GQA，K/V 矩阵比 Q 小很多。</td></tr><tr><td></td><td>k_proj, v_proj</td><td>[1024, 4096] (×32层)</td><td></td><td></td></tr><tr><td></td><td>o_proj</td><td>[4096, 4096] (×32层)</td><td></td><td></td></tr><tr><td>MLP</td><td>gate_proj, up_proj</td><td>[14336, 4096] (×32层)</td><td>~70.1%</td><td>3 个 Linear 矩阵，无 bias ，SwiGLU 激活。 这是模型计算和参数量的绝对大头。</td></tr><tr><td></td><td>down_proj</td><td>[4096, 14336] (×32层)</td><td></td><td></td></tr><tr><td>Input Norm</td><td>input_layernorm.weight</td><td>[4096] (×32层)</td><td>&lt; 0.01%</td><td>RMSNorm 缩放一维向量。</td></tr><tr><td>Post-Attn Norm</td><td>post_attention_layernorm.weight</td><td>[4096] (×32层)</td><td>&lt; 0.01%</td><td>RMSNorm 缩放一维向量。</td></tr><tr><td>Final Norm</td><td>norm.weight</td><td>[4096] (×1)</td><td>&lt; 0.01%</td><td>最终进入 LM Head 前的 RMSNorm 向量。</td></tr><tr><td>LM Head</td><td>lm_head.weight</td><td>[128256, 4096]</td><td>~6.5%</td><td>与 Embedding 维度一致，但独立存在不共享。</td></tr></tbody></table>
+<ul><li>MLP 层 ：参数占比 70%，FLOPs 占比也约 70%，是绝对的计算大头。</li><li>Attention 层 ：参数占比仅 16%，但由于需要读取动态生长的 KV Cache，它是 访存带宽 的绝对大头。</li></ul>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>调度详细流程</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>内存不足抢占最低优先级 RUNNING 请求，释放 KV Cache 重置进度。</li><li>v1 砍掉 SWAP 只留 RECOMPUTE：PCIe 搬运常比重算 prefill 更贵。</li><li>抢占后跳过 WAITING 调度，避免内存压力形成恶性循环。</li></ul></div>
+<p>抢占（Preemption)</p>
+<p>当 KV Cache blocks 不够分配时，调度器会抢占最低优先级的 RUNNING 请求——释放其全部 KV Cache、将 num_computed_tokens 重置为 0、放回 WAITING 队列。被抢占的请求下次被调度时需要重新从头 Prefill。</p>
+<p>v0 时代，vLLM 有两种 preemption 策略：</p>
+<ul><li>SWAP ：把被抢占请求的 KV blocks 从 GPU HBM 搬到 host RAM 暂存，资源宽裕时再 swap in 回 GPU。</li><li>RECOMPUTE ：直接释放 GPU blocks，重新加入 waiting 队列走prefill 重算一遍。</li></ul>
+<p>v1 把 SWAP 路径完全砍掉（LLM(swap_space=...) 已废弃并 warn），Scheduler._preempt_request 只保留 RECOMPUTE 一条路。原因：</p>
+<ul><li>PCIe 双向搬运 + host RAM 占用的开销，在 FA + 大 batch 下常常比重算一次 prefill 还贵</li><li>chunked prefill 让重算可以分多步&quot;追上来&quot;，摊平开销</li><li>架构上少一条路径，prefix caching / chunked prefill /continuous batching 的交互更干净</li><li>def _preempt_request(self, request, ...):</li><li>self.kv_cache_manager.free(request)       # 释放 KV Cache</li><li>request.status = RequestStatus.PREEMPTED</li><li>request.num_computed_tokens = 0           # 重置，下次需要重新计算</li><li>self.waiting.prepend_request(request)     # 放回等待队列</li></ul>
+<p>为什么 RUNNING 阶段分配失败会抢占，而 WAITING 阶段直接终止？</p>
+<p>这体现了调度器的核心原则：已在运行的请求优先级高于等待中的请求。</p>
+<ul><li>RUNNING 请求 ：已经占用了 KV Cache、消耗了计算资源。如果因为内存不足无法继续，调度器会牺牲优先级最低的 RUNNING 请求（释放其 KV Cache）来保证其他请求能继续推进。这是值得的，因为放弃一个已运行的请求代价很高。</li><li>WAITING 请求 ：还没开始计算，没有沉没成本。如果内存不足，直接停止调度即可，下一个 step 再尝试。</li></ul>
+<p>为什么抢占后跳过 WAITING 调度？</p>
+<p>发生抢占意味着 KV Cache 已经非常紧张。此时不应该再引入新的 WAITING 请求，因为那会进一步加剧内存压力，可能触发更多抢占，形成恶性循环。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>参考</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>列出 FlashAttention 系列、PagedAttention 等推理论文。</li><li>另含 GPU 计算、Roofline、KV Cache 与 vLLM 相关参考。</li></ul></div>
+<p>Attention Is All You Need</p>
+<p>Efficient Memory Management for Large Language Model Serving with PagedAttention</p>
+<p>Orca: A Distributed Serving System for Transformer-Based Generative Models</p>
+<p>Flash-Decoding for long-context inference</p>
+<p>SARATHI: Efficient LLM Inference by Piggybacking Decodes with Chunked Prefills</p>
+<p>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness</p>
+<p>FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning</p>
+<p>FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision</p>
+<p>FlashAttention-4: Algorithm and Kernel Pipelining Co-Design for Asymmetric Hardware Scaling</p>
+<p>AI and Memory Wall</p>
+<p>How GPU Computing Works | GTC 2021</p>
+<p>Roofline: an insightful visual performance model for multicore architectures</p>
+<p>KV Caching in LLMs, explained visually</p>
+<p>彻底搞懂KV缓存</p>
+<p>KV Caching in LLMs, Clearly Explained</p>
+<p>Neural Machine Translation of Rare Words with Subword Units</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Continuous Batching vs 传统批处理</h4><p>传统批处理要求请求同时开始同时结束；Continuous Batching 把调度下沉到 token 级，让多请求复用权重摊薄显存开销。</p><a class="src-link" href="#sec-01">原文 → 连续批处理</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Prefill vs Decode</h4><p>Prefill 是计算密集，GEMM 复用权重；Decode 每次只算 1 token，GEMV 搬运权重与 KV Cache，是访存密集。</p><a class="src-link" href="#sec-03">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Llama-3-8B 关键维度</h4><p>hidden_size=4096，num_heads=32，num_kv_heads=8，qkv_proj_size=6144，vocab=128256。</p><a class="src-link" href="#sec-05">原文 → 模型配置参数</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Paged Attention 的取舍</h4><p>block_table 间接寻址带来离散访存与 L2 命中下降，但 block_size=16 保证块内连续，以少量带宽换吞吐跃升。</p><a class="src-link" href="#sec-02">原文 → Paged Attention</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>RMSNorm vs LayerNorm</h4><p>LayerNorm 同时缩放与平移；RMSNorm 砍掉平移，仅沿特征维度缩放，计算更高效并防止方差膨胀与数值溢出。</p><a class="src-link" href="#sec-03">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>RoPE 空间换时间</h4><p>初始化预计算 cos_sin_cache（几 MB~几十 MB），换掉每次 forward 几百万次 sin/cos 调用。</p><a class="src-link" href="#sec-03">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Fused QKV 宽 GEMM</h4><p>Q/K/V 权重按列拼接执行单次宽 GEMM：4096+1024+1024=6144，输出 [num_sched_tokens, 6144]。</p><a class="src-link" href="#sec-03">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Attention 必须按请求隔离</h4><p>Attention 是请求内部运算，不同请求的 KV Cache 不能交叉；进入 kernel 前需从 Flattened 视角切到请求维度视角。</p><a class="src-link" href="#sec-03">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Online Softmax 打破内存墙</h4><p>FlashAttention 用 Running Max/Running Sum 动态修正旧结果，融合成单 Kernel 分块在 SRAM 计算。</p><a class="src-link" href="#sec-03">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>权重与算力分布</h4><p>MLP 参数占比约 70%、FLOPs 约 70% 是计算大头；Attention 参数仅约 16%，却是访存带宽大头。</p><a class="src-link" href="#sec-07">原文 → 权重组成</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>SWAP vs RECOMPUTE 抢占</h4><p>v0 支持把 KV 搬去 host RAM（SWAP）或重算（RECOMPUTE）；v1 砍掉 SWAP，因搬运常比重算 prefill 更贵。</p><a class="src-link" href="#sec-08">原文 → 调度详细流程</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>greedy 需在 temperature 前判定</h4><p>先对原始 logits 做 argmax 存 greedy_sampled，再按 temperature 缩放，避免 greedy 请求精度损失。</p><a class="src-link" href="#sec-03">原文 → 推理流程</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>理解推理关键是跟 shape 变化走：token ID → hidden_size → logits。</li>
+          <li>Continuous Batching 下沉 token 级；Paged Attention 按块管 KV Cache。</li>
+          <li>Prefill 计算密集、Decode 访存密集；FlashAttention 用 Online Softmax 破墙。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801625&amp;idx=1&amp;sn=7c7a7d2148c6907f65c9f747717b3197" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801625&amp;idx=1&amp;sn=7c7a7d2148c6907f65c9f747717b3197</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI应用 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

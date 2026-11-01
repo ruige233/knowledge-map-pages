@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">迈向可信AI：LLM幻觉的分析与优化</h1>
+  <p class="lede">LLM幻觉：成因、优缺点与Prompt到Agent的全链路优化</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI应用</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 26 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>训练原理</a>
+          <a href="#sec-02"><span class="n">02</span>推理流程</a>
+          <a href="#sec-03"><span class="n">03</span>幻觉定义与类型</a>
+          <a href="#sec-04"><span class="n">04</span>幻觉成因</a>
+          <a href="#sec-05"><span class="n">05</span>幻觉的价值</a>
+          <a href="#sec-06"><span class="n">06</span>幻觉的代价</a>
+          <a href="#sec-07"><span class="n">07</span>多维优化</a>
+          <a href="#sec-08"><span class="n">08</span>结语</a>
+          <a href="#sec-09"><span class="n">09</span>参考文献</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 训练原理</a>
+          <a href="#sec-02">02 推理流程</a>
+          <a href="#sec-03">03 幻觉定义与类型</a>
+          <a href="#sec-04">04 幻觉成因</a>
+          <a href="#sec-05">05 幻觉的价值</a>
+          <a href="#sec-06">06 幻觉的代价</a>
+          <a href="#sec-07">07 多维优化</a>
+          <a href="#sec-08">08 结语</a>
+          <a href="#sec-09">09 参考文献</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：lingyuhuang</p>
+<p>丨 导语随着LLM的广泛应用，其生成内容的准确性和可靠性成为AI落地的关键挑战之一。幻觉（Hallucination）现象，即模型生成与事实不符或虚构的信息，不仅影响用户体验，更可能带来实际风险。本文将系统性分析LLM幻觉产生的根本原因，探讨其在实际应用中的优缺点，并结合RAG、SFT、强化学习、思维链、Agent Workflow等技术，提出多维度的优化方案。旨在为构建更可信、可控的大模型应用提供理论基础与实践路径，助力AI迈向更高的可靠性与价值创造。</p>
+<p>LLM的工作原理简介</p>
+<p>在进入正题之前，我们先初步了解一下LLM的工作原理，有利于后面理解为什么LLM会出现幻觉。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>训练原理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>训练分预训练、后训练、对齐三阶段，分别提升语言能力、任务表现与价值对齐。</li><li>预训练数据含错误、虚假、过时信息，模型无差别学习并拟合数据分布。</li><li>预训练目标是学语言模式而非记事实，因此模型不判断事实真假。</li></ul></div>
+<h3 class="sub">1.训练过程</h3>
+<p>大语言模型（LLM）的训练通常分为三个主要阶段：</p>
+<p>预训练（Pre-training）：在大规模无标注文本数据上进行自监督学习，模型学习语言的基本结构和表达规律。</p>
+<p>后训练（Post-training/Fine-tuning）：在特定任务或领域的数据集上进行有监督微调，提升模型在特定任务上的表现。</p>
+<p>对齐（Alignment）：通过人类反馈（如RLHF，基于人类反馈的强化学习）等方式，使模型输出更符合人类价值观和实际需求，减少有害或不准确的内容。</p>
+<h3 class="sub">2.数据来源</h3>
+<p>预训练阶段的数据主要来自于海量的互联网无标注文本，包括网页、百科、新闻、论坛、书籍等多种类型。</p>
+<p>这些数据中不可避免地包含错误、虚假、过时的信息，甚至有些内容带有偏见或噪声。模型在训练时会无差别地学习这些内容，通过调整参数权重来拟合数据分布</p>
+<h3 class="sub">3.训练目标</h3>
+<p>预训练的核心目标是让模型具备强大的自然语言理解和生成能力，而不是让模型记住或判断事实的正确与否。因此，模型学到的是“语言模式”而非“事实真理”。</p>
+<p>通过对海量数据的学习，LLM能够掌握丰富的语言结构、表达方式和上下文关联，从而具备在多种任务（如问答、摘要、翻译、对话等）中迁移和泛化的能力。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>推理流程</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>推理七步：分词编码→嵌入→位置编码→Transformer→线性+Softmax→采样→自回归。</li><li>Top-k保留概率最高的K个token，Top-p按概率累加到阈值P动态调整候选集。</li><li>temperature越高分布越平、输出越多样；越低越尖锐、输出越确定。</li><li>seed固定随机序列，可让同输入结果一致。</li></ul><div class="pit"><ul><li>小尺寸模型易陷入循环输出，可调大Repeat Penalty缓解。</li></ul></div></div>
+<h3 class="sub">1.预测流程</h3>
+<p>（1） 分词与编码（Tokenization）</p>
+<p>首先，将用户输入的文本进行分词处理，转换为一系列token，并进一步编码为token ids。这些token ids是模型能够识别和处理的数字序列。</p>
+<p>（2）嵌入映射（Embedding）</p>
+<p>将token ids映射为高维的嵌入向量，形成一个Embedding矩阵。每个token对应一个语义向量，作为后续计算的输入。</p>
+<p>（3）位置编码（Positional Encoding）</p>
+<p>让模型理解每个token的位置顺序。</p>
+<p>（4）Transformer层处理</p>
+<p>Embedding矩阵依次通过多层Transformer block进行处理。每个block包含多头自注意力机制、前馈神经网络、归一化等操作，模型在此过程中充分捕捉上下文信息和词间关系。</p>
+<p>（5）线性变换与概率归一化（Linear + Softmax）</p>
+<p>对最后一层的输出嵌入进行线性变换，将其映射到词表空间，随后通过Softmax归一化，得到下一个token的概率分布。</p>
+<p>（6）采样生成（Sampling）</p>
+<p>根据设定的采样策略，从概率分布中选取下一个token。</p>
+<p>（7）自回归生成（Autoregressive Generation）</p>
+<p>将新生成的token追加到已有的token序列中，重复上述推理过程，持续生成下一个token，直到遇到终止符（EOS）或达到最大token数限制（MaxTokens）为止。</p>
+<p>整个推理过程以自回归方式逐步生成文本，每一步都依赖于之前生成的内容，确保输出的连贯性和上下文相关性。通过多层Transformer的深度建模，模型能够理解复杂的语言结构，并生成高质量的自然语言文本。</p>
+<h3 class="sub">2.采样参数</h3>
+<p>通过调整采样参数，可以控制模型的输出结果。下面列举几个常见的参数，方便大家理解采样过程。</p>
+<p>（1）Top-k</p>
+<p>Top-k会从所有候选token中，保留概率最高的K个作为候选集。模型只会在这K个token中进行采样，能够有效过滤掉低概率、无关或不合理的词汇，从而提升生成内容的质量和相关性。K值越小，输出越确定；K值越大，输出越多样。</p>
+<p>（2）Top-p</p>
+<p>Top-p会从所有token中，按照概率从高到低累加，直到总概率达到设定的阈值P为止。只在这部分token中进行采样。相比Top-k，Top-p能够根据实际概率分布动态调整候选集大小，更灵活地平衡输出的多样性和合理性。两个参数都设置的时候，必须同时满足的token才加入预测候选集。</p>
+<p>（3）Repeat Penalty（重复惩罚）</p>
+<p>重复惩罚参数用于降低模型重复生成已输出过的token的概率。参数值越大，对重复内容的惩罚越强，有助于减少文本中的重复现象，使生成结果更加丰富和自然。（有些小尺寸模型容易陷入循环输出，调大这个参数可以有效缓解。）</p>
+<p>（4）Seed（随机种子）</p>
+<p>随机种子用于初始化伪随机数生成器，决定本次推理过程中的随机数序列。设置相同的seed可以保证每次同输入的生成的结果一致。</p>
+<p>（5）Temperature（温度系数）</p>
+<p>温度参数用于调整softmax输出的概率分布（即 logits /= temperature）。温度越高，概率分布越平坦，模型输出更具多样性；温度越低，概率分布越尖锐，模型更倾向于选择高概率的token，输出更确定。通过调节temperature，可以灵活控制生成文本的创造性和保守性。</p>
+<p>例如，经过topk&amp;topp之后，保留了4个候选token，权重分别为0.5,0.2,0.2,0.1</p>
+<p>不同温度下经过softmax变换，每个token的概率为：</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>幻觉定义与类型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>幻觉指模型生成与事实不符或虚构的信息。</li><li>幻觉分事实性、上下文、逻辑三类，成因各异、优化手段各有侧重。</li></ul></div>
+<p>LLM的幻觉（Hallucination）现象，即模型生成与事实不符或虚构的信息。</p>
+<p>例如：</p>
+<p>在实际应用中，LLM幻觉不只表现在随意“编造”信息，其内容和表现形式多样。细分类型有助于更准确地定位问题，并为后续优化方案提供针对性思路。常见幻觉类型包括：</p>
+<p>事实性幻觉（Factual Hallucination）：模型输出明确违背客观真实的信息，如“水的沸点是150°C”。</p>
+<p>上下文幻觉（Contextual Hallucination）：模型对用户输入理解出现偏差，输出内容与问题语境不符，如用户询问“苹果公司”，模型却误答为“水果种植技术”。</p>
+<p>逻辑幻觉（Logical Hallucination）：模型生成内容存在自相矛盾、不合理、违背常识的推理，如“一个人同时在北京和纽约开会”。</p>
+<p>不同类型幻觉的成因各异，对应的优化手段也各有侧重。下一节将结合具体幻觉类型，系统介绍多维度的优化方案。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>幻觉成因</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>逐token概率采样自带随机性，信息不足时模型会“虚构”。</li><li>参数固定于训练阶段，对训练后新事实无感知，存在时效限制。</li><li>上下文窗口有限可能丢信息，自回归中前序错误会向后级联。</li></ul><div class="pit"><ul><li>前面token的错误会导致后续结果全部偏离事实。</li></ul></div></div>
+<p>通过前面的介绍，我们可以得到以下结论：</p>
+<p>1. LLM在生成文本时，是根据每个token的概率分布进行采样的，因此输出结果具有一定的随机性和多样性。</p>
+<p>2. 模型通过对大规模训练数据的学习，统计并拟合了token之间的概率关系。训练数据的质量和多样性直接影响模型的表现。</p>
+<p>3. 通过调整如Top-k、Top-p、Temperature等采样参数，可以控制生成文本的多样性和确定性。但这些参数的变化会影响每一个token的输出，从而影响整体生成结果。</p>
+<p>4. LLM的所有参数都来源于训练阶段，无法实时获取和学习新数据。因此，模型对训练数据之后发生的事实和知识无法感知，存在信息时效性限制。</p>
+<p>5. 每个token的生成都涉及大量的矩阵运算，消耗显著的计算资源和存储空间。模型的上下文窗口不可能无限长，只能处理有限长度的输入，可能导致信息丢失或理解偏差。</p>
+<p>6. LLM采用自回归生成机制，每个token的生成都依赖于前面已生成的内容，保证了文本的连贯性和上下文相关性。但前面token的错误也会导致后面的结果都偏离事实。</p>
+<p>LLM通常采用自回归方式，通过预测next token来生成文本，本质是计算下一个token的概率分布，而非像传统数据库的准确检索。因此，模型在生成内容时，优先考虑的是自然语言的流畅性和上下文关联度，而非优先考虑事实的准确性。既然是概率计算，说明本身就有随机性，有概率生成出不符合实际的文本。简单来说，当信息不足的时候，大模型存在“虚构症”，导致LLM的生成产生了幻觉。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>幻觉的价值</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>若只能生成符合事实的内容，模型将失去创造性。</li><li>音视频、虚拟角色、文学创作、头脑风暴等场景需要随机发散。</li></ul></div>
+<p>如果LLM总是只能生成符合事实依据的内容，那就会失去很多创造性。</p>
+<p>在音视频、虚拟角色、文学创作等领域，正是由于LLM的随机性，才能生成出新颖、独特的内容，为用户提供创造力和灵感。</p>
+<p>在头脑风暴、方案设计等场景下，幻觉生成的“异想天开”内容有时能启发新的思路和解决方案。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>幻觉的代价</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>错误回复需读者花精力验证，普通用户难辨真伪，长期损害信任。</li><li>AI生成内容回流互联网，污染下一代模型训练数据。</li></ul></div>
+<p>在追求正确事实的场景下，LLM的幻觉也会带来很多弊端：</p>
+<p>1.  提供错误回复，虽然LLM生成内容效率很高，但阅读者需要消耗精力去验证内容。</p>
+<p>2. 普通用户难以辨别回答的真实性，可能导致误导用户，长时间的错误会导致用户不再信任AI。</p>
+<p>3. 大量AI生成的内容涌入互联网，导致虚假信息传播，污染下一代模型的训练数据，更难以鉴别事实。</p>
+<p>在绝大部分业务场景里，我们需要AI提供正确的答案，所以要尽可能让LLM生成出符合事实的token，减少幻觉的产生。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>多维优化</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>优化从输入、采样参数、后训练提升模型能力三个方面展开。</li><li>Prompt四原则：任务清晰无歧义、边界说清、复杂任务拆解、给示例。</li><li>预填充可强制模型输出工具调用或特定JSON格式。</li><li>RAG引入外部参考资料让模型基于资料作答，避免凭空编造。</li></ul><div class="pit"><ul><li>RAG并非万能：开卷考试也不一定得满分。</li></ul></div></div>
+<p>下面从输入、采样参数、后训练提升模型能力这几个方面来介绍优化方案。</p>
+<p>一，Prompt</p>
+<p>（1）准确无歧义</p>
+<p>Prompt是使用LLM的第一步，可以尽可能挖掘出基座模型的潜力。</p>
+<p>例如，新来的实习生掌握了很多理论知识，但是你在给他一个工作任务的时候，他可能由于缺少经验，最终做出来的可能不符合你的预期。这里面有哪些问题可以优化呢？</p>
+<h3 class="sub">1.任务清晰明确、无歧义</h3>
+<h3 class="sub">2.任务的边界说清楚</h3>
+<h3 class="sub">3.任务进行拆解，复杂的任务拆解为子任务再一个个解决</h3>
+<h3 class="sub">4.给出示例（ In-Context-Learning）</h3>
+<p>例如，你想基于LLM给你的结果进一步编写代码，那么要求明确的输出格式，更便于代码进行解析。</p>
+<p>prompt: 帮我提取”播放周杰伦和蔡依林合唱的歌”的槽位</p>
+<p>output:{ &quot;intent&quot;: &quot;播放歌曲&quot;, &quot;slots&quot;: { &quot;歌手&quot;: [&quot;周杰伦&quot;, &quot;蔡依林&quot;], &quot;合唱&quot;: true } }</p>
+<p>prompt:帮我提取”播放周杰伦和蔡依林合唱的歌”的槽位，提取出intent、singer、song等信息，如果某个槽位存在多个值，</p>
+<p>用| 隔开，务必返回一个map形式的Json。</p>
+<p>output:{ “intent”: “播放歌曲&quot;, &quot;singer&quot;: &quot;周杰伦|蔡依林&quot;, &quot;song&quot;: &quot;&quot; }</p>
+<p>例如，你想利用多模态模型，生成对图片的简要描述：</p>
+<p>prompt:</p>
+<p>只用一句话准确描述这张图片，并列举出图片中非文字的内容或物体。</p>
+<p>output: 一只蓝色企鹅图案，底色为白色。</p>
+<p>异常: prompt有歧义，导致LLM会侧重于描述头像。</p>
+<p>prompt: 你是检索系统中专业的图片分析识别专家，能够准确、详细地提取图片中的内容，以 JSON 形式输出。</p>
+<p>1. 请用中文在50字以内准确描述这张图片中包含的主要内容，放到caption字段中。</p>
+<p>2. 分析图片整体，包括事件、主题、构成、风格和背景等，输出图片的主题内容，以字符串数组形式放到core字段中。</p>
+<p>3. 精准识别图片中的物品、动物、人物、植物、建筑、场景等局部内容，以字符串数组形式放到 exact 字段中。具体要求如下：</p>
+<p>- 文字：识别主要标志文字或与图片主题相关的重要文字。</p>
+<p>- 物品、动物、植物、建筑：从名称、颜色、类型等角度描述。</p>
+<p>- 人物：从性别、角色、工作岗位、合影或自拍等角度描述。</p>
+<p>- 场景：从活动、节日、文化、风景、夜景、天气等角度描述。</p>
+<p>- 其他：以物品名称描述。</p>
+<p>output:  {&quot;caption&quot;:&quot;腾讯公司发布关于2026校园招聘启动的微博。&quot;,&quot;core&quot;:[&quot;腾讯公司校园招聘&quot;,&quot;2026校招&quot;,&quot;技术、产品、市场、设计等岗位&quot;,&quot;AI、大模型、机器人、云计算等领域&quot;],&quot;exact&quot;:[&quot;腾讯公司&quot;,&quot;2026校招启动&quot;,&quot;技术、产品、市场、设计五大类&quot;,&quot;70+种岗位&quot;,&quot;蓝色企鹅图案&quot;,&quot;工作头罩&quot;,&quot;公司发布微博&quot;,&quot;招聘公告&quot;,&quot;互动图标&quot;,&quot;点赞&quot;,&quot;分享&quot;]}</p>
+<p>实际编写prompt的过程中，有很多细节要考虑，很难一次性写的非常完美和完善，需要不断测试并调整，让prompt适应更多的情况。</p>
+<p>不同的提示词结果不一样，不同的模型对同一个prompt的表现也不一样。</p>
+<p>常用的方法：</p>
+<p>定义角色-定义任务-适当的示例-限制条件 （比如你是xxx，现在需要做xxx，例如xxx， 输出必须xxx）</p>
+<p>定义角色-说明已有信息-询问步骤-描述期望 （比如你是xxx，已知xxx，现在请帮我制定一个执行计划， 最终需要达到什么目的）</p>
+<p>（2）预填充</p>
+<p>除了编写无歧义的prompt，我们还可以通过预填充，来进一步控制模型的输出行为，使其输出的格式更符合我们的要求，例如：</p>
+<p>预填充一个工具调用，可以强制模型下一步输出一个工具调用的步骤：&lt;|im_start|&gt;assistant&lt;tool_call&gt;</p>
+<p>预填充一个具体的工具调用，可以强制模型下一步调用联网检索：&lt;|im_start|&gt;assistant&lt;tool_call&gt;{&quot;name&quot;:&quot;web_search&quot;</p>
+<p>预填充一个业务特定json格式的输出：&lt;|im_start|&gt;assistant\n{&quot;caption&quot;:&quot;</p>
+<p>限定输出特定schema json：</p>
+<p>更多信息可以参考：</p>
+<p>https://github.com/NousResearch/Hermes-Function-Calling</p>
+<p>二、RAG（Retrieval-Augmented Generation）</p>
+<p>虽然大模型学习了海量知识，但是总有一些没见过的知识。比如一个擅长写程序的人，让他设计UI稿，给出的结果大概率没有专业设计师设计的好。但是如果把各种背景知识和技巧告诉他，他就能给出一份不错的结果。（但是RAG也不是万能的，开卷考试也不一定能得满分。）</p>
+<p>RAG比较典型的应用是文档问答、知识库总结、联网检索总结等。</p>
+<p>例如，帮我总结一下微信的xx群里今天都聊了什么消息。</p>
+<p>这就是一个经典的RAG的流程，从外部获取参考资料，带给LLM进行参考，让LLM基于参考资料进行回答。（设想一下，如果你不提供聊天记录给LLM，但是Prompt中又要求LLM总结聊天记录，LLM会发挥想象，开始瞎编聊天记录，就产生了幻觉。）</p>
+<p>我们开源了文档问答的RAG能力，欢迎体验  https://weknora.weixin.qq.com/</p>
+<h3 class="sub">三、采样参数</h3>
+<p>前面提到在模型预测的时候，具有随机性，如果模型的结果非常不稳定，可以尝试调整 temperature和seed参数，可以让模型的结果固定：</p>
+<p>在一些有标准答案的问题上，例如单选题，可以让模型输出更加确定的结果，将 temperature 设置得更低，例如0.1；</p>
+<p>在一些开放回答的问题上，将temperature设置得更高，可以让回答有多样性，例如&gt;0.7；</p>
+<p>在一些不希望LLM发散的开放题上，可以将temperature 设置为中等，例如0.3。</p>
+<p>四、SFT（Supervised Fine-Tuning）</p>
+<p>SFT（微调）属于后训练阶段，预训练模型已经具有强大的能力，而SFT 利用带标签的监督数据调整模型，使其在特定任务上表现最佳，提升模型在特定方面的能力。与之相比，InContext-Learning和RAG都是不改变模型本身的，而SFT会改变模型的权重参数。</p>
+<p>常见的微调种类很多，主要分为全参微调，和PEFT。在项目落地中，一般首先尝试PEFT的一种：LoRA，LoRA可以使用较低的成本获得相对较好的结果。</p>
+<h3 class="sub">1.什么是LoRA？</h3>
+<p>LLM往往拥有非常多的参数，所以对于模型的训练而言，如果每个参数都需要调整，非常耗费资源。思考几个问题：</p>
+<p>1. 大模型那么多参数，都很重要吗？就像一篇1000字的文章，核心思想可能50字就可以概括。</p>
+<p>2. 微调往往是为了提升特定一些任务的表现，所以我们更希望调整影响这部分任务的那些参数。</p>
+<p>3. 如果所有参数都调整，可能会导致模型其他能力丢失。（学的太多反而学坏了。</p>
+<p>LoRA（Low-Rank Adaptation）提出了一种低秩参数化的适配方式。其核心思想是：</p>
+<ul><li>冻结预训练模型权重 ，仅在每一层Transformer的部分权重矩阵（如自注意力模块的Wq、Wv等）旁路注入一对可训练的低秩分解矩阵A、B。</li><li>具体而言，将权重更新ΔW表示为BA（B∈R^dr, A∈R^rk, r≪min(d,k)），即</li><li>LoRA只需训练极少量的参数，可以显著降低存储与计算开销。</li></ul>
+<p>例如：</p>
+<p>假如一个3X3的矩阵，全参数微调需要更新9个参数，而Rank=1的时候，只需要更新3X1+1X3=6个参数。假如原始矩阵式10000X10000，全参数微调需要更新1亿参数，而Rank=8的时候，只需要更新10000X8+8X10000=16万参数。（一般Rank可以选择4或者8，如果原始模型信息本身压缩率高，可以将Rank设置的更大；如果原始模型信息冗余严重，可以将Rank设置的更小）</p>
+<p>可以看到LoRA在大大节约了训练开销的前提下，仍然保持了较高的准确率。</p>
+<p>从论文来看，LoRA调整Q和V矩阵（Transformer的自注意力层），是最有效的，由于LoRA的目的就是要用较小参数的改变实现对模型的有效性调整。而Attention直接影响最终的输出，调整Q可以影响模型如何选则信息，调整V可以影响模型如何利用信息。</p>
+<p>https://arxiv.org/pdf/2106.09685</p>
+<p>https://arxiv.org/pdf/2304.13785</p>
+<h3 class="sub">2.全参微调和LoRA微调的核心差异</h3>
+<ul><li>全参微调会修改大模型的参数，在数据充足的情况下可以学习更多的内容，数据越多效果理论上越好，但也存在 灾难性遗忘 等不稳定情况。数据量小的情况下容易过拟合。</li><li>PEFT 只修改少量参数，需要的 资源少 ， 因为大多数预训练的权重保持不变，所以更容易保留原始模型能力 ，但效果上限较低，如果基座模型在该领域的效果本来就很差，通过 PEFT 也难以提升。</li><li>如果业务落地中，只需要定制少量几类任务，而不需要担心通用能力退化的情况下，并且在有数据量支撑的情况下，全参微调可以获得更高的能力上限。</li></ul>
+<h3 class="sub">3.如何微调</h3>
+<p>我们在项目中，使用LLamaFactory进行模型微调，可以直接参考文档：</p>
+<p>https://llamafactory.readthedocs.io/zh-cn/latest/index.html</p>
+<h3 class="sub">4.微调的数据准备</h3>
+<p>一份优质的微调数据，从三个维度来衡量：多样性、质量、数量。数据往往决定了最后模型的效果。</p>
+<p>（1）多样性：</p>
+<p>1.指令多样性：考察样本中指令的覆盖范围是否广泛，是否包含了各类任务类型、不同难度级别以及多样化的指令结构和表达方式，确保模型在微调后能应对多种复杂情境。</p>
+<p>2.内容多样性：检查样本中提供的文本内容是否涵盖了不同主题、文体、长度以及语境，以避免模型在特定领域或文本类型上过拟合，确保其具备良好的泛化能力。</p>
+<p>3.难易程度分布：分析样本集中简单、中等、复杂任务的比例，确保微调数据集包含不同难度级别的样本，有助于模型逐步提升处理复杂指令的能力。</p>
+<p>（2）质量：</p>
+<p>1.准确性：评估答案是否准确无误地响应了给定指令和内容，且不包含事实性错误、逻辑矛盾或语义模糊。</p>
+<p>2.完备性：考察答案是否全面覆盖了指令所要求的所有任务点，尤其对于多步骤或复合任务，答案应完整体现所有必要的操作结果。</p>
+<p>3.简洁性与清晰度：衡量答案是否言简意赅、表达清晰，避免冗余信息或含糊表述，确保模型在微调后生成的输出易于理解和使用。</p>
+<p>4.清洗：识别并剔除标注错误或不一致的样本，确保答案与指令、内容间的映射关系正确无误。去除重复样本、无关内容、错别字、低质量文本。（可以通过dropout优化过拟合问题，而不是混入错误数据让模型学到错误信息，错误数据会提升模型的幻觉率）</p>
+<p>（3）数量：LoRA1k-10k左右， 全参SFT在100k以上。</p>
+<h3 class="sub">5.SFT数据集的常见格式</h3>
+<p>{&quot;instruction&quot;:&quot;计算这些物品的总费用。 &quot;,&quot;input&quot;:&quot;输入：汽车 - $3000，衣服 - $100，书 - $20。&quot;,&quot;output&quot;:&quot;汽车、衣服和书的总费用为 $3000 + $100 + $20 = $3120。&quot;}</p>
+<p>{&quot;instruction&quot;:&quot;人类指令（必填）&quot;,&quot;input&quot;:&quot;人类输入（选填）&quot;,&quot;output&quot;:&quot;模型回答（必填）&quot;,&quot;system&quot;:&quot;系统提示词（选填）&quot;,&quot;history&quot;:[[&quot;第一轮指令（选填）&quot;,&quot;第一轮回答（选填）&quot;],[&quot;第二轮指令（选填）&quot;,&quot;第二轮回答（选填）&quot;]]}</p>
+<p>偏好数据集： （奖励模型）</p>
+<p>{&quot;instruction&quot;:&quot;人类指令（必填）&quot;,&quot;input&quot;:&quot;人类输入（选填）&quot;,&quot;chosen&quot;:&quot;优质回答（必填）&quot;,&quot;rejected&quot;:&quot;劣质回答（必填）&quot;}</p>
+<p>图像多模态数据集：</p>
+<p>{&quot;instruction&quot;:&quot;人类指令（必填）&quot;,&quot;input&quot;:&quot;人类输入（选填）&quot;,&quot;output&quot;:&quot;模型回答（必填）&quot;,&quot;images&quot;:[&quot;图像路径（必填）&quot;]}</p>
+<h3 class="sub">6.训练参数设置</h3>
+<p>比较重要的参数如下表：</p>
+<table><thead><tr><th>LR</th><th>学习率，设置的越大，模型训练的参数调整幅度就越大。</th></tr></thead><tbody><tr><td>Epochs</td><td>学习轮次，对数据学习几轮。一般为2/3。太多会导致过拟合，把模型学傻，模型就只会训练的那些数据了。</td></tr><tr><td>BatchSize</td><td>一批的数量，越大显存需求越大。太低导致收敛难，陷入局部最优；太高容易过拟合，泛化能力差。需要结合实际情况调整。</td></tr><tr><td>Rank</td><td>LoRA的Rank，越大学习到的参数更多，但也会学到无关知识，一般建议在4,8,16。太高无明显性能优势，反而增加资源消耗。</td></tr><tr><td>Dropout</td><td>随机丢弃的概率，可以避免过拟合。对于13B等小尺寸模型可以设置为10%。对于70B等大尺寸，可以设置为5%。</td></tr></tbody></table>
+<p>更加详细的参数可以查阅：https://llamafactory.readthedocs.io/zh-cn/latest/advanced/arguments.html</p>
+<h3 class="sub">7.模型评测</h3>
+<p>准确地评估模型在特定任务的表现，可以为后续训练与数据迭代的方向提供参考。所以需要一份优质的数据去评估模型能力。</p>
+<p>五、基于强化学习对齐偏好（RLHF）</p>
+<p>RLHF(Reinforcement Learning from Human Feedback)，通过人类反馈强化学习进一步微调模型，让模型有更好的泛化能力，并输出更符合人类偏好的结果，是提升模型性能、减少幻觉和有害内容的有效手段。</p>
+<p>常见的方法如下：</p>
+<p>1.PPO(Proximal Policy Optimization)</p>
+<p>通过限制每次策略更新的幅度，保证训练过程的稳定性和高效性。让模型学习到人类偏好的同时，不过于丢失原有能力。</p>
+<p>策略模型进行环境采样；SFT参考模型计算KL散度，确保更新策略不出现大变化；奖励模型评价奖励；评论模型/价值模型对每个token的收益进行预估</p>
+<p>2.DPO(Direct Preference Optimization)</p>
+<p>PPO 需要训练奖励模型，如何构建准确的Reward和Value Model是一个难题，直接影响强化学习的效果。DPO直接用标注好的人类偏好数据去训练。例如：</p>
+<p>[ { &quot;instruction&quot;: &quot;人类指令&quot;, &quot;input&quot;: &quot;人类输入&quot;, &quot;chosen&quot;: &quot;优质回答&quot;, &quot;rejected&quot;: &quot;劣质回答&quot; } ]</p>
+<h3 class="sub">3.KTO</h3>
+<p>与DPO类似，但是解决了DPO的chosen和rejected必须成对出现的缺点。例如：</p>
+<p>[ { &quot;instruction&quot;: &quot;人类指令&quot;, &quot;input&quot;: &quot;人类输入&quot;, &quot;output&quot;: &quot;模型回答&quot;, &quot;kto_tag&quot;: &quot;人类反馈 [true/false]&quot; } ]</p>
+<h3 class="sub">4.GRPO</h3>
+<p>移除对Value Model的依赖，一次生成一堆结果，组内相对优势（模型自己卷），奖励高于平均分的结果。与PPO不同的是，只对最终的结果进行奖励评估，如果过程错误但结果正确，也会获得奖励。</p>
+<h3 class="sub">5.训练框架</h3>
+<p>我们在项目中，使用VERL进行强化学习训练，可以直接参考：</p>
+<p>https://github.com/volcengine/verl</p>
+<h3 class="sub">6.RL与SFT的区别</h3>
+<p>1. SFT只需要提供正例数据，告诉模型什么是正确的，让模型学习正确数据的概率分布，这会导致SFT往往记住了很多知识和格式。采样的时候也是基于概率，通过采样参数来控制，挑选出概率大的next token，以此来排除概率小的“错误”token。</p>
+<p>2. RL可以提供正负反馈，明确告诉模型哪些是错误的，更有利于提升模型的泛化能力。</p>
+<p>https://arxiv.org/pdf/2501.17161</p>
+<p>3. SFT需要更多的标注数据，RL可以通过固定的规则奖励（例如math 和code只需要判断最终结果）与奖励模型提供的正负反馈不断迭代，让模型自己探索符合人类偏好的回复策略，可以减少训练数据的要求。</p>
+<p>4. SFT是针对Token级别的反馈，而RL是针对整个答案文本的评价。</p>
+<p>六、思维链（Chain-of-Thought）与推理增强</p>
+<p>COT是一种用于提升大语言模型（LLM）推理能力的提示工程（Prompt Engineering）方法。其核心思想是：在模型生成答案时，不是直接输出最终结果，而是引导模型像人类一样，分步骤地展示推理和思考过程，逐步推导出答案。</p>
+<p>人类在回答问题的时候，有些常识性问题，可以直接回答出来，而有些复杂的问题，可以经过思考和推理以后，再给出最终的答案。与人类一样，模型也可以模拟这个过程，输出慢思考的中间过程，让模型产生反思能力，提高最终答案的准确率，尤其是在复杂推理、数学、逻辑等任务上，可以有效的减少幻觉。</p>
+<table><thead><tr><th>优点</th><th>缺点</th></tr></thead><tbody><tr><td>能显著提升数学、逻辑、推理等复杂任务的表现</td><td>生成内容长，响应慢，废资源。</td></tr><tr><td>分步骤解决问题，容易发现和纠正中间错误，提升最终答案准确性</td><td>效果非常依赖prompt和示例。</td></tr><tr><td>过程可解释</td><td>中间过程可能出错，后面可能基于错误的结论进一步输出，导致浪费很多token还是得到错误答案</td></tr><tr><td>便于调试和优化，指出模型的错误</td><td>对简单任务基本无帮助，反而浪费token</td></tr><tr><td>可以引入反思机制，进一步减少幻觉</td><td>小尺寸模型效果有限，可能会不断输出错误内容</td></tr></tbody></table>
+<p>在早期项目落地时，主要是靠prompt去引导模型输出中间过程，现在已经有很多带think能力的模型。 我们在项目冷启动的时候，如果需要制造COT数据，可以直接通过已有模型进行蒸馏，或者仍然使用prompt进行引导，让模型输出业务需要的数据。也可以通过规则奖励，激发RL自行产生慢思考的数据，收集评分高的数据不断迭代模型。z</p>
+<p>之前我们通过RL，增加推理过程提高了文档问答的效果，具体可以参考：https://km.woa.com/articles/show/622575</p>
+<p>七、Agent / Workflow</p>
+<p>前面提到的所有方案，目标都是为了提升单次LLM任务的准确率。但在实际业务中，很难通过一次LLM调用将所有问题解决。这时候搭建一个多Agent协作的系统就非常有必要。</p>
+<p>LLM Agent 是指以大语言模型为核心，具备自主感知、决策、规划和执行能力的智能体系统。它不仅能理解和生成自然语言，还能根据环境反馈和任务目标，动态调用工具、检索信息、执行代码、与外部系统交互，完成复杂任务。</p>
+<p>Agent可以将复杂的任务拆解为子任务，通过调用工具来逐步完成。但是在落地的时候，我们可以完全让模型+FunctionCall来驱动；也可以搭建Workflow，在关键位置引入LLM强大的语义理解能力和规划能力。前者更加灵活，后者更加准确。</p>
+<p>虽然我们采用Workflow的方式，但是通过一些工程手段，在提升任务准确率的前提下，依然没有丢弃LLM的规划能力和灵活性。下面简单介绍一些落地经验：</p>
+<p>1. 全局planning，让LLM在制定计划的时候，有大局观，直接生成全局计划而非一步一步的生成，可以提高问题解决率，减少LLM生成后续步骤的时候，忽略前面的任务。</p>
+<p>2. 完全由LLM决定如何解决问题，以及调用什么工具，而不是写死每个步骤。并对中间结果进行摘要，缩短上下文。</p>
+<p>3. 引入reflection机制，让模型深入思考和研究每个步骤的解决情况。</p>
+<p>4. replan，前面的步骤的结果可能影响后续的步骤，不断的重新制定下一步计划，并review 全局计划，进行调整。</p>
+<p>5. 复述任务，并将重要的信息放到prompt末尾。随着上下文越来越长，对于一些能力一般的模型来说，可能顾及不到所有信息，需要将重点进行重复，并放到最接近输出的位置。</p>
+<p>6. 不同的步骤可以尝试不同的模型，有些简单任务可以用小尺寸模型，有些复杂任务需要大尺寸模型。灵活构建。</p>
+<p>7. 尽量少使用few shot example，除非LLM实在解决不了。 example会导致模型输出总是倾向于你给的示例，丧失多样性。如果实在要给例子，可以构造具有多样性的示例。</p>
+<h3 class="sub">8. 尽量将可变信息放到prompt最后，有效利用kv缓存。</h3>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>幻觉治理需模型架构、数据、算法、工程实践多维协同，持续演进。</li><li>提升事实一致性与推理能力才能真正释放大模型应用潜力。</li></ul></div>
+<p>随着大语言模型在各行各业的广泛落地，幻觉问题已成为影响其可靠性和实际价值的核心挑战。本文系统分析了LLM幻觉产生的原因，评估了其优缺点，并从Prompt设计、RAG检索增强、采样参数、SFT监督微调、强化学习、思维链推理、Agent Workflow等多个技术路径提出了针对性的优化方案。可以预见，未来LLM的幻觉治理将是一个持续演进的过程，需要模型架构、数据、算法、工程实践的多维协同。只有不断完善技术手段，提升模型的事实一致性和推理能力，才能真正释放大语言模型在实际应用中的潜力。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>参考文献</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>附LoRA原论文、RLHF相关论文及LLamaFactory、VERL文档链接供延伸阅读。</li><li>所列文献覆盖LoRA、QLoRA、RLHF与训练框架，支撑前文结论。</li></ul></div>
+<p>https://arxiv.org/pdf/2106.09685</p>
+<p>https://arxiv.org/pdf/2304.13785</p>
+<p>https://arxiv.org/pdf/2501.17161</p>
+<p>https://openlmlab.github.io/MOSS-RLHF/</p>
+<p>https://arxiv.org/pdf/2402.03300</p>
+<p>https://llamafactory.readthedocs.io/zh-cn/latest/getting_started/data_preparation.html</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>预训练 vs 后训练 vs 对齐</h4><p>预训练无标注自监督学语言结构；后训练用标注数据微调任务表现；对齐借RLHF让输出符合人类价值观。</p><a class="src-link" href="#sec-01">原文 → 训练原理</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>学的是语言模式而非事实</h4><p>预训练目标是自然语言理解与生成能力，模型学到的是语言模式而非事实真理，不判断事实真假。</p><a class="src-link" href="#sec-01">原文 → 训练原理</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Top-k vs Top-p</h4><p>Top-k保留概率最高的K个token；Top-p按概率累加到阈值P动态定候选集。两者同设时需同时满足。</p><a class="src-link" href="#sec-02">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>temperature高 vs 低</h4><p>温度越高概率分布越平坦、输出越多样；越低分布越尖锐、越倾向高概率token、输出越确定。</p><a class="src-link" href="#sec-02">原文 → 推理流程</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>LoRA的参数节省</h4><p>10000×10000矩阵全参需1亿参数，Rank=8的LoRA只需16万参数，显著降低存储与计算开销。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>全参微调 vs PEFT</h4><p>全参上限高但易灾难性遗忘、易过拟合；PEFT资源少、更保原能力，但基座差时难提升。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>错误数据抬升幻觉率</h4><p>过拟合应用dropout优化，而非混入错误数据；错误数据会让模型学到错误信息、提高幻觉率。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>微调数据规模</h4><p>LoRA约1k–10k条数据，全参SFT需100k条以上；数据质量、多样性、数量决定最终效果。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>SFT vs RL</h4><p>SFT给正例、token级反馈、需更多标注；RL给正负反馈、按整段答案评价、泛化更强。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>DPO vs KTO</h4><p>DPO需chosen/rejected成对数据；KTO只需单条output加kto_tag反馈，免去成对标注。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>PPO vs GRPO</h4><p>PPO需奖励与价值模型；GRPO移除价值模型，组内相对优势，只对最终结果奖励。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>few-shot示例滥用</h4><p>尽量少用few-shot，示例会使输出总倾向示例而丧失多样性；确需给例则构造多样示例。</p><a class="src-link" href="#sec-07">原文 → 多维优化</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>模型学的是语言模式而非事实，逐token概率采样天然带随机性，幻觉只能治理难以根除。</li>
+          <li>优化按成本分层：先Prompt与采样参数，再RAG，最后才考虑SFT/RLHF改动模型。</li>
+          <li>微调数据贵在质而非量：多样性、质量、数量三达标，错误数据会抬升幻觉率。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649795117&amp;idx=1&amp;sn=675deee5152be251d0531015725c6aa0" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649795117&amp;idx=1&amp;sn=675deee5152be251d0531015725c6aa0</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI应用 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">别再手写提示词！需求澄清 + 50多专业提示词框架自动匹配，效率提升10倍！</h1>
+  <p class="lede">把50多个专业提示词框架封装成自动匹配的 Skill/插件，先澄清再优化。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI应用</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 9 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>痛点与方案</a>
+          <a href="#sec-02"><span class="n">02</span>素材准备</a>
+          <a href="#sec-03"><span class="n">03</span>工具封装</a>
+          <a href="#sec-04"><span class="n">04</span>总结思考</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 痛点与方案</a>
+          <a href="#sec-02">02 素材准备</a>
+          <a href="#sec-03">03 工具封装</a>
+          <a href="#sec-04">04 总结思考</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>痛点与方案</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>手写提示词存在表达不清、框架有限、套用耗时三大难点</li><li>现有优化工具缺澄清确认、框架偏通用、模型支持有限</li><li>方案：按场景匹配 50 多个专业框架并主动澄清、自动套用</li></ul></div>
+<p>当前用户撰写提示词存在很多难点：</p>
+<ul><li>可能表达不清楚，存在遗漏、歧义；</li><li>知道的提示词框架非常有限，很难挑选最适合的提示词框架；</li><li>知道提示词框架自己套用非常浪费时间。</li></ul>
+<p>当前很多提示词优化工具的主要缺点：</p>
+<ul><li>缺乏澄清与确认，你提供的信息可能会存在歧义和错误，那么它们也会直接生成。</li><li>很多提示词优化工具产出的提示词，虽然很结构化，看起来也很专业，但大多是相对通用的提示词框架。</li><li>支持的模型非常有限。</li></ul>
+<p>我设计了一个名为prompt-optimizerskill，通过以下方式解决这些问题：</p>
+<ul><li>根据用户描述场景选择最适合的专业提示词框架（50多个全球顶尖的提示词框架）。</li><li>如果发现缺失、歧义或错误会主动和用户确认。</li><li>自动套用最适合的提示词框架。</li><li>可以试用自己喜欢的模型。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>素材准备</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>用 AI First 理念把任务拆解到大模型能力边界内</li><li>把需求说清楚并备足准确上下文（专业框架素材）</li><li>框架多时先让 AI 生成摘要，供渐进式加载先锁定再取详情</li></ul></div>
+<p>我们前面学了 Skill，虽然已经大概掌握了 Skill 的结构，但是真正亲手去写还是有很大门槛。</p>
+<p>详情参见：极速开发出一个高质量 Claude Agent Skills 最佳实践</p>
+<p>我们应该尽量秉承“AI First” 的理念，很多任务首先想到的是 “AI 能不能做好”，“如何让 AI 帮我干得更好”。</p>
+<p>那么我们就需要把任务拆解到大模型的能力边界以内，然后把任务交代清楚，然后给大模型提供充足准确的信息。</p>
+<p>具体到咱们这个场景，我们具体要怎么做？</p>
+<p>把自己的想法表达清楚：</p>
+<ul><li>我希望你按照 Skill 规范，帮我把“提示词框架”这个文件夹改造成 “提示词优化专家”（需要改成英文）的 skill。当用户想要优化提示词时启用该功能。</li><li>流程： 用户直接发送需求或者原始提示词，AI 需要从   中选择最匹配的场景，然后匹配最适合的框架名称，读取框架名称对应的框架描述文件，然后判断用户的输入的需求或原始提示词是否存在歧义或缺失，和用户进行核对，核对清楚以后，按照匹配的最佳提示词框架产出最终提示词。</li><li>要求：请你按照 Skill 规范，生成对应的 Skill。确保文件夹名称，结构啥的都符合 Skill 规范，且功能的正确性</li></ul>
+<p>充足准确的上下文：</p>
+<p>那我们需要把这些专业的提示词框架给它。</p>
+<p>我们可以在网上找到一些专业的 AI 框架，如：</p>
+<p>https://juuzt.ai/knowledge-base/prompt-frameworks/</p>
+<p>然后让 AI Coding 工具（如 Qoder、Cursor 等）通过 MCP 的方式把这些框架抓下来。</p>
+<p>如果 Qoder 的 Fetch MCP。</p>
+<p>如 Cursor 中使用：</p>
+<p>https://www.firecrawl.dev/MCP</p>
+<p>那么，如何更好地利用「渐进式式加载」的机制？</p>
+<p>我们可能有几十个，未来可能有上百个提示框架，哪怕 Claude 支持渐进式加载，它也无法在没有加载完所有的提示词框架前就能够判断出来该使用哪些框架。</p>
+<p>因此，我们需要主动让 AI 帮助我们根据当前的所有框架生产出一份摘要。</p>
+<p>这样智能体就可以先根据摘要锁定对应的框架，然后再提取对应的框架文件了解详情。</p>
+<p>当然，也可以考虑转为 JSON 格式，对 Agent 更友好一些。</p>
+<p>由于上下文不太长，而且本身是 Markdown 表格，目前看效果已经很不错。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>工具封装</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Claude Skills：Qoder 拉取官方 skills，用 skill-creator 生成</li><li>通过插件市场 /plugin install 安装并使用</li><li>Chrome 插件：Qoder Quest 需求澄清+核心代码，约半小时完成</li></ul></div>
+<h3 class="sub">3.1 Claude Skills</h3>
+<p>AI Coding 工具创建</p>
+<p>AI Coding 工具，有很多，我最常用的 AI Coding 工具之一是 Qoder。</p>
+<p>我们可以把 Anthropic 官方的 Skill 仓库拉下来。传送门：</p>
+<p>https://github.com/anthropics/skills</p>
+<p>因为这里有很多官方的例子，还有一些相关的说明。</p>
+<p>通常，我会先用 Qoder 的仓库 Wiki 功能生成一份专业详细的Wiki，快速了解关键信息，有任何疑问直接提问。</p>
+<p>我们把前面准备的这些材料放到文件夹里，放到官方的 skills 目录，然后把我们想要做的事情说清楚，让 AI 自动帮我们生成对应的 skill。</p>
+<p>那么很快它就会按照 Skills 的规范，根据我们提供的要求和相关资料，生成出一个非常专业、高质量的 Skills。</p>
+<p>该 Skill 已开源，需要的朋友欢迎安装体验，欢迎前来 star！</p>
+<p>https://github.com/chujianyun/skills</p>
+<p>官方 skill-creator</p>
+<p>Claude 的 Skills 仓库提供了一个创建 Skill 的 Skill：skill-creator</p>
+<p>cd 到准备好的素材目录，然后发送同样的提示词，Claude Code 会根据该 Skill 自动帮我们创建好提示词。</p>
+<p>安装体验</p>
+<p>安装方法参见：https://github.com/anthropics/skills</p>
+<p>在 Claude Code 中增加我的插件市场</p>
+<ul><li>/plugin marketplace add chujianyun/skills</li></ul>
+<p>插件市场安装我们的 提示词优化 Skill</p>
+<ul><li>/plugin install prompt-engineering-skills@chujianyun/skills</li></ul>
+<p>说出自己需要提示优化，然后把原始提示词发给他。</p>
+<p>可以明显地看到，它会自动匹配prompt-optimizer这个 Skill，读取摘要文件，匹配最适合的框架，对需求进行澄清，给出对应的优化后的提示词。</p>
+<p>底层原理参见：https://github.com/numman-ali/openskills</p>
+<ul><li>&lt;skills_instructions&gt;</li><li>When users ask you to perform tasks, check if any of the available skills below can help complete the task more effectively.</li><li>How to use skills:</li><li>- Invoke skills usingthis tool with the skill name only(no arguments)</li><li>- When you invoke a skill, you will see &lt;command-message&gt;The &quot;{name}&quot; skill is loading&lt;/command-message&gt;</li><li>- The skill&#x27;s prompt will expand and provide detailed instructions</li><li>Important:</li><li>- Only use skills listed in &lt;available_skills&gt; below</li><li>- Do not invoke a skill that is already running</li><li>&lt;/skills_instructions&gt;</li><li>&lt;available_skills&gt;</li><li>&lt;skill&gt;</li><li>&lt;name&gt;pdf&lt;/name&gt;</li><li>&lt;description&gt;Comprehensive PDF manipulation toolkit for extracting text and tables, creating new PDFs, merging/splitting documents, and handling forms...&lt;/description&gt;</li><li>&lt;location&gt;plugin&lt;/location&gt;</li><li>&lt;/skill&gt;</li><li>&lt;skill&gt;</li><li>&lt;name&gt;xlsx&lt;/name&gt;</li><li>&lt;description&gt;Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis...&lt;/description&gt;</li><li>&lt;location&gt;plugin&lt;/location&gt;</li><li>&lt;/skill&gt;</li><li>&lt;/available_skills&gt;</li></ul>
+<p>安装好插件或 Skill，提示词中会暴漏可用工具。Claude Code 运行时匹配到对应 Skill 以后，调用Skill(&quot;技能名称&quot;)方式触发，渐进式披露。</p>
+<h3 class="sub">3.2 Chrome 浏览器插件</h3>
+<p>考虑到有些同学不太会用 Skill。同时，也是为了验证 AI Coding 现在的水平，周末使用 Qoder 尝试将 Skill 转为 Chrome 插件，想了解实现难度和成本。</p>
+<p>新建一个文件夹，把 Skill 文件夹放进去，使用 Qoder Quest 模式进行需求澄清。</p>
+<p>用 Quest 模式生成核心代码。</p>
+<p>然后，右侧 Agent 中通过几轮对话，就可以生成比较符合预期的浏览器插件。</p>
+<p>花了大概半小时的时间就开发出来了，超出预期。</p>
+<p>Github 仓库地址：</p>
+<p>https://github.com/chujianyun/prompt-optimizer-extension</p>
+<p>使用非常方便，配置自己的大模型 API，通过对话的方式就可以进行提示词的优化啦！</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>总结思考</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>专业场景（如头脑风暴）套框架效果更好</li><li>简单场景说清楚即可，不必硬套框架</li><li>Do 成本降低，关键在 Think；Skill 效果依赖模型能力</li></ul></div>
+<p>我自己智能体很多提示词都是用这种方式来生成的，有些业务智能体提示词也会尝试用这种方案来澄清和优化，明显可以感觉到有些提示词，用专业的提示词框架效果会更好。</p>
+<p>比如说头脑风暴，很多人都觉得‘你帮我们头脑风暴一下’这就够了。实际上你用专业的头脑风暴框架，能够挖掘出来的、能够发散出来的方面，能够挖掘出来的价值是完全不一样的。</p>
+<p>当然也不是所有的场景都需要套用专业的提示词框架，尤其是简单场景，说清楚即可。可能更多的还是你需要把它搞成一个智能体，相对更专业的场景可以去试试。</p>
+<p>提示词优化的 Skill 侧面展示了，现在“Do” 的成本已经大大降低，关键是 “Think”。</p>
+<p>已经从 “Talk is Cheap，Show Me Your Code” 转向 “Code is Cheap，Show Me Your Talk”。</p>
+<p>随着模型的能力越来越强，未来 Think 的价值，比 DO 更高。</p>
+<p>关键是能不能把任务拆解到大模型能力范围以内（不管手动还是自动），人是否能表达清楚自己的需求（不管有没有 AI 的辅助），AI 可以获取到充足和准确的上下文（不管是人提供，还是通过 Skill、MCP）。</p>
+<p>当然，Skill 不是万能的，Skill 的效果也依赖模型能力，通常模型越强大效果通常越好。</p>
+<p>希望本提示词优化 Skill 对大家撰写提示词能够有帮助。</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>手写提示词的三大难点</h4><p>表达不清易遗漏歧义；框架储备有限难挑选；自己套用框架浪费时间。</p><a class="src-link" href="#sec-01">原文 → 痛点与方案</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>现有优化工具三大缺点</h4><p>缺乏澄清确认直接生成；产出框架偏通用；支持的模型有限。</p><a class="src-link" href="#sec-01">原文 → 痛点与方案</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>prompt-optimizer 的工作方式</h4><p>按场景匹配 50 多个专业框架，发现歧义主动确认，自动套用最佳框架，可自选模型。</p><a class="src-link" href="#sec-01">原文 → 痛点与方案</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>框架多不能指望逐一加载判断</h4><p>几十上百个框架时模型无法先加载完再判断，应先让 AI 生成摘要再定位框架。</p><a class="src-link" href="#sec-02">原文 → 素材准备</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>插件市场安装命令</h4><p>/plugin marketplace add chujianyun/skills；/plugin install prompt-engineering-skills@chujianyun/skills</p><a class="src-link" href="#sec-03">原文 → 工具封装</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Chrome 插件开发耗时</h4><p>用 Qoder 将 Skill 转为 Chrome 插件，约半小时完成开发，超出预期。</p><a class="src-link" href="#sec-03">原文 → 工具封装</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>头脑风暴：普通 vs 专业框架</h4><p>一句“帮我们头脑风暴”不够，专业头脑风暴框架能挖掘发散出更多价值。</p><a class="src-link" href="#sec-04">原文 → 总结思考</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Do 与 Think 的价值变化</h4><p>“Do”的成本已大大降低，关键在“Think”；未来 Think 的价值比 DO 更高。</p><a class="src-link" href="#sec-04">原文 → 总结思考</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>何时需要专业框架</h4><p>简单场景说清楚即可；做成智能体或相对专业的场景才值得套用专业框架。</p><a class="src-link" href="#sec-04">原文 → 总结思考</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>做提示词优化 Skill：先把需求说清楚、备足框架上下文，再让 AI 生成。</li>
+          <li>框架太多时先生成摘要，让智能体先锁定框架再读取详情，应对渐进式加载。</li>
+          <li>Do 成本已降低，关键在 Think；简单场景说清楚即可，专业场景才套框架。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247557769&amp;idx=1&amp;sn=25073739d70b5443176974b3925d4670" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247557769&amp;idx=1&amp;sn=25073739d70b5443176974b3925d4670</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI应用 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

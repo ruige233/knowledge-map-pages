@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">如何用Prompt技巧激发无限创意</h1>
+  <p class="lede">系统梳理官方与大厂的Prompt技巧，并用Img2code实战验证</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI应用</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 24 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>背景</a>
+          <a href="#sec-02"><span class="n">02</span>Prompt原则与技巧</a>
+          <a href="#sec-03"><span class="n">03</span>大厂方案</a>
+          <a href="#sec-04"><span class="n">04</span>实践示例</a>
+          <a href="#sec-05"><span class="n">05</span>进一步</a>
+          <a href="#sec-06"><span class="n">06</span>写在结尾</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 背景</a>
+          <a href="#sec-02">02 Prompt原则与技巧</a>
+          <a href="#sec-03">03 大厂方案</a>
+          <a href="#sec-04">04 实践示例</a>
+          <a href="#sec-05">05 进一步</a>
+          <a href="#sec-06">06 写在结尾</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>指令要清晰。要准确表达你的需求，避免让GPT去猜测你的意图。如果你要生成较短的内容，就要求GPT简短回答；如果不想结果太简单，就用专业标准；不满意格式时，示例你期望的格式；总之减少GPT的猜测，我们可以得到更准确的响应。 在向ChatGPT提问的时候，要在问题里，包含相关的、重要的细节。 否则的话，ChatGPT就会给你瞎猜。 不好的提示词： 总结会议记录。 更好的提示词： 将会议记录总结成一个段落。然后编写演讲者的Markdown列表及其要点。最后，列出演讲者建议的下一步行动或行动项目（如果有）。 指定模型在回复中扮演特定角色。GitHub人设大全： https://github.com/f/awesome-chatgpt-prompts 使用三重引号、XML标签、章节标题等分隔符，帮助划分文本的不同部分，便于大模型更好地理解。对于简单的内容，有分隔符和没有分隔符，得到的结果，可能差别不大。但是，任务越复杂，消除任务的歧义就越重要。大模型是为我们生成内容的，不要把它的算力，浪费在了理解我们输入的内容上。 ﻿通过示例让模型理解你的需求，多用于难以描述的任务或特殊风格中。 要求大模型根据单词/字数、段落数量、要点数量生成回答，这样大模型生成的答案更有条理。 让模型先自行解决问题，之后比较并评估学生答案的正确性，让模型回答更有条理，也可提高准确性。 让大模型再去找找看有没有之前漏掉的内容，往往能让模型的输出结果，变得更好。 另外，实在不想自己写提示词，也会有些网站可以使用，如： https://www.aishort.top/﻿ 2）Awesome chatgpt prompts ﻿https://github.com/PlexPt/awesome-chatgpt-prompts-zh﻿ 3）假如自己写了一版Prompt，要自动优化，可参考： ﻿https://promptperfect.jina.ai/interactive﻿ 最后，实践中发现，模型本身智能是基础(0-&gt;60分)，Prompt提升确实很有用，但更多的是锦上添花(60-&gt;90分)。</th></tr></thead><tbody></tbody></table>
+<p>阿里妹导读</p>
+<p>本文深入探讨当前最前沿的prompt engineering方案，结合OpenAI、Anthropic和Google等大模型公司的资料，以及开源社区中宝贵的prompt技巧分享，全面解析这一领域的实践策略。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>背景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>新一代模型如 GPT-4、Gemini 理解上下文能力显著提升</li><li>prompt 长度和复杂度限制越来越宽泛</li><li>本文结合 OpenAI、Anthropic、Google 资料解析实践策略</li></ul></div>
+<p>随着新一代模型的不断涌现，如GPT-4和Gemini版本，其在理解上下文方面的能力显著提升，prompt长度和复杂度限制越来越宽泛。在本文中，我们将深入探讨当前最前沿的prompt engineering方案，结合OpenAI、Anthropic和Google等大模型公司的资料，以及开源社区中宝贵的prompt技巧分享，全面解析这一领域的实践策略。这篇文章旨在为您提供丰富而详尽的指南，帮助您在大模型的应用与开发过程中，实现更高级、更精准的互动效果。当然过程中也感谢各位大佬的指导帮助，并在此感谢请教和合作的每个人，就不一一列举了，也欢迎大家的指正和探讨。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>Prompt原则与技巧</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>官方 6 条建议：指令清晰、含细节、角色扮演、分隔符、步骤、示例、定长度</li><li>复杂任务应拆分为简单步骤，并让模型先思考再下结论</li><li>用嵌入检索实现 RAG，用 API 扩展模型能力</li><li>系统测试需建立指标评估、模型打分与人工评估流程</li></ul><div class="pit"><ul><li>执行模型生成的代码或调用 API 可能不安全，需沙盒环境</li><li>模糊指令会让 GPT 瞎猜，需在问题里包含相关细节</li></ul></div></div>
+<p>首先，最权威的提示词教程，莫过于ChatGPT官方文档里的6个写提示词的建议，如下对文档做了总结。</p>
+<h3 class="sub">2.1 指令清晰、详细</h3>
+<p>首先，指令要清晰。要准确表达你的需求，避免让GPT去猜测你的意图。如果你要生成较短的内容，就要求GPT简短回答；如果不想结果太简单，就用专业标准；不满意格式时，示例你期望的格式；总之减少GPT的猜测，我们可以得到更准确的响应。如何做到指令清晰呢？6个建议如下：</p>
+<h3 class="sub">2.1.1 问题里包含更多细节</h3>
+<p>在向ChatGPT提问时，应包含相关且重要细节，否则，GPT可能会胡乱猜测。例：</p>
+<ul><li>不好的提示词：谁是总统？</li><li>更好的提示词：谁是 2021 年的墨西哥总统，选举的频率如何？</li><li>在向ChatGPT提问的时候，要在问题里，包含相关的、重要的细节。 否则的话，ChatGPT就会给你瞎猜。</li><li>不好的提示词： 总结会议记录。</li><li>更好的提示词： 将会议记录总结成一个段落。然后编写演讲者的Markdown列表及其要点。最后，列出演讲者建议的下一步行动或行动项目（如果有）。</li></ul>
+<h3 class="sub">2.1.2 让模型角色扮演</h3>
+<p>指定模型在回复中扮演特定角色。GitHub人设大全： https://github.com/f/awesome-chatgpt-prompts﻿</p>
+<ul><li>不好的提示词：如何控制消极情绪？</li><li>更好的提示词：我想让你担任心理健康顾问。我将为您提供一个寻求指导和建议的人，以管理他们的情绪、压力、焦虑和其他心理健康问题。您应该利用您的认知行为疗法、冥想技巧、正念练习和其他治疗方法的知识来制定个人可以实施的策略，以改善他们的整体健康状况。我的第一个请求是“如何控制消极情绪？”</li></ul>
+<h3 class="sub">2.1.3 使用分隔符</h3>
+<p>使用三重引号、XML标签、章节标题等分隔符，帮助划分文本的不同部分，便于大模型更好地理解。</p>
+<p>对于简单的内容，有分隔符和没有分隔符，得到的结果，可能差别不大。但是，任务越复杂，消除任务的歧义就越重要。大模型是为我们生成内容的，不要把它的算力，浪费在了理解我们输入的内容上。</p>
+<ul><li>用三重引号分隔</li><li>将三重引号中的古诗翻译成现代汉语。 &quot;&quot;&quot; 关关雎鸠，在河之洲。 窈窕淑女，君子好逑。 参差荇菜，左右流之。 窈窕淑女，寤寐求之。 求之不得，寤寐思服。 悠哉悠哉，辗转反侧。 参差荇菜，左右采之。 窈窕淑女，琴瑟友之。 参差荇菜，左右芼之。 窈窕淑女，钟鼓乐之。 &quot;&quot;&quot;</li><li>用XML标签分隔</li><li>您将获得一对关于同一主题的文章(用 XML 标记分隔)，先总结一下每篇文章的论点。然后指出他们中的哪一个提出了更好的论点并解释原因。</li><li>&lt;article&gt; 在这里插入第一篇文章&lt;/article&gt;</li></ul>
+<h3 class="sub">2.1.4 指定完成任务所需的步骤</h3>
+<p>详细写出任务所需的步骤，可使模型更容易按步骤执行。</p>
+<ul><li>使用以下步骤完成用户请求。</li><li>第 1 步：在三重引号内的文本中用一句话总结，加前缀“Summary:”。</li><li>第 2 步：将摘要翻译成西班牙语，加前缀“Translation:”。</li><li>&quot;&quot;&quot;</li><li>在此插入文本</li><li>&quot;&quot;&quot;</li></ul>
+<h3 class="sub">2.1.5 提供示例</h3>
+<p>通过示例让模型理解你的需求，多用于难以描述的任务或特殊风格中。</p>
+<ul><li>假设你是一个旅行博主，你希望模型能以引人入胜的方式描述各种旅游地点。你可以这样写提示词：</li><li>你是一个旅行博主，我会在三重括号内给你提供示例。你模仿示例，写出5个回答。</li><li>提示词：告诉我关于上海的事。</li><li>&quot;&quot;&quot;</li><li>提示词：告诉我关于巴黎的事。</li><li>回答：巴黎，犹如一首经久不衰的交响乐，每个角落都充满了艺术与浪漫的气息; 埃菲尔铁塔，卢浮宫，塞纳河都如同乐章，述说着这座城市的历史与未来。</li><li>&quot;&quot;&quot;</li></ul>
+<h3 class="sub">2.1.6 设定回答的长度</h3>
+<p>要求大模型根据单词/字数、段落数量、要点数量生成回答，这样大模型生成的答案更有条理。</p>
+<ul><li>用大约 50 个字总结以下文本，并总结为两个段落，三个要点。</li><li>&quot;&quot;&quot;</li><li>插入文本</li><li>&quot;&quot;&quot;</li></ul>
+<h3 class="sub">2.2 提供参考文本</h3>
+<p>给模型提供可信的信息来编写答案，或者引用参考文本编写答案，避免胡乱回答。</p>
+<ul><li>使用以下文章回答问题。如果找不到答案，回复“我找不到答案”。</li><li>&quot;&quot;&quot;</li><li>插入文章</li><li>&quot;&quot;&quot;</li><li>问题：插入问题</li></ul>
+<h3 class="sub">2.3 将复杂任务拆分</h3>
+<p>将复杂任务分解成简单步骤，方便模型操作，提高准确性。</p>
+<h3 class="sub">2.3.1 问题分类</h3>
+<p>先把这些任务按类型分类，然后给每一种类型的任务都制定一套相应的步骤或者指令。使用这种方法的好处就是，每一次我们只需要关注当前的任务和相应的步骤或者指令，这样就可以降低出错的几率，而且也能节省成本。因为处理大任务需要的电脑运行费用，通常会比处理小任务的费用要高。</p>
+<ul><li>您是一个网络专家，将收到客户服务查询。将每个查询分为主要类别和次要类别。主要类别：计费、技术支持、账户管理或一般查询。次要类别：退订或升级、添加支付方式、收费说明、对收费提出异议。根据不同的类别给出详细的解答。</li><li>假设客户需要“故障排除”方面的帮助。你将需要处理一些需要技术支持进行故障排查的客户服务咨询。请按照以下步骤帮助用户：</li><li>● 让他们检查路由器的所有线缆是否都已连接。注意，线缆随着时间的推移容易松动是常见的问题。</li><li>● 如果所有的线缆都已连接，但问题依然存在，请询问他们正在使用的路由器型号。</li><li>● 现在你需要指导他们如何重启设备：</li><li>○ 如果型号是 MTD-327J，建议他们按住红色按钮 5 秒钟，然后等待 5 分钟后再测试连接。</li><li>○ 如果型号是 MTD-327S，建议他们拔掉电源后再插入，然后等待 5 分钟后再测试连接。</li><li>● 如果客户在重启设备并等待 5 分钟后问题依然存在，通过输出 {&quot;IT support requested&quot;} 将他们转接到 IT 支持。</li><li>● 如果用户开始提问与此主题无关的问题，那么确认他们是否想结束当前的故障排查聊天，并根据以下方案对他们的请求进行分类</li></ul>
+<h3 class="sub">2.3.2 分段总结长文/长对话</h3>
+<p>分段总结，再汇总，即总结前一部分的时候，带上之前的内容。多轮对话中，这样更利于后面回答的准确生成。</p>
+<ul><li>问：请输入内容</li><li>回答1： [段落1内容总结]</li><li>问2：请输入内容</li><li>回答2： [段落2内容总结] + [回答1]</li><li>请根据以上格式提供每段的内容，这样能更好地对每一段进行总结，并逐步汇总所有内容，有助于生成最终的回答。</li></ul>
+<h3 class="sub">2.4 给大模型时间“思考”</h3>
+<h3 class="sub">2.4.1 生成自己的答案再下结论</h3>
+<p>让模型先自行解决问题，之后比较并评估学生答案的正确性，让模型回答更有条理，也可提高准确性。</p>
+<ul><li>首先想出你自己解决这个数学题的方法，然后将您的解决方案与学生的解决方案进行比较，并评估学生的解决方案是否正确。在您自己完成问题之前，不要判断学生的解决方案是否正确。</li></ul>
+<h3 class="sub">2.4.2 隐藏推理过程</h3>
+<p>在给用户答案前，模型先在内部思考，不展示部分思考过程，即一个&quot;内心独白（inner monologue）&quot;的技巧。这样同样让模型回答更有条理，提高准确性，也不会干扰用户期望的输出。</p>
+<ul><li>按照以下步骤回答用户查询。</li><li>第 1 步 - 首先找出您自己的问题解决方案。不要依赖学生的解决方案，因为它可能不正确。将您为此步骤所做的所有工作用三重引号 (&quot;&quot;&quot;) 括起来。</li><li>第 2 步 - 将您的解决方案与学生的解决方案进行比较，并评估学生的解决方案是否正确。将您为此步骤所做的所有工作用三重引号 (&quot;&quot;&quot;) 括起来。</li><li>第 3 步 - 如果学生犯了错误，请确定您可以在不给出答案的情况下给学生什么提示。将您为此步骤所做的所有工作用三重引号 (&quot;&quot;&quot;) 括起来。</li><li>第 4 步 - 如果学生犯了错误，请向学生提供上一步的提示（三重引号外）。不要写“第 4 步 - ...”，而写“提示：”。</li></ul>
+<h3 class="sub">2.4.3 让模型反思回答</h3>
+<p>让大模型再去找找看有没有之前漏掉的内容，往往能让模型的输出结果，变得更好。</p>
+<ul><li>You will be provided with a document delimited by triple quotes.</li><li>Your task is to select excerpts which pertain to the following question: &quot;What significant paradigm shifts have occurred in the history of artificial intelligence.&quot;</li><li>Ensure that excerpts contain all relevant context needed to interpret them - in other words don&#x27;t extract small snippets that are missing important context.</li><li>Please think about your answers and answer carefully.</li></ul>
+<h3 class="sub">2.5 使用外部工具</h3>
+<h3 class="sub">2.5.1 嵌入（embedding）</h3>
+<p>使用基于嵌入的搜索来实现高效的知识检索，利用外部信息作为其输入的一部分，有助于模型生成更加明智和最新的回答，即RAG(Retrieval-Augmented Generation)。</p>
+<ul><li>如果用户提出关于特定电影的问题，结合</li><li>```高质量的电影信息（如演员、导演等）```</li><li>来回答用户的问题。</li></ul>
+<h3 class="sub">2.5.2 调用API</h3>
+<p>提供文档与代码示例，指导模型使用API，使用代码或者调用外部的API，产生的输出一起输入给模型使用，来进行更精确推理。</p>
+<ul><li>结合```文档与代码示例```</li><li>您可以通过将生成的Python代码/API调用结果括在三重反引号中来进行下面的计算，</li><li>```代码在这里/API调用结果在这里```</li><li>使用它来执行计算。</li></ul>
+<p>注：执行模型生成的代码或API可能本身并不安全，需要一个沙盒代码执行环境来限制不受信任的代码可能造成的危害。</p>
+<h3 class="sub">2.6 系统地测试更改</h3>
+<p>有时候很难判断新的指令或设计是让你的系统变得更好还是更糟。对于小样本量来说，很难区分真正的改进还是偶然运气。也许这种变化可以提高某些输入的性能，但却损害了其他方面的性能，所以建立一个系统测试流程更有必要。</p>
+<h3 class="sub">2.6.1 指标评估</h3>
+<p>以img2code指标对比，需要从页面整体布局、细节、字体等方面，详细评估code生成的好坏</p>
+<h3 class="sub">2.6.2 模型评估</h3>
+<p>把模型输出的结果，统一输入模型进行打分评估。</p>
+<ul><li>请根据评估标准给结果打分，如下：</li><li>● 准确性（Accuracy）</li><li>○ 定义：模型生成的回答是否准确且符合事实。</li><li>○ 评分标准：</li><li>■ 0-2分：回答严重不准确或与事实明显不符。</li><li>■ 3-5分：回答部分正确，但有明显错误或遗漏关键信息。</li><li>■ 6-8分：回答大部分正确，但有细微错误或偏差。</li><li>■ 9-10分：回答完全准确且无可挑剔。</li><li>● 理解能力（Comprehension）</li><li>○ 定义：模型是否正确理解了用户提出的问题或指示。</li><li>○ 评分标准：</li><li>■ 0-2分：完全没有理解问题，回答与问题无关。</li><li>■ 3-5分：部分理解了问题，但回答不完全相关。</li><li>■ 6-8分：大部分理解了问题，但有细微的误解。</li><li>■ 9-10分：完全理解问题，并能提供相关的回答。</li><li>● 生成能力（Generation）</li><li>○ 定义：模型生成的文本是否流畅、自然，并且符合上下文逻辑。</li><li>○ 评分标准：</li><li>■ 0-2分：生成的文本不连贯，逻辑混乱或难以理解。</li><li>■ 3-5分：生成的文本有部分连贯，但存在明显的逻辑错误或不自然之处。</li><li>■ 6-8分：生成的文本大部分连贯，逻辑合理，但有少许不自然之处。</li><li>■ 9-10分：生成的文本完全连贯，自然且逻辑清晰。</li></ul>
+<h3 class="sub">2.6.3 人工评估</h3>
+<p>有些美观、简洁等任务较主观，需要人工筛选，根据选定的baseline，给出评价。举例如下：</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>大厂方案</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Anthropic 强调把精力放在评估指标与鲁棒测试用例而非编写 prompt</li><li>Anthropic 特色技巧：预填模型输出、数据指令分离、MetaPrompt 工具</li><li>Google 四要点：Persona、Task、Context、Format，教程对新手友好</li></ul><div class="pit"><ul><li>MetaPrompt 仅对单轮对话和 Claude3 Opus 效果好，并非最佳起点</li></ul></div></div>
+<p>CO-STAR无疑为我们的prompt工作提供了一个非常好的出发点，但对prompt engineering有所了解的同学可以发现，它提供的更多的是针对一些相关简单直观任务的通用方案，缺少了针对复杂的问题的prompt技巧，例如Few-Shot, Though Chain, Self-Reflection。我们转换视角，看一看anthropic、google等其他家公司的prompt技巧，看有没有相关说明来补充CO-STAR方案。</p>
+<h3 class="sub">3.1 Anthropic</h3>
+<p>Anthropic最突出的特点是严谨。在官网资料的最开始就强调，prompt engineering绝大部分工作内容应该放在建立一个完善的评估指标，设计鲁棒的测试用例，而不是编写prompt上。</p>
+<p>具体流程如下：</p>
+<ul><li>定义任务和成功标准</li><li>开发测试用例</li><li>设计初步prompt</li><li>测试prompt</li><li>调整prompt</li><li>完善prompt</li></ul>
+<p>这里主要关注具体的prompt技巧，整理了如下：</p>
+<ul><li>清晰直接</li><li>提供清晰的指令和上下文内容指导模型的输出；</li><li>复杂任务提供指定时，将其分解为编号步骤或要点；</li><li>使用示例</li><li>给出带有完整输出格式的示例，准确性，一致性以及更好的性能；</li><li>角色化</li><li>指定分配一个角色，提供角色的清晰详细的背景信息，使大模型以特定方式做出响应，提高其准确性和性能，并调整其语气和举止以匹配所需的上下文（技术含量高，特定的交流风格，更好的基础性能）；</li><li>标签化</li><li>使用xml标签；</li><li>将提示的关键部分（例如说明、示例或输入数据）包装在 XML 标记中，可以帮助 Claude 更好地理解上下文；</li><li>输入变量和结构化输出处，保证标签描述和内容一致；</li><li>Chain Prompt连锁提示；</li><li>多步骤，复杂任务；</li><li>自我反馈输出；</li><li>并行处理；</li><li>鼓励模型循序渐进的思考；</li><li>COT</li><li>更复杂的问题，可以指定思考步骤；</li><li>显示的使用xml将思考和结果分开，&lt;thinking&gt; and &lt;answer&gt;；</li><li>预填模型的输出；</li><li>类似incontext learning方式，用几句话引导输出；</li><li>控制输出格式，明确制定输出细节；</li><li>所需格式的开头预填充 Assistant 字段。 当使用 JSON 或 HTML 等结构化格式时，非常有用；</li><li>鼓励模型自反馈；</li><li>合理利用上下文；</li><li>数据指令分离；</li><li>将指令内容单独提供，实际的数据放在随后的输入中。</li></ul>
+<p>可以看到绝大部分内容，前面都已经提到。</p>
+<ul><li>预填模型的输出，应该是其中的特色，可能和Claude独特的训练方式有关，在其他的prompt提示技巧中都很少提及；</li><li>数据指令分离，是一个很有价值的prompt方式；</li><li>Prompt Generator。</li></ul>
+<p>Anthropic最有趣的一部分，是提供了一个称之为“MetaPrompt”的自动化提示生成工具，可以指导 Claude 生成适合您的特定任务的高质量提示。提示生成器作为解决“空白页问题”的工具特别有用，提供测试和迭代的起点，遵循上面提到的所有最佳实践，例如思维链和将数据指令分离。</p>
+<p>官网也提到了自动化提示生成工具的缺点：</p>
+<ul><li>只针对单轮对话有较好的效果；</li><li>只针对Claude3 Optus模型；</li><li>并不是最佳指示一个好的基础起点；</li></ul>
+<p>MetaPrompt实际上就是一个非常详尽的，提供了大量例子的提示词，由于过长这里就不填写原文。原始链接在这里，可以自行查看：</p>
+<p>﻿https://colab.research.google.com/drive/1SoAajN8CBYTl79VyTwxtxncfCWlHlyy9#scrollTo=BOYnM7A3g6HB﻿</p>
+<p>个人感觉意义不是很大，宣传的意义为主。</p>
+<h3 class="sub">3.2 Google</h3>
+<p>Google作为老牌大厂，最近提出的Gemini系列模型依然极具竞争力。官方的prompt提示教程依然保持了老牌作风，是三个大厂里面最详尽的，甚至专门是一本四十多页的书，对新手非常友好。</p>
+<p>核心的四个要点，可以看到也是和之前的概念如出一辙，但提供了很详细的例子（实际文章中绝大部分都是例子）。</p>
+<ul><li>Persona： 人格化</li><li>Task： 任务本身</li><li>Context： 上下文</li><li>Format： 格式</li></ul>
+<p>下文就是一个非常好的涵盖四个要点的prompt，每行对应其中一点。</p>
+<ul><li>You are a Google Cloud program manager.</li><li>Draft an executive summary email to [persona]</li><li>based on [details about relevant program docs].</li><li>Limit to bullet points.</li></ul>
+<h3 class="sub">3.3 方案总结</h3>
+<p>可以看到几个大厂相关的prompt技巧总结，完全可以融入到CO-STAR这个框架中。我们需要强调或者增加的是：</p>
+<ul><li>Persona： 人格角色化；</li><li>XML： 更多的使用分割符；</li><li>Prefill-respone： 预填模型的输出；</li><li>Example： 增加例子；</li><li>Response： 必要的时候可以置顶输出的长度；</li><li>Reflection ： 自我反思；</li><li>COT： Object中让模型在回答问题之前给出较为详细的推理；</li><li>最重要的是： 要有完善的测试集、测试指标，给系统&amp;Prompt做准确的评估；</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>实践示例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Img2code 任务分内容理解与代码输出两部分</li><li>直接 instruct GPT-4o 生成的页面不成形</li><li>按 Prompt 原则优化后接近小程序，CO-STAR、COT、Reflection 进一步改善</li></ul><div class="pit"><ul><li>朴素 prompt 直接生成页面布局不好，需逐步叠加技巧</li></ul></div></div>
+<p>我们这里实践的任务，是当前比较火热的Img2code方向，自动化生成前端代码。简单来说输入一张图片，可以在几分钟内将任何图像转换为干净，高质量的的HTML和CSS代码。</p>
+<p>之前的代表性项目如微软的sketch2code，尽管在2018年引起了一定关注，但因UI理解不足、生成的代码质量不高等原因逐渐式微，也和当时没有tailwind这种较好的html端直接渲染效果的技术有一定关系，该方案逐渐没落。商业化的产品路线，走向了依靠设计稿进行内容提取的另外一条路线，代表工作阿里的imgcook，腾讯的codefun，但上述问题依然存在。</p>
+<p>大模型时代的到来，使这一任务得以简化，并适用于新手和有经验的用户。</p>
+<p>新技术主要包括两大部分：</p>
+<p>a.内容理解：理解图像的布局和内容。</p>
+<p>b.代码输出：生成tailwind风格的HTML文件，并支持高级的JavaScript框架创建动态应用程序（如React/Vue等）。</p>
+<p>如下，我们取实际场景的小程序截图为例，实践我们的prompt技巧。使用的原始图片如下：</p>
+<p>我们不采用任何技巧，直接instruct gpt4o执行这项工作：</p>
+<ul><li>Generate code for a minipp page that looks exactly like this. Return html code and only the full code in &lt;html&gt;&lt;/html&gt; tags.</li></ul>
+<p>得到的图片不成形，大模型无法很好理解，如下：</p>
+<p>通过如上Prompt原则优化后，生成的有点小程序的样子，但布局依旧不好。</p>
+<ul><li>You are an expert Tailwind developer</li><li>You take screenshots of a reference miniapp page from the user, and then build single page apps</li><li>using Tailwind, HTML and JS.</li><li>Please follow these guidelines:</li><li>- Ensure the app looks exactly like the provided screenshot.</li><li>&lt;省略部分prompt&gt;</li><li>Here is the reference information for images:</li><li>&lt;省略部分prompt&gt;</li><li>In terms of libraries,</li><li>- You can use Google Fonts</li><li>&lt;省略部分prompt&gt;</li><li>Return only the full code in &lt;html&gt;&lt;/html&gt; tags.</li><li>&lt;省略部分prompt&gt;</li></ul>
+<p>经过Prompt中的高级技巧CO-STAR优化(下一篇会重点介绍，敬请期待)，整体风格更加接近小程序，对应的prompt如下：</p>
+<ul><li>#CONTEXT#</li><li>You take screenshots of a reference miniapp page from the user, and then build single page apps using Tailwind, HTML and JS.</li><li>#############</li><li>#OBJECTIVE#</li><li>Build a single-page app using Tailwind, HTML, and JS based on a provided screenshot, ensuring it matches the design precisely. Include necessary images and text as specified.</li><li>Guidelines to follow:</li><li>- Ensure the app looks exactly like the provided screenshot.</li><li>&lt;省略部分prompt&gt;</li><li>Reference information for images:</li><li>&lt;省略部分prompt&gt;</li><li>Libraries:</li><li>- You can use Google Fonts.</li><li>&lt;省略部分prompt&gt;</li><li>#############</li><li>#STYLE#</li><li>Detailed and precise.</li><li>#############</li><li>#TONE#</li><li>Professional and instructional.</li><li>#############</li><li>#AUDIENCE#</li><li>Developers and technical stakeholders.</li><li>#############</li><li>#RESPONSE#</li><li>&lt;html&gt;</li><li>&lt;head&gt;</li><li>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</li><li>&lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;</li><li>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css&quot;&gt;&lt;/link&gt;</li><li>&lt;/head&gt;</li><li>&lt;body&gt;</li><li>&lt;省略部分prompt&gt;</li><li>&lt;/body&gt;</li><li>&lt;/html&gt;</li><li>Return only the full code in &lt;html&gt;&lt;/html&gt; tags.</li><li>&lt;省略部分prompt&gt;</li></ul>
+<p>再增加COT、Reflection技巧，通过COT给出页面的布局信息，再通过Reflection模型自迭代，生成的布局和细节会更好。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>进一步</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>可借助 aishort.top、Awesome ChatGPT Prompts 等现成提示词库</li><li>PromptPerfect 可自动优化已写好的 Prompt</li><li>模型本身智能是基础，Prompt 更多是锦上添花</li></ul></div>
+<p>另外，实在不想自己写提示词，也会有些网站可以使用，如：</p>
+<p>1）https://www.aishort.top/﻿</p>
+<p>2）Awesome chatgpt prompts</p>
+<p>﻿https://github.com/PlexPt/awesome-chatgpt-prompts-zh﻿</p>
+<p>3）假如自己写了一版Prompt，要自动优化，可参考：</p>
+<p>﻿https://promptperfect.jina.ai/interactive﻿</p>
+<p>最后，实践中发现，模型本身智能是基础(0-&gt;60分)，Prompt提升确实很有用，但更多的是锦上添花(60-&gt;90分)。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>写在结尾</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>感谢 Superapp AI 项目研发组同事的共同努力与创新</li><li>希望文章激发更多创意，助力大模型应用探索</li></ul></div>
+<p>在此向所有在阿里云海外业务-行业解决方案研发Superapp AI项目研发组共同努力的同事们致以诚挚的感谢。正是大家一起持续创新，使得我们能够深入探讨Prompt engineering的前沿领域。希望这篇文章能激发更多的创意，助力大家在大模型的应用与开发中不断探索新的可能性。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>不好的提示词 vs 更好的提示词</h4><p>『谁是总统？』改为『谁是2021年的墨西哥总统，选举频率如何？』——细节越多，GPT 越少瞎猜。</p><a class="src-link" href="#sec-02">原文 → Prompt原则与技巧</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>分隔符降低歧义</h4><p>任务越复杂，分隔符消除歧义越重要；别把模型算力浪费在理解输入上。</p><a class="src-link" href="#sec-02">原文 → Prompt原则与技巧</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>执行模型代码需沙盒</h4><p>执行模型生成的代码或调用 API 本身可能不安全，需沙盒环境限制危害。</p><a class="src-link" href="#sec-02">原文 → Prompt原则与技巧</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>RAG 嵌入检索</h4><p>用嵌入搜索实现高效知识检索，以外部信息辅助生成更新、更明智的回答。</p><a class="src-link" href="#sec-02">原文 → Prompt原则与技巧</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>评估优先于写 Prompt</h4><p>Anthropic 强调 prompt engineering 大部分精力应放在评估指标与鲁棒测试用例上。</p><a class="src-link" href="#sec-03">原文 → 大厂方案</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>MetaPrompt 的局限</h4><p>仅对单轮对话、Claude3 Opus 效果好，并非最佳，只是不错的起点。</p><a class="src-link" href="#sec-03">原文 → 大厂方案</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Google 四要点</h4><p>Persona 人格化、Task 任务、Context 上下文、Format 格式，是 Google 教程核心。</p><a class="src-link" href="#sec-03">原文 → 大厂方案</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>CO-STAR 模板</h4><p>#CONTEXT#/#OBJECTIVE#/#STYLE#/#TONE#/#AUDIENCE#/#RESPONSE# 分段组织复杂 prompt。</p><a class="src-link" href="#sec-04">原文 → 实践示例</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>朴素 vs 优化 Prompt</h4><p>直接 instruct 生成的页面不成形；叠加原则与 CO-STAR/COT/Reflection 后逐步接近小程序。</p><a class="src-link" href="#sec-04">原文 → 实践示例</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>模型是基础，Prompt 锦上添花</h4><p>实践中模型本身智能是 0→60 分基础，Prompt 提升带来 60→90 分的改善。</p><a class="src-link" href="#sec-05">原文 → 进一步</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>写 Prompt 先给清晰指令与足够细节，必要时指定角色、分隔符、步骤和示例。</li>
+          <li>复杂任务要拆分、给模型思考空间，并用外部工具与系统测试保证质量。</li>
+          <li>模型智能是基础，Prompt 技巧是锦上添花，别只堆技巧而忽略模型能力。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247540408&amp;idx=1&amp;sn=3181257fb4f8fc393b50c1a1943c6ded" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247540408&amp;idx=1&amp;sn=3181257fb4f8fc393b50c1a1943c6ded</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI应用 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

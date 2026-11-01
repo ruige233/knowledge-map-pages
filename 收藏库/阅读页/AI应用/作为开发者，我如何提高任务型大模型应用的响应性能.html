@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">作为开发者，我如何提高任务型大模型应用的响应性能</h1>
+  <p class="lede">分享提升任务型大模型应用响应性能的四个实用方法</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI应用</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 10 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>背景与场景案例</a>
+          <a href="#sec-02"><span class="n">02</span>四个优化思路详解</a>
+          <a href="#sec-03"><span class="n">03</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 背景与场景案例</a>
+          <a href="#sec-02">02 四个优化思路详解</a>
+          <a href="#sec-03">03 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>阿里妹导读</p>
+<p>本文基于实际场景，分享了作为开发者提高大模型响应性能的四个实用方法。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>背景与场景案例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>任务型应用指完成预约、规划等特定任务，交互偏结构化，要求输出结构化数据以便后续处理。</li><li>大模型存在速度、效果、功能的不可能三角，需在保证效果前提下提升响应速度。</li><li>四个结论：约束输出结构、分解任务分工、流式输出、短代号映射长结果。</li><li>行程规划场景中，大模型负责地点与计划，poi 与行驶距离时间由外部 API 获取。</li></ul></div>
+<h3 class="sub">1.1 序言</h3>
+<p>大模型的响应速度（首包和全文），直接影响用户使用体验。现阶段来看，想要有较高的响应性能，我们可以选择小尺寸模型，但意味着复杂场景下效果得不到保障；可以让大模型“吐”更少的字，但意味着不能完成更多的任务。对于大模型来说，速度、效果、功能似乎是一个“不可能三角”。</p>
+<p>本文主要分享我在实现大模型场景过程中，对于任务型应用，在保证一定效果的前提下，站在开发者角度如何提升响应速度和完成更多任务的几个思路。</p>
+<p>任务型应用，主要指帮助用户完成特定任务，例如预约餐馆、预定机票、给出规划等，与用户的交互大多是结构化的，我们通常要求它输出结构化数据以便进行下一步处理。相应地，生成式对话应用我们称之为“闲聊”，其主要目的是进行自然的、开放式的互动，根据给定的对话历史和上下文信息生成连贯的自然语言回复，而不是完成具体任务。</p>
+<p>先说结论，后文再根据实际场景案例再做详细说明：</p>
+<ul><li>prompt约束输出结构，减少输出token；</li><li>分解任务，大小尺寸模型分工；</li><li>流输出，截取信息异步/并发处理；</li><li>提前约定，以短代号映射长结果；</li></ul>
+<h3 class="sub">1.2 场景案例描述</h3>
+<p>以基于大模型做一个行程规划推荐应用的场景为例，用户通过ASR语音输入“帮我规划五天的浙江行程，杭州玩两天吧”，希望得到：</p>
+<ul><li>每天要游览的地点名；</li><li>每个地点的简短介绍；</li><li>游玩城市与天数计划；</li><li>地点的poi信息（Point of Interest，泛指互联网电子地图中的点类数据，基本包含名称、详细地址、经纬度坐标、地点类别四个属性，以及营业时间、人均消费，图片示例等信息）；</li><li>前后地点的行驶距离与时间；</li><li>json结构化结果，以便解析在页面上展示；</li></ul>
+<p>分析这个场景需求，需要大模型输出的任务有根据用户意图，生成推荐的地点名、地点的介绍、对应的游玩城市与天数。需要调用外部API获取的有，地点poi信息、前后地点的行驶距离与时间。简单设计后约定客户端服务端这样进行交互：</p>
+<ul><li>客户端乘客语音输入“帮我规划五天的浙江行程，杭州玩两天吧”，调用服务端接口；</li><li>服务端内部根据用户意图，输出一天的行程地点、游玩计划的JSON结构化数据。例如以下返回结果表示当天游览城市为杭州，一共规划2天杭州、1天绍兴、2天宁波。这一天去到地点A-E五个地方，且包含该地点的poi信息。</li><li>客户端获取到结果，渲染 第一天 的行程展示。</li></ul>
+<p>（图1：车端渲染展示示意图）</p>
+<ul><li>同时，根据游玩城市和天数，客户端将历史行程添加为参数继续调用服务端接口，获取下一天不重复的行程。</li><li>以此类推，直到 遍历完 城市和天数意图。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>四个优化思路详解</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>思路1：prompt 约束结构加 few shot，去掉空格换行等冗余，输出 token 可从 122 降到 33。</li><li>思路2：qwen-plus 规划、qwen-turbo 生成介绍，异步执行；测试 turbo 输出更多 token 仍快约 0.4 秒。</li><li>思路3：流式输出边收边正则提取地名，异步并发查 poi、生成介绍，按 seq 立即回传。</li><li>思路4：用序号或 y/n 短代号替代中文 key，本地映射全称，少输出即可得完整结果。</li></ul><div class="pit"><ul><li>游玩计划与当天行程地点若分给不同模型可能前后矛盾，须由同一模型保证一致性。</li><li>按字段拆分并发调用 VL 模型会让输入 token 翻数倍，需结合实际取舍。</li></ul></div></div>
+<h3 class="sub">2.1 思路1：prompt约束输出结构，减少输出token</h3>
+<p>全文响应时间和输出token数量是正相关的。我们可以仔细考虑大模型输出的数据结构，在prompt里加以约束与few shot，让它输出核心必要的字符，减少冗余信息的输出，来减少大模型的全文响应时间。</p>
+<p>举个极端的反例，就“帮我规划五天的浙江行程，杭州玩两天吧”这个问题，让大模型输出游玩计划，以及一天的行程地点，返回这样的结构：</p>
+<p>使用token计算器模型服务灵积-Token计算器 (aliyun.com)，上述文本包含122tokens。这样的结果存在很多冗余信息（空格符和换行符也占token的！）有一些字符完全没有必要让大模型输出。</p>
+<p>我们来改造一下，在prompt里约定大模型类似这样返回：</p>
+<p>因为我们在prompt里约束了返回的结构，也能很方便的解析出依次游览的5个地点以及游玩城市及其对应的天数等这些所需要的内容，再进行计算只有33tokens了，没有损失输出信息的同时大大减少输出token量，也提高了不少响应性能。当然我举的反例比较极端和夸张，但这样的思路是完全可以移植到其他场景中的。</p>
+<p>减少输出token，是提升全文响应性能最直接的方式之一，可以提前在prompt中进行约束，让尽量少的输出token可以包含尽量多的信息。</p>
+<h3 class="sub">2.2 思路2：分解任务，大小尺寸模型分工</h3>
+<p>示例一，我们来继续看行程规划的需求，还需要有对于这个地点的简短介绍。在上文中，我们基于qwen-plus输出一天行程地点和整体计划以保证效果。如果现在增加一个输出地点介绍的任务，让qwen-plus来做未免“大材小用”，还会平添大几十token输出，响应速度变得更慢。</p>
+<p>（图2：qwen-plus输出地点与介绍）</p>
+<p>输出地点介绍这样的简单任务我们基于qwen-turbo就能完成。即qwen-plus规划输出地点后，再基于qwen-turbo生成该地点的简单一句话简介。</p>
+<p>（图3：qwen-plus输出地点，qwen-turbo输出介绍）</p>
+<p>做个实际对比，相同的prompt下分别调用qwen-plus和turbo，各自设定seed与temperature，让每次输出内容尽量一致。可以看到qwen-turbo在输出token较多的情况下响应时间还比qwen-plus快了0.4秒，效果上两者都可接收。</p>
+<p>prompt：用一句话介绍这个景点或餐饮店：宋城景区，不超过20字</p>
+<table><thead><tr><th>模型</th><th>qwen-turbo</th><th>qwen-plus</th></tr></thead><tbody><tr><td>输出</td><td>宋城景区：重现宋代风貌，融合历史、文化与娱乐的旅游胜地。</td><td>宋城景区：穿越千年，梦回大宋，感受宋代风情。</td></tr><tr><td>调用20次平均输出tokens</td><td>18.3</td><td>16.0</td></tr><tr><td>调用20次平均响应时间</td><td>0.81s</td><td>1.20s</td></tr></tbody></table>
+<p>并且用qwen-turbo输出景点一句话介绍可以异步执行，不会影响到qwen-plus输出规划地点这一主线任务的时间。</p>
+<p>游玩计划也可以用qwen-turbo来完成，但可能出现的情况是，用户输入“帮我规划两天云南行程”，turbo输出计划：在昆明玩两天，但plus输出在丽江的一天行程，这样就前后矛盾了。因此为了保证一致性，最终还是决定将游玩计划和当天行程地点一同使用qwen-plus输出。</p>
+<p>示例二，在利用qwen-vl提取图片信息场景中（如下图所示），如果调用一次VL大模型一次性返回所有字段的结构化信息，如果遇上一些项目栏中文字很长，那么整体返回的时间就会非常长。</p>
+<p>(图4：利用qwen-vl提取表单信息）</p>
+<p>我们可以考虑根据字段的长度合理拆分任务，并发调用多次VL大模型，每次让大模型输出的字符各不相同，最后再把结果拼凑起来，这样响应速度则只和输出字数最多的那一栏（申诉说明）有关。当然这样的方式会使得输入token翻数倍，需要基于实际情况做最终取舍。</p>
+<p>总之，在需要大模型完成多个任务、输出多种内容时，可以考虑合理分解任务，大小尺寸模型分工实现，但前提是分工不能产生前后内容冲突。</p>
+<h3 class="sub">2.3 思路3：流输出，截取信息异步/并发处理</h3>
+<p>在上面两个思路介绍中，行程规划场景我们已经设计好了大模型要完成的任务、要输出的数据格式，我们还需要调用外部的API接口，传入参数地名来获取该地的poi信息。那是否需要等待大模型将5个地点都给出来后再调用查询呢？</p>
+<p>并不需要。我们让输出行程地点任务的大模型流式输出，在循环接收响应的同时不断进行正则匹配等方法即时提取出地点地名，便可以通过异步/并发的手段去查询poi接口以及调用qwen-turbo输出一句话介绍。</p>
+<p>如下图所示流程，在得到所有结果并完成json组装后，就可以按顺序将seq 1、seq 2、seq 3...立即返回给客户端，在屏幕上渲染展示给用户，减少等待时间，提高了用户体验。</p>
+<p>（图4：输出处理流程）</p>
+<p>这个思路可以抽象为，我们将大模型的流式输出，加上其他自定义逻辑，转换成另一种流式输出返回给用户。</p>
+<p>（图5：流式输出转换）</p>
+<h3 class="sub">2.4 思路4：提前约定，以短代号映射长结果</h3>
+<p>这个优化思路主要应用于让大模型分类、做选择题、输出列表结果等场景，在prompt中我们向大模型提供若干个候选集，基于约束来让大模型从候选集选出一个结果。</p>
+<p>思路被启发到的是以前项目中使用到的Protocol Buffers（protobuf）数据序列化格式，这个数据格式的思想是说我们提前约定好一个数据结构（.proto文件），第一个字段是经度，第二个字段是纬度，第三个字段是速度等等，传输的时候就不用再longtitude=xxx、latitude=xxx，直接根据预定义的结构编号读写数据，省去了许多动态解析的开销，因此在各种需要高效、跨平台的数据交换和存储场景中都表现出色。</p>
+<p>示例一：让大模型做一道选择题：</p>
+<p>大模型最终会输出“2.xxxxxxx”。而我们使用流式输出，获取到前两个tokon&quot;2.&quot;时，就已经可以通过正则匹配出序号&quot;2&quot;，从而得到后面的完整地址了（因为候选集是我们本地组装出来的），不必再等待最后的结果，或者你在prompt中限制只输出序号1/2/3/4也行。</p>
+<p>示例二，在信息提取判断场景，需要对内容进行多个维度的判断，输出yes或no以及no的原因，比如以下prompt片段：</p>
+<p>如果在输出中，我们把每个筛选维度的中文当作key输出，那会平白多出好几十个字，完全没有这个必要，因为可以用代号+字典的方式解决。我们再把以下提示词片段加到上面的prompt后面，这样输出的json结果中，key为标准对应的序号1/2/3/4，我们在本地代码中再把全称等给解析出来，节省了大几十个汉字的输出。</p>
+<ul><li>#返回格式</li><li>结果以JSON格式返回，y表示符合，n表示不符合。</li><li>如果为n，紧跟n后给出判断依据，但不要编造依据！此外不必再返回其他内容。</li><li>#返回示例，按照筛选标准对应的序号作为key</li><li>1: y</li><li>2: n(要求至少3年相关领域工作经验，但申请者仅有1年经验)</li><li>3: y</li><li>4: y</li></ul>
+<p>核心思路是，如果可以通过少量的输出就能得到完整的结果，那就不必等待完整的输出。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>核心理念：减少输出 token、选择合适尺寸的模型、采用流式输出。</li><li>四个方法具有广泛适用性，可迁移到多种任务型场景。</li></ul></div>
+<p>本文基于实际场景，分享了作为开发者提高大模型响应性能的四个实用方法。这些思路具有广泛的适用性，适用于多种场景。核心理念总结为：减少输出token、选择合适尺寸的模型以及采用流式输出。</p>
+<p>团队：公共云业务-技术服务部</p>
+<p>一键部署通义千问对话模型</p>
+<p>本方案结合通义千问和LangChain技术构建高效的对话模型，该模型基于自然语言处理技术提升语义理解和用户交互体验。它可以有效解决传统对话模型在理解能力和交互效果上的局限，使得用户沟通更加自然流畅，被广泛应用于聊天机器人、智能客服和社交媒体等多种场景。</p>
+<p>点击阅读原文查看详情。</p>
+<p>阅读原文</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>任务型应用 vs 闲聊</h4><p>任务型输出结构化数据完成特定任务；闲聊生成开放式自然语言回复。</p><a class="src-link" href="#sec-01">原文 → 背景与场景案例</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>输出 token 与响应正相关</h4><p>全文响应时间和输出 token 数量正相关，减少输出 token 是提升全文响应性能最直接的方式之一。</p><a class="src-link" href="#sec-02">原文 → 四个优化思路详解</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>122 tokens 降到 33 tokens</h4><p>行程规划返回结构经 prompt 约束后，输出从 122 tokens 降到 33 tokens，信息不损失。</p><a class="src-link" href="#sec-02">原文 → 四个优化思路详解</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>qwen-turbo 对比 qwen-plus</h4><p>相同 prompt 调用 20 次：turbo 平均输出 18.3 tokens、0.81s；plus 平均 16.0 tokens、1.20s。</p><a class="src-link" href="#sec-02">原文 → 四个优化思路详解</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>分工导致前后矛盾</h4><p>游玩计划与当天行程地点分给不同模型会矛盾，须由同一模型输出保证一致。</p><a class="src-link" href="#sec-02">原文 → 四个优化思路详解</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>并发拆分推高输入成本</h4><p>按字段拆分并发调用 VL 模型会使输入 token 翻数倍，需结合实际取舍。</p><a class="src-link" href="#sec-02">原文 → 四个优化思路详解</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>短代号映射长结果</h4><p>候选集序号或 y/n 作为 JSON key，本地代码映射全称，减少大几十汉字输出。</p><a class="src-link" href="#sec-02">原文 → 四个优化思路详解</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>流式输出转换</h4><p>将大模型流式输出加自定义逻辑，转换成另一种流式输出立即返回用户。</p><a class="src-link" href="#sec-02">原文 → 四个优化思路详解</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先在 prompt 里约束输出结构，减少空格换行等冗余，用更少 token 装更多信息。</li>
+          <li>把任务拆开，复杂规划用大模型、简单介绍用小模型异步做，前提是内容不冲突。</li>
+          <li>采用流式输出边收边处理，并用短代号映射长结果，减少等待和输出量。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247542768&amp;idx=1&amp;sn=188bf2629ae5bf77cb739a1a1781caea" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247542768&amp;idx=1&amp;sn=188bf2629ae5bf77cb739a1a1781caea</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI应用 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
