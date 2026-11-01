@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java反射和new效率对比，你知道差距有多大吗？ · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Java反射和new效率对比，你知道差距有多大吗？</h1>
+  <p class="lede">实测对比 Java new 与反射创建对象的性能差距与成因</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 5 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>基础概念</a>
+          <a href="#sec-02"><span class="n">02</span>效率对比</a>
+          <a href="#sec-03"><span class="n">03</span>使用场景</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 基础概念</a>
+          <a href="#sec-02">02 效率对比</a>
+          <a href="#sec-03">03 使用场景</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>总结起来有下面几个原因: Method#invoke 方法会对参数做封装和解封操作 需要检查方法可见 需要校验参数 反射方法难以内联 JIT 无法优化 反射和new 的使用场景 反射的部分使用场景 Spring通过反射来帮我们实例化对象，并放入到Ioc容器中 使用JDBC链接数据库时加载数据库驱动Class.forName() 逆向代码 例如反编译 利用反射，在泛型为int的arryaList集合中存放一个String类型的对象 new 对象和反射的区别 new的对象无法访问其中的私有属性，反射出来的可以通过设置setAccessible()方法来省略访问权限符。 new必须要知道类名，而反射创建对象不需要知道类型也可以创建</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>基础概念</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>对比 new 与反射两种创建对象方式的效率与适用时机</li><li>给出反射创建对象的三种 Class 获取方式代码</li></ul></div>
+<p>Java中，一般我们创建一个对象可能会选择new一下个实例。但是随着我们技术的不断提升，我们也学习到了，可以通过反射技术实现对象的创建。</p>
+<p>可是，你有没有想一下，什么时候我们改用new创建对象，什么时候我们改用反射创建对象呢？</p>
+<p>两者创建对象的效率又是如何呢？</p>
+<ul><li>//new 方式创建对象</li><li>ReflectDemo reflectDemo = new ReflectDemo();</li><li>//反射创建对象  反射创建对象的三种方式</li><li>(1)Class&lt;ReflectDemo&gt; reflectDemoClass = ReflectDemo.class;</li><li>(2)Class&lt;?&gt; aClass = Class.forName (&quot;com.whale.springtransaction.transactiondemo.reflectdemo.ReflectDemo&quot;);</li><li>(3)Class&lt;? extends Class&gt; aClass = reflectDemoClass.getClass ();</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>效率对比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>用 1 亿次循环实测 new 与 newInstance 耗时，差距很多倍</li><li>解析反射慢的五个原因：参数封解、可见性检查、参数校验、难内联、JIT 无法优化</li><li>Java 经 javac 编译为 class，JIT 可优化字节码，反射动态解析难获优化</li></ul></div>
+<ul><li>//测试代码如下</li><li>public class ReflectDemo {</li><li>public static void main (String[] args) throws IllegalAccessException, InstantiationException {</li><li>proxyObject();</li><li>newObject();</li><li>//new 创建对象</li><li>//5</li><li>public static void newObject(){</li><li>long startTime = System.currentTimeMillis ();</li><li>int i;</li><li>for (i = 0; i &lt; 100000000; i++) {</li><li>ReflectDemo reflectDemo = new ReflectDemo ();</li><li>if (i == 100000000) {</li><li>long endTime = System.currentTimeMillis ();</li><li>System.out.println (&quot;new耗时为:&quot; + (endTime - startTime));</li><li>//反射 创建对象</li><li>//30</li><li>public static void proxyObject() throws IllegalAccessException, InstantiationException {</li><li>long startTime = System.currentTimeMillis ();</li><li>Class&lt;ReflectDemo&gt; reflectDemoClass = ReflectDemo.class;</li><li>int i;</li><li>for (i = 0; i &lt; 100000000; i++) {</li><li>ReflectDemo reflectDemo = reflectDemoClass.newInstance ();</li><li>if (i == 100000000) {</li><li>long endTime = System.currentTimeMillis ();</li><li>System.out.println (&quot;反射耗时为:&quot; + (endTime - startTime));</li></ul>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,UklGRjgcAABXRUJQVlA4ICwcAABwgQCdASoHA7sAPpVGn0ylo6KiIrKpmLASiWdu5KgXKpyl7gsW/7l3Uf3T/Qf2/xx8nvsfx6+j/8by39M+ov2r/q/8F7uf3T/kf3rxN+AOoR679TztN24uq/7X0CPW76j/xfVv9m/1/6q+wf59/j/+d7gH5l+v3effev9t7AH9I/wX+7/wH5d/Ud/e/+3/X/lz7aPqX/5e4R/Pf7f6Zv/w9yn7d/+33X/2Y/+Iq7WXqI5yzzImP5HWwF7PDZgmhBQJJMjtNkJXxAbzw1zL1a92Yu7nmLgbRfpQU4SsRWIrEViKvuGO8MeHg5erC+n23sZRsauzs1Z7TqpcgIZhGYcEdK3pgUz/dB5XlBA0g2sEeOfvH/KqALLAr1histsk7O8k2FzcvIMd0x6+xaMd6VcOgqRLWleFjox/ZSXwIYS9R/i0HdukCltFWIMBqqDnR71F8i/SgpwlYisQ71+EVTTzT9fevvX3mEtLaR2SHyrhRVxgL6qWmseZTRmWrRweJxUzg5TTt0I0HiAtRgLOMDQAsidEVA+GV+7ijwzenqqAkaNUPbJkBkKBRvOcqAAkhTAASQpgAJIUv/3EWftZs9kbNYqvLcy+Xg5PO/wX7hWB/rBieuxiwXlc8cb7fmtgQFeECp5A/MZlBHwZdktGgDfZqq3RtW0nYpOKoWKC7/H5iZcbTXt/X5AhwwyolltzXBzo96i+RfpQU4SsRWIrEViKTS9g611l+7wk1r5BUTM370rV9UAH6aRE1NZ+ufxPWBDTxoKvhW7a/hSc/IqwLES2gRYM2ya0mLA6NedgG1pL1QIfM6uh17BQQMTDIcxBxujtWygLcjccVv29ATFjGE4CQ7KItC2VVihbKqxQtlSu4FAYNOsPyTKnL44JFWIxSoLcPYSs7ThLPT/7TX4ksRO+71x6Wq+W18pgJ/07iKnLpgH/9vpV/AkDHeXvAkWhbKqxQtlVYoWypaGcQI+vrW24DLtXDFEoTn63Yue+Qycz/D15DTc3naml3m+3gBJCmAAkhTAASQpgAJH0aiP3d9lJGnNP0/Di9wDAhJxODLo7u2RDTAASQpgAJIUwAEkKYACSFMABI+xv+WTkIMcgd5EjZireAEkKYACSFMABJCmAAkhTAASQpf/gfA9AChAZOAzrILDM/OBmJC9b5E7W2onHkfxJRTsOMz/gZZQukoZEYA3MFnm2qO3taqAVCtHbwAkhTAASQpgAJISqj7zUT2i887c4a/CCkjg4hQC8HMnG8OLfMeemCrzipskI/r+7Bgac2dQRuL8YvQZM4F1taM8EFwgrqHvfIvnCdM+Ca19IGKXhn6pSerogVkCuHihbKqxQtlVYoWypQt6En+cCao1JAEynvMvSUwAEkKYACSFMABJCkgAA/v1xlia++d63erE17/gRzynLYZ7SGa3Uy79xXMDkePLtN5E0HHxuu2ayzHYzgPAnkEaLesM7Nuc/YDZ6chWKm0GhtZInFPh1LqOP/Qa+BSg0iFMjHWle1+B/2llVhH/s4BLCNxTnQJZT53prV27l/USAhqLquqjzGEH+3U9bbFqPXmZ/UxykJ0e3yTPsBN6Q3l++fYEj1wa5n1ez9mBBJ+x2j2IK3vwfg3MFjazjdbnM77oGX72tjPBo44o5OL7fRYvqXHvPPGSrZfi3/AW0z5bCtumTHPb0KBh5gnc1zjNPRmLts1f9YiIcV2H38VXBONFofWCTnBUbBvMIeEb+G6RRP4RhKI494ZK+8JSO2dapfidszp6kg5mM7aVO4myBXJOXhrAawRN4M7eW9JXzs+kP1rFE2apva1XfMDkkwZqY90RBFN9kKYYYtR+i4ppG9ANgFCw7jfrSpPWN5z4zjnSyUxZBZeHXnVQ92pE6Ud7Lb7+l1O3bOXIImBBdd8C265EX2hlYlungTRr8y8TbqNOznHSgowH7NnF1QuY6+4eLhvSFtkZYgmEWn7bgs+lgnC5TJAWiSH1CYXxWJGQauMerotqX4fF/qonjl+0B2GG+9dJ5jA/YY5HRbt59Sot6DIEy61ByMDJoIClobljfyTSFImL7DlwThY+oRTcKgArbkQ44b7/7QY1cqw/jZ15MIaZ7G4Xoehcu5cRFCQtYSRVXC3w6zFO5ZqWVtoLostp3pRwnDwUvk8EZrQ3322T1XohRjJCF5vG6jJ8q1FxBgNpTGFhoG7+FXuDfrnUzpIF2v3r4yp9qJWFOs/Pap9gruqNgQqUWoKaShgDf1ces3BhgPYq0v9xllfn2mVjVdZs5M4lIX5llUFxzQGRdM3zKdt8t3SxVIBOYaLY4MEB/NePt5oO/5diMcuyEFkVd4vzjP2SV0D4ZQbWpZoa6w9/yMszZ+Yma6LIAEXeaHj8CC9pbssi0N4XWAseN08ncs3aVYSoj+iFHyoIOvJIsSlbevmVlTVYVsK3rJHX53uruvQUB/SzW2rmoOn2F7q9605AjPNn4Bl53nJCu45p8bYq1XQj8+gtGPHuSJFoHalHop1I871JnIjNmYRWgAG9jfFsTcsFHOnC3SVXR4Oh1lhl+KdRLzgCWfYhUHZ9SgBz6o7Vys3QLf/sAVMDyeg6NSqCPt9jIL1g97esBQgXFsfYZwNSfuzxA5WoCjrbmnYsLG79QXa//51BDxTfWuujCyalMKfkDaaas7FqZwZwZsy6nDjB6Xf+nI/fTvGcr4/XZlrr1SCzahTRqcOILDyL0lhLPkayO2vggriqPfZ0PGYOMcQa2e662aHfbUUHSFT+vYVEiIe8CQBLiuI14A3YJISB28FYP+zx16lM3D5+XOHIERKuauRIXJRzR6MJGSdM70dlZA3zbjuMdTQ5Yz2/Y4shWYz9vLRr6cs0fmZNKMv9Oh0/+tnkFXnY3EA4b2n2r6ZlGzgeYQEcWQ2qNTp274VVUOG6XbhM+nLUm5m4hxgEzQyddPHLSPT1Nx9FPmeiPEvBpq6IsbAAAAAAE0uUaAEV4sPyJaaCrJF3/AfGwTczkmA7Cf0S0aTantYAJfiCHw+yByozl7WLuHb/hWpWr+4IehEztqstwi58xI79Y1qFDPzQ4Xv9hopJmjquU00ZKMOAJSuhWAc7zinfPt2S9IetIoogYxMLniSTB9ARDQsb8pVjTwbWty9pymAN7QY+y/6sEIWc/Ej7DMjBtiVrVSDobcpSNR51KMCq9tIWiKKoPfj3wwngBslMJtw2w6rCeaUUE4f/bgcn2295gTndhsx8bPVnSZENXVmEj6yvmrnaSNnNpLqwhxFYGXCqJ10XA3370CyggRwIZQCnplr0CLJYSLLqhjlZ3TbnqjGaJE3s0wV9DaFe5DDaSc/CSrpFsv8ejnLdWd9J7lneeEi+0HLoI7LpYClcE1TjyPWYlSX6gROm1zU6Yl/Mo48r70ezWBgK5svXZC307cFUTh1HAXK5FQyNtxwCepBMKiMnSuz28dg8NFV6y/JKhgqgXdLOfB3DB5gbBBPEPqKgxzDJ2Y4dDwTDGsy8Z5tGfKRKMLA1GBsHAib+GrFRDqqKY+OeDY02nPeE/JCICFgATOV0/2zGOWSKVI1PjAPYecRAN6+DFstgcujQpoRjU22aJz1w9MxY7urDXtaY+dGl3YGqj0Gr8TDoiLHO0pKt5pVE6SUvCymi1GqYzUT5Q2KwTdiFrgx+wRcFdpaFnWerdow6+qovUtlNUYMh+yvsBElqJUOiEHWu220q2+wCnrTr+lGNr9Yfd6BOhyBIHQLvuVjsFHLf+0oVqJSAigdvrhKZ5kqfiqVWGLUtezCPNXLZxVRTIcqKPlroQcqRwK9cXQZUl/n1JMxyGy0/qzsF44GFb3AzEvJStrR2C2ESw4m5iCcLRdjjOHZjWMdyzHFhPbGNruy/F1UJjsCJr55WuldEk/R2WxkDmZ5TA0wARjSbHZKEEa3iYsGzkrzZ5x6W0HoIdanoW7d6/3QU5cF9X/fueanB1+9sc2Pel64NL9GwSWrIKvm+DHcm9Rfg/GDKapuxCDn5/Px0vPeePeCiAcy1T7jLVx1/wntaNWUiIarqeCGfWtKWobA2G+AGJcfb5d/8Xkhmoq/xD+gYIJvw0HLR7b72gRJ/yXFDYVHD4jSoAA8lA3//ttq6wgWgt7Bs7IJU8ps66OFNNaNJFAN5uu3ixt/xd8tVd5jwkgxoegkAOOToIeiJeOEovEb4PIrW2/o1eDYyc4eQYJwAkfXE4GC0h5xfM/QWneZprOwWMGV6uYCpup1QUzoJGB65gxl3Sv5IjexWWY/ZACUjuOW93amqEUwjisDTPZ8oTT2w346/I1p2yEmjztfWSYrdizRBBoeB8AXnmBGybAZgqSCxGRm3SY+S/POOznYVpKkM22E+E/iZDEXOQoIKJJ1LpP16Xj3XCfMYRvMllsmtR713Lqx/OtG6ndiUJrOliMCHrsUE73v3WmF8wDNPzgVn2OyYE4vjjOkxJ81QO+rXkheGeFbsS0e6cQ172n1rvULP5Wqj9XX9giM9FAsW6wIe28sFioE/iiITVh4VS1I5aKMWAffmKSW1wPUX/y6QWnVf1FTQs3gJ4YPYiN4dqIbxToTB5EpJcOTGUlUcEPQQ9lO03cSk4PIlJLhylmkartaaRYSpYVRR66z4uK5Q7JD0eKTZNrp1cLVhQeQhfmSVrV/ZxVVebGll2ATCqa7FlQS0WLAIqgB1N5BcyTZE/2r5DcHgT+thmssa6vlsVy3qFBhIQHWkmVWTEcmvJkcQoEil8j4tuwQ9DCsIn/jb+tHuiMXsX7NmDCWRIGT/jgYShcTP91tYhr2A0HxW9FMIBCs1jWr+2BnpHAZOHxviP7srSF022Zbt+Zudu9L7ojJBiLNfw7eJ+ldj5KWVYVZjT80+4hWmuYTjr+cPZZ3p3KmobP9d9Qf4J2xiAPSCn5azOfvnXELFJXoVB0lifC37vFisDzpsT+0yGNOhJkoLYDR6j8rt7qJh9XzWb8GJ0LdLZnA5eAr3iDa+eJ7bsFrBMGdCAvA5KaR6cb5IKCeGiN1dO9WxYIVgtO23l01OOCs3wqn6AVqtIUs/dojvK3/yKC+SeUXYalL7kM+Idn9MJTJkO4QTcVsMgzwZQqtnGto+OJKSOKM3lUfUMbmDl5qqGmEQJrXZmlioVXI+NTHaX/M7/dNo+Vcykh0iL+e+5tXC5EI5N/6AdVIxiLW9mLE5mqr88FOhkTxwsHOGWGXYfP1EVvryqwdrB4zlEfELL2nB1SAnBpe840JXfWpxTnkaInoAs0EDJEZJJTUHEV3ugR+8E8S31XK8PvAmFIAZj+BYiNlN+zws4U6h9WzdS6G/cnsqpccVPnLp0Oze7hywp5jPkJV0Axkr/AJK0bC4Ezg1nKxl+u5DLDx26SCgAO6r3eL+T4GQdopQY0HkhWbrxWWwh3dbA088HhPH2g4DyNHVZC4hyNTSpjepiV3WUwbhewC6keJ344taws1HjkNs7cmoa3tPnxg6cWjSQUYuZZnIUxSAS0jkRuqAreDg38j/nqyOHQmC+vXVuyFOH2buanQkLv7MbJKkRO7s63WUQz1Av8VNrCi0cuQAAAAAGChxRAGcOVY034KTS2wDb9Wgu3bkgLRNVs3C/3+/AT9Am9VfgnOdTt2+zL5XANv8rT6cCaOiats2azvYLxTkPM8Rp4ehQ2ONNtV5SmpWSTeNSLOEcP0Cr60kCV6grmpKKGyoM/b5RD4zhd2zf5zbznZBncjyRKzf9UAUCLopU3zBne2Z3zp2ETP92FtXqeMJ87zmwjiQBqIE2mpmwlVheibtXxlehtJ6awV8a/IRBNfKb4PziOuXAyW7XLa5jyLsnxXkUfyufimyliwzeMTLNtPa1H9lu7zVjGQaFU0fubuM1vZtbQ7iMp0ydmg4UwG5HATVGSlNpQ+/9q8burDU5DMokxgmJXZNhWKQosF0en+CaVWvrjHAJpE6mN9Avb/vimB7QyEWditwQb7QPYdqJppi4wkUW7bCX5pwPPv6rZeXP2+2zDtbpP3Wpl/wUKJx5e4NET/QPOF4VA7q9yJdJ+4BHO1M+mVLxUAA1WmM3PBAaqAT5ANHuN9PVH1Mfknd/0855FO7fyvekx4ZnohbCaT/Gyb919rnXp0fPxo3+unP2cFperMEx74HA/qUu60L2KFvlGdY2wwpXHTkyCW+zTarUVIYTca30PfpPxhCeElSdyuMSkrnk1lJ0i0ndScRpaN3FjFcpenpyZgs1BhV5TxTBifPumqrC/xuTM38rxW2zRLwjSPKZbHPHPDBWk1jUeYL5eaQKaZQ7B63XXNh7ktjmN1+sj1M8CvY27NmuEiJNqN3b+wrzdMAq3WSQHV4YODC38ut72vE9v5AdrAv5vTNNCLZr9fSMJ62ozDEUAFYTMaJZ6bz8nJZJF5hs9gn0lB6FwjtmpYnnWsyObV/ybsbFRrjXuJSbVMZRQLSNmZV/5QAAASvYi5T87QJ49bqE4HlpnpSSv1EJ1EYEVN/rq+sq9OQWKN1U5X3Quw3vAMRteRniAlHm1iM+Rb7WkmhowmNokCRrIIO9FUSGwzdoWk3XwQaQoWh6mBT6kOJwOj6J3PF4wpXcgHpzCyPrknRJfGnxLhOI3KyqE21peMPKLfxllkMkqBUmZb0u846qV3+f4MLPiQbCeMjIyZw43FgbEPlVYO0LdVbuOPNOaPlhStgcSy+hL53xPvTewgTcYRqJ4k/Gtp+rPPY/55AIhrZukNUVY6qDbpXRNr4LeZtoEH6gTYPPJtZiwC8p/PZoqQrM7z3MBkv/hm82TZhEyjQI8kBxljUkS+jyNrkxOpLMS4nk/Mira0rZe0VdxjSNHk2P/LNmpaAS+3sIFqU34cSlaHECeM/HjEus1E/kBSmXNfVUYl98jarFpBuZ9/g+OviI9O9YX/rj0qSvxtou/+julLAwKlSSosS7dR1Vl7IcdgUzEnM83Hc6F7cFspBgQjPLssc+u/j6ZDZ3JBFqxLxOuow36wJOUu7WEM6MNYAAACd34AX0HRS8E6NoNbIH7vV6UOS4IMl/BQKsqCi4WXy+Z0hwFL9dXgVg/sUZWKKhAs/ZQwySVXwx+quI7AgLwZYmrIgPBH2WkX5iUIVb6Jv4kkybWtr2h5dqiQ4unNnNfvjt0aQzl93WAXKOo1KggtKZQeptwrsSMzs6QvikwdjA/E7ycq/jPUi8aBOWvTLf321ifqSeai3BV88SFfsZljfVBX6NDwxN1pl9m8ZkPQZU7NEOzXSC1WdDrtBVUVxVkM2ce+KmIFcdAbWnLjbnmWHIw/znI6qhGckfpAVAKmcM/ig+5ERhW2x5LhUbENIQ1bxLeWUtM/2xi4n8xHOWFslBKrQE08MRmwjgyav9vTib/yTa6VCFCuu0WKlyOaxgwGj8AAAAbUkBp0ovbs5nPOXGBuCdcQS10yBq9J+dr855ElX+5CnvtSG4LnUT/VKd4k6NsmOiXybjtO30tbBbUbgMQVeZCtWnXvuHAQlGtNhPRFR+Y1CLUHnldBNZeReECz2g+LYbPej36DAAAABGdLyakOR7oB/dIERiJBa8+8ULQxaLc3/YqAVaudJ7kQISrQONqBPiqDBd1fGQQUfrrUEyr409XoXsSZldciIw5jYZHgFnCNQOmus4tC9OSsNOyczWaIWlGbBAjluGjBMSsDBVQayAkPspxGEOTRSFtUGOf6Q1s9ZF3ZAwIf9YGAEHvRWDcGR3AxqITiZ5leYA+HCzjOAxLYCQadwtF4j1fCRqrvp5/c1drd6FUyOYxJ/wVbgtKN3hZds5PJkkxBsy8D9UCSjlpp1JpP/4OV1lbLkixIPM1RoitEWhRyuo+c7DrAuc0u1Ukcakl57Evskg1+ErUCwBMfFTsmweinfdf5fqM9OMyHVCWR6prEMgdvvVM9h5gEjU8CszEysXq8cbxoY8Omhz5lU2FIJPY96VdMZFcN/0x9a0kKKsPgrYjszqO9v/xdv2ZbC/jymPNQq3neQQh8TOaFjfzN7fxVCT1MUa8wr4RmeiToh2+xWQrS+tuqqA8vxLgYDbpMYmUnc1mqHJ6Q/I7tj9tRFCRzelM+Te3/4M8f4XKSyDkcs4LOHOeURST83UxHGY23S9MZsTTz9fyn8dvfbTkSbfisiFrDPlAY9sIw2zynwhGXpAjGBP27f8SBvaMEwq8TVkLMJXB68R+vezkC64wpCjXmSckvlCeNZipEDNjyt6Mm9gDQzehZOoI053vA3r4T41EuXb/pcqop8JxEd0tRnPG3tkRTXAb91pLRpOKyyJ4anHk1dQTw/CkP4HAk/LV7pwa3y6aYbu1TUx/ZmhFF4biykBTFB0AJLZOnVRUYWMDpOfvHfW+ef06c87/I9jvqhVbb1b5LaqHqWQlHpxF26DQhjZzmJylGmLr0PxIyOxBbLqtNR3EO14+LtvjQuR1B/lv6m27AQq3KyGnSqQi9CJf7uRTJWT69XybPI5D7dQ17MrrG2eh/FOCLQX9t/cpJ+gdR9iZSig2rLhcaHRnt4QtAoUP6MHW5bKu6ZwM0Jxg6D6KyNs6V+9G5JOWpcvzmdaU+yNOLpPW2oIDJPIdcBtouwlbZaBY2Cp2tBkEga229jtyKj2bw138W3fR9MJwjQ/fg7kRLhxpH4YuyZPnoc3wEqt4CBTpQg1+hCT8wuKDTIRYOn0WUxRU5r9CL8TEA5tL9SPXW5RVJrow4nOGxDnHdQpx6F+UPApmSqI/qpMOtKxSkEUduXO4WkKgrXoR8fzCTtPfMkC39Cu9P4JrgvFqFMs7F/BxLSB2k8RSmPza9+bp/bi5a5yJs9M3UNBA2V7hTQSZmg8wxmYgwWCroOBCGlbJxQ4hhT4ySJR5dJzxkA+2NtycpxcwQKc7KU7KG2Mf0ybmG6s2uCDmV4U4DE4AkAVaijgdHyJnmBOz7tja+7fkcqqZjoKRG28LG6dUirvX/MBuUrYnBUF5BTNLRq4FTAoi/GsGerb71x+e20Rqdyd+x1R9lhkw3F7eTzm3m4vVElBIzhM0PY+nILjVQeJpFcAUL4r74buAc9FQHklglSzic1GNHWH+/Apcas4gAPI0KrabpTRKDAPTCl2/OcxsVFGV7RPtbgzldchc67eUZKy5OhFbbw8/h+oP+R5q/SnFEOcx/MWr090CDjEO/De5hAW7w0qnm1+Xofpx0tj47qjn3F1qeY5KqMjQ09IJbJzyYBUmIvbrXwtS+GHzmyffy5xIHgJjS/jnSJ/DnNTAPIPxwaZGXBvaRy/He1Qf55Ot+/JfeXdROjBDnzQIAhKVIif2tIQ/MZHnUvGvelppTbX0gij0H6nsnOl9a+7C9ATsM4243QMWbDFfIFHWuojPL1OSpSHspuMutYIZO0fSkHA3vlSnyVxWem+SUxkYX2MYPyIppqNw9wTrEtLQZNnB4fIESPF1LKed9VKuHIpBR73Fxeq55u29xh4hfpXwTN6UKugvufTFSgmLBBzaCYj1SLf+5LtNAyQ1XNmBPcq/yomibgUB4Kz9cS2r1JMMfQ6JILOjdc3iEh8SIHO5cBoInhLdnhvcqpLtacvJ7Nka/4wH+CJPcPbUbs5Vh3K1zvgFpnHJx1hpwAADPkdVlbb+JUN9FK7vV/chwAaIjuEfdgD3BYAAAAAAAA=" alt="图 01" width="775" height="187" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 01</figcaption></figure>
+<p>最终我们发现，new 100000000 个对象和反射创建 100000000 个对象，效率相差了很多倍。</p>
+<p>所以下面我们来探讨一下为什么这么大差别?</p>
+<p>首先第一点，一般我们的Java代码是需要编译后在虚拟机里面运行的。</p>
+<p>我们一般都是通过一个前端编辑器，比如javac，把java文件转为class文件。</p>
+<p>接下来，程序运行期间，可能会通过一个JIT，即时编译器将字节码文件转换为计算机认识的机器码文件。</p>
+<p>另外一种可能是通过一个AOT编译器，直接把java文件编译为本地机器码文件。其中JIT在程序运行期会对程序进行优化，但是反射是通过动态解析的方式，因此可能无法执行某些java虚拟机的优化。</p>
+<p>总结起来有下面几个原因:</p>
+<ul><li>Method#invoke 方法会对参数做封装和解封操作</li><li>需要检查方法可见</li><li>需要校验参数</li><li>反射方法难以内联</li><li>JIT 无法优化</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>使用场景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>反射场景：Spring IoC、JDBC 驱动加载、反编译、泛型绕过</li><li>区别：new 无法访问私有属性、必须知道类名；反射可 setAccessible、无需知道类型</li></ul></div>
+<p>反射的部分使用场景</p>
+<ul><li>Spring通过反射来帮我们实例化对象，并放入到Ioc容器中</li><li>使用JDBC链接数据库时加载数据库驱动Class.forName()</li><li>逆向代码 例如反编译</li><li>利用反射，在泛型为int的arryaList集合中存放一个String类型的对象</li></ul>
+<p>new 对象和反射的区别</p>
+<ul><li>new的对象无法访问其中的私有属性，反射出来的可以通过设置setAccessible()方法来省略访问权限符。</li><li>new必须要知道类名，而反射创建对象不需要知道类型也可以创建</li></ul>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 5 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>new vs 反射耗时</h4><p>for 循环创建 1 亿个对象，new 与反射 newInstance 效率相差很多倍。</p><a class="src-link" href="#sec-02">原文 → 效率对比</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>反射慢的五个原因</h4><p>Method#invoke 参数封解、可见性检查、参数校验、难以内联、JIT 无法优化。</p><a class="src-link" href="#sec-02">原文 → 效率对比</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>反射创建对象三种方式</h4><p>ReflectDemo.class、Class.forName(&quot;全类名&quot;)、实例.getClass()。</p><a class="src-link" href="#sec-01">原文 → 基础概念</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>new 与反射的区别</h4><p>new 需知道类名且不能访问私有属性；反射可 setAccessible 且无需知道类型。</p><a class="src-link" href="#sec-03">原文 → 使用场景</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>反射的使用场景</h4><p>Spring IoC 实例化、JDBC Class.forName 加载驱动、反编译、泛型绕过。</p><a class="src-link" href="#sec-03">原文 → 使用场景</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>类型固定且需大量创建时优先用 new，反射存在明显性能开销。</li>
+          <li>反射的代价来自参数封解、可见性与参数校验、难以内联及 JIT 无法优化。</li>
+          <li>反射的价值在运行时动态性：IoC 实例化、JDBC 驱动加载、反编译与泛型绕过都依赖它。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIyNDU2ODA4OQ==&amp;mid=2247507805&amp;idx=1&amp;sn=816a288511acccaa6bf9ab4a1f72f55c" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIyNDU2ODA4OQ==&amp;mid=2247507805&amp;idx=1&amp;sn=816a288511acccaa6bf9ab4a1f72f55c</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
