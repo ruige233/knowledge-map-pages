@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>面试 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">大模型岗面试，为什么追问两层就答不动了？RAG、多 Agent、Harness 八道题逐个复盘</h1>
+  <p class="lede">大模型岗面试八题复盘：技术点只备一层，往下追问两层就露馅</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>面试</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 16 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>大家好，我是吴师兄。</p>
+<p>面试官全程只围绕这两个项目往下追，没有出一道脱离简历的八股题。</p>
+<p>结果很典型。</p>
+<p>文档解析、混合检索、RRF 融合、Reranker、MRR 评测、Query 改写、Agent Harness、State 传递，这些技术点候选人都碰过，第一层都答得出来。每一个再往下追两层，就开始含糊。</p>
+<p>面试官最后只给了一句总评：“你现在做的东西其实都比较浅，我看重的不是你现在有多少能力，而是你的成长性。”</p>
+<p>这句话我读了两遍。候选人准备了“我做了什么”，没有准备“为什么这么做、什么情况下不成立、我怎么知道它有效”，这三问，恰好是面试官往下追的三个方向。</p>
+<p>下面我把这场面试的八道题按原顺序重走一遍，每题标出答到了哪一层、丢在哪、补什么。</p>
+<p>手里有 RAG 或 Agent 项目、准备秋招社招的朋友，可以拿自己的简历对着看。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 01</th><th>01 / 11</th></tr></thead><tbody></tbody></table>
+<p>八道题为什么都停在同一个地方？</p>
+<p>先说结论。八道题的丢分，可以归到三个模式，后面每一段拆解都能对回其中一条。</p>
+<p>模式一，追问一层就见底。表格解析、混合检索、RRF，第一层都答得出来，第二层的“为什么”就开始含糊。BM25 怎么算分、向量检索到底漏掉什么、Reranker 为什么不能全量跑，这三个是典型。</p>
+<p>模式二，数字没有配套材料。简历上写了 MRR 从 0.72 提到 0.92，面试官连问三次才问到点上，评测集规模和划分方式完全没答。写在简历上的每一个数，都要备好归因表和消融表，否则这个数会变成负资产。</p>
+<p>模式三，不肯放弃预设答案。场景题里面试官已经明确排除了解析这个方向，候选人还是绕回去。听到熟悉的关键词就启动准备好的回答，没有真的在听题。</p>
+<p>▲ 面试官往下追的三个方向：为什么这么做、什么情况下不成立、怎么知道有效。</p>
+<p>三个模式指向同一件事：技术点只备了一层。第一层是“我们做了什么”，第二层是“为什么这么做、什么情况下会不成立”。能把“我们选了 A”和“A 在什么情况下不如 B”一起说出来，可信度完全不同。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 02</th><th>02 / 11</th></tr></thead><tbody></tbody></table>
+<p>开场三分钟，项目该怎么说？</p>
+<p>面试官的开场要求说得很细：业务目标是什么，整个链路怎么走，你自己负责哪个模块，上线后印象最深的成果是什么，团队共同完成的部分去掉。</p>
+<p>候选人从“文档解析、切分、召回我都有参与”开始，直接进了技术细节。业务目标没说，成果没说，“我负责哪一块”用“都有参与”带过。</p>
+<p>面试官问“印象最深的成果”，是想知道你能不能用业务语言描述价值，以及你有没有对结果负过责。一开口就进技术，把最有信息量的部分挤掉了。</p>
+<p>开场用四句话打底就够。业务目标和用户是谁；链路一条线拉过去，解析、切分、索引、召回、重排、生成、引用溯源；自己负责哪几段，边界要清楚；成果带一个数和一个业务含义。说完主动挑一个技术点展开，把主动权拿回自己手上。</p>
+<p>按这个项目，开场可以这样说：</p>
+<p>给研究员做研报问答，替代人工在几千份 PDF 里翻数据，把单次查数从十几分钟压到一分钟内。解析和召回这两块是我从零到一做的，切分参与设计，生成部分是同事负责。</p>
+<p>这段话比“都有参与”可信得多，也不会给后面的追问挖坑。你说“从零到一做的”，面试官就会往解析和召回追，而这两块正是你准备最充分的地方。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 03</th><th>03 / 11</th></tr></thead><tbody></tbody></table>
+<p>PDF 表格解析，这题为什么拿了满分？</p>
+<p>第二题是整场唯一的满分项。面试官问：你说 PDF 表格解析有问题，具体是什么问题？对比了哪些框架，为什么最后选 MinerU？</p>
+<p>候选人的回答有对比，PyMuPDF、DeepDoc、MinerU 三个都试过；有取舍理由，DeepDoc 基于 OCR，对中文友好，普通表格准确率高，但无边框表格不行；有工程折中，MinerU 慢，所以按文档类型路由，只把难啃的文档送给重模型，没有全量上。</p>
+<p>还有一个加分动作。候选人主动说“印章水印的方案我们评估过，但收益比不划算所以没做”。主动交代“评估了但没做，因为不划算”，说明你做过成本判断。</p>
+<p>这题能再深两层。一层是难在哪。无边框表格的难点本质是版面分析问题：有框线的表格可以靠线检测直接切单元格，无框线只能靠文字块的坐标做行列聚类，列对齐一旦判错，整张表的语义就错位。说到这一层，面试官才能确认你理解的是问题本身，换库只是顺带的结果。</p>
+<p>另一层是怎么判定。路由的规则分类具体看什么信号？页面里有没有检测到足够长的水平、垂直线段，文字块坐标是否呈规则网格分布，页面是不是纯图像。把判定依据说出来，比“做了规则分类”具体得多。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 04</th><th>04 / 11</th></tr></thead><tbody></tbody></table>
+<p>模型上下文都几百 K 了，RAG 还有什么理由？</p>
+<p>第三题是一道价值观题：现在大模型能力这么强，Wiki 或者文档为什么不能直接扔给模型？</p>
+<p>候选人答的是“上下文有限，几十页研报放不进去”，加上 Citation 可以溯源。可上下文窗口一直在涨，拿“放不下”当理由，面试官下一句就可以说，现在都几百 K 了。</p>
+<p>更站得住的理由至少有四条，量级各不相同。</p>
+<p>成本和延迟。每次都塞全量，token 成本和首字延迟按文档量线性涨，检索把这笔成本摊到了离线索引阶段。</p>
+<p>有效性随长度衰减。放得进去，未必用得好，长上下文里精确查找的准确率明显更低。</p>
+<p>数据是动态的。文档每天增删改，检索层可以增量更新，长上下文每次都要重新组装。</p>
+<p>权限。不同用户能看的文档范围不一样，检索层天然是做行级权限过滤的地方。</p>
+<p>回答这类“为什么不用更简单方案”的问题，准备两三条量级不同的理由，别把宝押在一条上。可溯源这条候选人说到了，而且说得对，Citation 需要定位到具体 chunk 和原文位置，检索链路里天然带这个信息。</p>
+<p>还可以主动补一句。RAG 和长上下文并非二选一，成熟做法是检索先把候选压到少量高相关片段，再交给长上下文模型做综合。检索管“找得准”，长上下文管“读得全”。能说出这层关系，比单纯论证“为什么不用长上下文”更显成熟。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 05</th><th>05 / 11</th></tr></thead><tbody></tbody></table>
+<p>向量检索比 Elasticsearch 差在哪？</p>
+<p>第四题问得很直接：你觉得 RAG 里的向量搜索，相比 Elasticsearch 有什么优点和缺点？</p>
+<p>候选人的回答是“当时也用了 ES，向量存在 Milvus，后面做了混合检索，效果比较好”。这是答非所问。面试官紧接着又问了一次“向量搜索容易漏掉什么”，才拿到“无法很好地通过关键词召回”这一句。</p>
+<p>向量的长处在语义。同义改写、口语化提问、跨语言、概念相近但用词完全不同的内容，BM25 完全召不回来，向量可以。</p>
+<p>向量的短板全在精确性，可以逐条报出来。</p>
+<table><thead><tr><th>●</th><th>罕见词与专有名词。公司简称、基金代码、产品型号、人名，embedding 的区分度很低。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>数字与编号。8.3 和 8.4 的向量距离，可能比 8.3 和“行业分析”还近。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>否定与限定。“不含 A 的 B”和“含 A 的 B”在向量表示上非常接近。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>不可解释。BM25 能告诉你哪个词命中、贡献多少分，向量只给一个相似度。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>更新成本。换 embedding 模型要全量重建索引。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>严格过滤。按时间、机构、权限做硬过滤，倒排天然支持，向量库过滤后召回质量会掉。</th></tr></thead><tbody></tbody></table>
+<p>BM25 反过来，短板是纯字面匹配，用户换个说法就召不到。所以混合检索是必然的。面试里要说清楚的是“为什么必然”，“我们上了两路效果好”只交代了结果。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 06</th><th>06 / 11</th></tr></thead><tbody></tbody></table>
+<p>两路结果怎么融合，Reranker 为什么不能全量？</p>
+<p>第五题面试官连问三层：两路检索是串行还是并行，两组结果怎么融合，为什么不直接加分数。后面又追了 Rerank 放在哪一步，文档量不大能不能全量 rerank。</p>
+<p>候选人答了并行、RRF、分数尺度不一样需要归一化，还说“我们对比过，加权平均效果没有 RRF 好”。“对比过”这三个字是关键。面试官问“为什么不用加权平均”，最想听的就是你实际比过。</p>
+<p>RRF 的计算很短，可以直接写出来。每一路只贡献排名，一个文档在某一路排第 r 位，就得到 1 除以 k 加 r 的分数，几路加起来得到融合分。</p>
+<p>PYTHON</p>
+<p># 吴师兄学大模型：wushixiongai.comfrom collections import defaultdict  defrrf(rankings, k=60):&quot;&quot;&quot;每一路是按相关度降序的文档 ID 列表。&quot;&quot;&quot;     scores =defaultdict(float)for ranked in rankings:for rank, doc inenumerate(ranked,1):             scores[doc]+=1.0/(k + rank)     by_score =sorted(scores, key=scores.get)return by_score[::-1]</p>
+<p>可以再补 RRF 的代价。RRF 只用排名，丢掉了分数的强度信息。如果某一路的第一名分数遥遥领先，RRF 感知不到这个差异，一律按名次算。所以在一路明显更可信的场景下，归一化加权反而更好。k 值也是可调项，k 越大越平滑、各路越均等，k 小则更看重头部。</p>
+<p>Reranker 这一段，候选人位置说对了，理由说反了。候选人说“如果全部交给 Reranker，前面的召回阶段就没必要了”。结论对，但真正的原因是计算量。Reranker 通常是 cross-encoder，query 和每个 chunk 拼起来过一遍模型，是 N 次前向；召回阶段只是一次编码加近似最近邻查找。几十万个 chunk 全量过 cross-encoder，延迟上根本不可行。</p>
+<p>▲ 两路并行召回，RRF 融合后取前 50 到 100 进 Reranker，最后前 3 到 5 进上下文。</p>
+<p>标准配置是召回 top 50 到 100，rerank 之后取 top 3 到 5 进上下文。召回给多了 rerank 延迟涨，给少了 rerank 再准也捞不回漏掉的。召回阶段看 recall，rerank 阶段看精度，两个阶段的优化目标不一样。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 07</th><th>07 / 11</th></tr></thead><tbody></tbody></table>
+<p>简历上的 0.72 到 0.92，要配哪三份材料？</p>
+<p>第六题问的是那个数字：这个 MRR 用了多少 query，结果怎么标注，测试集和调参集分不分开？它原来为什么低，你改了什么才提到 0.92？</p>
+<p>前两次回答都在讲“业务部门人工加 LLM 标注、每周持续标注”。第三次面试官直接说：我问的不是 MRR 怎么算出来的，是它原来为什么低、你改了什么才提上去。</p>
+<p>写在简历上的每一个数，都要配三份材料。</p>
+<p>评测集本身。多少条 query，怎么来的，线上真实 query 采样还是业务同学构造，标注规则是什么，一致性怎么保证，调参集和测试集怎么分。测试集和调参集不分离，0.92 这个数就没有意义。面试官问这个，是在验这个数可不可信。</p>
+<p>归因。0.72 的时候，错的那 28% 是怎么分布的？把 bad case 分桶：解析错的多少，切分把答案切断的多少，召回压根没进 top10 的多少，进了但排序靠后的多少。有这张分桶表，你才能解释为什么优先做表格解析，没有先换 embedding。</p>
+<p>消融。每一项改动贡献了多少，哪怕粗略也行。有这张表，面试官问“最关键的改动是什么”，一句话就能答，还顺带证明了你是按数据决策的。没有这张表，简历上的提升就只是一个数字。</p>
+<p>配不齐的数字，不如不写。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 08</th><th>08 / 11</th></tr></thead><tbody></tbody></table>
+<h3 class="sub">8.3 条查不到，为什么不该回到解析？</h3>
+<p>第七题是场景题。用户要查某基金 2024 年报告第 8.3 条里的数值，向量搜索只返回了行业分析。假设原文肯定存在、用户只是不记得章节，你怎么分析和改进？</p>
+<p>题面已经锁死了前提：原文肯定存在，用户是专业人员，知道内容在那儿，只是不记得章节，现在的问题是检索没搜到。候选人两次都回到“先看文档有没有被准确解析”。场景题里对方主动排除的方向，硬要回去只会浪费时间。</p>
+<p>正确的入手方式是拆 query 里的信号。</p>
+<p>▲ 一条 query 拆成四类信号：专有名词精确匹配、年份走 metadata、章节编号走字面、数值才是语义部分。</p>
+<p>基金名称是专有名词，要精确匹配，还要处理简称与全称的映射。2024 年是结构化属性，走 metadata 过滤，不该参与语义相似度计算。8.3 是章节编号，向量空间里基本没有区分度，必须靠字面匹配或结构化字段。“具体数值”才是真正的语义部分。</p>
+<p>为什么会返回行业分析？整条 query 编码成一个向量之后，最强的语义信号是“基金”“报告”“数值”这些通用词，行业分析段落在这些维度上相似度很高，而 8.3 这个真正的定位信息在向量里几乎被抹平了。</p>
+<p>改进方向顺着信号来。索引阶段把结构信息存成 metadata，文档 ID、年份、机构、章节路径都进去。query 阶段抽实体和结构，转成过滤条件，剩下的语义部分才送去向量检索。chunk 里保留标题路径。检索用小 chunk，送模型时带上父块。BM25 一路兜底，前提是分词别把 8.3 切碎。</p>
+<p>遇到追问先停两秒，确认对方锁死了哪些前提，再开口。听到熟悉的关键词就启动准备好的答案，是这场面试里代价最大的习惯。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 09</th><th>09 / 11</th></tr></thead><tbody></tbody></table>
+<p>不用 LangGraph，Harness 到底要管什么？</p>
+<p>第八题问得最深。面试官问：不用 LangGraph、改用原生 SDK，除了模型本身，Harness 要负责什么？多轮改代码、测试一直失败、反馈给模型还是改错，怎么组织上下文、怎么防死循环？</p>
+<p>候选人只答到了超时、最大重试次数和 Checkpoint。</p>
+<p>Harness 要管的事可以逐条报出来。</p>
+<table><thead><tr><th>●</th><th>循环控制：什么时候进下一轮，什么时候停。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>上下文组装：每一轮给模型看什么。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>工具注册与调度。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>状态管理与检查点。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>错误处理与升级路径。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>预算控制：token、时间、次数、金额。</th></tr></thead><tbody></tbody></table>
+<table><thead><tr><th>●</th><th>观测：每步输入输出落盘，能事后归因。</th></tr></thead><tbody></tbody></table>
+<p>反复改错的场景，核心在上下文组装。失败信息不能原样堆叠。十轮下来上下文里堆了十份 stacktrace，模型会被淹没，而且会在相似的错误之间来回横跳。正确做法是维护一份压缩的失败摘要：试过哪些方案，每个方案的错误类型，已经排除了什么可能。历史尝试保留结论，不保留原始过程。</p>
+<p>怎么检测“无进展”？判定信号很具体。连续两轮生成的 diff 相同或高度相似，报错的错误码和位置完全一样，修改的文件和行号在打转。命中就说明模型陷在局部，继续同样的循环没有意义。</p>
+<p>升级有阶梯。先让模型显式反思为什么前几次都失败，把失败摘要作为输入，要求先归因再给方案。还不行就缩小范围，一次只改一个地方。再不行就回滚到最后一个测试通过的状态换条路。最后停下来交给人，并把已经排除的方案一起交出去。最大重试次数只是兜底，它只解决“不会无限烧钱”，不解决“怎么把任务做成”。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 10</th><th>10 / 11</th></tr></thead><tbody></tbody></table>
+<p>“State 其实就是文本”，被连抓三次抓的是什么？</p>
+<p>同一道题的后半段，问串行 Agent 之间输出怎么传，候选人答“用 State”。追问 State 怎么保存，答“State 其实就是文本”。面试官立刻抓住：文本是不结构化的，下一个模型读错怎么办？改口说用 Schema 之后，又追一层：如果模型少输出一个括号，或者结构有误但不报错、继续跑然后逐渐跑偏，怎么办？</p>
+<p>一次到位的答法分三段。State 用 schema 定义，Pydantic 之类，定死字段、类型、枚举、必填。生成侧优先用原生结构化输出或约束解码，从源头让非法 JSON 出不来，别事后补括号。校验放在写入 State 的那一刻，不合法直接拒绝，绝不让脏数据流到下游。</p>
+<p>“不报错但跑偏”考的是语义错误。JSON 完全合法、字段类型也对，但内容是错的。这靠 schema 挡不住，要靠下游节点的前置断言：执行前先检查输入满足前置条件，比如表格必须有 date 和 amount 两列，引用的文件 handle 必须存在，不满足就抛结构化错误往回传。另外，大段内容别直接放进 State，存成 artifact，State 里只放引用和摘要。</p>
+<p>裁判问题的原则是减少需要“相信模型”的地方。能用规则验的就别用模型判：代码能不能编译，单测过不过，JSON 合不合 schema，引用的原文在不在源文档里。Citation 校验是这类项目里最值钱的一条，完全不依赖第二个模型。规则表达不了的，才交给评判模型，而且要先跟人工标注对齐过一致率。</p>
+<table><thead><tr><th>AGENT FIELD NOTE 11</th><th>11 / 11</th></tr></thead><tbody></tbody></table>
+<p>反问和薪资，也别裸奔</p>
+<p>技术题之外还有两段。反问环节问了公司做什么、自己负责哪部分，中规中矩没问题。</p>
+<p>薪资这段答得被动。面试官说可以根据能力定，候选人沉默很久后答“在区间内取平均值”，等于把定价权交了出去。稳的处理是给一个有依据的区间，依据可以是当前包、其他 offer、岗位市场价，再补一句数字之外你更在意什么。</p>
+<p>回到面试官那句总评。它说得挺准：每道题头一层都答得出，再往下追就开始含糊。这类具体到细节的反馈，比一封拒信有用得多，因为它把该补的地方一个个点了出来。</p>
+<p>拿自己的简历对一遍。每个技术点往下备两层，每个数字配齐评测集、归因表和消融表，场景题先停两秒确认前提。三件事都做到，面试官再往下追，你也接得住。</p>
+<p>做过和搞懂之间的差距，在追问里藏不住。</p>
+<p>这篇拆的是面试怎么答。要把混合检索、Reranker、Harness 和 State 校验真正写进自己的项目，训练营的 Agent 后端项目会把它们做成可验收的代码，配套项目练习与验收要求。适合有编程基础、想拿大模型岗 offer 的朋友，安排见2026吴师兄大模型/Agent 1v1求职陪跑营。</p>
+<p>我是吴师兄，我们下篇文章见。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>三个追问方向</h4><p>面试官往下追的三个方向：为什么这么做、什么情况下不成立、怎么知道有效。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>开场就进技术细节</h4><p>业务目标、成果、负责边界都没说，用“都有参与”带过；应四句话打底并主动挑一个技术点展开。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>MRR 0.72→0.92</h4><p>简历写 MRR 从 0.72 提到 0.92，被连问三次才到点上：评测集规模与划分方式完全没答。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>向量检索 vs BM25</h4><p>向量长在语义（同义改写、跨语言），短在精确性（专有名词、数字、否定、不可解释、更新成本、严格过滤）；BM25 相反。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>RRF 融合</h4><p>每路只贡献排名：1/(k+r) 求和得融合分，k=60；只用排名会丢掉分数强度。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Reranker 不能全量</h4><p>cross-encoder 是 N 次前向，几十万 chunk 全量过延迟不可行；原因不是“召回没必要”。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>标准召回-重排配置</h4><p>两路并行召回，RRF 融合取 top50-100 进 Reranker，再取 top3-5 进上下文；召回看 recall，重排看精度。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>数字的三份材料</h4><p>每个简历数字配：评测集本身、bad case 分桶归因、消融表；配不齐的数字不如不写。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>场景题绕回解析</h4><p>题面已排除解析方向，候选人仍绕回；正确做法是拆 query 信号：专名精确、年份 metadata、章节字面、数值语义。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Harness 七项职责</h4><p>循环控制、上下文组装、工具注册调度、状态检查点、错误升级、预算控制、观测。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>失败摘要压缩</h4><p>反复改错时维护压缩失败摘要：试过哪些方案、错误类型、排除了什么；保留结论不保留原始过程。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>State 不是文本</h4><p>State 用 Pydantic schema 加约束解码、写入校验；语义错误靠下游前置断言，大段内容存 artifact。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>每个技术点往下备两层：能同时说清“选了 A”和“A 何时不如 B”。</li>
+          <li>简历数字配齐评测集、归因分桶与消融表，配不齐的数字不如不写。</li>
+          <li>场景题先停两秒确认前提，别听到熟悉关键词就启动预设答案。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkzMDIwMzg1Mw==&amp;mid=2247491282&amp;idx=1&amp;sn=859efd0e611743ac52b280b1c51b6aba" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkzMDIwMzg1Mw==&amp;mid=2247491282&amp;idx=1&amp;sn=859efd0e611743ac52b280b1c51b6aba</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：面试 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

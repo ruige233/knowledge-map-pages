@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>面试 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">帆软这家955作息的公司，已成功 oc！</h1>
+  <p class="lede">帆软 Java 后端校招面经：分布式锁、MySQL、Java 三大块考点复盘</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>面试</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 21 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>分布式锁与 CAP 原理</a>
+          <a href="#sec-02"><span class="n">02</span>MySQL 事务、锁与索引</a>
+          <a href="#sec-03"><span class="n">03</span>Java 并发与事务</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 分布式锁与 CAP 原理</a>
+          <a href="#sec-02">02 MySQL 事务、锁与索引</a>
+          <a href="#sec-03">03 Java 并发与事务</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>图解学习网站：https://xiaolincoding.com</p>
+<p>大家好，我是小林。</p>
+<p>看到一张网传的不加班、不内卷、不减薪，甚至 955 的神仙公司：</p>
+<p>其中里面有帆软这家公司，帆软是一家专注 To B领域的软件公司，工作时间也没有那么卷，955 并无强制加班，而且研发岗位主要在二线城市，比如成都、南京等。</p>
+<p>前段时间，也有校招同学跟我反馈，他已经通关了帆软所有面试，已经拿到录取意向，就等谈薪资了</p>
+<p>帆软的薪资开的还是很不错的，校招毕业能拿到 20k+ 的月薪，算上年终，也有 30w 的年薪了，跟一线互联网大厂其实差距不算很大，而且sp offer 薪资估计会更高，会多 2-4k。</p>
+<p>那话说回来，帆软的校招面试难度如何呢？</p>
+<p>这次就来跟分享一位校招同学的帆软Java后端开发的面经，主要考察了Java、MySQL、分布式锁这三大块内容。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>分布式锁与 CAP 原理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>分布式锁可用 MySQL for update 排他锁或 ZooKeeper 临时顺序节点实现。</li><li>ZooKeeper 锁满足 CP 强一致但性能低，Redis 是 AP，本质是性能与一致性取舍。</li><li>Redis 单节点锁缺点：超时难设置、主从异步复制导致不可靠。</li><li>Redlock 加锁需过半节点成功且总耗时小于锁过期时间。</li></ul><div class="pit"><ul><li>锁超时过长影响性能、过短保护不到资源；主从异步复制会丢锁。</li></ul></div></div>
+<p>分布式锁除了redisson，还能怎么实现？</p>
+<ul><li>基于MySQL： 通过 for update 排他锁，对特定数据记录加排他锁。我们可以当做查询到数据时，则获取到分布式锁，接下来执行方法中的逻辑。在方法执行完毕后，提交事务，锁会自动释放。</li><li>基于 ZooKeeper ：利用临时顺序节点来实现分布式锁的获取和释放。</li></ul>
+<p>zookerper实现分布式锁和redisson实现分布式的区别？</p>
+<p>zookerper 实现的分布式锁是强一致性的，因为它底层的 ZAB协议(原子广播协议), 天然满足 CP，但是这也意味着性能的下降, 所以不站在具体数据下看 Redis 和 Zookeeper, 代表着性能和一致性的取舍</p>
+<p>如果项目没有强依赖 ZK, 使用 Redis 就好了, 因为现在 Redis 用途很广, 大部分项目中都引用了 Redis，没必要对此再引入一个新的组件, 如果业务场景对于 Redis 异步方式的同步数据造成锁丢失无法忍受, 在业务层处理就好了</p>
+<p>cap是啥？</p>
+<p>CAP 原则又称 CAP 定理, 指的是在一个分布式系统中,  Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性）,三者不可得兼</p>
+<ul><li>一致性(C) : 在分布式系统中的所有数据备份, 在同一时刻是否同样的值(等同于所有节点访问同一份最新的数据副本)</li><li>可用性(A): 在集群中一部分节点故障后, 集群整体是否还能响应客户端的读写请求(对数据更新具备高可用性)</li><li>分区容忍性(P): 以实际效果而言, 分区相当于对通信的时限要求. 系统如果不能在时限内达成数据一致性, 就意味着发生了分区的情况, 必须就当前操作在 C 和 A 之间做出选择</li></ul>
+<p>redisson对于cap定理的体现是什么？</p>
+<p>主要是 ap 模型，牺牲一致性，换取可用性。</p>
+<p>Redis Cluster通过数据分片（Sharding）和主从复制（Master-Slave Replication）实现了高可用性和一定的数据冗余。在Redis Cluster中，每个节点都保存了部分数据，并通过复制机制保证数据在多个节点上的可用性。</p>
+<ul><li>分区容忍性（P） ：Redis Cluster天生支持分区容忍性，通过多个节点和分片机制，即使部分节点或网络发生故障，系统仍能继续运行。</li><li>一致性（C）与可用性（A）的权衡 ：Redis Cluster在默认情况下更倾向于可用性（A）。在数据复制过程中，Redis采用了异步复制机制，这意味着主节点写入数据后，不会等待所有从节点确认就返回操作成功的结果。这样做提高了系统的响应速度和可用性，但在极端情况下（如主节点宕机且未完成数据同步）可能会导致数据丢失，即牺牲了强一致性（C）。</li></ul>
+<p>redis 实现的分布式锁还有什么缺点？红锁是什么？</p>
+<p>基于 Redis 实现分布式锁的缺点：</p>
+<ul><li>超时时间不好设置 。如果锁的超时时间设置过长，会影响性能，如果设置的超时时间过短会保护不到共享资源。比如在有些场景中，一个线程 A 获取到了锁之后，由于业务代码执行时间可能比较长，导致超过了锁的超时时间，自动失效，注意 A 线程没执行完，后续线程 B 又意外的持有了锁，意味着可以操作共享资源，那么两个线程之间的共享资源就没办法进行保护了。</li><li>那么如何合理设置超时时间呢？ 我们可以基于续约的方式设置超时时间：先给锁设置一个超时时间，然后启动一个守护线程，让守护线程在一段时间后，重新设置这个锁的超时时间。实现方式就是：写一个守护线程，然后去判断锁的情况，当锁快失效的时候，再次进行续约加锁，当主线程执行完成后，销毁续约锁即可，不过这种方式实现起来相对复杂。</li><li>Redis 主从复制模式中的数据是异步复制的，这样导致分布式锁的不可靠性 。如果在 Redis 主节点获取到锁后，在没有同步到其他节点时，Redis 主节点宕机了，此时新的 Redis 主节点依然可以获取锁，所以多个应用服务就可以同时获取到锁。</li></ul>
+<p>Redis 如何解决集群情况下分布式锁的可靠性？</p>
+<p>为了保证集群环境下分布式锁的可靠性，Redis 官方已经设计了一个分布式锁算法 Redlock（红锁）。</p>
+<p>它是基于多个 Redis 节点的分布式锁，即使有节点发生了故障，锁变量仍然是存在的，客户端还是可以完成锁操作。官方推荐是至少部署 5 个 Redis 节点，而且都是主节点，它们之间没有任何关系，都是一个个孤立的节点。</p>
+<p>Redlock 算法的基本思路，是让客户端和多个独立的 Redis 节点依次请求申请加锁，如果客户端能够和半数以上的节点成功地完成加锁操作，那么我们就认为，客户端成功地获得分布式锁，否则加锁失败。</p>
+<p>这样一来，即使有某个 Redis 节点发生故障，因为锁的数据在其他节点上也有保存，所以客户端仍然可以正常地进行锁操作，锁的数据也不会丢失。</p>
+<p>Redlock 算法加锁三个过程：</p>
+<ul><li>第一步是，客户端获取当前时间（t1）。</li><li>第二步是，客户端按顺序依次向 N 个 Redis 节点执行加锁操作：</li><li>加锁操作使用 SET 命令，带上 NX，EX/PX 选项，以及带上客户端的唯一标识。</li><li>如果某个 Redis 节点发生故障了，为了保证在这种情况下，Redlock 算法能够继续运行，我们需要给「加锁操作」设置一个超时时间（不是对「锁」设置超时时间，而是对「加锁操作」设置超时时间），加锁操作的超时时间需要远远地小于锁的过期时间，一般也就是设置为几十毫秒。</li><li>第三步是，一旦客户端从超过半数（大于等于 N/2+1）的 Redis 节点上成功获取到了锁，就再次获取当前时间（t2），然后计算计算整个加锁过程的总耗时（t2-t1）。如果 t2-t1 &lt; 锁的过期时间，此时，认为客户端加锁成功，否则认为加锁失败。</li></ul>
+<p>可以看到，加锁成功要同时满足两个条件（简述：如果有超过半数的 Redis 节点成功的获取到了锁，并且总耗时没有超过锁的有效时间，那么就是加锁成功）：</p>
+<ul><li>条件一：客户端从超过半数（大于等于 N/2+1）的 Redis 节点上成功获取到了锁；</li><li>条件二：客户端从大多数节点获取锁的总耗时（t2-t1）小于锁设置的过期时间。</li></ul>
+<p>加锁成功后，客户端需要重新计算这把锁的有效时间，计算的结果是「锁最初设置的过期时间」减去「客户端从大多数节点获取锁的总耗时（t2-t1）」。如果计算的结果已经来不及完成共享数据的操作了，我们可以释放锁，以免出现还没完成数据操作，锁就过期了的情况。</p>
+<p>加锁失败后，客户端向所有 Redis 节点发起释放锁的操作，释放锁的操作和在单节点上释放锁的操作一样，只要执行释放锁的 Lua 脚本就可以了。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>MySQL 事务、锁与索引</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>InnoDB 事务四特性分别由 redo log、undo log、MVCC/锁机制保证。</li><li>EXPLAIN 重点看 type：All 最差、const 最快，尽量用 range 及以上。</li><li>可重复读下范围查询加 next-key 锁，唯一索引会退化，非唯一索引不退化。</li><li>唯一性字段、WHERE/GROUP BY/ORDER BY 字段建索引；重复多、表小、频繁更新不建。</li></ul><div class="pit"><ul><li>Using filesort、Using temporary 效率低；重复字段多时优化器会忽略索引。</li></ul></div></div>
+<p>mysql事务实现原理说明一下</p>
+<p>mysql 事务的 acid 特性如下：</p>
+<ul><li>原子性（Atomicity） ：一个事务中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节，而且事务在执行过程中发生错误，会被回滚到事务开始前的状态，就像这个事务从来没有执行过一样，就好比买一件商品，购买成功时，则给商家付了钱，商品到手；购买失败时，则商品在商家手中，消费者的钱也没花出去。</li><li>一致性（Consistency） ：是指事务操作前和操作后，数据满足完整性约束，数据库保持一致性状态。比如，用户 A 和用户 B 在银行分别有 800 元和 600 元，总共 1400 元，用户 A 给用户 B 转账 200 元，分为两个步骤，从 A 的账户扣除 200 元和对 B 的账户增加 200 元。一致性就是要求上述步骤操作后，最后的结果是用户 A 还有 600 元，用户 B 有 800 元，总共 1400 元，而不会出现用户 A 扣除了 200 元，但用户 B 未增加的情况（该情况，用户 A 和 B 均为 600 元，总共 1200 元）。</li><li>隔离性（Isolation） ：数据库允许多个并发事务同时对其数据进行读写和修改的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致，因为多个事务同时使用相同的数据时，不会相互干扰，每个事务都有一个完整的数据空间，对其他并发事务是隔离的。也就是说，消费者购买商品这个事务，是不影响其他消费者购买的。</li><li>持久性（Durability） ：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。</li></ul>
+<p>MySQL InnoDB 引擎通过什么技术来保证事务的这四个特性的呢？</p>
+<ul><li>持久性是通过 redo log （重做日志）来保证的；</li><li>原子性是通过 undo log（回滚日志） 来保证的；</li><li>隔离性是通过 MVCC（多版本并发控制） 或锁机制来保证的；</li><li>一致性则是通过持久性+原子性+隔离性来保证；</li></ul>
+<p>binlog redolog undolog都是干啥的？</p>
+<ul><li>redo log 重做日志，是 Innodb 存储引擎层生成的日志，实现了事务中的 持久性 ，主要 用于掉电等故障恢复 ；</li><li>undo log 回滚日志，是 Innodb 存储引擎层生成的日志，实现了事务中的 原子性 ，主要 用于事务回滚和 MVCC 。</li><li>bin log 二进制日志，是 Server 层生成的日志，主要 用于数据备份和主从复制 ；</li></ul>
+<p>explain你看哪些字段？</p>
+<p>explain 是查看 sql 的执行计划，主要用来分析 sql 语句的执行过程，比如有没有走索引，有没有外部排序，有没有索引覆盖等等。</p>
+<p>如下图，就是一个没有使用索引，并且是一个全表扫描的查询语句。</p>
+<p>对于执行计划，参数有：</p>
+<ul><li>possible_keys 字段表示可能用到的索引；</li><li>key 字段表示实际用的索引，如果这一项为 NULL，说明没有使用索引；</li><li>key_len 表示索引的长度；</li><li>rows 表示扫描的数据行数。</li><li>type 表示数据扫描类型，我们需要重点看这个。</li></ul>
+<p>type 字段就是描述了找到所需数据时使用的扫描方式是什么，常见扫描类型的执行效率从低到高的顺序为：</p>
+<ul><li>All（全表扫描）：在这些情况里，all 是最坏的情况，因为采用了全表扫描的方式。</li><li>index（全索引扫描）：index 和 all 差不多，只不过 index 对索引表进行全扫描，这样做的好处是不再需要对数据进行排序，但是开销依然很大。所以，要尽量避免全表扫描和全索引扫描。</li><li>range（索引范围扫描）：range 表示采用了索引范围扫描，一般在 where 子句中使用 &lt; 、&gt;、in、between 等关键词，只检索给定范围的行，属于范围查找。 从这一级别开始，索引的作用会越来越明显，因此我们需要尽量让 SQL 查询可以使用到 range 这一级别及以上的 type 访问方式 。</li><li>ref（非唯一索引扫描）：ref 类型表示采用了非唯一索引，或者是唯一索引的非唯一性前缀，返回数据返回可能是多条。因为虽然使用了索引，但该索引列的值并不唯一，有重复。这样即使使用索引快速查找到了第一条数据，仍然不能停止，要进行目标值附近的小范围扫描。但它的好处是它并不需要扫全表，因为索引是有序的，即便有重复值，也是在一个非常小的范围内扫描。</li><li>eq_ref（唯一索引扫描）：eq_ref 类型是使用主键或唯一索引时产生的访问方式，通常使用在多表联查中。比如，对两张表进行联查，关联条件是两张表的 user_id 相等，且 user_id 是唯一索引，那么使用 EXPLAIN 进行执行计划查看的时候，type 就会显示 eq_ref。</li><li>const（结果只有一条的主键或唯一索引扫描）：const 类型表示使用了主键或者唯一索引与常量值进行比较，比如 select name from product where id=1。需要说明的是 const 类型和 eq_ref 都使用了主键或唯一索引，不过这两个类型有所区别， const 是与常量进行比较，查询效率会更快，而 eq_ref 通常用于多表联查中 。</li></ul>
+<p>extra 显示的结果，这里说几个重要的参考指标：</p>
+<ul><li>Using filesort ：当查询语句中包含 group by 操作，而且无法利用索引完成排序操作的时候， 这时不得不选择相应的排序算法进行，甚至可能会通过文件排序，效率是很低的，所以要避免这种问题的出现。</li><li>Using temporary：使了用临时表保存中间结果，MySQL 在对查询结果排序时使用临时表，常见于排序 order by 和分组查询 group by。效率低，要避免这种问题的出现。</li><li>Using index：所需数据只需在索引即可全部获得，不须要再到表中取数据，也就是使用了覆盖索引，避免了回表操作，效率不错。</li></ul>
+<p>mysql update 会上哪些锁？</p>
+<p>如果是可重复读隔离级别下，会加行级锁，主要有：</p>
+<ul><li>记录锁：锁住的是一条记录。而且记录锁是有 S 锁和 X 锁之分的，满足读写互斥，写写互斥</li><li>间隙锁：只存在于可重复读隔离级别，目的是为了解决可重复读隔离级别下幻读的现象。</li><li>Next-Key Lock 称为临键锁，是 Record Lock + Gap Lock 的组合，锁定一个范围，并且锁定记录本身。</li></ul>
+<p>当我范围查询的时候，他是怎么上锁的？</p>
+<p>唯一索引的范围查询加锁规则</p>
+<p>当唯一索引进行范围查询时，会对每一个扫描到的索引加 next-key 锁，然后如果遇到下面这些情况，会退化成记录锁或者间隙锁：</p>
+<ul><li>情况一：针对「大于等于」的范围查询，因为存在等值查询的条件，那么如果等值查询的记录是存在于表中，那么该记录的索引中的 next-key 锁会 退化成记录锁 。</li><li>情况二：针对「小于或者小于等于」的范围查询，要看条件值的记录是否存在于表中：</li><li>当条件值的记录不在表中，那么不管是「小于」还是「小于等于」条件的范围查询， 扫描到终止范围查询的记录时，该记录的索引的 next-key 锁会退化成间隙锁 ，其他扫描到的记录，都是在这些记录的索引上加 next-key 锁。</li><li>当条件值的记录在表中，如果是「小于」条件的范围查询， 扫描到终止范围查询的记录时，该记录的索引的 next-key 锁会退化成间隙锁 ，其他扫描到的记录，都是在这些记录的索引上加 next-key 锁；如果「小于等于」条件的范围查询，扫描到终止范围查询的记录时，该记录的索引 next-key 锁不会退化成间隙锁。其他扫描到的记录，都是在这些记录的索引上加 next-key 锁。</li></ul>
+<p>非唯一索引的范围查询加锁规则</p>
+<p>非唯一索引和主键索引的范围查询的加锁也有所不同，不同之处在于非唯一索引范围查询，索引的 next-key lock 不会有退化为间隙锁和记录锁的情况，也就是非唯一索引进行范围查询时，对二级索引记录加锁都是加 next-key 锁。</p>
+<p>详见：保姆级教程！2 万字 + 30 张图搞懂 MySQL 是怎么加行级锁的？</p>
+<p>查询的时候，字段必须建立索引吗？</p>
+<p>什么时候适用索引？</p>
+<ul><li>字段有唯一性限制的，比如商品编码；</li><li>经常用于 WHERE 查询条件的字段，这样能够提高整个表的查询速度，如果查询条件不是一个字段，可以建立联合索引。</li><li>经常用于 GROUP BY 和 ORDER BY 的字段，这样在查询的时候就不需要再去做一次排序了，因为我们都已经知道了建立索引之后在 B+Tree 中的记录都是排序好的。</li></ul>
+<p>什么时候不需要创建索引？</p>
+<ul><li>WHERE 条件， GROUP BY ， ORDER BY 里用不到的字段，索引的价值是快速定位，如果起不到定位的字段通常是不需要创建索引的，因为索引是会占用物理空间的。</li><li>字段中存在大量重复数据，不需要创建索引，比如性别字段，只有男女，如果数据库表中，男女的记录分布均匀，那么无论搜索哪个值都可能得到一半的数据。在这些情况下，还不如不要索引，因为 MySQL 还有一个查询优化器，查询优化器发现某个值出现在表的数据行中的百分比很高的时候，它一般会忽略索引，进行全表扫描。</li><li>表数据太少的时候，不需要创建索引；</li><li>经常更新的字段不用创建索引，比如不要对电商项目的用户余额建立索引，因为索引字段频繁修改，需要额外的操作维护索引的有序性</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>Java 并发与事务</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>线程池提交任务：核心线程未满建线程，满则入队，队列满再增线程，达上限走丢弃策略。</li><li>AQS 核心是 state、FIFO 等待队列、协作类重写的获取/释放方法。</li><li>CAS 三大缺点：ABA 问题、自旋循环开销大、只能保证单共享变量原子性。</li><li>Spring 事务不回滚：非 public、try/catch、内部调用、检查异常、MyISAM。</li></ul><div class="pit"><ul><li>ABA 用 AtomicStampedReference 解决；catch 吞异常需重抛或手动回滚。</li></ul></div></div>
+<p>线程池提交任务的流程是什么？</p>
+<p>线程池是为了减少频繁的创建线程和销毁线程带来的性能损耗，线程池的工作原理如下图：</p>
+<p>线程池分为核心线程池，线程池的最大容量，还有等待任务的队列，提交一个任务，如果核心线程没有满，就创建一个线程，如果满了，就是会加入等待队列，如果等待队列满了，就会增加线程，如果达到最大线程数量，如果都达到最大线程数量，就会按照一些丢弃的策略进行处理。</p>
+<p>知道什么是AQS嘛？底层实现原理是什么?</p>
+<p>AQS是抽象的队列同步器，是用来构建锁或其他同步组件的重量级基础框架及整个JUC体系的基石。下边的组件都是基于AQS框架扩展实现的：</p>
+<ul><li>ReentrantLock ：可重入锁，避免多线程竞争资源的安全问题</li><li>Semaphore ：信号量，限制多线程的访问数量</li><li>CountDownLatch ：计数器，用于线程之间的等待场景（如线程A等待其他多个线程完成任务后，线程A才能执行自己的任务）</li><li>CyclicBarrier ：回环栅栏，用于线程之间的等待场景（如在一组线程中，如果线程A执行到代码段S点就会停下等待，等到组内其他线程都执行到S点时它们才会立刻一起执行剩余的任务）</li></ul>
+<p>虽然这些组件在多线程场景下有不同的作用，但代码中也有相似之处，如都需要管理锁状态，维护阻塞线程，维护唤醒线程。而AQS的作用就是将这些相似的、公共的代码封装在一起。</p>
+<p>AQS核心思想是，如果被请求的共享资源空闲，那么就将当前请求资源的线程设置为有效的工作线程，将共享资源设置为锁定状态；如果共享资源被占用，就需要一定的阻塞等待唤醒机制来保证锁分配。这个机制主要用的是CLH队列的变体实现的，将暂时获取不到锁的线程加入到队列中。</p>
+<p>AQS中的队列是CLH（单向链表）变体的虚拟双向队列（FIFO），AQS是通过将每条请求共享资源的线程封装成一个节点来实现锁的分配。</p>
+<p>主要原理图如下：</p>
+<p>AQS使用一个Volatile的int类型的成员变量来表示同步状态，通过内置的FIFO队列来完成资源获取的排队工作，通过CAS完成对State值的修改。</p>
+<p>AQS广泛用于控制并发流程的类，如下图：</p>
+<p>其中Sync是这些类中都有的内部类，其结构如下：</p>
+<p>可以看到：Sync是AQS的实现。AQS主要完成的任务：</p>
+<ul><li>同步状态（比如说计数器）的原子性管理；</li><li>线程的阻塞和解除阻塞；</li><li>队列的管理。</li></ul>
+<p>AQS原理</p>
+<p>AQS最核心的就是三大部分：</p>
+<ul><li>状态：state；</li><li>控制线程抢锁和配合的FIFO队列（双向链表）；</li><li>期望协作工具类去实现的获取/释放等重要方法（重写）。</li></ul>
+<p>状态state</p>
+<ul><li>这里state的具体含义，会根据具体实现类的不同而不同：比如在Semapore里，他表示剩余许可证的数量；在CountDownLatch里，它表示还需要倒数的数量；在ReentrantLock中，state用来表示“锁”的占有情况，包括可重入计数，当state的值为0的时候，标识该Lock不被任何线程所占有。</li><li>state是volatile修饰的，并被并发修改，所以修改state的方法都需要保证线程安全，比如getState、setState以及compareAndSetState操作来读取和更新这个状态。这些方法都依赖于unsafe类。</li></ul>
+<p>FIFO队列</p>
+<ul><li>这个队列用来存放“等待的线程，AQS就是“排队管理器”，当多个线程争用同一把锁时，必须有排队机制将那些没能拿到锁的线程串在一起。当锁释放时，锁管理器就会挑选一个合适的线程来占有这个刚刚释放的锁。</li><li>AQS会维护一个等待的线程队列，把线程都放到这个队列里，这个队列是双向链表形式。</li></ul>
+<p>实现获取/释放等方法</p>
+<ul><li>这里的获取和释放方法，是利用AQS的协作工具类里最重要的方法，是由协作类自己去实现的，并且含义各不相同；</li><li>获取方法：获取操作会以来state变量，经常会阻塞（比如获取不到锁的时候）。在Semaphore中，获取就是acquire方法，作用是获取一个许可证；而在CountDownLatch里面，获取就是await方法，作用是等待，直到倒数结束；</li><li>释放方法：在Semaphore中，释放就是release方法，作用是释放一个许可证；在CountDownLatch里面，获取就是countDown方法，作用是将倒数的数减一；</li><li>需要每个实现类重写tryAcquire和tryRelease等方法。</li></ul>
+<p>CAS操作说一下</p>
+<p>CAS叫做CompareAndSwap，比较并交换，主要是通过处理器的指令来保证操作的原子性，它包含三个操作数：</p>
+<ul><li>变量内存地址，V表示</li><li>旧的预期值，A表示</li><li>准备设置的新值，B表示</li></ul>
+<p>当执行CAS指令时，只有当V等于A时，才会用B去更新V的值，否则就不会执行更新操作。</p>
+<p>CAS的缺点主要有3点：</p>
+<ul><li>ABA问题 ：ABA的问题指的是在CAS更新的过程中，当读取到的值是A，然后准备赋值的时候仍然是A，但是实际上有可能A的值被改成了B，然后又被改回了A，这个CAS更新的漏洞就叫做ABA。只是ABA的问题大部分场景下都不影响并发的最终效果。Java中有AtomicStampedReference来解决这个问题，他加入了预期标志和更新后标志两个字段，更新时不光检查值，还要检查当前的标志是否等于预期标志，全部相等的话才会更新。</li><li>循环时间长开销大 ：自旋CAS的方式如果长时间不成功，会给CPU带来很大的开销。</li><li>只能保证一个共享变量的原子操作 ：只对一个共享变量操作可以保证原子性，但是多个则不行，多个可以通过AtomicReference来处理或者使用锁synchronized实现。</li></ul>
+<p>Spring事务如果没有回滚可能是什么原因？</p>
+<p>在 Spring Boot 中，造成事务不自动回滚的场景有很多，比如以下这些：</p>
+<ul><li>非 public 修饰的方法中的事务不自动回滚，解决方案是将方法的权限修饰符改为 public 即可。</li><li>当 @Transactional 遇上 try/catch 事务不自动回滚，解决方案有两种：一种是在 catch 中将异常重新抛出去，另一种是使用代码手动将事务回滚。</li><li>调用类内部的 @Transactional 方法事务不自动回滚，解决方案是给调用的方法上也加上 @Transactional</li><li>抛出检查异常时事务不自动回滚，解决方案是给 @Transactional 注解上，添加 rollbackFor 参数并设置 Exception.class 值即可</li><li>数据库不支持事务，事务也不会自动回滚，比如 MySQL 中设置了使用 MyISAM 引擎，因为它本身是不支持事务的，这种情况下，即使在程序中添加了 @Transactional 注解，那么依然不会有事务的行为，也就不会执行事务的自动回滚了。解决方式就是将 MySQL 的存储引擎设置为 InnoDB，InnoDB支持事务。</li></ul>
+<p>历史好文：后端训练营，又开卷了！！！</p>
+<p>止步腾讯二面，凉透了...</p>
+<p>携程线下面试，已成功 oc！</p>
+<p>阅读原文</p>
+<p>小林coding</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>帆软校招薪资</h4><p>校招月薪 20k+，算上年终约 30w 年薪，sp offer 再高 2-4k。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>ZooKeeper 与 Redis 分布式锁</h4><p>ZK 靠 ZAB 协议满足 CP 强一致但性能下降；Redis 是 AP，牺牲一致性换可用性。</p><a class="src-link" href="#sec-01">原文 → 分布式锁与 CAP 原理</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>CAP 三要素</h4><p>一致性 C、可用性 A、分区容错性 P 三者不可得兼。</p><a class="src-link" href="#sec-01">原文 → 分布式锁与 CAP 原理</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Redlock 加锁成功条件</h4><p>超过半数节点加锁成功，且总耗时 t2-t1 小于锁过期时间。</p><a class="src-link" href="#sec-01">原文 → 分布式锁与 CAP 原理</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Redlock 节点部署</h4><p>官方推荐至少部署 5 个相互独立的 Redis 主节点。</p><a class="src-link" href="#sec-01">原文 → 分布式锁与 CAP 原理</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>redo/undo/binlog 分工</h4><p>redo log 保持久性，undo log 保原子性与 MVCC，binlog 用于备份和主从复制。</p><a class="src-link" href="#sec-02">原文 → MySQL 事务、锁与索引</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>EXPLAIN type 效率排序</h4><p>从低到高：All &lt; index &lt; range &lt; ref &lt; eq_ref &lt; const。</p><a class="src-link" href="#sec-02">原文 → MySQL 事务、锁与索引</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>唯一索引范围查询加锁</h4><p>等值记录存在时 next-key 锁退化为记录锁；非唯一索引范围查询不退化。</p><a class="src-link" href="#sec-02">原文 → MySQL 事务、锁与索引</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>避免 filesort 与 temporary</h4><p>出现 Using filesort、Using temporary 效率低，尽量走覆盖索引避免回表。</p><a class="src-link" href="#sec-02">原文 → MySQL 事务、锁与索引</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>AQS 三大部分</h4><p>volatile 的 state、FIFO 等待队列、协作类重写的获取/释放方法。</p><a class="src-link" href="#sec-03">原文 → Java 并发与事务</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>CAS 三大缺点</h4><p>ABA 问题、自旋循环开销大、只能保证单共享变量原子性。</p><a class="src-link" href="#sec-03">原文 → Java 并发与事务</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Spring 事务不回滚</h4><p>非 public、try/catch、内部调用、检查异常、MyISAM 都会导致不回滚。</p><a class="src-link" href="#sec-03">原文 → Java 并发与事务</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>分布式锁选型看一致性与性能取舍：无强依赖 ZK 用 Redis 即可，追求可靠性用 Redlock 过半节点判定。</li>
+          <li>排查慢 SQL 看 EXPLAIN 的 type、key、rows、extra，尽量到 range 及以上。</li>
+          <li>面试 Java 并发要把 AQS 三件套讲清，并熟记 Spring 事务不回滚五类场景及解法。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzUxODAzNDg4NQ==&amp;mid=2247541709&amp;idx=1&amp;sn=e9f701ec7a816d92c54f8ef9ed8b08c6" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzUxODAzNDg4NQ==&amp;mid=2247541709&amp;idx=1&amp;sn=e9f701ec7a816d92c54f8ef9ed8b08c6</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：面试 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

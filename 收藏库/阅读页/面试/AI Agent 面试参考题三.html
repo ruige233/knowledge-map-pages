@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>面试 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">AI Agent 面试参考题三</h1>
+  <p class="lede">AI Agent 面试：FC、MCP 与 Skills 全解析</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台 · 调得通</b></span>
+    <span>分类 <b>面试</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 49 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>工具调用总览</a>
+          <a href="#sec-02"><span class="n">02</span>FC 原理与 Tool Use</a>
+          <a href="#sec-03"><span class="n">03</span>参数格式错误处理</a>
+          <a href="#sec-04"><span class="n">04</span>MCP 是什么</a>
+          <a href="#sec-05"><span class="n">05</span>MCP 定义与作用</a>
+          <a href="#sec-06"><span class="n">06</span>MCP 底层原理</a>
+          <a href="#sec-07"><span class="n">07</span>FC 与 MCP 区别</a>
+          <a href="#sec-08"><span class="n">08</span>MCP 通信方式</a>
+          <a href="#sec-09"><span class="n">09</span>MCP Server 开发</a>
+          <a href="#sec-10"><span class="n">10</span>MCP 落地场景</a>
+          <a href="#sec-11"><span class="n">11</span>扩展与安全设计</a>
+          <a href="#sec-12"><span class="n">12</span>MCP 之前的协同</a>
+          <a href="#sec-13"><span class="n">13</span>MCP 是否过时</a>
+          <a href="#sec-14"><span class="n">14</span>A2A 与 MCP</a>
+          <a href="#sec-15"><span class="n">15</span>MCP 与 Skills</a>
+          <a href="#sec-16"><span class="n">16</span>四概念辨析</a>
+          <a href="#sec-17"><span class="n">17</span>三者边界</a>
+          <a href="#sec-18"><span class="n">18</span>Skills 指什么</a>
+          <a href="#sec-19"><span class="n">19</span>Skill 定义与调用</a>
+          <a href="#sec-20"><span class="n">20</span>Skills 省 token</a>
+          <a href="#sec-21"><span class="n">21</span>Skill 与 Rule</a>
+          <a href="#sec-22"><span class="n">22</span>渐进式披露实现</a>
+          <a href="#sec-23"><span class="n">23</span>Skill 系统设计</a>
+          <a href="#sec-24"><span class="n">24</span>上百 Skill 处理</a>
+          <a href="#sec-25"><span class="n">25</span>降低工具幻觉</a>
+          <a href="#sec-26"><span class="n">26</span>缩小候选集</a>
+          <a href="#sec-27"><span class="n">27</span>优化工具描述</a>
+          <a href="#sec-28"><span class="n">28</span>模型能力手段</a>
+          <a href="#sec-29"><span class="n">29</span>校验与兜底</a>
+          <a href="#sec-30"><span class="n">30</span>系统层面</a>
+          <a href="#sec-31"><span class="n">31</span>编排与工具归属</a>
+          <a href="#sec-32"><span class="n">32</span>Agent 权限分配</a>
+          <a href="#sec-33"><span class="n">33</span>故障处理总纲</a>
+          <a href="#sec-34"><span class="n">34</span>报错处理</a>
+          <a href="#sec-35"><span class="n">35</span>超时处理</a>
+          <a href="#sec-36"><span class="n">36</span>熔断与隔离</a>
+          <a href="#sec-37"><span class="n">37</span>给模型的反馈</a>
+          <a href="#sec-38"><span class="n">38</span>多工具编排</a>
+          <a href="#sec-39"><span class="n">39</span>Spring AI FC 实现</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 工具调用总览</a>
+          <a href="#sec-02">02 FC 原理与 Tool Use</a>
+          <a href="#sec-03">03 参数格式错误处理</a>
+          <a href="#sec-04">04 MCP 是什么</a>
+          <a href="#sec-05">05 MCP 定义与作用</a>
+          <a href="#sec-06">06 MCP 底层原理</a>
+          <a href="#sec-07">07 FC 与 MCP 区别</a>
+          <a href="#sec-08">08 MCP 通信方式</a>
+          <a href="#sec-09">09 MCP Server 开发</a>
+          <a href="#sec-10">10 MCP 落地场景</a>
+          <a href="#sec-11">11 扩展与安全设计</a>
+          <a href="#sec-12">12 MCP 之前的协同</a>
+          <a href="#sec-13">13 MCP 是否过时</a>
+          <a href="#sec-14">14 A2A 与 MCP</a>
+          <a href="#sec-15">15 MCP 与 Skills</a>
+          <a href="#sec-16">16 四概念辨析</a>
+          <a href="#sec-17">17 三者边界</a>
+          <a href="#sec-18">18 Skills 指什么</a>
+          <a href="#sec-19">19 Skill 定义与调用</a>
+          <a href="#sec-20">20 Skills 省 token</a>
+          <a href="#sec-21">21 Skill 与 Rule</a>
+          <a href="#sec-22">22 渐进式披露实现</a>
+          <a href="#sec-23">23 Skill 系统设计</a>
+          <a href="#sec-24">24 上百 Skill 处理</a>
+          <a href="#sec-25">25 降低工具幻觉</a>
+          <a href="#sec-26">26 缩小候选集</a>
+          <a href="#sec-27">27 优化工具描述</a>
+          <a href="#sec-28">28 模型能力手段</a>
+          <a href="#sec-29">29 校验与兜底</a>
+          <a href="#sec-30">30 系统层面</a>
+          <a href="#sec-31">31 编排与工具归属</a>
+          <a href="#sec-32">32 Agent 权限分配</a>
+          <a href="#sec-33">33 故障处理总纲</a>
+          <a href="#sec-34">34 报错处理</a>
+          <a href="#sec-35">35 超时处理</a>
+          <a href="#sec-36">36 熔断与隔离</a>
+          <a href="#sec-37">37 给模型的反馈</a>
+          <a href="#sec-38">38 多工具编排</a>
+          <a href="#sec-39">39 Spring AI FC 实现</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>题库来源：https://zhuanlan.zhihu.com/p/475962752</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>工具调用总览</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>覆盖题库第 38~66 题：Function Calling、MCP 与 Skills 三大主题</li><li>问答体：每题给原理、对比与工程实践</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>FC 原理与 Tool Use</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>四步流程：声明→决策→执行→回传</li><li>模型只输出结构化调用意图，执行始终在 harness</li><li>description 是选对工具最关键信号</li></ul><div class="pit"><ul><li>误以为模型在执行工具</li></ul></div></div>
+<p>原理(四个步骤):</p>
+<ul><li>1.  声明阶段 :把工具的 JSON Schema 描述(name、description、parameters 的 type/描述/required)随请求一起发给模型,放在系统提示或 tools 字段里。模型看到的是 纯文本描述 ,不是代码。</li><li>2.  决策阶段 :模型在做 next-token 预测时,决定是输出自然语言还是输出一个「工具调用」的结构化片段(name + arguments 的 JSON)。 这不是模型在执行工具,只是模型在「写字」 ——它写的内容恰好是一段特殊格式的 JSON。</li><li>3.  执行阶段 :运行时(harness)解析这段 JSON,校验参数,找到本地/远程对应的函数 真正执行 ,拿到结果。</li><li>4.  回传阶段 :把工具结果以 tool/function 角色的消息塞回对话历史,再次调用模型,模型基于结果继续推理或给最终答案。</li></ul>
+<p>模型怎么知道调哪个工具: 靠三样东西——①工具的 description(最关键的语义信号,写得好不好直接决定选对率);②参数 schema 的命名和描述;③当前对话上下文。所以「提升工具选择准确率」的工程手段,核心就是优化 description、缩小候选集、加 few-shot 示例。</p>
+<p>如何理解 Tool Use: 本质是 「把模型的输出空间从自然语言扩展到结构化动作」。模型从未获得执行能力,它获得的只是「表达能力」;执行能力始终在 harness 手里。这个认知非常重要,因为所有安全边界(权限、沙箱、HITL)都建立在这一点上——模型只能提议,不能执行。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>参数格式错误处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>错误分四类：语法/类型/字段/语义</li><li>处理链路：结构化输出约束→schema 校验→修复重试→降级→兜底</li><li>校验必须在服务端，不能信任模型输出</li></ul><div class="pit"><ul><li>无限重试、重试不带具体错误信息</li></ul></div></div>
+<p>先分类,再对症:</p>
+<ul><li>1.  JSON 语法错误 (缺引号、尾逗号、单引号、被 markdown 代码块包裹):先用宽松解析(容错 JSON parser / 去 ```json 包裹);失败则重试。</li><li>2.  类型不符 (数字给了字符串、数组给了单值、枚举值拼错):做 类型强转与归一化 ( &quot;3&quot;  → 3; &quot;TRUE&quot;  → true;枚举值做模糊匹配 + 近义词映射)。</li><li>3.  必填字段缺失 / 多出字段 :缺失 → 触发一次修复调用;多余字段 → 直接丢弃(大多数模型服务端也会拒)。</li><li>4.  语义错误 (格式对但值不合理,如时间格式不对、ID 不存在):靠 参数校验层 (JSON Schema validate + 业务校验)兜住,返回明确的错误信息给模型让它改。</li></ul>
+<p>工程上的处理链路(按优先级):</p>
+<ul><li>1.  结构化输出约束 :优先用模型原生能力(json_schema / structured output / tool_choice 强制),从源头减少崩坏率——这是第一选择,比任何后处理都省事。</li><li>2.  Schema 校验层 :服务端用 JSON Schema 校验,失败带上具体的校验错误信息。</li><li>3.  修复重试 :把「你上次输出格式有误,错误是 XXX,请只输出合法 JSON」作为一条消息回给模型,重试 1 次。大多数错误一次能修好。</li><li>4.  降级解析 :正则抽取关键字段 + 默认值填充,并标记该次调用为「降级」。</li><li>5.  上界兜底 :修复 2 次仍失败 → 判定该工具调用失败,让 Agent 换策略或直接兜底回答。</li><li>6.  可观测 :所有格式错误按类型打点统计,格式错误率是「模型选型」的重要指标。</li></ul>
+<p>关键原则:①不要重试无限次;②修复重试要带具体错误信息,而不是「请重试」;③修不好就降级,不要卡死;④参数校验必须在服务端做,不能信任模型输出。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>MCP 是什么</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>本题无独立作答，与 41 题合并</li><li>MCP 是 AI 应用的 USB-C 接口（见 41 题）</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>MCP 定义与作用</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MCP 是模型与外部工具/数据的开放标准协议</li><li>把 M×N 私有集成降为 M+N，避免重复造轮子</li><li>三大原语：工具、资源、提示模板</li></ul></div>
+<p>MCP(Model Context Protocol,模型上下文协议):一个开放标准协议,用于把「模型/Agent」和「外部数据源与工具」之间的连接标准化。可以理解为 「AI 应用的 USB-C 接口」——以前每个 AI 应用要接每个工具都写一套私有适配,现在双方都实现 MCP,就能任意组合。</p>
+<p>它解决的问题(核心痛点):</p>
+<ul><li>1.  M×N 爆炸 。M 个 AI 应用 × N 个工具 = M×N 套私有集成。统一协议后变成 M + N。</li><li>2.  重复造轮子 :每个团队都在重复写「怎么把数据库暴露给模型」「怎么做 OAuth」。</li><li>3.  无法复用 :Claude 里写好的工具接不进 Cursor;自研平台接不进公司其他 Agent。</li><li>4.  生态割裂 :工具开发者不知道兼容谁,只能按各家 SDK 逐个适配。</li></ul>
+<p>主要作用:</p>
+<ul><li>•  统一工具接入 :一次实现,处处可用(Claude Code、Cursor、各类自研 Agent)。</li><li>•  统一资源与提示 :不只暴露工具,还能暴露 资源 (文件、数据库记录)和 提示模板 (Prompt),这三者是 MCP 的三大原语。</li><li>•  解耦 :工具提供方与 Agent 消费方完全解耦,可以独立演进、独立部署、独立鉴权。</li><li>•  企业级治理的落点 :权限、审计、限流、黑白名单都能收敛到 MCP 这一层统一做。</li></ul>
+<p>一句话:MCP 让「工具」从「某个框架的代码」变成了「一个可以被任何 Agent 发现和调用的服务」。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>MCP 底层原理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Host-Client-Server 三层，JSON-RPC 2.0 消息</li><li>传输：stdio 本地、Streamable HTTP 远程</li><li>传统注册是进程内函数，MCP 是跨进程服务</li></ul></div>
+<p>协议底层:</p>
+<ul><li>•  架构 :Host(宿主应用,如 Claude Code)→ Client(MCP 客户端,Host 内部为每个 Server 建一个连接)→ Server(工具提供方)。三者之间是  JSON-RPC 2.0  消息。</li><li>•  传输方式 :① stdio (本地进程,子进程的 stdin/stdout 通信,最简单,适合本地工具);② Streamable HTTP / SSE (远程服务,适合企业级共享工具,支持鉴权)。</li><li>•  生命周期 :初始化握手(initialize)→ 交换能力声明(capabilities,声明自己支持 tools/resources/prompts 中的哪些)→ 能力列表(tools/list)→ 调用(tools/call)→ 通知(notifications,如列表变更)。</li><li>•  三大原语 : Tools (可执行的动作,模型可调用)、 Resources (可读取的数据,App 可挂载)、 Prompts (预置提示模板,用户可触发)。</li><li>•  能力协商 :客户端和服务器各自声明能力,不支持的能力不会互相调用——这是协议可扩展性的关键。</li></ul>
+<p>和传统 Tool 注册方式的区别:</p>
+<table><thead><tr><th>维度</th><th>传统(框架内注册)</th><th>MCP</th></tr></thead><tbody><tr><td>边界</td><td>进程内函数注册</td><td>跨进程/跨网络 的服务</td></tr><tr><td>复用</td><td>绑定单一框架/应用</td><td>任何 MCP 客户端都能用</td></tr><tr><td>语言</td><td>与宿主语言强绑定</td><td>语言无关 (标准协议)</td></tr><tr><td>部署</td><td>跟随应用发版</td><td>独立部署、独立扩缩容</td></tr><tr><td>鉴权</td><td>应用内部</td><td>协议层支持 OAuth 等标准鉴权</td></tr><tr><td>动态性</td><td>编译期确定</td><td>运行时发现 (可动态增减)</td></tr><tr><td>治理</td><td>分散在业务代码</td><td>收敛到 Server 侧,可统一审计限流</td></tr></tbody></table>
+<p>核心差异一句话:传统方式是**「在你的代码里加个函数」,MCP 是「发布一个可以被任何人调用的服务」**。前者是库,后者是生态。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>FC 与 MCP 区别</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>FC 是模型能力，MCP 是通信协议</li><li>二者互补不替代，层次不同</li><li>MCP 是 FC 的供给侧标准化</li></ul><div class="pit"><ul><li>把 FC 与 MCP 混为一谈</li></ul></div></div>
+<p>这是最常被混淆的一对,一定要分清层次:</p>
+<table><thead><tr><th></th><th>Function Calling</th><th>MCP</th></tr></thead><tbody><tr><td>是什么</td><td>模型能力 (模型侧的一种输出格式)</td><td>通信协议 (服务之间的集成标准)</td></tr><tr><td>层次</td><td>模型 ↔ 运行时(约定怎么表达「我要调工具」)</td><td>运行时 ↔ 工具服务(约定怎么发现、调用、鉴权)</td></tr><tr><td>关注</td><td>怎么让模型输出结构化的调用意图</td><td>工具怎么被注册、发现、隔离、复用</td></tr><tr><td>谁定义</td><td>各模型厂商(OpenAI/Anthropic/...)</td><td>Anthropic 发起,开放标准</td></tr><tr><td>是否替代</td><td>—</td><td>不是替代,是互补</td></tr></tbody></table>
+<p>关系(关键理解):</p>
+<ul><li>用户 → 模型 --Function Calling(表达调用意图)--&gt; Harness</li><li>MCP 协议(发现 + 调用 + 鉴权)</li><li>MCP Server(真正的工具实现)</li></ul>
+<p>MCP Server 内部通常也是用 Function Calling 之外的普通代码实现工具逻辑,而 MCP 的 tools/list 返回的 schema 正好可以喂给模型的 tools 字段——所以 MCP 是 Function Calling 的「供给侧标准化」。</p>
+<p>一句话:Function Calling 解决「模型怎么要工具」,MCP 解决「工具从哪来、怎么接」。MCP 让 Function Calling 有东西可调。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>MCP 通信方式</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>stdio：零配置、本地、延迟最低</li><li>Streamable HTTP：可远程、可共享、可鉴权</li><li>SSE 已被 Streamable HTTP 统一</li></ul></div>
+<p>MCP 定义(见第 40 题)。通信方式两种:</p>
+<ul><li>1.  stdio(标准输入输出) :Client 把 Server 作为子进程启动,通过 stdin/stdout 传 JSON-RPC 消息。</li><li>• 优点:零网络配置、天然本地隔离、部署简单、延迟最低。</li><li>• 缺点:只能本地、单机、进程随宿主生死、不适合共享。</li><li>• 场景:本地文件系统操作、本地 CLI 工具、开发态。</li><li>2.  Streamable HTTP(含 SSE,取代了早期的 HTTP+SSE 双端点方案) :远程 Server,通过 HTTP POST 发送请求,响应可以是普通 JSON 或 SSE 流;支持服务端主动推送。</li><li>• 优点:可远程、可集中部署、可水平扩容、可走标准网关鉴权、多客户端共享。</li><li>• 缺点:需要网络与鉴权设计,延迟略高。</li><li>• 场景:企业内部共享工具、多团队复用的数据源。</li><li>• 注意:早期传的「SSE」现在被  Streamable HTTP  统一了,它把 SSE 作为可选流式通道而不是独立端点——这个细节答出来会显得跟得比较新。</li></ul>
+<p>补充(加分):传输层是可扩展的,社区还有 WebSocket 等实现,但官方标准是上面两种。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>MCP Server 开发</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>开发八步：能力面→契约→逻辑→协议→传输→鉴权→观测→测试</li><li>description 要写何时用、何时不用</li><li>工具要幂等、可超时、可重试</li></ul><div class="pit"><ul><li>do_everything 粗粒度工具、返回 200KB 原始 JSON</li></ul></div></div>
+<p>以 Java(Spring AI)和 Python 两种栈说明:</p>
+<p>通用步骤:</p>
+<ul><li>1.  确定能力面 :列出要暴露的 Tools(动作)、Resources(数据)、Prompts(模板)。</li><li>2.  设计工具契约(最重要的一步) :每个工具要有清晰的 name、精准的 description、严谨的 parameters schema。 description 决定模型选对率,要写「什么时候用、什么时候不用」 。</li><li>3.  实现业务逻辑 :参数校验、业务处理、错误返回。工具要 幂等、可超时、可重试 。</li><li>4.  接协议层 :用官方 SDK 注册,处理 initialize / tools/list / tools/call 和各类错误码。</li><li>5.  选择传输方式 :本地 stdio / 远程 Streamable HTTP。</li><li>6.  鉴权与安全 :远程 Server 必须做认证(OAuth / Token)、按调用方做权限过滤(不同用户能看到的工具列表不同)、危险操作加确认。</li><li>7.  可观测 :调用日志、耗时、失败率、审计留痕。</li><li>8.  测试 :单测工具逻辑 + 协议层联调(用 MCP Inspector 之类的工具验证)。</li></ul>
+<p>Java(Spring AI):用 @Tool 注解方法 + ToolCallbackProvider 注册;Server 侧 Spring AI 提供了 MCP Server Starter,支持 stdio 与 WebFlux SSE/Streamable HTTP bootstarter,配置化启动。</p>
+<p>Python:用 mcp 官方 SDK,Server 对象 + @server.list_tools() / @server.call_tool() 装饰器,stdio_server() 或 Streamable HTTP 启动;FastMCP 进一步简化成装饰器风格。</p>
+<p>工程要点(面试加分):</p>
+<ul><li>•  工具粒度 :一个工具做一件事。粗粒度工具(如  do_everything )会让模型选不对、参数填不准。</li><li>•  返回体要适合模型读 :结构化 + 精简,别返回 200KB 原始 JSON(这是上下文杀手)。</li><li>•  错误要可读 :返回明确的错误信息让模型能自我修正,而不是抛栈。</li><li>•  版本管理 :工具契约变更要有版本,避免影响已有 Agent。</li></ul>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>MCP 落地场景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>四类落地：企业系统、代码工程、数据知识、外部 SaaS</li><li>权限在 MCP 层统一收口，写操作 HITL</li></ul></div>
+<p>举真实可落地的例子,分四类:</p>
+<ul><li>1.  企业内部系统接入 :把 CMDB、工单系统、订单系统、监控平台、日志平台封装成 MCP Server → Agent 统一访问,权限统一治理。这是最典型的落地。</li><li>2.  代码与工程 :Git 仓库操作、CI/CD 触发、Jira/需求平台、代码检索、数据库只读查询。Coding Agent 的核心供给。</li><li>3.  数据源与知识 :数据库(只读)、数据仓库、对象存储、内部 Wiki、搜索服务。</li><li>4.  外部 SaaS :飞书/钉钉、地图、支付、邮件、日历。第三方已经提供官方 MCP Server 的可以直接挂。</li></ul>
+<p>我的项目里怎么用的(示范话术):「我们把监控查询和日志检索封装成 MCP Server,运维排障 Agent 通过 MCP 拿到指标和日志;因为 MCP 层做了统一的只读鉴权和限流,重启/发布这类写操作走的是另一个 Server 并强制人工确认——权限在 MCP 层做了一次收口,而不是散落在每个 Agent 的代码里。」</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>扩展与安全设计</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>扩展性：分层、无状态、动态发现、注册中心</li><li>安全性：认证授权、最小权限、沙箱、审计</li><li>读写分离，高危操作二次确认</li></ul><div class="pit"><ul><li>外部抓取内容直接进高权限工具参数</li></ul></div></div>
+<p>扩展性:</p>
+<ul><li>1.  能力分层 :读类 / 写类 / 管理类 Server 分开部署,粒度独立、权限独立。</li><li>2.  无状态 + 水平扩展 :Server 尽量无状态(状态放外部存储),方便扩容;远程走 Streamable HTTP。</li><li>3.  协议内动态发现 :利用 tools/list 与变更通知,让新工具上线不需要重启 Agent。</li><li>4.  Schema 版本化 + 向后兼容 :新增可选字段,不删除已有字段;契约变更走版本号。</li><li>5.  统一注册中心 :Server 元数据(能力、SLA、负责人、权限域)集中登记,Agent 从注册中心拉取,按能力标签动态挂载。</li><li>6.  薄工具,厚服务 :MCP Server 只做协议适配和权限,复杂逻辑下沉到后端服务,便于独立演进。</li></ul>
+<p>安全性(重点):</p>
+<ul><li>1.  认证与授权 :远程 Server 强制 OAuth2 / mTLS;授权要细到 单个工具 + 数据行级 (不同用户看到不同工具集)。</li><li>2.  最小权限 + 读写分离 :默认只读;写操作独立 Server,必须显式授权;高危操作二次确认(HITL)。</li><li>3.  输入输出双向校验 :模型传参是不可信输入,必须 schema 校验 + 业务校验;返回内容也可能被注入,要过滤。</li><li>4.  防注入 :外部抓取内容(网页、文档)绝不能直接进高权限工具的参数;要在提示层做隔离标记,并对返回内容做「数据而非指令」的处理。</li><li>5.  沙箱 :执行类工具(跑代码、跑命令)必须在沙箱内(容器 + 网络白名单 + 资源限额 + 只读挂载)。</li><li>6.  审计与限流 :每次调用留痕(谁、什么时候、什么参数、结果摘要),按调用方限流与配额。</li><li>7.  供应链安全 :第三方 MCP Server 引入前要审核代码、固定版本、镜像化,防止恶意 Server 窃取上下文。</li></ul>
+<p>一句话总结:扩展性靠「分层 + 无状态 + 动态发现 + 注册中心」,安全性靠「认证授权 + 最小权限 + 沙箱 + 审计 + 输入输出校验」。两者并不冲突,前提是权限在 MCP 层统一收口。</p>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>MCP 之前的协同</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>无 MCP 前：FC 分发、私有 RPC、消息总线</li><li>MCP 标准化工具层，A2A 标准化协作层</li></ul></div>
+<p>对,主要靠三套机制:</p>
+<ul><li>1.  Function Calling 分发(最主流) :把每个子 Agent 包装成一个「函数」注册给主 Agent(函数名如  delegate_to_research_agent ,参数是子任务描述)。主 Agent 决定调用哪个子 Agent → 运行时真的去调那个 Agent → 把它的输出当工具结果回传。 子 Agent 对主 Agent 来说就是一个工具 ,这是 AutoGen / LangGraph 早期多 Agent 的基础做法。</li><li>2.  私有 SDK / 内部 RPC 约定 :各团队自己定接口(HTTP/Thrift/gRPC),主 Agent 里写死调用逻辑。问题是每加一个 Agent 就要改主 Agent 的代码,复用不了。</li><li>3.  共享消息总线 / 手写协议 :用 MQ、Redis 之类做消息传递,自己定义消息格式。灵活但无标准,校验和错误处理全靠自己写。</li></ul>
+<p>这三套的共同问题:①集成成本高——M×N 适配;②无法跨框架/跨语言复用;③权限与审计散落各处;④工具和 Agent 的元数据没有统一 schema,动态发现困难。</p>
+<p>MCP 带来的改变:把「工具/数据源」的接入标准化成协议,多 Agent 协同的「工具层」被标准化了;而 Agent 之间的协作协议则由 A2A 这类协议去标准化(见第 50 题)。所以准确的表述是:MCP 解决「Agent 怎么接工具」,A2A 解决「Agent 怎么接 Agent」。</p>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>MCP 是否过时</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MCP 未过时，进入基础设施期</li><li>热度降因协议胜出、变底座、上层接过热度</li><li>现实问题：供应链风险、token 成本、粒度重</li></ul></div>
+<p>我的判断:MCP 没有过时,只是从「概念热度期」进入了「基础设施期」,这是所有成功协议的必然路径。</p>
+<p>热度下降的三个原因:</p>
+<ul><li>1.  协议本身已经胜出,不再有争议 。当一个标准被广泛接受后,就不会有人再讨论「要不要用 MCP」,讨论变成了「怎么用好」——热度自然下降。这恰恰是成功的标志(类比 HTTP、OAuth 都不热)。</li><li>2.  它变成了「看不见的底座」 。主流客户端(Claude Code、Cursor 等)和主流框架(Spring AI、LangChain 等)都内置支持后,业务开发者感知不到它的存在,讨论量就转移到上层(Skills、Subagent、Agent 产品)。</li><li>3.  上层概念接过了热度 。2026 年的注意力集中在 Skills、Harness、上下文工程、Subagent 编排这些 更高层 的话题上——这些是「怎么组织能力」,而 MCP 是「怎么接能力」,后者已经是既定事实。</li></ul>
+<p>同时要看到的现实问题(客观讲,显示深度):</p>
+<ul><li>•  安全事件让人谨慎 :第三方 MCP Server 的供应链风险、工具投毒(恶意 description 诱导模型)、越权调用,是真实存在的,企业落地需要审核。</li><li>•  token 成本 :把几十个 MCP Server 的工具全量塞进上下文,开销巨大 → 这直接催生了 Skills 和渐进式披露(见第 51、57 题)。</li><li>•  粒度问题 :有些场景 MCP 太重(只是想让模型读个本地文件,起一个 Server 不值当)。</li></ul>
+<p>结论:MCP 已成为事实标准的基础层,讨论少了但使用量在涨。真正的演进方向是上层:怎么在 MCP 之上做工具选择、权限编排、渐进式披露。</p>
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>A2A 与 MCP</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>A2A 是 Agent 间协作协议，与 MCP 互补正交</li><li>Agent Card+Task 委派+状态订阅</li><li>结构化契约、状态机、幂等、上下文隔离</li></ul><div class="pit"><ul><li>用 Markdown 自由文本传任务导致漂移</li></ul></div></div>
+<p>A2A(Agent2Agent)是 Agent 之间的协作协议,由 Google 提出并捐给 Linux 基金会,生态较广。</p>
+<p>和 MCP 的关系:互补,正交的两个轴。</p>
+<table><thead><tr><th></th><th>MCP</th><th>A2A</th></tr></thead><tbody><tr><td>连接</td><td>Agent ↔ 工具/数据</td><td>Agent ↔ Agent</td></tr><tr><td>方向</td><td>纵向(能力供给)</td><td>横向(协作编排)</td></tr><tr><td>抽象</td><td>工具调用的标准化</td><td>任务委派的标准化</td></tr><tr><td>关键概念</td><td>Tool / Resource / Prompt</td><td>Agent Card / Task / Artifact</td></tr></tbody></table>
+<p>核心:A2A 里每个 Agent 发布一个 Agent Card(声明自己的技能、输入输出、鉴权方式),调用方通过 Task 机制委派任务并订阅状态。所以 A2A 之于 Agent,就像 MCP 之于 Tool。</p>
+<p>多 Agent 通信协议的设计要点(我认可的方案):</p>
+<ul><li>1.  结构化消息契约(最重要) :任务委派用 明确的 schema (任务 id、目标、输入、约束、期望输出格式、截止/预算), 不要用自由文本或 Markdown 传递任务 。Markdown 传任务的漂移问题(格式理解不一致、关键约束丢失)是实践中最常见的坑。</li><li>2.  任务状态机 :每个任务有明确状态(CREATED / RUNNING / BLOCKED / NEEDS_INPUT / DONE / FAILED / CANCELLED),状态变更要可被父 Agent 订阅,而不是靠猜「它做完了没」。</li><li>3.  同步 vs 异步 :短任务同步返回;长任务异步 + 回调/轮询 + 事件推送。协议要同时支持两种, 默认异步 更适合生产。</li><li>4.  超时与心跳 :明确 deadline,长任务要有进度心跳,否则父 Agent 无法区分「在跑」和「死了」。</li><li>5.  幂等与去重 :任务要有唯一 id,重复投递要幂等,避免重试导致重复执行。</li><li>6.  错误传播 :子任务的失败原因要结构化返回(错误类型、可重试性、部分结果),让父 Agent 能决定重试还是重规划。</li><li>7.  能力发现 :Agent Card / 注册中心,支持动态发现新 Agent,而不是硬编码。</li><li>8.  上下文隔离 :默认只传「任务必需信息」,不传全量上下文——既是隐私也是上下文预算的需要。</li><li>9.  权限与审计 :跨 Agent 调用要带身份,权限按下游 Agent 的能力收窄;全部调用链要可审计(谁委派给谁)。</li><li>10.  版本与兼容 :协议带版本,能力协商。</li></ul>
+<p>落地建议:内部系统不必一开始就上 A2A 全套,先把「结构化任务契约 + 状态机 + 超时/幂等」做出来就能解决 80% 的问题;需要跨组织/跨厂商协作时再上 A2A 标准。</p>
+      </section>
+
+      <section class="src" id="sec-15">
+        <h2 class="sec"><span class="n">15</span>MCP 与 Skills</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MCP 是协议层，Skills 是认知流程层</li><li>Skill 是文件、按需加载、token 极低</li><li>MCP 给手，Skill 给手艺</li></ul></div>
+<p>这是 2026 年最高频的辨析题,一定要讲清层次:</p>
+<table><thead><tr><th></th><th>MCP</th><th>Skills(Skill)</th></tr></thead><tbody><tr><td>本质</td><td>协议/连接标准</td><td>知识与能力封装(提示 + 脚本 + 资源)</td></tr><tr><td>层次</td><td>传输与接入层</td><td>认知与流程层</td></tr><tr><td>内容</td><td>工具、资源、提示的接口</td><td>怎么做一件事的说明书 + 可执行脚本 + 模板</td></tr><tr><td>加载</td><td>工具 schema 全量或按需注入</td><td>渐进式披露 :先只给 name + description,按需读正文</td></tr><tr><td>依赖</td><td>需要 Server 部署运行</td><td>只是文件 ,不需要常驻服务</td></tr><tr><td>擅长</td><td>通用工具/数据接入</td><td>领域流程、规范、SOP、复杂多步做法</td></tr><tr><td>token 开销</td><td>schema 全量注入时很高</td><td>极低(元数据极少,按需展开)</td></tr><tr><td>典型场景</td><td>查数据库、调接口、搜索</td><td>代码规范、报告模板、故障排查 SOP、文档生成流程</td></tr></tbody></table>
+<p>关系:不是竞争,是不同层。Skill 里可以调用 MCP 工具;MCP 提供「手」,Skill 提供「怎么做的手艺」。</p>
+<p>用一个比喻:</p>
+<ul><li>•  MCP = 一套标准插座和电器接口 (解决「工具怎么接」)。</li><li>•  Skill = 一本操作手册 + 专用夹具 (解决「这类活该怎么干、有什么坑、按什么步骤」)。</li></ul>
+<p>要区分一个说法:Skill 常常能替代「把 SOP 写进系统提示词」的做法,而且更省 token、更可维护、可复用——这是它火起来的原因(见第 57 题)。</p>
+      </section>
+
+      <section class="src" id="sec-16">
+        <h2 class="sec"><span class="n">16</span>四概念辨析</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Prompt=说，MCP=接，Skill=know-how，Subagent=分工</li><li>四者不同层，叠加成能力体系</li></ul></div>
+<p>四者是从「不同层」解决不同问题,不是同一层的四个选项:</p>
+<table><thead><tr><th>概念</th><th>回答的问题</th><th>类比</th></tr></thead><tbody><tr><td>Prompt</td><td>怎么把这句话说清楚?</td><td>你对助手说的话</td></tr><tr><td>MCP</td><td>工具/数据从哪来、怎么接?</td><td>插座与电器标准</td></tr><tr><td>Skills</td><td>这类活该怎么干?有什么规范?</td><td>操作手册 / 岗位 SOP</td></tr><tr><td>Subagent</td><td>这活该谁干、怎么并行/隔离?</td><td>分工给不同的同事</td></tr></tbody></table>
+<p>协同关系(一条执行路径串起来):</p>
+<ul><li>主 Agent 收到任务</li><li>→ 用 Prompt/系统提示理解目标</li><li>→ 发现需要某项专业能力 → 加载对应 Skill(渐进式披露,读正文 + 脚本)</li><li>→ Skill 里指示:用某 MCP 工具去查数据 / 执行动作</li><li>→ 任务较大 → 委派给 Subagent(独立上下文,只回结论)</li><li>→ 汇总结果输出</li></ul>
+<p>一句话总结:Prompt 是「说」,MCP 是「接」,Skill 是「know-how」,Subagent 是「分工与隔离」。 四者叠加构成一个完整 Agent 的能力体系。</p>
+      </section>
+
+      <section class="src" id="sec-17">
+        <h2 class="sec"><span class="n">17</span>三者边界</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>FC 管说，MCP 管接，Skill 管怎么干</li><li>判断：可调用动作→工具，步骤规范→Skill</li></ul></div>
+<p>三层边界,一句话一条:</p>
+<ul><li>1.  Function Call = 模型侧的「表达能力」 。边界在「模型怎么表达我要调什么」——它是一段结构化输出,不负责执行。 它管「说」。</li><li>2.  MCP = 工具侧的「接入与治理」 。边界在「工具怎么被标准化地发现、调用、鉴权、复用」——它是跨进程/跨语言的协议。 它管「接」。</li><li>3.  Skill = 任务侧的「流程与知识」 。边界在「这类任务怎么干、按什么规范、用哪些工具、注意什么坑」——它是可复用的知识包。 它管「怎么干」。</li></ul>
+<p>判断归属的方法(实操性最强):</p>
+<ul><li>• 「这是一个可以被多次调用的外部动作吗?」→ 是 →  工具(Function Call + MCP) 。</li><li>• 「这涉及一套步骤、规范、模板、领域知识吗?」→ 是 →  Skill 。</li><li>• 「这是模型输出的格式约定吗?」→ 是 →  Function Call 。</li><li>• 「这是跨系统/跨团队的接入标准吗?」→ 是 →  MCP 。</li></ul>
+<p>组合示例(讲这个最能体现理解):</p>
+<p>「排查支付超时」这个 Skill 里写清了排查顺序(先看监控 → 再看日志 → 再看依赖)和判定标准;执行时调用的「查监控」「查日志」这两个动作是 MCP Server 提供的工具;而模型表达「我要调查监控」用的是 Function Call。</p>
+<p>边界因此很清晰:Skill 编排 MCP 工具,Function Call 驱动这一切。</p>
+      </section>
+
+      <section class="src" id="sec-18">
+        <h2 class="sec"><span class="n">18</span>Skills 指什么</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>本题与 55 题合并作答</li><li>Skill 是文件组织的可复用能力包（见 55 题）</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-19">
+        <h2 class="sec"><span class="n">19</span>Skill 定义与调用</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Skill=元数据+正文+附属资源</li><li>渐进式披露：元数据→正文→资源</li><li>description 决定 Skill 是否被选中</li></ul></div>
+<p>Skill 是什么:一种以文件形式组织的、可复用的能力包,通常包含:</p>
+<ul><li>•  元数据 :name + description(唯一常驻上下文的部分,用于被检索/被选择)。</li><li>•  正文(SKILL.md 之类) :何时使用、步骤、注意事项、成功标准。</li><li>•  附属资源 :可执行脚本、模板文件、参考文档、示例输入输出。</li></ul>
+<p>本质:把「领域专家的工作方法」从散落的提示词里抽出来,变成可版本化、可复用、可组合、按需加载的资产。</p>
+<p>模型是怎么被引导调用的(关键机制:渐进式披露):</p>
+<ul><li>1.  第一层——常驻元数据 :系统提示里只放所有 Skill 的  name  + 一行  description (极省 token)。模型据此知道「有这些能力存在」。</li><li>2.  第二层——按需加载正文 :模型判断需要某项能力时,主动调用一个「读 Skill」的动作(读文件 / LoadSkill 工具),把该 Skill 的完整正文拉进上下文。 这一步是模型自主决策,不是路由写死的。</li><li>3.  第三层——按需加载资源 :正文里如果指示「需要时读 scripts/xxx.py」「参考 templates/yyy.md」,模型再去读对应文件,进一步展开。</li></ul>
+<p>引导模型选对 Skill 的工程手段:</p>
+<ul><li>•  description 是关键 ——要写清「干什么 + 什么时候用 + 什么时候不用」,和工具 description 同理。</li><li>•  命名要语义化 ,便于匹配。</li><li>•  在系统提示里给出「Skill 概览 + 使用原则」 ,告诉模型先看 Skill 再动手。</li><li>•  可加显式触发词/场景说明 ,提高召回。</li><li>•  候选集过大时先做检索/分层 (见第 60 题)。</li></ul>
+<p>和 Prompt 的差别:Prompt 是「每次都要塞进上下文的指令」;Skill 是「只在需要时才加载的资产」。这个差别直接决定了 token 成本和可维护性。</p>
+      </section>
+
+      <section class="src" id="sec-20">
+        <h2 class="sec"><span class="n">20</span>Skills 省 token</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>省 token 核心是渐进式披露</li><li>30 能力：24000 常驻→约 2800 按需</li><li>不常驻、不重复、不浪费</li></ul></div>
+<p>核心机制:渐进式披露(progressive disclosure)——按需加载,而不是全量常驻。</p>
+<p>对比算一笔账(这是最有说服力的答法):</p>
+<p>假设有 30 个能力,每个完整说明 800 token:</p>
+<ul><li>•  传统做法(全写进系统提示) :30 × 800 =  24,000 token 常驻 ,每一轮对话都要付这个钱,乘以 20 轮就是 480,000 token。</li><li>•  Skill 做法 :常驻只放 30 条 name+description,假设每条 40 token =  1,200 token 常驻 ;本次任务实际用到 2 个 Skill,加载正文 2 × 800 = 1,600 token。</li><li>•  合计约 2,800 token ,而且只在需要的那一轮加载。</li></ul>
+<p>节省来自三个层面:</p>
+<ul><li>1.  不常驻 :元数据极简,正文只在需要时进上下文。</li><li>2.  不重复 :正文加载后不需要每轮重述(配合缓存)。</li><li>3.  不浪费 :与当前任务无关的 Skill 完全不占上下文—— 上下文里没有冗余信息,本身就提升了模型效果 (不只是省钱)。</li></ul>
+<p>额外收益(答这些会加分):</p>
+<ul><li>•  可维护 :Skill 是文件,能版本化、能评审、能复用,而提示词里的一堆 SOP 改起来容易互相污染。</li><li>•  不挤占窗口 :上下文窗口是稀缺资源,省下的空间可以留给真正重要的任务信息。</li><li>•  可组合 :Skill 之间可以相互引用,形成能力网络,而不是一个巨大的提示词。</li></ul>
+<p>一句话:Skill 把「always-on 的提示词」变成了「on-demand 的知识资产」——这是它能省 token 的根本原因,和其他任何缓存技巧都不同。</p>
+      </section>
+
+      <section class="src" id="sec-21">
+        <h2 class="sec"><span class="n">21</span>Skill 与 Rule</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Rule 短、常驻、无条件红线</li><li>Skill 长、按需、场景化手册</li><li>有交叉时 Rule 优先</li></ul><div class="pit"><ul><li>Rule 写太多僵化；Skill 写成 Rule 会失效</li></ul></div></div>
+<p>从「使用经验」角度讲,这是最实在的辨析:</p>
+<table><thead><tr><th></th><th>Rule(规则 / 常驻指令)</th><th>Skill(技能包)</th></tr></thead><tbody><tr><td>加载</td><td>always-on ,每次都在上下文里</td><td>on-demand ,按需加载</td></tr><tr><td>定位</td><td>约束与偏好(红线、风格、规范)</td><td>流程与知识(怎么完成一类任务)</td></tr><tr><td>粒度</td><td>短、必须被无条件遵守</td><td>长,包含步骤、脚本、模板</td></tr><tr><td>作用域</td><td>全局生效</td><td>特定任务/场景触发</td></tr><tr><td>违反后果</td><td>是 bug(必须遵守)</td><td>是效果差(可容错)</td></tr><tr><td>token</td><td>必须极省(常驻)</td><td>可以很大(按需)</td></tr></tbody></table>
+<p>经验总结:</p>
+<ul><li>•  Rule 管「不许做什么、必须要怎样」 (比如「禁止直接 push 到主分支」「注释用中文」「Java 优先用 Objects.equals」),它必须是 无条件、每次都生效 的,所以要写得短而硬。</li><li>•  Skill 管「这类活按什么套路做」 (比如「写 PR 描述的模板」「故障排查的步骤」),它只在相关任务里才需要, 写长没关系,因为按需加载 。</li><li>•  判断标准 :如果一条内容「任何任务下都必须生效」→ 放 Rule;如果「只在某类任务下需要」→ 放 Skill。</li></ul>
+<p>实践中的坑(讲教训更可信):</p>
+<ul><li>•  Rule 写太多会僵化 :几十条 Rule 常驻,既烧 token 又让模型抓不住重点,还容易规则间冲突。</li><li>•  Skill 写得像 Rule 会失效 :如果 Skill 正文里写的是硬性约束而不是任务方法,加载时机不对就等于没生效。</li><li>•  有交叉时,Rule 优先 :Rule 是约束,Skill 是方法,约束高于方法。</li></ul>
+<p>一句话:Rule 是红线(短、常驻、无条件),Skill 是手册(长、按需、有场景)。</p>
+      </section>
+
+      <section class="src" id="sec-22">
+        <h2 class="sec"><span class="n">22</span>渐进式披露实现</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三层：常驻元数据→正文→附属资源</li><li>加载是模型自主决策而非路由写死</li><li>上下文稀缺、可扩展、准确率要求决定渐进披露</li></ul></div>
+<p>实现机制(三层,详细版):</p>
+<ul><li>第 0 层:常驻元数据</li><li>系统提示中列出所有 Skill 的 name + description(每条约 20~50 token)</li><li>↓ 模型判断:「这个任务需要 xxx 能力」</li><li>第 1 层:加载 Skill 正文</li><li>模型调用「读 Skill / LoadSkill」动作 → 把 SKILL.md 全文注入上下文</li><li>↓ 正文里写:「需要时参考 scripts/deploy.sh 和 templates/report.md」</li><li>第 2 层:加载附属资源</li><li>模型按需读取具体脚本 / 模板 / 参考文档 → 只有展开的那部分进上下文</li></ul>
+<p>关键实现细节:</p>
+<ul><li>1.  元数据与正文分离 :元数据必须极度精简(否则第一层就爆了),正文可以尽情详细。</li><li>2.  加载是模型自主动作 :不是外部路由写死,而是模型通过一个「读文件/加载技能」的工具自主决定——这样才具备组合性和泛化性。</li><li>3.  懒加载与缓存 :同一 Skill 在一次会话内加载一次即可,配合 prompt cache。</li><li>4.  统一的「读取」入口 :通常就是一个文件读取工具(或专门的 skill loader),不需要为每个 Skill 写一个函数。</li><li>5.  引用链 :Skill 正文里可以用相对路径引用资源,形成树状展开结构。</li></ul>
+<p>为什么必须渐进式披露(三个根本原因):</p>
+<ul><li>1.  上下文窗口是稀缺资源 。能力越多,全量常驻越不可行——100 个能力全写进提示词,还没开始干活窗口就满了。 上下文越满,模型效果越差 (注意力稀释,见第 78 题)。</li><li>2.  可扩展性要求 。要让能力从 10 个增长到 1000 个,唯一可行的方式就是「默认只给索引,按需取详情」——这正是操作系统内存管理、数据库索引、人类查手册都在用的同一套思路。</li><li>3.  准确率要求 。候选集越大,模型选错的概率越高。 先缩小候选(靠 description 匹配),再深度加载 ,比「全部摊开让模型自己挑」准确得多。</li></ul>
+<p>一句话:渐进式披露 = 用「索引 + 按需展开」替代「全量常驻」,是能力规模化的唯一路径。</p>
+      </section>
+
+      <section class="src" id="sec-23">
+        <h2 class="sec"><span class="n">23</span>Skill 系统设计</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>必需字段：name、description、version</li><li>正文：适用场景、步骤、判定标准、常见坑</li><li>系统层：注册发现、检索、权限、评测治理</li></ul><div class="pit"><ul><li>description 写不好机制全废；缺评测退化成垃圾场</li></ul></div></div>
+<p>一个好的 Skill 结构(最小可用 + 可选扩展):</p>
+<p>必需字段:</p>
+<ul><li>name: payment-timeout-troubleshoot      # 唯一标识,语义化</li><li>description: &gt;-                          # 最重要!决定被不被选中</li><li>排查支付接口超时问题。当用户反馈支付慢、超时、</li><li>或需要分析支付链路性能时使用。包含监控查询、</li><li>日志检索、依赖检查的标准步骤。</li><li># 要点:干什么 + 什么时候用 + 什么时候不用</li><li>version: 1.0.0</li></ul>
+<p>正文(SKILL.md)建议结构:</p>
+<ul><li>1.  适用场景 / 不适用场景 (帮模型判断该不该用)。</li><li>2.  前置条件 :需要哪些权限、哪些上下文、哪些数据。</li><li>3.  执行步骤 :有序、可执行、每步有明确的输入输出。</li><li>4.  使用的工具/资源 :需要调哪些 MCP 工具、读哪些模板。</li><li>5.  判定标准 :怎么算成功、怎么算失败。</li><li>6.  注意事项 / 常见坑 :反例与边界情况。</li><li>7.  输出格式要求 :结果该长什么样(结构化)。</li><li>8.  示例 (可选但效果显著):输入 → 期望输出。</li></ul>
+<p>可选扩展字段:</p>
+<ul><li>•  inputs  /  outputs :结构化声明,便于校验和组合。</li><li>•  dependencies :依赖的其他 Skill 或工具。</li><li>•  tags  /  domain :用于检索和分层。</li><li>•  owner  /  updated_at :治理用。</li><li>•  scripts  /  templates  /  references :附属资源目录。</li></ul>
+<p>系统设计要点(架构层面):</p>
+<ul><li>1.  分层管理 :全局 Skill(公司级规范)/ 领域 Skill / 项目 Skill,有优先级和覆盖关系。</li><li>2.  注册与发现 :Skill 有注册中心(索引),支持动态增减、版本管理。</li><li>3.  检索机制 :能力多了必须能「按任务检索候选 Skill」,通常是元数据向量检索 + 关键词混合,而不是全量给模型。</li><li>4.  加载与执行 :统一的 loader,支持脚本执行(需沙箱)。</li><li>5.  权限 :Skill 也要有权限模型——不是所有人能用所有 Skill,尤其是涉及写操作和高危动作的。</li><li>6.  评测 :每个 Skill 要有独立的效果评测(用了它 vs 不用的成功率对比),否则 Skill 库会退化成无人维护的垃圾场。</li><li>7.  治理 :谁能提交、怎么评审、怎么淘汰—— Skill 库的生命周期管理比 Skill 格式更重要 。</li></ul>
+<p>面试加分点:主动提「Skill 的 description 写不好,整个机制就是废的」和「Skill 库需要评测和淘汰机制」,这两点是实践者才知道的。</p>
+      </section>
+
+      <section class="src" id="sec-24">
+        <h2 class="sec"><span class="n">24</span>上百 Skill 处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三级漏斗：分层→检索→渐进式披露</li><li>分层砍到 20~30，检索 Top-K 5~10</li><li>检索有漏召回，需兜底工具</li></ul></div>
+<p>答案:三者都要,是组合方案,不是三选一。顺序是「分层 → 检索 → 渐进式披露」。</p>
+<p>第 1 步:分层(降低候选规模)</p>
+<ul><li>• 按领域/角色分域:研发、运维、数据、财务、客服……</li><li>• 主 Agent 先确定任务领域 → 只加载该域下的 Skill 索引。</li><li>• 好处:把 200 个候选直接砍到 20~30 个,而且是结构化的、稳定的缩减。</li></ul>
+<p>第 2 步:检索(在域内做动态筛选)</p>
+<ul><li>• 对域内 Skill 的元数据做 向量检索 + 关键词(BM25)混合召回 ,按任务描述取 Top-K(如 5~10 个)。</li><li>• 加 规则过滤 :权限(当前用户能用哪些)、场景标签、是否已加载。</li><li>• 好处:候选再砍一档,而且能处理长尾和模糊表述。</li><li>• 注意:检索有 漏召回风险 ,所以要有兜底——提供「列出所有 Skill / 搜索 Skill」的工具,允许模型主动扩大范围。</li></ul>
+<p>第 3 步:渐进式披露(控制 token 与深度)</p>
+<ul><li>• 给模型的只有 Top-K 的 name + description(几百 token)。</li><li>• 模型选定后加载正文;正文再按需展开脚本与模板。</li></ul>
+<p>补充手段(答出来显得工程经验足):</p>
+<ul><li>1.  分组聚合 :把相关 Skill 打包成一个大类(如「数据库运维」下一个入口),进一步减少顶层候选数。</li><li>2.  使用频次加权 :高频 Skill 优先进入常驻区(经验上 20% 的 Skill 覆盖 80% 的调用)。</li><li>3.  负向描述 :在 description 里写「什么时候别用」,这是降低误选最有效的手段之一。</li><li>4.  命名规范 :统一前缀 + 语义化,便于检索和人工维护。</li><li>5.  评测闭环 :统计每个 Skill 的「被选中率、被选中后的成功率、误选率」,定期淘汰和优化 description。</li><li>6.  兜底路径 :召回为空或模型都不满意时,允许它走通用工具或直接提问,而不是硬选一个。</li></ul>
+<p>一句话总结:分层做规模收敛,检索做动态筛选,渐进式披露做逐层加载——三者是漏斗的三级,缺一不可。</p>
+      </section>
+
+      <section class="src" id="sec-25">
+        <h2 class="sec"><span class="n">25</span>降低工具幻觉</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>幻觉三形态：选错、编造工具、参数幻觉</li><li>解法覆盖决策前、决策中、决策后</li></ul></div>
+<p>先讲「幻觉」的三种形态(定义清楚才显得专业):</p>
+<ul><li>1.  选错工具 :选了语义相近但不对的工具。</li><li>2.  编造工具 :调用了一个不存在的工具名(多见于模型幻想或 tool 描述被注入)。</li><li>3.  参数幻觉 :工具选对了但参数编造(不存在的 ID、错误的时间格式、虚构的枚举值)。</li></ul>
+<p>解法(按「从源头到兜底」的顺序,这是最有条理的答法):</p>
+      </section>
+
+      <section class="src" id="sec-26">
+        <h2 class="sec"><span class="n">26</span>缩小候选集</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>分层+检索把 200 候选降到 8，选对率数量级提升</li><li>工具分组降低单次决策难度</li></ul></div>
+<ul><li>1.  分层 + 检索召回 :不给全量工具,按任务检索 Top-K(见第 60 题)。候选从 200 个降到 8 个,选对率提升是数量级的。</li><li>2.  工具分组 :相关工具打成一组,先选组再选工具,降低单次决策难度。</li></ul>
+      </section>
+
+      <section class="src" id="sec-27">
+        <h2 class="sec"><span class="n">27</span>优化工具描述</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>description 写何时用/何时不用/返回什么</li><li>枚举值列全、给示例值减少参数幻觉</li></ul><div class="pit"><ul><li>getData 式模糊命名、参数无约束</li></ul></div></div>
+<ul><li>3.  description 写「何时用 + 何时不用 + 返回什么」 ,而不只是「这是什么」。加负向描述。</li><li>4.  参数描述要有约束 :格式、范围、枚举、示例值。 枚举值一定要在 schema 里列全 ,这是减少参数幻觉最直接的手段。</li><li>5.  工具名语义化、无歧义 :避免  getData  这类模糊命名,避免两个工具名过于相似。</li><li>6.  在 schema 里给参数示例值和默认值 ,减少模型自由发挥。</li></ul>
+      </section>
+
+      <section class="src" id="sec-28">
+        <h2 class="sec"><span class="n">28</span>模型能力手段</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>few-shot 对边界情况有效</li><li>工具调用稳定性是选型硬指标</li><li>tool_choice/JSON Schema 强约束</li></ul></div>
+<ul><li>7.  few-shot 示例 :在提示里给几个「这种任务该调哪个工具」的示例,对边界情况极其有效。</li><li>8.  按模型能力分配 :工具调用稳定性是选型硬指标;复杂工具集场景用 function calling 能力强的模型。</li><li>9.  原生结构化输出约束 :用  tool_choice 、JSON Schema 强约束,减少格式与编造。</li></ul>
+      </section>
+
+      <section class="src" id="sec-29">
+        <h2 class="sec"><span class="n">29</span>校验与兜底</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>工具名白名单是防编造工具最后闸</li><li>业务校验防不存在的 ID</li><li>失败带具体错误回给模型重试</li></ul></div>
+<ul><li>10.  工具名白名单校验 :调用前必查「这个名字在可用列表里吗」,不在就直接拒并反馈错误 ——  这是防「编造工具」的最后一道闸,必须有 。</li><li>11.  参数 schema 校验 + 业务校验 :比如 ID 是否真实存在(这是防参数幻觉的关键,纯 schema 校验查不出「不存在的 ID」)。</li><li>12.  失败反馈闭环 :把校验失败的具体原因回给模型,让它重试一次;失败两次则换策略或兜底。</li></ul>
+      </section>
+
+      <section class="src" id="sec-30">
+        <h2 class="sec"><span class="n">30</span>系统层面</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>无权限工具不出现在候选集</li><li>记录误选率、监控调用多样性</li></ul></div>
+<ul><li>13.  权限挂载即过滤 :无权限的工具 根本不出现在候选集里 ,而不是出现后再拦。既省 token 又防幻觉。</li><li>14.  决策留痕与统计 :记录每次「候选集、选中工具、是否成功」,算 误选率 (选中的工具执行失败或结果不相关),据此针对性优化 description。</li><li>15.  监控工具调用的多样性 :如果某个工具被疯狂调用而其他工具几乎不用,通常是 description 或召回出了问题。</li></ul>
+<p>一句话总结:减少幻觉靠「缩小候选 + 优化描述 + 强校验」,三者分别作用于「决策前、决策中、决策后」。</p>
+      </section>
+
+      <section class="src" id="sec-31">
+        <h2 class="sec"><span class="n">31</span>编排与工具归属</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>编排逻辑放 Skill，执行治理放 Harness</li><li>工具统一由 MCP 平台提供</li><li>会被复用→上平台；仅自用→本地注册</li></ul><div class="pit"><ul><li>在 Agent 代码硬编码业务编排</li></ul></div></div>
+<p>第一个问题(编排放哪):</p>
+<p>结论:两者都放,但职责不同——「编排逻辑(什么时候调、按什么顺序)」放 Skill 里,「执行与治理(怎么调、能不能调)」放 Agent 运行时里。</p>
+<ul><li>•  Skill 里放 :任务级别的步骤顺序、判定条件、重试策略、结果解读。因为这些是 领域知识 ,和具体 Agent 实现无关,应该可复用、可版本化。</li><li>•  Agent/Harness 里放 :循环驱动、工具实际调用、超时、重试、熔断、幂等、权限校验、审计。因为这是 基础设施关注点 ,所有任务共用,不能散落在 Skill 里。</li><li>•  不要放的 :不要在每个 Agent 的代码里硬编码业务编排,也不要指望纯 Skill 文本能可靠实现循环控制—— Skill 是声明性的知识,Harness 是强制性的执行 。前者可能被忽略,后者不会。</li></ul>
+<p>第二个问题(工具在哪定义):</p>
+<p>结论:统一由 MCP 平台提供,Agent 只做「挂载 + 权限选择」。</p>
+<p>理由:</p>
+<ul><li>1.  复用性 :同一个「查监控」工具被 5 个 Agent 用,定义一次,不是复制 5 份。</li><li>2.  治理 :权限、限流、审计、版本、灰度在平台层统一做,Agent 侧只声明「我要用哪些」。</li><li>3.  解耦 :工具实现变了不影响 Agent;Agent 换实现也不用改工具。</li><li>4.  安全 :工具是攻击面,集中管理才能审核(尤其第三方 Server)。</li></ul>
+<p>但有一个例外:业务私有的、只有这个 Agent 用的轻量工具,可以定义在 Agent 内部(进程内函数注册),不必都往外抛。判断标准:是否会被两个及以上的消费方复用?会被复用 → 上 MCP 平台;只有自己用 → 本地注册即可。</p>
+<p>架构一句话:「工具在平台定义,权限在平台收口,挂载在 Agent 声明,编排在 Skill 描述,执行在 Harness 强制。」</p>
+      </section>
+
+      <section class="src" id="sec-32">
+        <h2 class="sec"><span class="n">32</span>Agent 权限分配</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>默认拒绝、白名单授权、按职责挂载</li><li>读写分离，写操作 HITL</li><li>Agent 权限=用户权限∩职责</li></ul><div class="pit"><ul><li>所有 Agent 全量访问 MCP</li></ul></div></div>
+<p>明确回答:绝对不应该。 全部开放等于没有权限模型,而且会让工具候选集爆炸、幻觉率上升、事故面无限大。</p>
+<p>分配原则(最小权限 + 按需挂载):</p>
+<ul><li>1.  默认拒绝,白名单授权 :Agent 启动时只允许访问显式授权的 MCP Server / 工具。这是基础。</li><li>2.  按职责挂载 :客服 Agent 只需知识库 + 订单查询;运维 Agent 才需要监控和日志; 财务 Agent 绝不能拿到「执行转账」 。</li><li>3.  读写分离 :读类 Server 默认授权; 写类 / 高危类必须单独审批 + HITL ,甚至不给 Agent 直接访问权,而是走「申请-审批-执行」的链路。</li><li>4.  数据边界 :同一工具也要做行级/字段级过滤——客服 Agent 只能看到自己负责区域的订单,不是同一个工具就能看全量数据。</li><li>5.  动态授权 :授权可按会话、用户、任务类型动态计算(用户有权限 ≠ Agent 该有权限,Agent 的权限应该是「用户权限 ∩ Agent 职责」)。</li><li>6.  按需加载 + 收敛候选 :授权结果直接决定注入的工具集大小,顺带降低幻觉。</li></ul>
+<p>落地机制:</p>
+<ul><li>1.  集中式权限配置 :在 MCP 注册中心维护「Agent × Server × 工具 × 操作类型」的权限矩阵,而不是散在代码里。</li><li>2.  运行时校验 + 双重校验 :Agent 声明 + 平台鉴权两层,防止 Agent 侧被绕过。</li><li>3.  Agent 身份认证 :每个 Agent 有独立身份(见第 122 题),MCP 侧按身份鉴权并审计,而不是共享一个超级账号。</li><li>4.  审计与告警 :高危工具的调用全部留痕,异常调用(非工作时间、超频、参数异常)告警。</li><li>5.  权限变更可灰度 :新开权限先影子运行观察,再正式启用。</li></ul>
+<p>一句话:Agent 的权限应该是「它的职责所需」而不是「它的实现方便」。每个 Agent 都全量访问 MCP,是最常见也最危险的设计失误。</p>
+      </section>
+
+      <section class="src" id="sec-33">
+        <h2 class="sec"><span class="n">33</span>故障处理总纲</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三类故障分开：报错、超时、连续失败</li><li>失败要结构化反馈给模型</li></ul></div>
+<p>三类故障要分开处理:</p>
+      </section>
+
+      <section class="src" id="sec-34">
+        <h2 class="sec"><span class="n">34</span>报错处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>只重试幂等的瞬时错误</li><li>指数退避+抖动，最多 2~3 次</li></ul><div class="pit"><ul><li>无退避紧循环重试</li></ul></div></div>
+<ul><li>1.  区分错误类型 :参数错误(不重试,反馈模型改参数)、权限错误(不重试,直接失败)、业务错误(如「订单不存在」,不重试)、瞬时错误(网络抖动、限流,可重试)、服务错误(5xx,可重试)。</li><li>2.  只有幂等的瞬时错误才自动重试 ,其他一律不重试。</li><li>3.  重试策略 :指数退避 + 抖动(如 0.5s、1s、2s,加随机),最多 2~3 次。 禁止无退避的紧循环重试 (会打垮下游)。</li></ul>
+      </section>
+
+      <section class="src" id="sec-35">
+        <h2 class="sec"><span class="n">35</span>超时处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>分层超时且必须可取消</li><li>写操作需幂等+查询确认补偿</li></ul><div class="pit"><ul><li>超时后不知写操作是否成功</li></ul></div></div>
+<ul><li>1.  分层超时 :单次工具调用超时(如 10~30s)、单步 Agent 超时、整任务超时,层层收敛。</li><li>2.  超时必须可取消 :不让 worker 一直挂着,要真的中断(线程中断 / 取消信号 / 连接关闭)。</li><li>3.  区分慢与死 :查询类工具可给较长超时;写类工具要给较短超时 + 幂等保证,否则超时后不知道是否执行成功(这是最危险的场景,需要「查询确认」补偿)。</li><li>4.  超时即视为失败并纳入熔断计数 。</li></ul>
+      </section>
+
+      <section class="src" id="sec-36">
+        <h2 class="sec"><span class="n">36</span>熔断与隔离</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>熔断器+半开探测恢复</li><li>Bulkhead 隔离线程池</li><li>熔断走降级链并告警</li></ul></div>
+<ul><li>1.  熔断器 :同一工具连续失败 N 次 → 熔断(比如 60s 内不再调用),期间直接返回失败或走备选工具。半开探测恢复。</li><li>2.  异常隔离(Bulkhead) :不同工具用独立线程池/连接池,一个工具拖垮不影响其他;尤其外部依赖必须隔离。</li><li>3.  降级链 :熔断后走备选工具或缓存结果(见第 36 题)。</li><li>4.  上报与告警 :熔断是严重的健康信号,必须告警而不是静默降级。</li></ul>
+      </section>
+
+      <section class="src" id="sec-37">
+        <h2 class="sec"><span class="n">37</span>给模型的反馈</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>结构化反馈：错误类型+可重试性+建议</li><li>失败次数纳入预算，K 次后换策略</li><li>失败 observation 不污染上下文</li></ul></div>
+<ul><li>5.  把失败结构化反馈给模型 :错误类型 + 可重试性 + 建议。「工具 X 失败:权限不足,不要重试,请换方案」比「调用失败」有用得多,能显著减少模型的无意义重试。</li><li>6.  失败次数纳入 Agent 的预算 :同一工具尝试超过 K 次,强制模型换策略(写进提示或直接拦截)。</li><li>7.  失败的 Observation 不能污染上下文 :短暂错误不要反复写入长上下文,可合并为「已尝试 N 次均失败」。</li></ul>
+<p>一句话总结:报错要分类(只重试幂等的瞬时错误),超时要分层且可取消,失败要熔断 + 隔离,并且把失败原因结构化地告诉模型——最后这条是 Agent 场景最容易漏、但收益最大的一条。</p>
+      </section>
+
+      <section class="src" id="sec-38">
+        <h2 class="sec"><span class="n">38</span>多工具编排</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>八大模块：注册中心、选择器、装配器、校验、执行器、结果处理、编排、横切</li><li>四类编排：串行、并行扇出、条件分支、循环修正</li><li>结果处理是一等公民</li></ul><div class="pit"><ul><li>只关注调得通，忽略结果如何进上下文</li></ul></div></div>
+<p>编排架构的八个模块:</p>
+<ul><li>1.  工具注册中心(Tool Registry) :工具元数据(name、description、schema、权限、SLA、版本)的单一来源。支持动态注册与发现。</li><li>2.  工具检索/选择器(Tool Selector) :分层 + 向量检索 + 规则过滤,按任务输出 Top-K 候选,注入上下文。</li><li>3.  Schema 装配器 :把候选工具的 schema 转成模型要求的格式(OpenAI tools / Anthropic tools),控制注入规模。</li><li>4.  调用解析与校验(Validator) :解析模型输出 → 工具名白名单校验 → JSON Schema 校验 → 业务校验 → 参数归一化。</li><li>5.  执行器(Executor) :真正调用(本地函数 / MCP / HTTP),含超时、重试、幂等、熔断、隔离线程池。</li><li>6.  结果处理器(Result Processor) :截断/摘要/卸载大结果、错误结构化、格式归一。 这一层对上下文管理至关重要 。</li><li>7.  编排控制(Orchestrator) :循环驱动、并行/串行决策、依赖管理、预算控制(轮次/token/时间)、终止条件、防死循环。</li><li>8.  横切设施 :权限与审计、可观测(轨迹留痕)、缓存、成本统计、HITL 中断恢复。</li></ul>
+<p>编排模式的四类:</p>
+<ul><li>1.  串行链 :有依赖关系(A 的输出是 B 的输入)。</li><li>2.  并行扇出 :无依赖的多个工具同时调,再合并(注意上下文合并时的去重与冲突)。</li><li>3.  条件分支 :按前一步结果选下一批工具。</li><li>4.  循环 + 修正 :校验不通过就重试同一工具(参数修正)。</li></ul>
+<p>关键设计原则:</p>
+<ul><li>•  编排逻辑显式化 :用代码/图结构,而不是完全交给模型的隐式推理——可靠性来自确定性。</li><li>•  能并行就并行 :无依赖的调用串行执行是纯浪费延迟。</li><li>•  每个环节都要有预算和上界 ,否则一处失控全链雪崩。</li><li>•  结果处理是一等公民 :很多人只关注「调得通」,忽略了「结果如何优雅地进上下文」。</li></ul>
+      </section>
+
+      <section class="src" id="sec-39">
+        <h2 class="sec"><span class="n">39</span>Spring AI FC 实现</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>@Tool/@ToolParam 反射生成 JSON Schema</li><li>ToolCallingManager：查找、反序列化、反射调用、包装异常</li><li>异常包装成 ToolResponseMessage 便于自修正</li></ul><div class="pit"><ul><li>反射类型转换失败是最常见线上问题</li></ul></div></div>
+<p>核心链路(基于 Spring AI 的抽象 + Alibaba 的增强):</p>
+<ul><li>1.  定义工具 :两种方式——</li><li>•  声明式 :在方法上加  @Tool(description = &quot;...&quot;) ,方法参数用  @ToolParam(description = &quot;...&quot;)  标注;Spring AI 通过反射生成 JSON Schema。</li><li>•  编程式 :实现  FunctionCallback  / 用  FunctionToolCallback.builder()  手工构造 name、description、inputType、函数体。</li><li>• 也可以注册  ToolCallbackProvider  Bean 批量提供工具。</li><li>2.  注册与装配 :工具回调由  ChatClient  的  .tools(...)  或全局配置指定。实际调用时,Spring AI 把每个工具转成模型 API 的  tools  字段(name + description + parameters schema),随请求发给模型。</li><li>3.  模型返回工具调用 :模型响应里带  tool_calls (id、name、arguments)。Spring AI 的  ChatModel  把它解析为  AssistantMessage  中的  ToolCall  列表(不是文本,而是结构化对象)。</li><li>4.  执行分发 : ToolCallingManager (核心类)负责:</li><li>• 按 name 从注册的回调里 查找 对应工具;</li><li>• 反序列化 arguments 到  inputType  声明的 Java 类型(用 Jackson + 类型转换);</li><li>•  反射调用 目标方法;</li><li>• 捕获异常并包装成带错误信息的  ToolResponseMessage (不是直接抛,这点很重要,便于模型自我修正);</li><li>• 返回  ToolExecutionResult 。</li><li>5.  结果回填与再调用 :执行结果以  ToolResponseMessage (带 tool call id)追加到消息列表, 再次调用模型 。循环由  ToolCallingManager  /  ChatClient  内部的循环控制(受  internalToolExecutionEnabled  影响,可关闭让业务自己控制循环)。</li><li>6.  循环终止 :模型不再返回 tool_calls 而是返回文本 → 结束;或达到最大迭代次数 → 抛异常/兜底。</li></ul>
+<p>Alibaba 侧的增强:</p>
+<ul><li>• 与  Nacos  集成做配置与提示词管理;</li><li>• 与  通义/百炼  模型的适配(DashScope 的 function calling 格式对齐);</li><li>•  Graph 编排 (Spring AI Alibaba Graph):把循环、条件边、并行、检查点做成图结构,和 LangGraph 思路一致,提供  CompiledGraph 、状态与 checkpoint;</li><li>•  MCP 支持 :MCP Client/Server 的 Spring Boot Starter,支持 stdio 与 Streamable HTTP;</li><li>•  可观测 :接入 Micrometer / ARMS 链路追踪,工具调用有 span。</li></ul>
+<p>面试可延伸的点:①ToolCallingManager 是扩展点,可以自定义做白名单校验、参数修复、审计;②内建循环有最大次数限制,生产上建议外部再包一层自己的预算控制;③反射调用要注意类型转换失败的处理,这是最常见的线上问题。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 13 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Function Calling vs MCP</h4><p>FC 是模型侧输出格式（管「怎么要」）；MCP 是工具侧通信协议（管「从哪来怎么接」）。二者互补不替代。</p><a class="src-link" href="#sec-07">原文 → FC 与 MCP 区别</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>MCP vs Skills</h4><p>MCP 是协议/接入层需 Server 部署；Skills 是认知/流程层，只是文件、按需加载、token 极低。</p><a class="src-link" href="#sec-15">原文 → MCP 与 Skills</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Rule vs Skill</h4><p>Rule 是红线：短、常驻、无条件；Skill 是手册：长、按需、有场景；交叉时 Rule 优先。</p><a class="src-link" href="#sec-21">原文 → Skill 与 Rule</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>MCP vs A2A</h4><p>MCP 连接 Agent 与工具（纵向能力供给）；A2A 连接 Agent 与 Agent（横向协作委派），互补正交。</p><a class="src-link" href="#sec-14">原文 → A2A 与 MCP</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Tool Use 的本质</h4><p>模型从未获得执行能力，只获得表达能力；执行始终在 harness 手里，安全边界据此建立。</p><a class="src-link" href="#sec-02">原文 → FC 原理与 Tool Use</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>编排职责归属</h4><p>编排逻辑放 Skill，执行与治理放 Harness：Skill 是声明性知识，Harness 是强制性执行。</p><a class="src-link" href="#sec-31">原文 → 编排与工具归属</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Agent 权限原则</h4><p>默认拒绝、白名单授权；Agent 权限=用户权限∩职责，全量开放是最危险的设计失误。</p><a class="src-link" href="#sec-32">原文 → Agent 权限分配</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>渐进披露省 token</h4><p>30 个能力全量常驻≈24000 token；Skill 做法元数据 1200+正文 1600≈2800，且只按需加载。</p><a class="src-link" href="#sec-20">原文 → Skills 省 token</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>缩小候选集收益</h4><p>200 个工具经分层+检索降到 8 个，选对率提升是数量级；Top-K 一般取 5~10 个。</p><a class="src-link" href="#sec-26">原文 → 缩小候选集</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Spring AI @Tool 链路</h4><p>@Tool/@ToolParam 标注，反射生成 JSON Schema；ToolCallingManager 查找、反序列化、反射调用并包装异常。</p><a class="src-link" href="#sec-39">原文 → Spring AI FC 实现</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>MCP Server 开发栈</h4><p>Java 用 @Tool+Spring AI Starter；Python 用 mcp SDK 的 list_tools/call_tool 装饰器。</p><a class="src-link" href="#sec-09">原文 → MCP Server 开发</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>参数格式错误四类</h4><p>语法/类型/字段/语义分治；校验在服务端，修复重试带具体错误，最多 2 次，失败即降级。</p><a class="src-link" href="#sec-03">原文 → 参数格式错误处理</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>重试与超时</h4><p>只重试幂等瞬时错误，指数退避；写操作超时需幂等+查询确认；失败要结构化反馈给模型。</p><a class="src-link" href="#sec-33">原文 → 故障处理总纲</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>模型只会「写字」不会执行——所有安全边界都建立在「执行在 harness」这一认知上。</li>
+          <li>MCP 是接能力，Skill 是组织能力：一个给「手」，一个给「手艺」，层次不同不冲突。</li>
+          <li>降幻觉与保安全都靠收口：缩候选、强校验、最小权限、失败结构化反馈。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkzMTIzMTI1Ng==&amp;mid=2247483924&amp;idx=1&amp;sn=70a98fdbb8cc5db3d3799d7f1d9e7e6c" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkzMTIzMTI1Ng==&amp;mid=2247483924&amp;idx=1&amp;sn=70a98fdbb8cc5db3d3799d7f1d9e7e6c</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：面试 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

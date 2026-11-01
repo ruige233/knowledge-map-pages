@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>面试 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">鹅厂面试官问我：“现在都是Vibe Coding，那你的优势是什么？”，我说AI写不了复杂业务，面试官：“AI写复杂业务比你强多了”，我。。。</h1>
+  <p class="lede">AI 什么都能写，但“AI 做什么都需要你先做对”——五大能力才是你的优势。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>面试</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 18 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>Vibe Coding 定义</a>
+          <a href="#sec-02"><span class="n">02</span>五大优势</a>
+          <a href="#sec-03"><span class="n">03</span>Token 成本控制</a>
+          <a href="#sec-04"><span class="n">04</span>面试高频问答</a>
+          <a href="#sec-05"><span class="n">05</span>写在最后</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 Vibe Coding 定义</a>
+          <a href="#sec-02">02 五大优势</a>
+          <a href="#sec-03">03 Token 成本控制</a>
+          <a href="#sec-04">04 面试高频问答</a>
+          <a href="#sec-05">05 写在最后</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>现在大厂面试官最喜欢问一个灵魂问题：在 vibe coding 盛行以及基模越来越强的当今，你觉得你的优势是什么？</p>
+<p>我估计很多录友都不知道怎么回答。</p>
+<p>或者说，之前的回答思路已经不够用了。</p>
+<p>为什么这么说？</p>
+<p>因为之前的套路是说&quot;AI 做不了复杂业务逻辑&quot;，&quot;AI 写不了安全代码&quot;，&quot;AI 处理不了并发&quot;——但说实话，2026 年了，AI 这些都写得挺好。</p>
+<p>Claude Code 能写出带完整异常处理的微服务调用，Codex 能处理复杂的状态机逻辑，Cursor 能一次改十几个文件还不乱。</p>
+<p>继续说&quot;AI 做不了这个&quot;，面试官只会觉得你脱离实际。</p>
+<p>那你的优势到底在哪？这篇文章重新回答这个问题，并且聚焦面试官真正关心的实操问题——Token 成本怎么控制、AI 代码怎么管、效果怎么评估。</p>
+<ul><li>Vibe Coding 到底是什么？</li><li>AI 越来越强，你的优势到底是什么？</li><li>优势一：问题定义能力</li><li>优势二：上下文构建能力</li><li>优势三：结果验证能力</li><li>优势四：技术决策能力</li><li>优势五：成本控制能力</li><li>五大优势总结</li><li>AI 编程工具的 Token 成本怎么控制？</li><li>策略一：模型路由——什么活用什么模型</li><li>策略二：上下文管理——别把整个代码库塞进去</li><li>策略三：Prompt 优化——一次说清楚，别来回改</li><li>策略四：缓存和复用</li><li>策略五：评估——哪些任务让 AI 做更贵</li><li>Token 成本控制总结</li><li>面试高频问题汇总</li><li>场景类</li><li>工程落地类</li></ul>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>Vibe Coding 定义</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Vibe Coding 定义：不审查、不理解、直接 Accept AI 生成的代码。</li><li>面试官问是不是 Vibe Coding，实质在问你对 Accept 的代码负不负责。</li></ul></div>
+<p>2025 年 2 月 Andrej Karpathy 提出这个词的时候，定义很明确：不审查、不理解、直接 Accept AI 生成的代码。</p>
+<table><thead><tr><th>维度</th><th>Vibe Coding</th><th>AI 辅助编程</th></tr></thead><tbody><tr><td>代码生成</td><td>AI 生成</td><td>AI 生成</td></tr><tr><td>代码审查</td><td>不看，直接 Accept</td><td>逐行审查</td></tr><tr><td>报错处理</td><td>粘贴给 AI</td><td>分析根因再决定</td></tr><tr><td>对代码负责</td><td>不负责</td><td>完全负责</td></tr></tbody></table>
+<p>面试官问你是不是 Vibe Coding，其实是在问一个问题：你对你 Accept 的代码负不负责？</p>
+<p>这个定义不用多展开，重点是下面两个问题。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>五大优势</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>承认 AI 已能写好复杂业务、安全代码、跨模块调用与性能优化。</li><li>优势不是“AI 做不了什么”，而是“AI 做什么都需要你先做对”。</li><li>五大能力：问题定义、上下文构建、结果验证、技术决策、成本控制。</li><li>“AI 做不了”是防守越守越窄，“AI 需要你”是驱动越用越强。</li></ul><div class="pit"><ul><li>还答“AI 做不了 XX”会被反问“你给够上下文了吗”。</li></ul></div></div>
+<p>先承认一个事实：AI 现在确实写得好。</p>
+<p>复杂业务逻辑？给它足够的上下文，它能写出符合你公司规则的结算代码。</p>
+<p>安全代码？告诉它要注意什么，它能写出带输入校验和权限检查的代码。</p>
+<p>跨模块调用？把接口文档喂给它，它能生成正确的调用链路。</p>
+<p>性能优化？让它关注性能，它能帮你找出 N+1 查询和内存泄漏。</p>
+<p>所以如果你的回答还是&quot;AI 做不了 XX&quot;，面试官一句话就能怼回来：&quot;你给够上下文了吗？&quot;</p>
+<p>那你的优势到底在哪？不是&quot;AI 做不了什么&quot;，而是&quot;AI 做什么都需要你先做对什么&quot;。</p>
+<p>优势一：问题定义能力</p>
+<p>AI 能解决你定义好的问题，但定义问题本身就是最难的部分。</p>
+<p>产品经理说&quot;加个退款功能&quot;——这不是需求，这是一句话。真正的需求定义要回答：</p>
+<ul><li>部分退款怎么处理？</li><li>退款和优惠券的互斥规则是什么？</li><li>多次退款的幂等性怎么保证？</li><li>退款超时了怎么自动关闭？</li></ul>
+<p>这些问题的答案，AI 不知道，产品经理也没说清楚。是你把一句话变成了可执行的规格，AI 才能写出正确的代码。</p>
+<p>反过来，如果你自己都没想清楚，AI 写出来的代码一定也是模糊的——你给它一句话，它给你一个&quot;看起来像那么回事&quot;的接口，跑是能跑，但业务逻辑经不起推敲。</p>
+<p>面试怎么说：&quot;AI 很强，但它需要精确的问题定义。我的优势在于能把模糊的需求拆解成清晰的技术规格——边界条件、异常处理、业务规则，这些 AI 不会主动问你，但不说清楚代码一定写不对。&quot;</p>
+<p>优势二：上下文构建能力</p>
+<p>AI 的输出质量，直接取决于你给的上下文质量。</p>
+<p>同样的需求，两种人用 AI：</p>
+<ul><li>A 直接说&quot;写一个退款接口&quot; → AI 凭想象写，大概率不符合你的业务</li><li>B 给了完整的业务规则、数据库表结构、上下游接口文档 → AI 写出来的代码基本能直接用</li></ul>
+<p>差距在哪？不是 AI 的能力差距，是喂给 AI 的上下文质量的差距。</p>
+<p>上下文构建能力包括：</p>
+<ul><li>知道给什么 ：哪些信息是 AI 必须知道的，哪些是噪音</li><li>知道不给什么 ：塞 10 万行无关代码进上下文，既浪费 Token 又干扰模型</li><li>知道怎么组织 ：先给背景再给需求，和反过来，AI 的生成质量完全不同</li></ul>
+<p>这也是为什么同一个 AI 工具，高手用和新人用效果差 10 倍。不是工具不同，是输入不同。</p>
+<p>关于怎么科学地构建上下文，之前写过一篇 Claude Code 深度解析，里面有专门讲 200K 上下文窗口的管理策略，录友们可以翻翻。</p>
+<p>面试怎么说：&quot;同样用 Claude Code，不同人产出质量差很多。差别在于上下文构建——我给 AI 的 Prompt 包含完整的业务规则、相关代码片段和边界条件，而不是一句话就让它写。AI 的上限是由你的输入质量决定的。&quot;</p>
+<p>优势三：结果验证能力</p>
+<p>代码跑起来了 ≠ 代码对了。</p>
+<p>AI 生成的代码经常&quot;看着对、跑得通、但语义是错的&quot;。比如：</p>
+<ul><li>退款接口返回成功，但实际是退到了错误的账户</li><li>权限校验通过了，但用的是错误的角色</li><li>数据处理完成了，但精度丢失了两位小数</li></ul>
+<p>这些 bug 跑测试不一定能发现，因为测试是按你的预期写的，而你的预期可能和业务需求有偏差。</p>
+<p>验证能力不是&quot;跑一下看有没有报错&quot;，而是：</p>
+<ul><li>业务语义验证 ：这段代码的行为是否符合业务意图</li><li>边界验证 ：极端情况下的行为是否符合预期</li><li>回归验证 ：这次改动有没有影响其他功能</li></ul>
+<p>特别要注意 AI 的&quot;合理但错误&quot;代码——逻辑通顺、能跑通、但语义和业务需求不一致。这种代码最容易通过 Code Review，因为看起来真的很合理。</p>
+<p>面试怎么说：&quot;AI 生成的代码我会重点验证业务语义，不是看能不能跑通，而是看行为是否符合业务意图。比如退款接口我会验证退款金额、退款对象、幂等性，这些是测试覆盖不到的，必须人工理解。&quot;</p>
+<p>优势四：技术决策能力</p>
+<p>AI 能列出方案 A 和方案 B 的 pros/cons，但拍板选哪个是你决定的。</p>
+<p>技术决策包括：</p>
+<ul><li>选型决策 ：用 Redis 还是 Memcached？用 gRPC 还是 REST？AI 能分析，但你的业务场景只有你知道</li><li>架构决策 ：拆微服务还是单体优先？同步还是异步？短期快还是长期稳？</li><li>成本决策 ：花 3 天重构还是花 3 个月重构？用贵的模型还是便宜的模型？</li></ul>
+<p>AI 的建议是通用的，你的决策是具体的。通用建议和具体场景之间，永远需要人来做判断。</p>
+<p>举个实际例子：AI 会告诉你&quot;高并发场景用缓存&quot;，但不会告诉你你们团队的缓存之前出过两次线上事故，这次要用就得多加一层降级。这个判断只能你做。</p>
+<p>面试怎么说：&quot;AI 能帮我分析方案，但最终的选型决策是我做的。因为决策要考虑的不仅是技术因素，还有团队现状、业务阶段、历史教训——这些 AI 不知道，也不应该由 AI 决定。&quot;</p>
+<p>优势五：成本控制能力</p>
+<p>这一条在面试里越来越重要，因为AI 编程不是免费的。</p>
+<p>一次 Claude Code 的交互，可能消耗 5 万到 20 万 Token。一个项目跑下来，Token 费用可能比工程师工资还高。</p>
+<p>成本控制能力包括：</p>
+<ul><li>知道什么时候用大模型，什么时候用小模型</li><li>知道怎么组织上下文才能省 Token</li><li>知道怎么写 Prompt 才能减少来回次数</li><li>知道哪些任务让 AI 做更贵，自己做更便宜</li></ul>
+<p>这一点很重要，放在本篇下一节单独说。</p>
+<p>五大优势总结</p>
+<p>一句话：AI 的输出质量取决于你的输入质量——定义问题、构建上下文、验证结果、做决策、控成本，这五件事 AI 替代不了你。</p>
+<p>不是&quot;AI 做不了&quot;，是&quot;AI 做什么都需要你先做对&quot;。</p>
+<p>这两种说法看起来差不多，但逻辑完全不同：</p>
+<ul><li>&quot;AI 做不了&quot;的潜台词是：等 AI 也能做了，你就没优势了</li><li>&quot;AI 需要你&quot;的潜台词是：只要 AI 还需要人来驱动，你的优势就在</li></ul>
+<p>前者是防守型思路，越守越窄。后者是驱动型思路，越用越强。</p>
+<p>五大优势驱动框架</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>Token 成本控制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>模型路由：70% 日常任务用小模型，整体成本可降 60% 以上。</li><li>上下文管理：只给相关代码，Token 差 3-5 倍且生成质量更好。</li><li>Prompt 优化一次说清楚可省 3-4 轮交互，缓存复用可降 50% 以上。</li><li>任务评估：有些任务让 AI 做更贵，自己写才是最优解。</li></ul><div class="pit"><ul><li>把整个项目目录丢给 AI，Token 翻几倍还干扰注意力、拉低质量。</li><li>来回改 Prompt 最浪费 Token，模糊 Prompt 与精确 Prompt 成本可差 24 倍。</li></ul></div></div>
+<p>这个问题面试官越来越爱问，因为这是团队用 AI 编程最实际的问题。</p>
+<p>不控制成本，一个月 Token 账单可能比工程师工资还高。控制得太狠，AI 产出质量又下降。关键是在成本和质量之间找到平衡点。</p>
+<p>策略一：模型路由——什么活用什么模型</p>
+<p>不是所有代码都需要最强的模型来写。根据任务复杂度路由到不同模型：</p>
+<table><thead><tr><th>任务类型</th><th>推荐模型级别</th><th>原因</th></tr></thead><tbody><tr><td>代码补全、简单修改</td><td>小模型</td><td>速度快、成本低、够用</td></tr><tr><td>函数实现、Bug 修复</td><td>中模型</td><td>平衡成本和质量</td></tr><tr><td>架构设计、复杂重构、代码审查</td><td>大模型</td><td>需要深度推理</td></tr><tr><td>代码解释、文档生成</td><td>小模型</td><td>不需要强推理</td></tr></tbody></table>
+<p>成本差距有多大？ 大模型的输出价格是小模型的近 20 倍。如果一个 70% 的任务能用小模型解决，整体成本能降 60% 以上。</p>
+<p>模型路由策略</p>
+<p>当然，模型路由不是让你手动选。Claude Code 内部已经在做这件事——简单补全走轻量模型，复杂推理走主力模型。Claude Code 深度解析 里有讲它的双模型策略。</p>
+<p>但面试官想听的不是&quot;工具自动做了&quot;，而是你理解为什么这么做。</p>
+<p>面试怎么说：&quot;我们团队做了模型路由策略——简单补全用小模型，复杂任务才用大模型。70% 的日常编码任务其实不需要最强模型，这样整体 Token 成本能降 60% 以上。&quot;</p>
+<p>策略二：上下文管理——别把整个代码库塞进去</p>
+<p>上下文窗口是 Token 消耗的大头。</p>
+<p>很多人用 Claude Code 的时候，习惯把整个项目目录打开，让它自己找文件。结果每次交互，模型都要读取大量无关代码，Token 消耗直接翻几倍。</p>
+<p>正确的做法：</p>
+<ul><li>只给相关的代码 ：修改用户模块，就不要把支付模块的代码也塞进去</li><li>用摘要代替全文 ：不需要把 500 行的配置文件全给 AI，给关键部分就行</li><li>按需加载 ：先让 AI 看接口定义，需要实现细节时再给具体代码</li><li>定期清理上下文 ：长时间对话会积累大量历史 Token，该开新会话就开新会话</li></ul>
+<p>实际效果：只给相关代码 vs 给整个项目，Token 消耗可能差 3-5 倍。</p>
+<p>还有一个容易忽略的点：AI 读到的无关代码越多，生成质量反而越差。因为无关信息会干扰模型的注意力，让它关注到不该关注的地方。所以上下文管理不只是省钱，也是在提升质量。</p>
+<p>上下文管理对比</p>
+<p>面试怎么说：&quot;我会主动管理上下文，只给 AI 相关的代码片段而不是整个项目。修改用户模块就只给用户模块的代码和它依赖的接口定义。这样做 Token 消耗能降 3-5 倍，而且 AI 生成质量反而更好——因为无关信息少了，模型不容易被干扰。&quot;</p>
+<p>策略三：Prompt 优化——一次说清楚，别来回改</p>
+<p>来回改是最浪费 Token 的。</p>
+<p>模糊的 Prompt → AI 生成不符合预期 → 再改 Prompt → 再生成 → 还是不对 → 再改……</p>
+<p>一次说清楚，直接省掉 3-4 轮交互。</p>
+<p>怎么写好 Prompt：</p>
+<ul><li>说清楚目标 ：不是&quot;写个接口&quot;，是&quot;写一个 REST 接口，接收退款请求，参数包括订单号和退款金额，需要幂等校验&quot;</li><li>说清楚约束 ：性能要求、安全要求、代码规范</li><li>说清楚上下文 ：相关的数据库表结构、上下游接口</li><li>给示例 ：一个具体的输入输出示例，比 100 字描述更有效</li></ul>
+<p>成本对比：一次精确 Prompt 可能 500 Token，四轮模糊 Prompt 可能 12000 Token——差 24 倍。这还没算时间的浪费。</p>
+<p>Prompt优化对比</p>
+<p>之前写过一篇 Harness Engineering 面试题，核心观点就是 AI 编程的重心正在从 Prompt Engineering 转向 Context Engineering——不是你怎么说，是你给什么信息。录友们可以连着看。</p>
+<p>策略四：缓存和复用</p>
+<p>相似的问题，不要让 AI 从零生成。</p>
+<ul><li>Prompt 缓存 ：相同的 Prompt 前缀，API 层面可以缓存，省掉重复计算的 Token。Anthropic 的 API 已经原生支持了 Prompt Caching，相同前缀的输入可以打到 90% 的缓存命中率</li><li>代码模板 ：常见的 CRUD 接口、表单验证，维护一套模板，AI 只需要填差异部分</li><li>会话复用 ：同一类任务的 Claude Code 会话，可以复用之前的上下文，不要每次从零开始</li></ul>
+<p>面试怎么说：&quot;我们团队维护了一套代码模板，AI 只需要根据具体需求填充差异部分，而不是每次从零生成。配合 Prompt Caching，相似任务的 Token 消耗能降低 50% 以上。&quot;</p>
+<p>策略五：评估——哪些任务让 AI 做更贵</p>
+<p>不是所有任务都适合让 AI 做。</p>
+<p>有些任务你自己写 10 分钟搞定，让 AI 写要花 20 分钟来回改 Prompt + 审查代码，Token 费用还不少。这种情况下，直接自己写才是最优解。</p>
+<p>适合让 AI 做的：</p>
+<ul><li>重复性高、模式固定的代码（CRUD、样板代码）</li><li>你知道要什么但手写太慢的代码</li><li>需要快速探索多种方案的场景</li><li>不熟悉的语言或框架的入门代码</li></ul>
+<p>不适合让 AI 做的：</p>
+<ul><li>改一行配置就能解决的小修改</li><li>你已经非常熟悉的代码区域，手写比解释更快</li><li>需要深度理解业务上下文的决策型代码</li><li>已经有精确模板、复制粘贴比生成更快的情况</li></ul>
+<p>举个日常开发的例子：线上报了一个 NullPointerException，你翻日志定位到是 OrderService.java 第 127 行，user.getAddress() 没做空判断。你加一行 if (user.getAddress() != null) 10 秒搞定。</p>
+<p>但如果你交给 AI？</p>
+<p>很多录友是这样的，具体哪里报错也不看，上来就粘贴报错信息给AI，让AI去修复。</p>
+<p>等AI读报错信息，再去读文件，又要分析上下文，再生成修复代码，AI还有自己的一套校验机制。</p>
+<p>这一套流程下来，至少10k token就花出去了。 文件如果大一点，就是几十k token</p>
+<p>然后你还得审查它是不是改对了地方、有没有多改别的。</p>
+<p>前后 3 分钟，Token 消耗可能几万。10 秒的手工活，变成了 3 分钟的 AI 交互，还更贵。</p>
+<p>这就是&quot;让 AI 做更贵&quot;的典型场景：你已经知道问题在哪、怎么改，这时候直接改就是最优解。</p>
+<p>Token 成本控制总结</p>
+<table><thead><tr><th>策略</th><th>核心思路</th><th>预期效果</th></tr></thead><tbody><tr><td>模型路由</td><td>简单任务用小模型</td><td>成本降 60%+</td></tr><tr><td>上下文管理</td><td>只给相关代码</td><td>消耗降 3-5 倍</td></tr><tr><td>Prompt 优化</td><td>一次说清楚</td><td>往返次数降 3-4 倍</td></tr><tr><td>缓存复用</td><td>不从零开始</td><td>消耗降 50%+</td></tr><tr><td>任务评估</td><td>不该用 AI 的就别用</td><td>视场景</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>面试高频问答</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>场景类：优势、任务分工、代码审查、线上 bug 处理与兜底的答题思路。</li><li>工程落地类：Token 成本、代码管理四件事、防代码泄露的实操。</li><li>审查重点查业务语义、安全风险、工程性，警惕“合理但错误”的代码。</li><li>线上出 bug 三步走：止血、定因、补流程；AI 修不了时人要能接手。</li></ul><div class="pit"><ul><li>AI 工具会上传代码到服务端推理，敏感代码泄露风险需企业版和 ignore 配置兜底。</li></ul></div></div>
+<p>场景类</p>
+<p>Q：AI 越来越强，你的优势是什么？</p>
+<p>差的回答：&quot;AI 做不了复杂业务逻辑和安全代码。&quot;</p>
+<p>好的回答：&quot;AI 确实越来越强，很多之前说 AI 做不了的场景现在都做得不错。但 AI 的输出质量直接取决于人的输入质量——定义问题、构建上下文、验证结果、做决策、控成本，这五件事 AI 替代不了我。我的优势不是比 AI 写得好，是让 AI 写得更好。&quot;</p>
+<p>Q：你负责的项目里，哪些让 AI 写，哪些自己写？</p>
+<p>判断标准不是&quot;AI 做得了还是做不了&quot;，而是**&quot;这段代码出 bug 的代价有多大&quot;和&quot;让 AI 写和手写哪个综合成本更低&quot;**。</p>
+<p>代价大、AI 写更贵的：自己写或 AI 写但严格审查。代价小、AI 写更便宜的：让 AI 加速。</p>
+<p>Q：你怎么审查 AI 生成的代码？</p>
+<p>重点查三样：业务语义（代码行为是否符合业务意图）、安全风险（输入校验、权限控制、敏感数据）、工程性（性能、可维护性、规范一致性）。</p>
+<p>特别注意 AI 的&quot;合理但错误&quot;代码——逻辑通顺、能跑通、但语义和业务需求不一致。这种代码最容易漏过 Review。</p>
+<p>Q：AI 生成的代码出了线上 bug，你怎么处理？</p>
+<p>三步走：先止血，再定因，最后补流程。</p>
+<p>止血：回滚或降级，先让线上恢复，不管是不是 AI 写的代码，处理方式一样。</p>
+<p>定因：看监控确认影响范围，看日志追踪调用链路，定位到具体的问题代码。如果是 AI 生成的代码，还要想清楚审查的时候为什么没拦住——是安全没审到，还是边界条件没覆盖，还是业务语义理解有偏差。</p>
+<p>补流程：补充测试用例、加强审查重点、甚至调整哪些场景允许 AI 生成。一个 bug 不可怕，同类 bug 再出一次才可怕。</p>
+<p>Q：AI 写的代码上线出问题了，让 AI 修，结果 AI 也修不好，你怎么兜底？</p>
+<p>这个问题很刁钻，但确实会发生。AI 自己写的代码，自己修不好——可能是因为它对线上环境没有感知，也可能是因为问题根因涉及多个模块的交互，AI 的上下文窗口里装不下全局信息。</p>
+<p>兜底的关键是你不能等 AI 来救你，你得自己能接手：</p>
+<ul><li>先止血 ：不管 AI 能不能修，先回滚到上一个稳定版本，线上用户等不了</li><li>自己排查 ：看日志、看监控、看链路追踪，定位根因。这时候你之前审查 AI 代码积累的理解就派上用场了——如果你审查的时候理解了逻辑，排查速度会快很多；如果你审查的时候是&quot;看着没问题就过了&quot;，那排查起来跟看别人的代码没区别</li><li>修复上线 ：自己改代码，走正常的测试和发布流程</li><li>复盘 ：为什么 AI 修不好？是上下文不够，还是问题超出它的能力范围？这次复盘的结论，决定下次类似问题还要不要交给 AI</li></ul>
+<p>说到底，AI 修不了的时候，你得能修。这是底线。</p>
+<p>工程落地类</p>
+<p>Q：AI 编程工具的 Token 成本怎么控制？</p>
+<p>五个策略：模型路由（70% 任务用小模型）、上下文管理（只给相关代码）、Prompt 优化（一次说清楚）、缓存复用（维护模板 + Prompt Caching）、任务评估（不该用 AI 的就别用）。核心是在成本和质量之间找平衡，不是越便宜越好，也不是越贵越好。</p>
+<p>Q：你们团队怎么管理 AI 生成的代码？</p>
+<p>四件事：代码归属（谁 Accept 谁负责）、审查流程（AI 代码走和人工代码一样的 Review）、监控指标（追踪 AI 代码的 Bug 率和漏洞率）、持续优化（根据数据调整 AI 使用策略）。</p>
+<p>Q：用 AI 写代码，怎么保证不泄露公司代码？</p>
+<p>很多公司，还没有自己的私有化Agent，那么业务开发就面临代码安全问题。</p>
+<p>AI 编程工具都有代码上传的行为——你的代码会发送到模型的服务端做推理，虽然厂商说不会用来训练，但合规部门不一定买账。</p>
+<p>实际操作：</p>
+<ul><li>敏感代码不上传 ：核心算法、密钥管理、交易策略这些代码，不在 AI 工具里打开，更不让 AI 生成和审查</li><li>用企业版而非个人版 ：企业版有数据隔离协议，代码不会被用于训练，合规风险小得多</li><li>配置 .gitignore 和 .claudeignore ：把敏感目录和文件排除在 AI 的访问范围之外，防止工具自动读取不该读的代码</li><li>团队统一规范 ：哪些项目可以用 AI、哪些不能，写进开发规范，新人入职就知道边界</li></ul>
+<p>面试怎么说：&quot;我们区分了敏感项目和非敏感项目，敏感项目不用 AI 工具，非敏感项目用企业版。同时配置了 .claudeignore 排除敏感文件，确保 AI 不会读到不该读的代码。&quot;</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>写在最后</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>优势=让 AI 写得更好：定义问题、建上下文、验证、决策、控成本。</li><li>“AI 做不了”是防守，“AI 需要你”是驱动。</li></ul></div>
+<p>回到开头的灵魂问题：在 vibe coding 盛行以及基模越来越强的当今，你觉得你的优势是什么？</p>
+<p>答案是：AI 做什么都需要你先做对——定义问题、构建上下文、验证结果、做决策、控成本。</p>
+<p>不是&quot;AI 做不了&quot;，是&quot;AI 需要你&quot;。</p>
+<p>&quot;AI 做不了&quot;是防守，越守越窄。</p>
+<p>&quot;AI 需要你&quot;是驱动，越用越强。</p>
+<p>两种思路对比</p>
+<p>你的优势不是比 AI 写得好，是让 AI 写得更好。</p>
+<p>卡码大模型</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Vibe Coding vs AI 辅助编程</h4><p>Vibe Coding 不审查、直接 Accept、不负责；AI 辅助编程逐行审查、对代码完全负责。</p><a class="src-link" href="#sec-01">原文 → Vibe Coding 定义</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>优势的正确表述</h4><p>不是“AI 做不了什么”，而是“AI 做什么都需要你先做对什么”。</p><a class="src-link" href="#sec-02">原文 → 五大优势</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>五大能力</h4><p>定义问题、构建上下文、验证结果、做决策、控成本——这五件事 AI 替代不了你。</p><a class="src-link" href="#sec-02">原文 → 五大优势</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>“合理但错误”的代码</h4><p>AI 代码“看着对、跑得通、语义错”，逻辑通顺但业务语义不符，最易漏过 Code Review。</p><a class="src-link" href="#sec-02">原文 → 五大优势</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>模型路由降本</h4><p>大模型输出价格约为小模型 20 倍；70% 任务用小模型，整体成本可降 60% 以上。</p><a class="src-link" href="#sec-03">原文 → Token 成本控制</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>上下文与 Prompt 成本差</h4><p>只给相关代码 vs 整个项目 Token 差 3-5 倍；一次精确 Prompt 500 Token vs 四轮模糊 12000 Token，差 24 倍。</p><a class="src-link" href="#sec-03">原文 → Token 成本控制</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>别把整个代码库塞进去</h4><p>开整个项目让 AI 自己找文件，每次读大量无关代码，Token 翻几倍还干扰注意力。</p><a class="src-link" href="#sec-03">原文 → Token 成本控制</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>空指针手动修更省</h4><p>NPE 定位到 user.getAddress() 未判空，加一行 if (user.getAddress() != null) 10 秒搞定，交给 AI 反而花几万 Token。</p><a class="src-link" href="#sec-03">原文 → Token 成本控制</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>线上 bug 兜底</h4><p>AI 修不了的时候你得能修——先止血、自己排查、修复上线、复盘，这是底线。</p><a class="src-link" href="#sec-04">原文 → 面试高频问答</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>敏感代码上传风险</h4><p>代码会上传到模型服务端推理，核心算法、密钥、交易策略不能给 AI，用企业版并配置 .claudeignore。</p><a class="src-link" href="#sec-04">原文 → 面试高频问答</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>面试别再答“AI 做不了复杂业务”，换成“AI 做什么都需要你先做对”，并给出五大能力。</li>
+          <li>把 Token 成本当工程指标：模型路由、精简上下文、一次说清 Prompt、缓存复用、评估任务。</li>
+          <li>审查 AI 代码盯业务语义和“合理但错误”，线上出事先止血，AI 修不了时你必须能接手。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzYzNjgwMzQwMA==&amp;mid=2247484232&amp;idx=1&amp;sn=f566d467a3af9b2ae41c7d17188fe2ca" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzYzNjgwMzQwMA==&amp;mid=2247484232&amp;idx=1&amp;sn=f566d467a3af9b2ae41c7d17188fe2ca</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：面试 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
