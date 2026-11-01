@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高度抽象代码方法总结 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">高度抽象代码方法总结</h1>
+  <p class="lede">四种高度抽象代码手法：模板方法、匿名内部类回调、Future模式与反射动态代理</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 14 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：后来丶_a24d 链接：https://www.jianshu.com/p/fadd3cf4ecf7</p>
+<ul><li>通过抽象方法给子类实现，从而达到高度抽象的目的，这里针对不同类而言</li><li>通过传递匿名内部类的形式将需要执行的内容传递给公共抽象类对应方法，这里适合类里面有多个方法需要抽象</li><li>future模式，异步执行，结果处理抽象， 具体实现各个子类实现</li><li>反射，动态代理抽象</li><li>ChatGPT中文网站：https://ai.cxyquan.com</li></ul>
+<p>通过抽象方法给子类实现，从而达到高度抽象的目的，这里针对不同类而言</p>
+<ul><li>public class Test {</li><li>public static void main(String[] args) {</li><li>TestService testService = new TestService();</li><li>testService.getResp(new Object());</li><li>private static class TestService extends BaseService {</li><li>public Object getResp(Object req) {</li><li>return service(req);</li><li>@Override</li><li>protected void validateRequest(Object o) {</li><li>System.out.println(&quot;来自TestService的验证&quot;);</li><li>public abstract class BaseService&lt;Request, Response&gt; {</li><li>/**</li><li>* 总体是通过抽象方法给子类实现，从而达到高度抽象的目的</li><li>public final Response service(Request request) {</li><li>System.out.println(&quot;调用公共的service&quot;);</li><li>// 各个子类实现</li><li>validateRequest(request);</li><li>// 各个子类实现，具体业务逻辑, 此处省略getBiz获取各个子类实际业务逻辑类</li><li>/*Response response = getBiz().biz(request);*/</li><li>System.out.println(&quot;结束调用公共的service&quot;);</li><li>// 只是展示</li><li>return null;</li><li>protected abstract void validateRequest(Request request);</li><li>/*protected abstract Biz&lt;Request, Response&gt; getBiz();*/</li><li>调用公共的service</li><li>来自TestService的验证</li><li>结束调用公共的service</li></ul>
+<p>通过传递匿名内部类的形式将需要执行的内容传递给公共抽象类对应方法，这里适合类里面有多个方法需要抽象</p>
+<ul><li>public class Provider extends AbstractProvider {</li><li>// 获取请求</li><li>public void get(final String key) {</li><li>executeCommand(key, () -&gt; System.out.println(&quot;执行了获取指令, key：&quot; + key), null);</li><li>// 判断是否存在</li><li>public void exists(final String key) {</li><li>executeCommand(key, () -&gt; System.out.println(&quot;执行了判断是否存在指令, key：&quot; + key), null);</li><li>public static void main(String[] args) {</li><li>Provider provider = new Provider();</li><li>provider.get(&quot;ss&quot;);</li><li>provider.exists(&quot;sss&quot;);</li><li>public abstract class AbstractProvider {</li><li>protected &lt;T&gt; void executeCommand(String key, Command&lt;T&gt; command, T defaultValue) {</li><li>command.execute();</li><li>public interface Command&lt;T&gt; {</li><li>void execute();</li></ul>
+<p>future模式，异步执行，结果处理抽象， 具体实现各个子类实现</p>
+<ul><li>先看下异步响应之后的调用时序图</li></ul>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 01" width="640" height="375" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 01</figcaption></figure>
+<ul><li>这里在发送完请求之后，还会调用再次调用RequestFuture的compose方法，为RequestFuture增加listener，这里的listener作用是调用各个ResponHandleAdapter实现类，也就是各个请求的实现类。这样就把解析响应交回各个子类。时序图为: 1.1.1是future模式，1.1.2是为ReuqestFuture添加listener以便回调各个子类实现的onSuccess</li></ul>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 02" width="640" height="402" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 02</figcaption></figure>
+<ul><li>具体看代码</li><li>public class SendJoinGroupRequest extends AbstractRequestSend implements ResponseHandleAdapter {</li><li>public void sendJoinGroupRequest(String s){</li><li>send(s).compose(this);</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>System.out.println(&quot;SendJoinGroupRequest执行结果: &quot; + s);</li><li>public static void main(String[] args) {</li><li>SendJoinGroupRequest sendJoinGroupRequest = new SendJoinGroupRequest();</li><li>sendJoinGroupRequest.sendJoinGroupRequest(&quot;测试发送JoinGroup检测请求&quot;);</li><li>// 写SendHeartbeatRequest 类似的</li><li>/* SendHeartbeatRequest sendHeartbeatRequest = new SendHeartbeatRequest();</li><li>sendHeartbeatRequest.sendHeartbeat(&quot;测试发送心跳检测请求&quot;);*/</li><li>public abstract class AbstractRequestSend {</li><li>/**</li><li>* 模拟异步执行任务</li><li>ExecutorService executorService = Executors.newSingleThreadExecutor();</li><li>public RequestFuture send(String s) {</li><li>// 这里是Future模式</li><li>RequestFuture requestFuture = new RequestFuture();</li><li>executorService.execute(new AsyncExeRemoteInvoke(requestFuture, s));</li><li>return requestFuture;</li><li>private static class AsyncExeRemoteInvoke implements Runnable {</li><li>private RequestFuture requestFuture;</li><li>private String s;</li><li>public AsyncExeRemoteInvoke(RequestFuture requestFuture, String s) {</li><li>this.requestFuture = requestFuture;</li><li>this.s = s;</li><li>@Override</li><li>public void run() {</li><li>// 模拟远程调用耗时</li><li>try {</li><li>Thread.sleep(3000);</li><li>} catch (InterruptedException e) {</li><li>e.printStackTrace();</li><li>String res = s + &quot;远程调用结束&quot;;</li><li>requestFuture.onComplete(res);</li><li>public interface ResponseHandleAdapter {</li><li>void onSuccess(String s);</li><li>public class RequestFuture {</li><li>private List&lt;RequestFutureListener&gt; requestFutureListenerList;</li><li>public RequestFuture() {</li><li>this.requestFutureListenerList = new ArrayList&lt;&gt;();</li><li>public void onComplete(String s){</li><li>// 假设只执行成功的方法</li><li>fireSuccess(s);</li><li>private void fireSuccess(String s) {</li><li>// 假设只执行成功的方法</li><li>requestFutureListenerList.forEach(requestFutureListener -&gt; requestFutureListener.onSuccess(s));</li><li>private void addListener(RequestFutureListener requestFutureListener){</li><li>requestFutureListenerList.add(requestFutureListener);</li><li>/**</li><li>* 相当于给RequestFuture addListener</li><li>public void compose(ResponseHandleAdapter responseHandleAdapter){</li><li>addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>// 交回给各个请求处理类处理</li><li>responseHandleAdapter.onSuccess(s);</li><li>@Override</li><li>public void onFail() {</li><li>// 暂时不处理</li><li>});</li><li>public interface RequestFutureListener {</li><li>void onSuccess(String s);</li><li>void onFail();</li><li>如果需要实现链式调用，即调用了各个ResponseHandleAdapter 处理结果之后，还需要继续回调，那么可以修改</li><li>RequestFuture的compose方法为</li><li>public RequestFuture compose(ResponseHandleAdapter responseHandleAdapter){</li><li>// 这里实现将结果传播出去的关键代码，执行完各个responseHandleAdapter后，</li><li>// 链式的执行调用compose方法，调用compose方法会添加一个listener</li><li>final RequestFuture future = new RequestFuture();</li><li>addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>// 交回给各个请求处理类处理</li><li>responseHandleAdapter.onSuccess(s, future);</li><li>@Override</li><li>public void onFail() {</li><li>// 暂时不处理</li><li>});</li><li>return future;</li><li>修改ResponseHandleAdapter</li><li>public interface ResponseHandleAdapter {</li><li>void onSuccess(String s, RequestFuture future);</li><li>修改SendJoinGroupRequest</li><li>public class SendJoinGroupRequest extends AbstractRequestSend implements ResponseHandleAdapter {</li><li>public RequestFuture sendJoinGroupRequest(String s){</li><li>return send(s).compose(this);</li><li>@Override</li><li>public void onSuccess(String s, RequestFuture future) {</li><li>System.out.println(&quot;SendJoinGroupRequest执行结果: &quot; + s);</li><li>//将结果传播出去</li><li>future.onComplete(s);</li><li>public static void main(String[] args) {</li><li>SendJoinGroupRequest sendJoinGroupRequest = new SendJoinGroupRequest();</li><li>RequestFuture future = sendJoinGroupRequest.sendJoinGroupRequest(&quot;测试发送JoinGroup检测请求&quot;);</li><li>future.addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>System.out.println(&quot;我是SendJoinGroupRequest传播出来的，请求为:&quot; + s);</li><li>@Override</li><li>public void onFail() {</li><li>});</li><li>/* SendHeartbeatRequest sendHeartbeatRequest = new SendHeartbeatRequest();</li><li>RequestFuture future1 = sendHeartbeatRequest.sendHeartbeat(&quot;测试发送心跳检测请求&quot;);</li><li>future1.addListener(new RequestFutureListener() {</li><li>@Override</li><li>public void onSuccess(String s) {</li><li>System.out.println(&quot;我是SendHeartbeatRequest传播出来的，请求为:&quot; + s);</li><li>@Override</li><li>public void onFail() {</li><li>});*/</li><li>修改执行执行结果为</li><li>SendJoinGroupRequest执行结果: 测试发送JoinGroup检测请求远程调用结束</li><li>我是SendJoinGroupRequest传播出来的，请求为:测试发送JoinGroup检测请求远程调用结束</li></ul>
+<h3 class="sub">1. 如何设计一个安全的对外接口 ？</h3>
+<h3 class="sub">2. SpringBoot API 接口防刷</h3>
+<h3 class="sub">3. 带你全面了解 OAuth2.0</h3>
+<h3 class="sub">4. ChatGPT 中文版插件来了</h3>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 6 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>抽象方法 vs 匿名内部类回调</h4><p>抽象方法适合单个模板步骤交给子类；匿名内部类回调适合类内有多个方法需要抽象，把执行内容作为 Command 传入。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>模板方法式抽象</h4><p>父类 BaseService 用 final service 封装流程，validateRequest 为 protected abstract 交子类实现。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Future 模式异步抽象</h4><p>AbstractRequestSend 用 newSingleThreadExecutor 异步执行，send 立即返回 RequestFuture。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>compose 注册回调</h4><p>RequestFuture.compose 内部 addListener，异步完成后遍历 listener 回调各请求子类的 onSuccess。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>链式调用扩展</h4><p>要链式回调时，compose 内部新建并返回 future，onSuccess 改为携带 future 继续传播结果。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>模拟耗时 3000ms</h4><p>异步任务用 Thread.sleep(3000) 模拟远程调用耗时，随后 onComplete(res) 触发回调。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>公共流程在父类固定、可变逻辑下沉给子类，是高度抽象的统一思路。</li>
+          <li>Future 模式下，响应处理通过 compose 注册 listener 回调各请求子类的 onSuccess。</li>
+          <li>链式调用只需让 compose 返回新 future，并在 onSuccess 中把结果继续传播。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247488286&amp;idx=1&amp;sn=7aa3beb12b56ce03539db9fab07658ef" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247488286&amp;idx=1&amp;sn=7aa3beb12b56ce03539db9fab07658ef</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

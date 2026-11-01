@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 面试参考题二 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>面试 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">AI Agent 面试参考题二</h1>
+  <p class="lede">Agent Harness 运行时工程与框架选型面试题精讲</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>面试</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 22 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>开篇：Harness 方向</a>
+          <a href="#sec-02"><span class="n">02</span>三层工程区别</a>
+          <a href="#sec-03"><span class="n">03</span>Agent Engineering vs Harness</a>
+          <a href="#sec-04"><span class="n">04</span>harness 为何火</a>
+          <a href="#sec-05"><span class="n">05</span>新范式与论文</a>
+          <a href="#sec-06"><span class="n">06</span>主流框架盘点</a>
+          <a href="#sec-07"><span class="n">07</span>Claude Code 上下文管理</a>
+          <a href="#sec-08"><span class="n">08</span>LangGraph vs Deep Agents</a>
+          <a href="#sec-09"><span class="n">09</span>Runtime 统一适配</a>
+          <a href="#sec-10"><span class="n">10</span>Super 还是 Host+Sub</a>
+          <a href="#sec-11"><span class="n">11</span>LangGraph 状态快照</a>
+          <a href="#sec-12"><span class="n">12</span>Java 选 Spring AI</a>
+          <a href="#sec-13"><span class="n">13</span>非 Java 生态框架</a>
+          <a href="#sec-14"><span class="n">14</span>执行链与降级</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 开篇：Harness 方向</a>
+          <a href="#sec-02">02 三层工程区别</a>
+          <a href="#sec-03">03 Agent Engineering vs Harness</a>
+          <a href="#sec-04">04 harness 为何火</a>
+          <a href="#sec-05">05 新范式与论文</a>
+          <a href="#sec-06">06 主流框架盘点</a>
+          <a href="#sec-07">07 Claude Code 上下文管理</a>
+          <a href="#sec-08">08 LangGraph vs Deep Agents</a>
+          <a href="#sec-09">09 Runtime 统一适配</a>
+          <a href="#sec-10">10 Super 还是 Host+Sub</a>
+          <a href="#sec-11">11 LangGraph 状态快照</a>
+          <a href="#sec-12">12 Java 选 Spring AI</a>
+          <a href="#sec-13">13 非 Java 生态框架</a>
+          <a href="#sec-14">14 执行链与降级</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>开篇：Harness 方向</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>考的是理解力而非背诵，要体现为什么现在才火</li><li>覆盖第 24~36 题，共 13 道面试题</li></ul></div>
+<p>这一节是 2026 年才真正热起来的方向,考的是理解力而不是背诵。回答时要体现出「我知道它为什么现在才火」。</p>
+<p>题库来源：https://zhuanlan.zhihu.com/p/475962752</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>三层工程区别</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三代演进：Prompt 管指令、Context 管 token、Harness 管运行时</li><li>模型超阈值后，上下文与 harness 收益远大于 prompt 调优</li><li>生产看几百次调用的复合成功率</li></ul></div>
+<p>三代演进关系,一层比一层外延:</p>
+<table><thead><tr><th>层次</th><th>管什么</th><th>核心问题</th><th>典型动作</th></tr></thead><tbody><tr><td>Prompt Engineering</td><td>单次调用的指令文本</td><td>怎么把话说明白</td><td>Few-shot、CoT、角色设定、格式约束</td></tr><tr><td>Context Engineering</td><td>进模型的全部 token</td><td>怎么在有限窗口里放最有用的信息</td><td>检索、筛选、压缩、排序、分隔、卸载、缓存</td></tr><tr><td>Harness Engineering</td><td>模型之外的整套运行时</td><td>怎么让不可靠的模型产出可靠的系统</td><td>循环控制、工具治理、状态与沙箱、权限、可观测、评测、恢复</td></tr></tbody></table>
+<p>一句话区分:Prompt 是「说什么」,Context 是「给它看什么」,Harness 是「让它怎么干、干错了怎么办」。</p>
+<p>关键洞察:当模型能力超过某个阈值后,上下文和 harness 的收益远大于 prompt 调优。因为 prompt 调的是「一次调用」,而 harness 调的是「几百次调用的复合分布」——复合成功率才是生产系统真正的指标。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>Agent Engineering vs Harness</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Agent Engineering 是方法论全流程，Harness 是运行时设施</li><li>Harness 是 Agent Engineering 最重最硬的工程产出</li></ul></div>
+<ul><li>•  Agent Engineering(智能体工程) :偏 方法论与全流程 ,指把 Agent 从需求做成产品的工程实践:任务建模、架构选型(单/多 Agent)、工具设计、记忆与上下文策略、评测体系、上线运维。是「怎么造一个好 Agent」。</li><li>•  Harness(马具/挽具,喻「套住模型的笼子」) :偏 运行时的具体设施 ,指模型外面那层壳:循环驱动、工具执行器、上下文装配、状态持久化、沙箱、权限、中断恢复、可观测钩子。是「Agent 跑起来的那个容器」。</li></ul>
+<p>关系:Harness 是 Agent Engineering 里最重、最硬的一块工程产出。用一个比喻——模型是匹马,harness 是马具+缰绳+车厢;Agent Engineering 是你设计整条运输业务。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>harness 为何火</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三个原因：重心转移、Chain 变工具循环、横切关注点变多</li><li>LangChain 管怎么拼，Harness 管怎么管住</li></ul></div>
+<p>先承认:LangChain 确实在做 harness 的一部分——工具调用、链式编排、记忆抽象,这些都在做。</p>
+<p>但概念现在才火,有三个真实原因:</p>
+<ul><li>1.  模型变强了,编排的重心转移了。  模型弱的时候,价值在「怎么拼 prompt、怎么串 Chain」,所以框架以 Chain/Agent 抽象为中心;模型强了之后,模型自己会规划、会调工具, 框架该管的从「编排逻辑」变成了「运行时可靠性」 ——循环、预算、沙箱、恢复、权限,这些 LangChain 早期没当核心。</li><li>2.  范式从「Chain」变成「工具循环」。  现在是「一个模型 + 一堆工具 + 一个循环跑很久」,不再是「一串预设节点」。长时运行的 Loop 带来了 Chain 抽象里不存在的问题:上下文膨胀、死循环、跨会话状态、进程重启恢复。</li><li>3.  横切关注点变多了。  权限、审计、沙箱、成本、可观测,这些是 基础设施关注点 ,不属于「编排框架」的范畴。让业务代码里塞满这些,框架帮不上忙,于是需要一层专门的 Harness。</li></ul>
+<p>区别(和 LangChain 式框架的核心差异):</p>
+<table><thead><tr><th></th><th>LangChain 式框架</th><th>Harness</th></tr></thead><tbody><tr><td>定位</td><td>编排与抽象(怎么做流程)</td><td>运行时与治理(怎么跑得稳)</td></tr><tr><td>状态</td><td>主要在内存链上</td><td>显式持久化,可快照可恢复</td></tr><tr><td>关注</td><td>组件复用、链路拼装</td><td>循环控制、预算、隔离、审计、降级</td></tr><tr><td>与模型关系</td><td>强绑定抽象层</td><td>尽量不侵入,薄适配</td></tr></tbody></table>
+<p>本质:LangChain 是「怎么把 LLM 拼起来」,Harness 是「怎么把 LLM 管住」。前者是开发期问题,后者是生产期问题。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>新范式与论文</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Harness 内核：解耦、可恢复、薄抽象</li><li>Hermes 强调自我描述、自我修正与消息契约</li><li>论文按推理/技能/工具/记忆/评测五条线索回答</li><li>Hermes 是产品，Harness 是支撑它的基础设施</li></ul><div class="pit"><ul><li>不要背论文标题，讲清解决了什么问题</li></ul></div></div>
+<p>回答思路:先讲范式内核,再讲论文线索,最后给判断。不要背论文标题,讲清「它解决了什么」更重要。</p>
+<p>Harness 范式的内核:</p>
+<ul><li>• 把「模型」和「运行时」解耦:模型只负责一次决策,harness 负责循环、状态、工具、隔离、恢复。</li><li>• 强调 可恢复性 :每一步都是检查点,进程挂了能从中间续上。</li><li>• 强调 薄抽象 :不藏 prompt、不藏工具调用,便于调试与替换模型。</li><li>• 代表实践:Claude Code、各类 coding agent 的运行时。</li></ul>
+<p>Hermes 类范式的内核(自省/通信方向):</p>
+<ul><li>• 强调 Agent  自我描述与自我修正 :用结构化的自我反思和对外通信协议,让多个 Agent 之间传递「意图 + 状态 + 置信度」,而不是裸文本。</li><li>• 强调 消息契约 :Agent 间通信有 schema,可校验、可回放,降低「Markdown 传任务」的漂移问题。</li></ul>
+<p>论文线索方向(选自己真读过的讲):</p>
+<ul><li>• ReAct、Reflexion、Tree of Thoughts、Self-Refine —— 单 Agent 推理与自我改进的奠基工作。</li><li>• Voyager —— 技能库持续增长的开放式 Agent。</li><li>• Toolformer / ToolLLM —— 工具学习。</li><li>• Generative Agents —— 记忆、反思、规划的经典三件套。</li><li>• SWE-bench / AgentBench / τ-bench —— 评测范式(τ-bench 特别强调「同一任务多次采样」的 pass^k 指标)。</li><li>• Anthropic 的 Building effective agents 与上下文工程相关工程博客 —— 工程侧的权威表述。</li></ul>
+<p>收尾判断(面试加分):这些范式共同指向一个结论——模型越强,harness 越像「操作系统」而非「胶水」。价值会从 prompt 层上移到运行时层。</p>
+<p>Hermes和Harness理解</p>
+<p>Hermes：一个会“自我进化”的 AI 员工</p>
+<p>Hermes 是由 Nous Research 团队在 2026 年 2 月推出的开源自主 AI 智能体，国内开发者常昵称它为“爱马仕”或“马”。</p>
+<p>它和之前的同类产品（如 OpenClaw）最大的区别在于，它试图让 AI 拥有“自主进化”的能力，像一个会积累经验的员工，而不仅仅是一个需要你反复输入指令的高级工具。它的核心特点包括：</p>
+<p>自动生成与优化技能：当 Hermes 完成一个复杂任务后，它会自动总结步骤，生成一个可复用的“技能”文件。下次遇到类似问题，它能直接调用，甚至在使用中自己改进这个技能，不需要人工编写。</p>
+<p>选择性长期记忆：它会主动整理对话，提炼出你的偏好、工作模式等关键信息存入长期记忆，而不是把所有聊天记录都塞进去。这能让它越用越懂你，同时避免记忆膨胀导致的效率下降。</p>
+<p>定位：可以把它理解为一个装在你自己电脑或服务器上、能通过微信等工具随时召唤的“数字员工”，适合处理深度分析和跨场景的复杂任务。</p>
+<p>Harness：驾驭 AI 的“缰绳”与“操作系统”</p>
+<p>Harness 的本意是“马具、缰绳”。在 2026 年的 AI 行业讨论中，它被赋予了特殊的含义：它指的不是某一个具体软件，而是围绕大模型构建的一整套让它能稳定、可靠、安全运行的工程系统。</p>
+<p>行业里流传着一个公式：Agent = Model + Harness。如果说大模型（Model）是一匹动力强劲但桀骜不驯的“千里马”，那么 Harness 就是马具、缰绳、马车底盘的总和，负责把模型的能力转化为可靠的生产力。</p>
+<p>一个完整的 Harness 通常包含这些看不见的工程细节：</p>
+<p>上下文与记忆管理：如何高效利用有限的“脑容量”（上下文窗口），记住该记的，忘掉该忘的。</p>
+<p>工具调用与执行循环：如何规划任务、调用外部工具、在出错时重试。</p>
+<p>安全与权限控制：确保 AI 不会执行危险操作，符合企业规范。</p>
+<p>评估与验证：判断任务是否真的完成，而不是 AI 自己“觉得”完成了。</p>
+<p>这个概念之所以在 2026 年变得火热，是因为行业发现：决定一个 AI Agent 好不好用，模型本身的能力只是一部分，外面这圈“工程护栏”和“执行系统”才是落地的关键。许多头部公司（如 DeepSeek）也开始将自己的 Harness 框架开源，使其成为类似“操作系统底盘”的公共设施。</p>
+<p>两者的关联</p>
+<p>简单来说，Hermes 是一个产品，而 Harness 是支撑这类产品的技术理念或基础设施。Hermes 之所以显得“更聪明”，正是因为它内置了一套更先进的 Harness 设计（比如它的可写运行时和技能蒸馏机制），来管理记忆、调度技能。你可以把 Hermes 看作一个在“自我进化”这个特定方向上，把 Harness 做得很有特色的具体实践。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>主流框架盘点</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Python 九大框架，LangGraph 是多 Agent 主流</li><li>TS/JVM 各有对应，Claude Code 是 harness 标杆</li><li>选型三句话：显式状态机、企业治理、读代码学内核</li></ul></div>
+<p>按语言和定位分:</p>
+<p>Python:</p>
+<ul><li>•  LangGraph :图结构状态机,显式状态与检查点、支持 interrupt/恢复、多 Agent 编排能力强,是目前生产级多 Agent 的主流选择之一。</li><li>•  LangChain :组件库,生态最大。</li><li>•  LlamaIndex :偏 RAG 与数据编排,Agent 能力较薄。</li><li>•  AutoGen / AG2 :多 Agent 对话协作,GroupChat、辩论范式。</li><li>•  CrewAI :角色化多 Agent,上手快、抽象轻。</li><li>•  OpenAI Agents SDK (原 Swarm 演进):轻量、Handoff 机制清晰,适合读代码学 harness 内核。</li><li>•  Pydantic AI :强类型,输出的结构与校验做得好。</li><li>•  Smolagents :极简,主打 code-as-action(让模型写代码当动作)。</li><li>•  Google ADK :Google 官方 Agent 开发套件,A2A 协议生态。</li></ul>
+<p>TypeScript: Mastra、VoltAgent、LangChain.js、Vercel AI SDK(后者偏前后端一体的流式应用)。</p>
+<p>JVM: Spring AI / Spring AI Alibaba(企业 Java 栈首选)、LangChain4j(轻量,含 LangGraph4j 图编排)。</p>
+<p>自研 / 产品级 harness(值得借鉴设计):</p>
+<ul><li>•  Claude Code  —— 上下文管理、Skills、Subagent、权限模型,是当代 harness 的标杆样本。</li><li>•  OpenHands / SWE-agent  —— 开源 coding agent,沙箱与轨迹回放值得看。</li></ul>
+<p>我会怎么看选型:要显式状态机与恢复 → LangGraph / LangGraph4j;要企业 Java 治理 → Spring AI Alibaba;要读代码学内核 → Agents SDK / Smolagents。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>Claude Code 上下文管理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>五层机制：缓存、卸载、压缩、隔离、长期记忆</li><li>卸载优先于压缩，前缀稳定换缓存，隔离优于共享</li><li>压缩保留目标、事实、待办三类结构化信息</li></ul></div>
+<p>讲五层机制,这是最实际的答案:</p>
+<ul><li>1.  系统提示分层 + Prompt Caching :稳定不变的部分(工具定义、系统规则、项目 CLAUDE.md)放前面并缓存,动态部分放后面。缓存命中能大幅降本降延迟,这也是「为什么前缀要稳定」的工程原因。</li><li>2.  工具结果的卸载(offload) :大输出(长文件、大 JSON、长日志)不直接塞进上下文,落到磁盘,上下文里只留摘要或引用,需要时再读。这是控制上下文的 第一道闸 ,比压缩更有效。</li><li>3.  自动压缩(auto-compact) :接近窗口阈值时对历史做摘要压缩,保留最近若干轮原文 + 前面摘要。压缩时保留的结构化信息一般是:当前任务目标、已确认事实/决策、未完成的待办、关键文件路径。</li><li>4.  子 Agent 上下文隔离 :Subagent 有独立上下文窗口,只把「结论」返回主线程,不把搜索过程中读过的几十个文件内容带回来。这是「上下文不被污染」的关键设计。</li><li>5.  结构化长期记忆 :CLAUDE.md / memory 文件做跨会话事实沉淀,按需召回,不常驻上下文。</li></ul>
+<p>我认可的设计思想:①能不进上下文就不进(卸载优先于压缩);②前缀稳定换缓存;③隔离优于共享(子任务上下文别污染主线);④压缩要保留「目标 + 事实 + 待办」三类结构性信息,而不是无脑摘要。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>LangGraph vs Deep Agents</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>LangGraph 胜在显式状态机、可恢复、HITL、生态</li><li>Deep Agents 不稳：黑盒多、隐式压缩、迭代快、错误不透明</li></ul><div class="pit"><ul><li>节点副作用不幂等、隐式压缩漂移、错误被吞</li></ul></div></div>
+<p>选 LangGraph 的理由:</p>
+<ul><li>1.  显式状态机 :状态、转移、检查点都在代码里看得见,生产上可测可审,出问题能定位到节点。</li><li>2.  可恢复性 :checkpointer 支持中断续跑、时间旅行回放,长任务必备。</li><li>3.  HITL 原生支持 :interrupt / resume,审批类场景友好。</li><li>4.  生态与成熟度 :文档、案例、社区问题解决率高,踩坑成本低。</li><li>5.  不被单家模型/产品绑定 :换模型、换工具成本低。</li></ul>
+<p>Deep Agents 类框架不稳定的可能原因(讲机制,不针对具体产品):</p>
+<ul><li>1.  抽象过厚,黑盒多 :内置的子 Agent、文件系统、规划器都由框架托管,行为难预测,出问题只能猜。</li><li>2.  隐式压缩/摘要 :上下文被框架悄悄改写,导致行为漂移,且不可观测。</li><li>3.  迭代太快 :API 语义频繁变动,升级即回归。</li><li>4.  默认策略激进 :默认很长的最大轮次、默认启用自动重规划,在边界场景放大不确定性。</li><li>5.  错误处理不透明 :工具失败、模型格式错误时框架内部吞掉异常,业务层拿不到真实原因。</li><li>6.  提示词强耦合 :框架内置 prompt 针对特定模型调优,换模型效果陡降。</li></ul>
+<p>核心判断标准:生产选框架,看它的状态是否显式、失败是否可解释、能不能恢复,而不是看 demo 有多惊艳。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>Runtime 统一适配</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>收敛到一层抽象，差异下沉到适配器</li><li>统一接口/网关/注册中心/状态/可观测/能力路由七项</li><li>验收：新增 Runtime 只写 Adapter，业务零改动</li></ul></div>
+<p>核心思路:收敛到一层抽象,把差异下沉到适配器。</p>
+<ul><li>1.  统一接口层 :定义 Runtime 契约——invoke / stream / cancel / resume、统一事件模型(thought / tool_call / tool_result / final)、状态与检查点接口。所有 Runtime 都实现这套契约。</li><li>2.  适配器模式 :每个 Runtime 一个 Adapter,负责协议翻译(事件映射、错误码归一、状态格式转换),业务侧只见统一 API。</li><li>3.  统一模型网关 :Runtime 差异最大的往往是模型调用,抽到网关(路由、限流、成本、缓存、降级),Runtime 只当客户端。</li><li>4.  统一工具与 MCP 注册中心 :工具 / Skill / MCP Server 集中注册、版本化、灰度、权限挂载,任何 Runtime 都从注册中心取。</li><li>5.  统一状态存储 :会话、轨迹、检查点用统一 schema 落同一套存储,才能跨 Runtime 迁移和回放。</li><li>6.  统一可观测 :事件标准化的价值就在这——不同 Runtime 的轨迹能进同一个链路追踪与评测平台。</li><li>7.  能力矩阵 + 路由 :维护「哪个 Runtime 擅长什么」,按任务类型/成本/合规动态路由;新 Runtime 先跑影子流量对比。</li></ul>
+<p>验收标准:新增一个 Runtime 只需写一个 Adapter + 一套能力声明,业务代码零改动。</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>Super 还是 Host+Sub</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>长期是强 Host 加窄 Sub 加工具生态的混合形态</li><li>Sub 本质是上下文隔离，权限合规必须分域</li><li>终局哑铃型，半专业 Agent 层消失</li></ul></div>
+<p>我的判断:长期是「一个强 Host + 大量窄 Sub + 工具生态」的混合形态,而不是单一通吃。</p>
+<p>理由:</p>
+<ul><li>1.  上下文是硬约束。  任何单一 Agent 的窗口都有限,而专业任务(写代码、做财务、跑运维)需要的领域上下文互相冲突且体量巨大。Sub Agent 的本质是 上下文隔离 ,这是物理必要,不是架构偏好。</li><li>2.  专业化的收益来自「工具 + 提示 + 记忆」的组合 ,不只是模型智力。窄 Agent 能针对领域做深度优化(专用工具集、专用 Skill、专用评测集),通吃型做不到那么深。</li><li>3.  权限与合规必须分域。  财务 Agent 和运维 Agent 的权限必须切分,合并成超级 Agent 就等于把所有权限堆在一个进程里,事故面爆炸。</li><li>4.  可运维性 :窄 Agent 能单独评测、单独灰度、单独回滚;Super Agent 只能整体发布。</li></ul>
+<p>但要看到合流趋势:Host 本身会越来越强(模型能力 + 长上下文 + 记忆),很多原来需要 Sub Agent 的场景会被 Host 直接吃掉(简单检索、简单改写)。最终是哑铃型:一端越来越强的 Host,一端越来越专的 Sub Agent 与工具生态,中间那些「半专业」的 Agent 层会消失。</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>LangGraph 状态快照</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>LangChain 解决怎么拼，LangGraph 解决怎么跑与恢复</li><li>快照粒度是 super-step，thread_id 串版本链</li><li>恢复从 checkpoint 的 next 节点续跑，不重放历史</li></ul><div class="pit"><ul><li>恢复重跑 next 节点，节点副作用必须幂等</li></ul></div></div>
+<p>LangChain vs LangGraph:</p>
+<table><thead><tr><th></th><th>LangChain</th><th>LangGraph</th></tr></thead><tbody><tr><td>抽象</td><td>Chain / Runnable 线性组合</td><td>图 :节点 + 边 + 共享状态</td></tr><tr><td>控制流</td><td>以链式为主,循环靠 AgentExecutor</td><td>显式循环、条件边、并行分支</td></tr><tr><td>状态</td><td>主要在内存中随链传递</td><td>显式 State + 检查点持久化</td></tr><tr><td>恢复/中断</td><td>弱</td><td>强 :interrupt、resume、time travel</td></tr><tr><td>多 Agent</td><td>需上层封装</td><td>原生 Supervisor、Handoff、子图</td></tr><tr><td>定位</td><td>组件库与抽象层</td><td>有状态编排运行时</td></tr></tbody></table>
+<p>一句话:LangChain 解决「怎么拼」,LangGraph 解决「怎么跑、跑挂了怎么办」。 官方现在的方向也是把复杂 Agent 都引导到 LangGraph。</p>
+<p>状态快照(checkpointer)实现思路:</p>
+<ul><li>1.  Shared State :每个图有一个 TypedDict 风格的状态对象,节点函数接收状态、返回「增量更新」。更新语义由  reducer  决定——默认覆盖,也可定义为追加(如消息列表用  operator.add )。这是「多个节点并发写同一字段如何合并」的关键。</li><li>2.  Super-step 与 checkpoint :执行按 super-step 推进(一批可并行的节点算一个超级步), 每个 super-step 结束后把完整状态序列化,写成一条 checkpoint 。所以快照粒度是「步」,不是节点内部。</li><li>3.  线程与版本链 :用  thread_id  标识一条会话线;每个 checkpoint 有唯一 id 与父子指针(记录「下一步待执行的节点」),串成可回溯的版本链。同一线程保留多份历史 → 这就是 time travel 的基础。</li><li>4.  存储后端 :MemorySaver(内存,调试)、SqliteSaver、PostgresSaver(生产)。存的是序列化状态 + 元数据(待执行节点、各 channel 的版本号)。</li><li>5.  中断与恢复 :节点内  interrupt()  抛中断信号,此时状态已落盘,进程可退出;之后用  Command(resume=...)  继续同一 thread,引擎从 最后一个 checkpoint 记录的 next 节点 接着执行。因为状态是完整快照,恢复 不需要重放历史 。</li><li>6.  并发与合并 :同一 super-step 内多节点写同一 channel 时按 reducer 合并;检测到版本冲突则重新调度。channel 版本号支持增量更新,避免全量写。</li><li>7.  幂等性要求 :恢复是从 checkpoint 重跑 next 节点,所以 节点内的副作用必须幂等 ,或加「已执行标记」跳过——这是生产最容易踩的坑。</li></ul>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>Java 选 Spring AI</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>与 Spring 生态原生融合，接入成本几乎为零</li><li>统一抽象切换模型只改配置，治理能力齐备</li><li>Spring AI Alibaba 补齐 Graph 编排与国内适配</li></ul></div>
+<p>选 Spring AI 的核心理由:</p>
+<ul><li>1.  与 Spring 生态原生融合 :自动配置、依赖注入、Actuator 度量、配置中心、事务、AOP——企业 Java 系统这些设施都是现成的,接入成本几乎为零。</li><li>2.  可移植性抽象 : ChatClient  /  ChatModel  /  EmbeddingModel  /  VectorStore  一套统一抽象,切换模型供应商只改配置,不动业务代码。</li><li>3.  企业级治理能力 :重试、超时、限流、可观测(Observation / Micrometer)、结构化输出转换。这些是生产必需,Spring 体系天然有位置挂。</li><li>4.  团队与运维成本 :Java 团队不用引入 Python 服务,不用维护双语言技术栈和跨进程调用;发布、监控、安全流程完全复用。</li><li>5.  Spring AI Alibaba 补齐了 Agent 侧 :Graph 编排、Nacos 配置、通义/百炼适配、Function Calling 与 MCP 支持,国内落地顺畅。</li></ul>
+<p>LangChain4j 的优点(要客观说):轻量、迭代快、AI Service 声明式接口写起来很爽、社区活跃。</p>
+<p>选型结论:本来就是 Spring 技术栈 + 企业治理要求高 → Spring AI(代价是抽象更重、文档偏少、迭代保守);小工具、独立服务、快速验证 → LangChain4j 也合适。</p>
+<p>面试加分:明确说「框架选择的核心不是功能多少,而是它能不能复用你现有的治理能力(配置、监控、发布、安全)」,这体现企业视角。</p>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>非 Java 生态框架</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Python 主流最多，Go 有 Eino，Rust 有 Rig</li><li>n8n/Dify/Coze 等低代码平台业务侧常用</li><li>回答策略：挑 2~3 个讲差异而非罗列名字</li></ul></div>
+<p>Python(主流):LangGraph、LangChain、LlamaIndex、AutoGen/AG2、CrewAI、OpenAI Agents SDK、Pydantic AI、Smolagents、Google ADK、DSPy(编程式优化 pipeline)、Haystack。</p>
+<p>TypeScript / Node:Mastra、VoltAgent、LangChain.js、Vercel AI SDK。</p>
+<p>Go:Eino(字节开源,图编排 + 组件抽象,国内 Go 栈值得关注)、LangChainGo。</p>
+<p>Rust:Rig(轻量、类型安全)。</p>
+<p>其他:Semantic Kernel(.NET/多语言,微软系企业栈)、n8n / Dify / Coze(低代码编排平台,业务侧常用)。</p>
+<p>回答策略:挑 2~3 个讲清差异(例如 LangGraph 强在状态与恢复、CrewAI 强在角色化上手快、Eino 强在 Go 栈生产可用),比罗列一堆名字更有说服力。</p>
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>执行链与降级</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>执行链分层：校验、路由、装配、Loop、汇总、观测</li><li>降级按能力层级设计，七类失败各有三级兜底</li><li>幂等优先、预算全局化、降级可观测、兜底诚实</li></ul><div class="pit"><ul><li>不幂等操作禁止自动重试，只允许重试查询类</li></ul></div></div>
+<p>执行链分层设计:</p>
+<ul><li>请求 → 入口校验/鉴权 → 意图路由 → 上下文装配 → Agent Loop</li><li>├─ 模型调用(网关:重试/换模型/降级)</li><li>├─ 工具执行(超时/重试/幂等/熔断)</li><li>└─ 校验(输出结构 + 事实性)</li><li>→ 结果汇总 → 输出后处理 → 落库/观测</li></ul>
+<p>降级要按「能力层级」设计,而不是只有一个 catch:</p>
+<table><thead><tr><th>失败点</th><th>一级降级</th><th>二级降级</th><th>兜底</th></tr></thead><tbody><tr><td>主模型超时/不可用</td><td>换同级备用模型</td><td>换小模型 + 简化 Prompt</td><td>模板答案 / 排队重试</td></tr><tr><td>工具失败</td><td>指数退避重试(仅幂等)</td><td>换备选工具或数据源</td><td>标记该步不可用,继续或终止</td></tr><tr><td>单工具连续失败</td><td>熔断该工具并从候选摘除</td><td>用缓存/历史结果替代</td><td>上报人工</td></tr><tr><td>输出 JSON 崩坏</td><td>带错误信息让模型修复重试一次</td><td>宽松解析 / 字段补默认值</td><td>结构化模板兜底</td></tr><tr><td>上下文超限</td><td>压缩重跑</td><td>卸载大结果重跑</td><td>截断并明确告知丢失范围</td></tr><tr><td>多步任务中途失败</td><td>从最近检查点续跑</td><td>局部重规划(只重做失败子任务)</td><td>交付部分成果 + 人工接管</td></tr><tr><td>循环不收敛</td><td>强制终止 + 强制总结</td><td>降级为固定 Workflow</td><td>转人工</td></tr></tbody></table>
+<p>关键原则:</p>
+<ul><li>1.  幂等优先 :不幂等的操作禁止自动重试,只允许重试查询类。</li><li>2.  预算全局化 :一次请求的总 token / 总时长 / 总工具调用数要有硬上限,而不是各环节各自限制。</li><li>3.  降级也要可观测 :降级事件必须打点,否则你以为成功率 95%,其实 30% 是降级答案。</li><li>4.  兜底必须诚实 :降到人工或模板时明确告知用户「这是简化结果」,不要伪装成正常结果。</li></ul>
+<p>题库来源：https://zhuanlan.zhihu.com/p/475962752</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Prompt/Context/Harness 三层分工</h4><p>Prompt 管说什么、Context 管给什么看、Harness 管怎么干与干错怎么办。</p><a class="src-link" href="#sec-02">原文 → 三层工程区别</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>复合成功率才是生产指标</h4><p>prompt 调一次调用，harness 调几百次调用的复合分布。</p><a class="src-link" href="#sec-02">原文 → 三层工程区别</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Agent Engineering vs Harness</h4><p>前者是造 Agent 的全流程方法论，后者是让它跑起来的运行时容器。</p><a class="src-link" href="#sec-03">原文 → Agent Engineering vs Harness</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>LangChain 拼装 vs Harness 治理</h4><p>LangChain 管怎么拼、Harness 管怎么管住，分别对应开发期与生产期。</p><a class="src-link" href="#sec-04">原文 → harness 为何火</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>模型越强，harness 越像操作系统</h4><p>价值会从 prompt 层上移到运行时层。</p><a class="src-link" href="#sec-05">原文 → 新范式与论文</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Hermes：2026 年 2 月开源</h4><p>Nous Research 推出开源自主 Agent，主打技能自动生成与选择性长期记忆。</p><a class="src-link" href="#sec-05">原文 → 新范式与论文</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Claude Code 五层上下文机制</h4><p>提示分层加缓存、工具结果卸载、自动压缩、子 Agent 隔离、长期记忆。</p><a class="src-link" href="#sec-07">原文 → Claude Code 上下文管理</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>生产选框架三标准</h4><p>看状态是否显式、失败是否可解释、能不能恢复，而非 demo 惊艳。</p><a class="src-link" href="#sec-08">原文 → LangGraph vs Deep Agents</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>统一 Runtime 契约</h4><p>invoke/stream/cancel/resume 加统一事件模型与检查点接口，业务只见统一 API。</p><a class="src-link" href="#sec-09">原文 → Runtime 统一适配</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>哑铃型终局</h4><p>一端强 Host，一端专 Sub 与工具生态，中间半专业 Agent 层消失。</p><a class="src-link" href="#sec-10">原文 → Super 还是 Host+Sub</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>LangGraph checkpoint 七步</h4><p>Shared State、super-step 快照、thread_id 版本链、interrupt/resume。</p><a class="src-link" href="#sec-11">原文 → LangGraph 状态快照</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>降级要可观测、兜底要诚实</h4><p>不幂等禁止自动重试；降级事件打点，兜底告知是简化结果。</p><a class="src-link" href="#sec-14">原文 → 执行链与降级</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>生产系统真正的指标是复合成功率，而非单次调用成功率。</li>
+          <li>选框架看状态显式、失败可解释、能否恢复，别被 demo 迷惑。</li>
+          <li>降级要分层设计：幂等优先、预算全局化、兜底诚实可观测。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkzMTIzMTI1Ng==&amp;mid=2247483920&amp;idx=1&amp;sn=6b32b621acb6a199796724c68b1fb306" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkzMTIzMTI1Ng==&amp;mid=2247483920&amp;idx=1&amp;sn=6b32b621acb6a199796724c68b1fb306</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：面试 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
