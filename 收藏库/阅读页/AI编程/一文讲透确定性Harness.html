@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">一文讲透确定性Harness</h1>
+  <p class="lede">用确定性 Harness 把概率性 LLM 输出约束为可交付、可追溯的确定性结论</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 18 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>背景与痛点</a>
+          <a href="#sec-02"><span class="n">02</span>三大挑战</a>
+          <a href="#sec-03"><span class="n">03</span>Harness 定位</a>
+          <a href="#sec-04"><span class="n">04</span>技术拆解</a>
+          <a href="#sec-05"><span class="n">05</span>实战案例</a>
+          <a href="#sec-06"><span class="n">06</span>效果与方法论</a>
+          <a href="#sec-07"><span class="n">07</span>演进与边界</a>
+          <a href="#sec-08"><span class="n">08</span>结语</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 背景与痛点</a>
+          <a href="#sec-02">02 三大挑战</a>
+          <a href="#sec-03">03 Harness 定位</a>
+          <a href="#sec-04">04 技术拆解</a>
+          <a href="#sec-05">05 实战案例</a>
+          <a href="#sec-06">06 效果与方法论</a>
+          <a href="#sec-07">07 演进与边界</a>
+          <a href="#sec-08">08 结语</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>关注腾讯云开发者，一手技术干货提前解锁👇</p>
+<p>开发者公众号专属群聊</p>
+<p>Agent 圈流行一句话：「模型是商品，harness 才是护城河」。凡是「高风险 + 复杂分支 + 结论必须可解释」的决策场景，都会碰到同一面墙：模型是概率性的，结论必须是确定性的。本文不讲怎么把模型调得更聪明，讲的是一个更普遍的问题：高风险决策场景下，如何让一个agent概率性的输出，约束为确定性结论，达到可交付的标准？</p>
+<p>我们的答案是「确定性 Harness」。它做了四件事：把策略文档拆成阶段化的代码流水线；用 FlowTracer 把每一步的输入、输出、分支都留档；用 IsFinal 提前终止，能下结论就停；用统一网关加缓存，稳住外部依赖、幂等内部响应。LLM 在这套东西里不是主角，它是个可以随时插拔的判断单元。</p>
+<p>以工单审核业务为例验证这套框架。这条链路涵盖九个阶段、几十个条件分支、六步顺序校验，背后是策略文档、十几个原子接口、用户提交的多类材料，只要有一单判错就是客诉，典型的「结论必须负责」场景。</p>
+<p>工单审核结果直接决定用户、商家权益与合规认定。所以这个场景里，Agent 真正的门槛不是「模型能不能答对」，而是「它答完之后，谁来为这个答案负责」。模型能生成答案，却无法为答案背书；一个敢上线的 Agent，必须让每一个结论都能被验证、被追溯、被追责。这才是模型之外那层「执行纪律」存在的意义。</p>
+<p>整体架构图</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>背景与痛点</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>「接个 LLM 就够」是错觉，模型答案前还有主链路与一堆能力分支</li><li>工单审核九阶段、几十分支、六步顺序校验，单判错即客诉</li><li>三大痛点：黑盒不可解释、循环失控、证据链断裂</li></ul></div>
+<h3 class="sub">1.1 业务规模</h3>
+<h3 class="sub">1.2 痛点传递链</h3>
+<p>过去一个工单从进来到出结论，绕不开这条「人肉流水线」：</p>
+<p>业务预期vs工程现实</p>
+<p>一句话痛点：「接个 LLM 就够」是个错觉。模型回答要抵达用户屏幕前，还挡着一条主链路和一堆能力分支，真正的麻烦都在这些工程细节里。</p>
+<p>三个问题随之而来：</p>
+<table><thead><tr><th>痛点</th><th>表现</th></tr></thead><tbody><tr><td>黑盒不可解释</td><td>审单人员、用户、监管问「为什么驳回」，纯 LLM 答不上来</td></tr><tr><td>循环失控</td><td>工具调用链长、字段错配，模型一「死循环」就卡住整条流水线</td></tr><tr><td>证据链断裂</td><td>接口、模型、人工补充混在一起，事后复盘找不到「这一单凭什么这么判」</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>三大挑战</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>黑盒不可解释：纯 LLM 给不出可追溯到规则、证据、数据点的理由</li><li>循环失控：模型反复重试，接口开销实打实，出结论慢</li><li>证据链断裂：模型、工具、人工、缓存混在一起，无法回放判断轨迹</li><li>本质：LLM 概率性输出与确定性结论之间有先天鸿沟</li></ul><div class="pit"><ul><li>「接个 LLM、套个 prompt、直接上线」在高风险审单场景走不通</li></ul></div></div>
+<p>问题不在模型聪不聪明，而是高风险场景里有三个绕不开的坎，通用方案一个都接不住。</p>
+<h3 class="sub">2.1 黑盒不可解释</h3>
+<p>审单结论直接影响用户权益、合规认定、监管检查。结论必须能讲清楚为什么。纯 LLM 输出一句「我建议驳回」没用，得能追溯到具体规则、具体证据、具体数据点。</p>
+<h3 class="sub">2.2 循环失控</h3>
+<p>LLM Agent 容易「循环调用」：一个判断没得到想要的结果，它会换个说法再调一次、换个参数再试一遍，上下文越滚越长。一单审完要串起十几个原子接口、多份材料，每次重试都是一次实打实的接口开销，循环调用多了，工单结论出得慢。</p>
+<h3 class="sub">2.3 证据链断裂</h3>
+<p>模型调用、工具返回、人工补充、缓存命中混在一起，没有统一记录。一旦「为什么这么判」被质疑，找不到一处能回放完整判断轨迹的地方。高风险场景里，这是最不能接受的。</p>
+<p>这三个坎叠在一起，「接个 LLM、套个 prompt、直接上线」这条路在高风险审单场景里走不通。</p>
+<h3 class="sub">2.4 问题本质：确定性与概率性的矛盾</h3>
+<p>为什么这三个坎，用更聪明的模型、更精致的 prompt 都绕不过去？因为它们背后是同一个根子问题——LLM 本质上是概率性的，而工单审核要的是确定性。</p>
+<p>模型给的是「最可能的回答」，不是「必然正确的回答」。同一句话换种问法，答案可能不一样；同一个工单重跑一遍，结论可能漂移。放在写文案、做摘要里，这种漂移无伤大雅，甚至被称作「创造力」；但放在审单里，结论一旦漂移，就意味着同一条规则下，A 看到的结论是「驳回」、B 看到的是「通过」——这不可接受。</p>
+<p>所以真正的问题不是模型不够聪明，而是「概率性的判断」和「确定性的结论」之间，隔着一道先天的鸿沟。Harness 做的所有事，本质上都是在为这道鸿沟搭桥：用编排固定路径，用留痕固定证据，用终止固定边界，用网关固定依赖。桥搭稳了，模型这个「概率性的部件」，才能被安全地装进「确定性的机器」里。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>Harness 定位</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>模型是商品，harness 才是护城河</li><li>四设计：编排、留痕、终止、网关，回答路径/证明/边界/依赖四个问题</li><li>四个设计环环相扣，缺一个闭环就断</li></ul></div>
+<h3 class="sub">3.1 一句话哲学</h3>
+<p>模型是商品，harness 才是护城河。</p>
+<p>LLM 是可替换的判断单元；真正让高风险决策能上线、能查、能复盘的，是它外面那套执行纪律，我们叫它 Harness。</p>
+<h3 class="sub">3.2 Harness 的四个关键设计</h3>
+<p>Harness 关键设计总览</p>
+<p>这四件事不是并列的四个技巧，而是一条环环相扣的闭环：编排回答「该走哪条路」，留痕回答「走完怎么证明」，终止回答「走到哪一步就够了」，网关回答「路上的外部依赖怎么稳住」。少了留痕，编排跑得再顺，出了错也无从查起；少了终止，编排就成了「明知结果还要跑完全程」；少了网关，前面的编排、留痕、终止再完善，也会被一个不稳定的上游接口反复打断。四个设计缺一个，闭环就断了。</p>
+<h3 class="sub">3.3 层级职责矩阵</h3>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>技术拆解</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>阶段化编排：阶段函数签名统一，goto 标签保持线性主干</li><li>FlowTracer 用 BeginStage 开档、记输入/分支/输出、EndStage 收尾</li><li>IsFinal 短路：声明式 handler 列表，能下结论就 break</li><li>统一网关：CallLxAtomAPIs MD5 封装，TaskID 落 Redis 100h 缓存</li></ul></div>
+<h3 class="sub">4.1 阶段化编排：9 个阶段</h3>
+<p>🎯 挑战：策略文档几十个分支，深层 if/else 会晦涩冗长。</p>
+<p>💡 解决方案：拆成独立「阶段函数」，主流程用 goto 标签组织复杂分支，主干始终是一眼能看穿的线性结构。</p>
+<p>具体做法是：每个阶段都是一个签名统一的函数，只做一件事、只写自己负责的结果字段；主流程用 goto 标签把「条件命中 → 规则匹配 → 信息提取 → 状态判定 → 材料核验 → 打标结单」这条主线串成一条可读路径。新增一个判断点，就是新增一个函数加一段编排，不动既有分支。</p>
+<p>核心代码：阶段函数 + goto 标签编排</p>
+<ul><li>func (a *Agent) Main(ctx context.Context) (*Result, error) {</li><li>a.Tracer = NewFlowTracer()</li><li>// 阶段一</li><li>st := a.Tracer.BeginStage(&quot;阶段一：条件命中判断&quot;)</li><li>StageOne(ctx, &amp;a.Req, &amp;a.Rsp)</li><li>st.EndStage()</li><li>if a.Rsp.HitConditionA {</li><li>// 阶段二：规则匹配</li><li>StageTwo(ctx, &amp;a.Req, &amp;a.Rsp)</li><li>if !a.Rsp.RuleMatched {</li><li>goto TAG  // 未命中 → 直接打标结单</li><li>// 阶段三~六：信息提取 → 状态判定 → 分流...</li><li>} else {</li><li>goto VERIFY  // 走核验分支</li><li>VERIFY:</li><li>// 材料核验阶段</li><li>StageVerify(ctx, &amp;a.Req, &amp;a.Rsp)</li><li>TAG:</li><li>// 所有分支最终汇聚：打标/备注/结单</li><li>StageFinalTag(ctx, &amp;a.Req, &amp;a.Rsp)</li><li>a.Rsp.DebugTrace = a.Tracer.GetStages()</li><li>return &amp;a.Rsp, nil</li></ul>
+<p>关键设计：每个 StageXxx 是签名统一的阶段函数 (ctx, req, rsp) error，只写自己负责的字段；goto 标签让主干保持线性——分支再多也不会出现深层嵌套。</p>
+<p>阶段化编排</p>
+<p>📊 效果：新增阶段只改一处，review 一眼能定位；策略文档改动只需重写对应阶段函数，主流程骨架保持稳定。</p>
+<h3 class="sub">4.2 全链路留痕：FlowTracer</h3>
+<p>🎯 挑战：阶段一多，每一步「为什么这么判」就没人记得住了。</p>
+<p>💡 解决方案：每个阶段用 BeginStage 开档，SetInput / SetBranch / SetOutput / SetError 记数据，EndStage 收尾；调试开关默认关闭，需要时一键打开，零开销。</p>
+<p>实现上，追踪器是一个「阶段记录」数组。每个阶段 BeginStage 开一条记录，里面带着阶段名、开始时间、输入、接口原始返回、命中的分支、输出、错误；EndStage 收尾时把这一阶段的耗时也算好。整个数组最后随结果一起返回，方便逐阶段回放。</p>
+<p>FlowTracer 留痕记录</p>
+<p>核心代码：FlowTracer 数据结构与零开销设计</p>
+<ul><li>// debugEnabled 通过环境变量控制，关闭时 NewFlowTracer 返回 nil</li><li>var debugEnabled = os.Getenv(&quot;AGENT_DEBUG&quot;) != &quot;0&quot;</li><li>// StageTrace 单个阶段的追踪记录</li><li>type StageTrace struct {</li><li>StageName  string                 `json:&quot;stage_name&quot;`</li><li>StartTime  time.Time              `json:&quot;start_time&quot;`</li><li>CostMs     int64                  `json:&quot;cost_ms&quot;`</li><li>Inputs     map[string]interface{} `json:&quot;inputs&quot;`</li><li>RawAPIData map[string]interface{} `json:&quot;raw_api_data&quot;`   // 接口原始返回</li><li>BranchHit  string                 `json:&quot;branch_hit&quot;`     // 命中的分支</li><li>Outputs    map[string]interface{} `json:&quot;outputs&quot;`        // 写入 result 的字段</li><li>Error      string                 `json:&quot;error,omitempty&quot;`</li><li>// NewFlowTracer debug 关闭时返回 nil，所有方法空转，零开销</li><li>func NewFlowTracer() *FlowTracer {</li><li>if !debugEnabled {</li><li>return nil</li><li>return &amp;FlowTracer{Stages: make([]*StageTrace, 0)}</li><li>// BeginStage / EndStage — tracer 为 nil 时安全降级</li><li>func (t *FlowTracer) BeginStage(name string) *StageTrace {</li><li>if t == nil { return nil }</li><li>st := &amp;StageTrace{StageName: name, StartTime: time.Now(), /*...*/}</li><li>t.Stages = append(t.Stages, st)</li><li>return st</li><li>func (st *StageTrace) EndStage() {</li><li>if st == nil { return }</li><li>st.CostMs = time.Since(st.StartTime).Milliseconds()</li></ul>
+<p>关键设计：nil 安全降级——debug 关闭时 tracer 为 nil，所有 SetInput/SetOutput/SetBranch 方法第一行都是 if st == nil { return }，线上零开销；需要排查时改一个环境变量即可全量开启。</p>
+<p>📊 效果：每一单的完整判断轨迹都进 DebugTrace 字段，回放时一帧不差。线上默认关着不亏性能，需要排查时打开就行。</p>
+<h3 class="sub">4.3 提前终止：IsFinal 短路</h3>
+<p>🎯 挑战：6 步顺序校验里，前面已经能下结论的工单，没必要把后面步骤全跑一遍。</p>
+<p>💡 解决方案：每个 handler 设置 IsFinal=true，主循环立即跳出，结论能早一步出就早一步出。</p>
+<p>实现上，整个校验流程是一个声明式的 handler 列表，主循环按顺序执行：单个 handler 失败只记日志、继续走下一个；一旦某个 handler 判定「这一单已经有最终结论」，就置 IsFinal=true，主循环 break。新增一个校验节点，就是数组里加一项，主循环不用动。</p>
+<p>提前终止机制</p>
+<p>核心代码：声明式 handler 列表 + IsFinal 短路</p>
+<ul><li>// 主循环：顺序执行，失败不阻断，IsFinal 短路</li><li>for i, handler := range a.buildWorkFlow() {</li><li>if err := handler(ctx, &amp;a.Req, &amp;a.Rsp); err != nil {</li><li>log.Errorf(&quot;handler[%d] failed (continue): %v&quot;, i, err)</li><li>continue  // 单步异常不阻断</li><li>if a.Rsp.IsFinal {</li><li>break  // 能下结论就停，省掉后续步骤</li><li>// buildWorkFlow 声明式工作流 — 新增节点 = 数组加一项</li><li>func (a *Agent) buildWorkFlow() []FlowHandler {</li><li>return []FlowHandler{</li><li>CheckBasicInfo,       // 基本信息校验</li><li>CheckConditionMatch,  // 条件匹配</li><li>CheckMaterialA,       // 材料A核验</li><li>CheckMaterialB,       // 材料B核验</li><li>CheckMaterialC,       // 材料C核验</li><li>CheckFinalVerify,     // 最终校验</li></ul>
+<p>关键设计：continue 保证单步异常不炸全链路；IsFinal 保证能下结论就停——不让「已知结果还跑完全程」；新增校验节点只改声明数组，主循环零改动。</p>
+<p>📊 效果：能下结论就下结论，不用把后面的材料识别全跑一遍；新增校验节点就是数组里加一项。</p>
+<h3 class="sub">4.4 统一网关与缓存</h3>
+<p>🎯 挑战：十几个原子接口，签名各搞各的；同一工单重复查询会反复打接口。</p>
+<p>💡 解决方案：所有原子接口走同一条 CallLxAtomAPIs（MD5 签名封装）；结果按 TaskID 落 Redis 100h 缓存。</p>
+<p>📊 效果：上游接口签名统一，业务层只关心路径和 body；重复请求直接命中缓存，天然幂等。</p>
+<h3 class="sub">4.5 四件事的内在一致性</h3>
+<p>把四个设计拆开看，它们各解决一个问题；合起来看，它们遵循的是同一条原则——把「不可控」关进「可控」的笼子里。</p>
+<p>阶段化编排，是把不可控的分支关进可控的流程；全链路留痕，是把不可控的黑盒关进可控的记录；提前终止，是把不可控的循环关进可控的边界；统一网关与缓存，是把不可控的外部依赖关进可控的接口。</p>
+<p>四个「可控」，指向的是同一个词——确定性。这也是为什么这套骨架能沉淀成可复用的模式：它们不是审单的专属技巧，而是「如何让一个概率性系统变得确定」这个通用问题的四种解法。换个场景，分支还是那个分支、黑盒还是那个黑盒、循环还是那个循环、依赖还是那个依赖，解法不变。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>实战案例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>案例1：几十分支策略文档翻译成阶段函数+标签路由，DebugTrace 逐条回放</li><li>案例2：基本信息不过即 IsFinal 提前结单，3 秒拿驳回结论</li></ul></div>
+<h3 class="sub">5.1 案例 1：多分支审单主线</h3>
+<p>🎯 场景：业务的工单审核需要经过多轮条件判断，逐层判定用户提交的材料是否满足条件，最终决定通过还是驳回。</p>
+<p>Harness 表现：</p>
+<ul><li>阶段一判断工单类型，留痕记录命中的类型和分支；</li><li>阶段三从材料文本里正则提取关键编号，记录原始文本和提取结果；</li><li>阶段五判断状态，分支到不同的比对路径，每条分支都进 DebugTrace；</li><li>满足条件则通过结单，否则进入材料核验。</li></ul>
+<p>价值体现：一条几十个分支的策略文档，被翻译成「阶段函数 + 标签路由」的确定性代码，每一单都有一份完整的判断轨迹。审核员面对用户质疑时，调出 DebugTrace 就能逐条回放：这一步看到什么数据、命中了哪条规则、最后为什么这么判。</p>
+<h3 class="sub">5.2 案例 2：提前结单</h3>
+<p>🎯 场景：工单基本信息校验不通过，不该再走后续 5 步校验。</p>
+<p>Harness 表现：</p>
+<ul><li>基础信息校验一步判定「信息不存在」，设置  IsFinal=true ；</li><li>主循环立即  break ，不再触发后续的材料识别；</li><li>审核员 3 秒内拿到「驳回」结论，而不是等 5 个步骤全部跑完。</li></ul>
+<p>价值体现：提前终止把单工单耗时从「6 步全跑」压到「能下结论就停」，工单洪峰下尤其重要。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>效果与方法论</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>量化提效：单均耗时 2-3 分钟 → 20-40 秒</li><li>能力下沉：审核员看结论+回放，开发只写阶段业务判断</li><li>反直觉取舍：单步失败不阻断、留痕默认关闭、刻意用 goto</li></ul></div>
+<h3 class="sub">6.1 价值跃迁三重突破</h3>
+<p>价值跃迁三级阶梯</p>
+<p>⚡ 量化提效：工单平均处理耗时从 2-3 分钟压缩至 20-40 秒。</p>
+<p>📥 能力下沉：审核员从手动调接口加肉眼比对，变成看结论加调 DebugTrace 回放；开发从每个接口写样板代码，变成只写阶段业务判断。</p>
+<p>📚 模式升级：「确定性 Harness」这套思路能从审单场景搬到任何「强监管 + 复杂分支」的决策场景，沉淀成可复用的资产。</p>
+<h3 class="sub">6.2 方法论提炼</h3>
+<p>模型是商品，Harness 才是护城河：Model as Commodity, Harness as Moat</p>
+<p>Agent 时代真正稀缺的是让 LLM 敢上线的工程纪律，模型本身反而会被快速拉平。</p>
+<p>编排即流程，标签即路由：Orchestration as Flow, Labels as Routing</p>
+<p>把策略文档拆成阶段函数加标签路由，复杂分支也能保持线性可读，新增节点成本很低。</p>
+<p>留痕即可追溯：Tracer as Trust</p>
+<p>每一单的判断轨迹都进 DebugTrace，环境变量零开销开关，让「敢上线」和「能查账」同时成立。</p>
+<p>终止即效率：Final as Speed</p>
+<p>能下结论就立刻下，不让循环失控；IsFinal 短路让单工单耗时不再依赖「全链路跑完」。</p>
+<p>一些反直觉的取舍</p>
+<p>这套工程框架里有几个决策，看起来「反常识」，恰恰是它们最值得说：</p>
+<ul><li>单一阶段失败不阻断 。工程的第一反应是「出错就该停」，但我们选择「记下来、继续跑」。因为审单场景里，一个接口超时不该让整单卡死——给出一个「带着伤口的结论」，好过「没有结论」。</li><li>留痕默认关着 。可解释是刚需，但我们让它默认零开销。因为「需要时能查」和「平时不拖累」必须同时成立，否则留痕自己就会变成新的性能包袱。</li><li>用  goto  而非「更优雅」的结构 。 goto  在大众认知里是「坏味道」，但在分支密集的编排里，它反而是让主干保持线性的最直白手段。</li></ul>
+<p>这些取舍的价值，不在于它们本身多高明，而在于它们提醒我们：Agent 工程不是把软件工程的老规矩照搬过来，而是要回到「这个场景到底要什么」重新做判断。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>演进与边界</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>演进：挂载可插拔 LLM、主动巡检告警、可控写入走 L1/L2/L3</li><li>边界：纯生成、100% 黑盒、轻量单次任务不需要 harness</li><li>判断：结论需不需要对某个人、某条规则负责</li></ul><div class="pit"><ul><li>纯生成式任务用 harness 反而是负担</li><li>必须 100% 黑盒的探索任务与可解释诉求冲突</li><li>单次调用、无循环工具的轻量任务没有 harness 发挥空间</li></ul></div></div>
+<h3 class="sub">7.1 演进路线</h3>
+<ul><li>挂载可插拔的判断单元 ：在 stage 函数里把确定性判断逐步换成 LLM 调用，harness 整体保持不变。这正好是 Harness 设计预留的空间。</li><li>触发模式升级 ：从被动接收工单，升级为定时主动巡检、异常主动告警。</li><li>闭环动作扩展 ：从「只读判定 + 打标」逐步扩展到「可控写入」（自动回填标签、生成答复话术），但始终走 L1/L2/L3 等级。</li></ul>
+<h3 class="sub">7.2 适用边界</h3>
+<p>不适合本方案的场景：</p>
+<ul><li>场景 1：纯生成式任务（文案、翻译、摘要），用 prompt 工程就够了，harness 反而是负担。</li><li>场景 2：必须 100% 黑盒的探索性任务，本方案强调可解释可追溯，和黑盒诉求冲突。</li><li>场景 3：单次调用、不需要循环和工具的轻量任务，没有 harness 发挥空间。</li></ul>
+<p>核心判断：业务「高风险 + 复杂分支 + 必须可解释」，选 Harness 优先；「低风险 + 灵活开放 + 追求吞吐」，直接用模型即可。</p>
+<p>边界之外，还有一层更本质的判断：Harness 解决的是「结论要负责」的问题，而不是「结论要更快」的问题。如果你的场景根本不在乎结论可不可解释、可不可追溯，那 Harness 的每一层都是纯成本——留痕是多余的内存，编排是多余的代码，终止是多余的约束。</p>
+<p>所以该不该上 Harness，本质是问一句：这个 Agent 的结论，需不需要对某个人、某条规则、某次检查负责？需要，就值得为「确定性」付出工程成本；不需要，就让它自由地快。</p>
+<h3 class="sub">7.3 分级置信度</h3>
+<p>LLM 介入也按这个等级走：L1 让模型直接出结论；L2 模型给建议、人工拍板；L3 模型只能给 SOP，禁止自动执行。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>四件事没有一件是为了让模型更聪明</li><li>让 Agent 敢对结论负责的，是模型之外那层纪律</li></ul></div>
+<p>阶段化编排，把复杂分支翻译成可读的流程；全链路留痕，让每一次判断都有迹可循；提前终止，在能下结论时立刻收口；统一网关与缓存，把外部依赖关进笼子。</p>
+<p>四件事，没有一件是为了让模型更聪明。它们补的是模型天生缺的那块——约束与规范化的工程。它不指向任何一段代码，只指向一个判断：让 Agent 敢对结论负责的，从来不是模型的智力，而是模型之外那层纪律。</p>
+<p>-End-</p>
+<p>原创作者｜左昊</p>
+<p>感谢你读到这里，不如关注一下？👇</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>概率性 vs 确定性</h4><p>LLM 给的是最可能的回答，不是必然正确的回答；审单要求同规则下结论一致，结论漂移不可接受。</p><a class="src-link" href="#sec-02">原文 → 三大挑战</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>模型是商品，Harness 才是护城河</h4><p>LLM 是可替换的判断单元；让高风险决策能上线、能查、能复盘的是外面那套执行纪律。</p><a class="src-link" href="#sec-03">原文 → Harness 定位</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>单均耗时 2-3 分钟 → 20-40 秒</h4><p>确定性 Harness 上线后，工单平均处理耗时从 2-3 分钟压缩至 20-40 秒。</p><a class="src-link" href="#sec-06">原文 → 效果与方法论</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>阶段函数 + goto 标签</h4><p>每个 StageXxx 签名统一为 (ctx, req, rsp) error，主流程用 goto 标签保持线性，分支不深嵌套。</p><a class="src-link" href="#sec-04">原文 → 技术拆解</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>FlowTracer 零开销留痕</h4><p>debug 关闭时 NewFlowTracer 返回 nil，所有 Set/Begin/End 方法空转；排查时开环境变量全量开启。</p><a class="src-link" href="#sec-04">原文 → 技术拆解</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>IsFinal 短路</h4><p>声明式 handler 列表按序执行，失败 continue 不阻断；IsFinal=true 即 break，省掉后续步骤。</p><a class="src-link" href="#sec-04">原文 → 技术拆解</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>「接个 LLM 就够」是错觉</h4><p>模型回答要抵达用户屏幕前，还挡着主链路和一堆能力分支，真正麻烦在工程细节里。</p><a class="src-link" href="#sec-01">原文 → 背景与痛点</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>单步失败不该整单卡死</h4><p>一个接口超时不该让整单停摆；给出「带着伤口的结论」，好过没有结论，所以失败只记日志继续。</p><a class="src-link" href="#sec-06">原文 → 效果与方法论</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>该不该上 Harness</h4><p>看结论是否需要对某个人、某条规则、某次检查负责；需要就为确定性付出工程成本，否则让它自由地快。</p><a class="src-link" href="#sec-07">原文 → 演进与边界</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>九阶段六步校验</h4><p>工单链路九个阶段、几十个条件分支、六步顺序校验，背后是十几个原子接口与多类材料。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>高风险决策里真正稀缺的不是更聪明的模型，而是让 LLM 敢上线的工程纪律。</li>
+          <li>要不要上 Harness 只问一句：这个结论需不需要对某个人、某条规则、某次检查负责？</li>
+          <li>编排、留痕、终止、网关四设计互为闭环：少留痕查无对证，少终止白跑全流程，少网关被上游拖垮。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s/rQYSuTF98-xGcdgGPuNHjQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/rQYSuTF98-xGcdgGPuNHjQ</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

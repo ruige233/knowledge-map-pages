@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Harness不是目的，知识才是护城河 —— 一个AI工程交付团队的知识沉淀实践</h1>
+  <p class="lede">Harness工作流只是管道，团队知识的沉淀才是真正护城河</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 32 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>热潮与核心论断</a>
+          <a href="#sec-02"><span class="n">02</span>三支柱与知识位置</a>
+          <a href="#sec-03"><span class="n">03</span>知识为何比工作流重要</a>
+          <a href="#sec-04"><span class="n">04</span>三维知识分层架构</a>
+          <a href="#sec-05"><span class="n">05</span>知识库共建共享</a>
+          <a href="#sec-06"><span class="n">06</span>工作流服务知识沉淀</a>
+          <a href="#sec-07"><span class="n">07</span>三级索引与查询预算</a>
+          <a href="#sec-08"><span class="n">08</span>突破在场依赖</a>
+          <a href="#sec-09"><span class="n">09</span>落地经验与立场</a>
+          <a href="#sec-10"><span class="n">10</span>总结与展望</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 热潮与核心论断</a>
+          <a href="#sec-02">02 三支柱与知识位置</a>
+          <a href="#sec-03">03 知识为何比工作流重要</a>
+          <a href="#sec-04">04 三维知识分层架构</a>
+          <a href="#sec-05">05 知识库共建共享</a>
+          <a href="#sec-06">06 工作流服务知识沉淀</a>
+          <a href="#sec-07">07 三级索引与查询预算</a>
+          <a href="#sec-08">08 突破在场依赖</a>
+          <a href="#sec-09">09 落地经验与立场</a>
+          <a href="#sec-10">10 总结与展望</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：stevenpxiao</p>
+<p>当 Harness Engineering 成为 2026 年最热门的 AI 工程话题，业界争论焦点集中在&quot;该用多大的模型&quot;还是&quot;该搭多复杂的工作流&quot;时，我们团队在落地实践中发现了一个被低估的事实——构建 Harness 工作流不是最终目的，私域和团队知识的沉淀才是真正的技术护城河。本文分享我们在 AI Team 工程交付编排系统中，如何设计知识分层架构、如何让团队知识库共建共享、如何让工作流成为知识沉淀的载体、如何突破人机交互瓶颈实现随时随地的工作流流转，以及我们的落地经验和思考。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>热潮与核心论断</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Harness 源自“马具”隐喻：强调引导约束 AI 能力，而非增强模型本身。</li><li>三大实践侧重：Codex 人机交互协议、Cursor 多 Agent 协同、Claude Code 长时运行稳定性。</li><li>核心论断：护城河不在模型，而在垂直领域知识沉淀；工作流是管道，知识是活水。</li></ul></div>
+<p>2025 年末至 2026 年初，AI 工程领域掀起了一场关于 Harness Engineering 的热烈讨论。这个术语源自&quot;harness&quot;（马具）的隐喻——就像骑师通过缰绳和马鞍来引导马的力量走正确的方向，而非增强马本身的体能，Harness Engineering 强调的是引导和约束 AI 模型的能力，而非提升模型本身。</p>
+<p>从三大标志性实践来看，不同团队对 Harness Engineering 的侧重各有不同：</p>
+<table><thead><tr><th>实践方</th><th>核心关注</th><th>关键动作</th></tr></thead><tbody><tr><td>OpenAI — Codex</td><td>人机交互协议</td><td>零手写代码，通过精确的指令协议驾驭 Agent</td></tr><tr><td>Cursor — Self-Driving</td><td>多 Agent 协同</td><td>背景 Agent 自动检测冲突并运行测试</td></tr><tr><td>Anthropic — Claude Code</td><td>长时运行稳定性</td><td>多层记忆系统 + CLAUDE.md 约束，让 Agent 在复杂任务中保持一致性</td></tr></tbody></table>
+<p>这些实践无疑令人兴奋。但在我们团队深度实践的过程中，我们逐渐意识到一个更本质的问题——</p>
+<p>工作流只是管道，知识才是流过管道的活水。</p>
+<p>正如 Harness 圆桌讨论中的一个核心论断所指出的：</p>
+<p>&quot;将来的技术护城河不在模型，而在垂直领域知识的沉淀。&quot;</p>
+<p>模型会迭代，工具链会更新，工作流会重构。但你的团队在一个特定业务领域积累的领域模型、架构决策、最佳实践、已知陷阱、业务流程——这些知识是永恒的，是不会因为模型换代而失效的。</p>
+<p>这就是我们在 AI Team 项目中坚持的核心理念：</p>
+<p>Skill、Agent、工具链会随模型迭代更新，但领域知识是永恒的。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>三支柱与知识位置</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三支柱：上下文工程、架构约束、持续治理，分别包含记忆、编排、质量门禁等要素。</li><li>知识检索注入、长短期记忆、知识生命周期、自动衰减均在三支柱中。</li><li>知识管理本身是 Harness Engineering 的核心能力，而不是附属品。</li></ul><div class="pit"><ul><li>热潮中大家更关注工作流编排和 Agent 协同，忽略底层知识基础设施</li></ul></div></div>
+<p>在深入我们的实践之前，先简要回顾 Harness Engineering 的理论框架。Harness 的核心要素可以归结为三个支柱：</p>
+<ul><li>┌─────────────────────────────────────────────────────┐</li><li>│              Harness Engineering 三支柱               │</li><li>├─────────────────┬─────────────────┬─────────────────┤</li><li>│  上下文工程       │  架构约束        │  持续治理        │</li><li>│  Context Eng.    │  Architecture    │  Governance      │</li><li>├─────────────────┼─────────────────┼─────────────────┤</li><li>│ · 长/短期记忆    │ · Agent 编排模式 │ · 质量门禁       │</li><li>│ · 知识检索注入   │ · 状态机设计     │ · 知识生命周期   │</li><li>│ · 渐进式披露     │ · 降级策略       │ · 自动衰减       │</li><li>│ · 上下文防火墙   │ · 安全边界       │ · 持续进化       │</li><li>└─────────────────┴─────────────────┴─────────────────┘</li></ul>
+<p>注意看&quot;上下文工程&quot;这个支柱——知识检索注入和长/短期记忆赫然在列。再看&quot;持续治理&quot;——知识生命周期和自动衰减也是核心组成部分。</p>
+<p>换句话说，知识管理本身就是 Harness Engineering 的核心能力，而不是附属品。只是在当前的热潮中，大家更多关注了&quot;工作流怎么编排&quot;&quot;Agent 怎么协同&quot;这些更显眼的工程话题，而忽略了底层的知识基础设施。</p>
+<p>这就好比大家都在讨论高速公路该修几车道、立交桥该怎么设计，却忘了问：路上跑的车（知识）从哪来？到哪去？怎么维护？</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>知识为何比工作流重要</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>工作流可替换、知识可累积；如“广告预算高并发超扣需 Redis+Lua 原子性”恒有价值。</li><li>没有知识沉淀的工作流是一次性的：坑照踩、架构决策重复推导。</li><li>知识分散点/因果/时空三类，是团队复利资产，proven 条目让新人站在前人肩上。</li></ul><div class="pit"><ul><li>反模式：每次都从零跑全流程，不沉淀闭环，工具链不会越来越聪明</li></ul></div></div>
+<p>我们在实践中总结出三个关键认知：</p>
+<h3 class="sub">3.1 工作流是&quot;可替换的&quot;，知识是&quot;可累积的&quot;</h3>
+<p>像Anthropic的claude code本身就是一个极其纯粹的harness实现，他们在4月份发的# Emotion concepts and their function in a large language model论文就有类似的指向，可能未来的Mythos模型会通过探针系统 SAE 来实现模型的“情绪”稳定，进而从根本去实现harness希望解决的模型认知节省的问题。</p>
+<h3 class="sub">3.2 没有知识沉淀的工作流是&quot;一次性&quot;的</h3>
+<p>我们观察到一个反模式：团队搭了很复杂的 Agent 工作流，每次需求都跑一遍全流程，但每次都是从零开始。上一次踩过的坑，下一次照踩不误。上一次做过的架构决策，下一次重新推导一遍。</p>
+<p>这就是没有知识闭环的工作流——投入了工程成本搭建工具链，却没有让工具链变得越来越聪明。</p>
+<h3 class="sub">3.3 知识是团队的&quot;复利资产&quot;</h3>
+<p>知识分为三类：散点型知识（孤立的事实）、因果型知识（A 导致 B 的推理链）、时空型知识（特定场景和时间窗口下才成立的经验）。越是高阶的知识，越难以从模型中获得，越依赖团队的实践积累。</p>
+<p>当你的知识库有成百上千条 proven（经过多项目验证）的知识条目时，新来的成员、新启动的项目，都能&quot;站在前人肩上&quot;。这就是知识的复利效应。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>三维知识分层架构</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三维正交：存储层 Layer 0-P/0-T/1/2/3、类型 model/decision/guideline/pitfall/process、成熟度 draft→verified→proven。</li><li>知识可向上提升：项目知识若跨项目通用，自动提升到 Layer 1 或 Layer 2。</li><li>自动衰减：proven 12 个月未引用降 verified，verified 6 个月降 draft，draft 持续未引用归档。</li></ul><div class="pit"><ul><li>知识会过时，三年前的“最佳实践”可能因框架升级失效，需靠衰减退出活跃库</li></ul></div></div>
+<p>在 AI Team 系统中，我们设计了一套三维正交的知识体系架构。</p>
+<h3 class="sub">4.1 知识体系的三个维度</h3>
+<table><thead><tr><th>维度</th><th>回答的问题</th><th>定义</th></tr></thead><tbody><tr><td>存储层（在哪）</td><td>知识存在哪里？</td><td>Layer 0-P 0-T 1 2 3 — 从个人到团队到项目</td></tr><tr><td>知识类型（是什么）</td><td>知识描述的是什么？</td><td>model decision guideline pitfall process</td></tr><tr><td>成熟度（多可信）</td><td>知识经过多少验证？</td><td>draft → verified → proven</td></tr></tbody></table>
+<h3 class="sub">4.2 五层存储架构</h3>
+<ul><li>┌──────────────────────────────────────────────────────────────┐</li><li>│                      五层知识存储                              │</li><li>├──────────┬──────────────────────────────┬────────────────────┤</li><li>│ Layer 0-P │ 个人偏好 (~/.ai-team/)       │ 纯本地，不共享     │</li><li>│ Layer 0-T │ 团队约定 (team-conventions/) │ 团队级，Git 共享   │</li><li>│ Layer 1   │ 技术知识 (tech-wiki/)        │ 团队级，跨项目     │</li><li>│ Layer 2   │ 业务知识 (biz-wiki/{domain}/)│ 团队级，按领域     │</li><li>│ Layer 3   │ 项目知识 (docs/knowledge/)   │ 项目级，随项目走   │</li><li>└──────────┴──────────────────────────────┴────────────────────┘</li></ul>
+<p>为什么要分五层？ 因为不同范围的知识有不同的共享边界和生命周期。</p>
+<ul><li>Layer 0-P （个人偏好）：你喜欢 4 空格缩进还是 2 空格？偏好函数式还是面向对象？这是纯个人的，不应该强制给团队。</li><li>Layer 0-T （团队约定）：代码规范、Commit 规范、Review 标准。这是团队层面的&quot;宪法&quot;，相对稳定。</li><li>Layer 1 （技术知识）：跨项目通用的技术经验。比如&quot;Spring Boot 多租户拦截器设计模式&quot;、&quot;Optional 依赖传递陷阱&quot;。</li><li>Layer 3 （项目知识）：仅在当前项目有意义的上下文。比如&quot;本项目数据库用的是 TencentDB for MySQL 8.0&quot;。</li></ul>
+<p>关键设计：知识可以&quot;向上提升&quot;。 Layer 3 的项目知识，如果被判定为跨项目通用，会自动提升到 Layer 1 或 Layer 2。</p>
+<ul><li>Layer 3 (项目内)</li><li>│  所有类型，maturity 为 draft</li><li>├──→ Q1: 是否项目特有？ → 是：留在 Layer 3</li><li>├──→ Q2: 是否通用技术？ → 是：提升到 Layer 1 (tech-wiki)</li><li>└──→ Q3: 是否通用业务？ → 是：提升到 Layer 2 (biz-wiki)</li></ul>
+<h3 class="sub">4.3 五种知识类型</h3>
+<p>知识按&quot;描述的是什么&quot;分类，遵循 MECE（互斥且完全穷尽）原则：</p>
+<table><thead><tr><th>类型</th><th>定义</th><th>示例</th></tr></thead><tbody><tr><td>model</td><td>实体定义、数据结构、关系图</td><td>&quot;广告计划包含预算/出价/投放时段三个核心字段&quot;</td></tr><tr><td>decision</td><td>技术选型、架构决策及理由</td><td>&quot;选择事件驱动而非 RPC 同步，因为广告状态变更需要解耦&quot;</td></tr><tr><td>guideline</td><td>推荐做法 (recommend) 或禁止做法 (avoid)</td><td>recommend: &quot;公共模块变更后的兼容性检查清单&quot;</td></tr><tr><td>pitfall</td><td>已知风险、故障模式、排查步骤</td><td>&quot;广告预算扣减在高并发下会超扣&quot;</td></tr><tr><td>process</td><td>业务流程、状态机、操作步骤</td><td>&quot;广告审核：提交→机审→人审→上线&quot;</td></tr></tbody></table>
+<p>这五种类型覆盖了我们在实践中遇到的所有知识形态。每一条知识只属于一个类型，来源信息记录在元数据中用于溯源分析。</p>
+<h3 class="sub">4.4 三级成熟度 + 自动衰减</h3>
+<p>知识不是&quot;写完就完了&quot;。它有生命周期。</p>
+<ul><li>draft（新提取，单一来源）</li><li>↓ 在 1 个工作流中被成功引用</li><li>verified（单项目验证）</li><li>↓ 在 ≥2 个不同项目中被验证</li><li>proven（成熟/可信赖）</li></ul>
+<p>更关键的是自动衰减机制——知识如果长期不被引用，会自动降级：</p>
+<table><thead><tr><th>触发条件</th><th>衰减动作</th></tr></thead><tbody><tr><td>proven 条目 12 个月未被引用</td><td>降级为 verified</td></tr><tr><td>verified 条目 6 个月未被引用</td><td>降级为 draft</td></tr><tr><td>draft 条目持续未引用 + Lint 标记</td><td>归档，移出活跃索引</td></tr></tbody></table>
+<p>为什么需要衰减？ 因为知识也会过时。一条三年前的&quot;最佳实践&quot;，可能因为框架版本升级已经不再适用。与其让过时知识误导 Agent，不如让它自然衰减退出活跃库。</p>
+<p>这个设计借鉴了 Karpathy 在 LLM Wiki 概念中提出的 Lint 操作——定期识别矛盾、孤儿页、缺失交叉引用和数据缺口。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>知识库共建共享</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>知识库是独立 Git 仓库，作为单一事实来源，获得跨项目共享、生命周期独立、权限独立。</li><li>三种角色：maintainer 裁决、contributor 工作流贡献、reader 只消费。</li><li>贡献模式借鉴区块链：log.md 只追加、evidence 可溯源、maturity 多人验证提升。</li><li>冲突解决：纯新增/证据追加/成熟度提升自动合并，内容矛盾交 maintainer 裁决。</li></ul><div class="pit"><ul><li>内容矛盾需人工裁决；成熟度一升一降时保留较低成熟度并标记 contradiction</li></ul></div></div>
+<h3 class="sub">5.1 独立 Git 仓库 —— 知识的&quot;单一事实来源&quot;</h3>
+<p>我们做了一个关键的架构决策：团队知识库是一个独立的 Git 仓库，不寄生于任何业务项目。</p>
+<ul><li>team-knowledge.git                        ← 独立 Git 仓库</li><li>├── knowledge-catalog.md                  ← 全景目录（Agent 查询入口）</li><li>├── .knowledge-config.yaml                ← 团队配置（成员、冲突策略）</li><li>├── team-conventions/                     ← Layer 0-T: 团队约定</li><li>│   ├── coding-standards.md</li><li>│   └── commit-conventions.md</li><li>├── tech-wiki/                            ← Layer 1: 技术知识</li><li>│   ├── catalog.md                        ← 分类清单</li><li>│   ├── patterns/TK-PAT-001.md</li><li>│   └── anti-patterns/TK-AP-001.md</li><li>├── biz-wiki/                             ← Layer 2: 业务知识</li><li>│   └── {domain}/</li><li>│       ├── catalog.md</li><li>│       ├── entities/BK-AD-E001.md</li><li>│       └── pitfalls/BK-AD-P001.md</li><li>├── project-profiles/                     ← 项目画像</li><li>└── contributions/                        ← 贡献暂存区</li><li>├── pending/</li><li>└── conflicts/</li></ul>
+<p>为什么要独立仓库？</p>
+<ul><li>跨项目共享 ：同一个团队的多个项目连接同一个知识仓库，项目 A 沉淀的知识，项目 B 自动受益。</li><li>生命周期独立 ：业务项目可能归档或重构，但知识不应该跟着项目消失。</li><li>权限独立 ：知识库的贡献和消费权限可以独立于代码仓库管理。</li></ul>
+<h3 class="sub">5.2 三种团队角色</h3>
+<table><thead><tr><th>角色</th><th>权限</th><th>适用人群</th></tr></thead><tbody><tr><td>maintainer</td><td>裁决内容冲突、审批 proven 提升、管理成员</td><td>团队负责人、资深工程师</td></tr><tr><td>contributor</td><td>通过工作流自动贡献（创建/验证/标记矛盾）</td><td>正式团队成员</td></tr><tr><td>reader</td><td>只消费知识（查询/注入），不贡献</td><td>新成员试用期</td></tr></tbody></table>
+<h3 class="sub">5.3 贡献模式 —— &quot;贡献暂存 + 异步合并&quot;</h3>
+<p>我们借鉴了区块链的三个核心思想，但用 Git 作为实现载体：</p>
+<table><thead><tr><th>区块链思想</th><th>AI Team 实现</th><th>机制</th></tr></thead><tbody><tr><td>不可篡改的追加日志</td><td>log.md 只追加不修改</td><td>每条变更记录贡献者、时间、会话哈希</td></tr><tr><td>贡献可溯源</td><td>evidence.contributors[]</td><td>类似 Git blame，粒度为知识条目级</td></tr><tr><td>共识机制</td><td>maturity 多人验证提升</td><td>draft→verified: 1 人验证; verified→proven: ≥2 人 + ≥2 项目</td></tr></tbody></table>
+<p>log.md 示例：</p>
+<ul><li>## [2026-04-09] ingest | [Steven] | 门店履约视图归档 | +1 decision, +2 guideline | #a3f8c2</li><li>- 新增 DEC-005: 地图组件选型（腾讯地图 GL JS SDK）</li><li>- 新增 GL-012: fitBounds 在 flexbox 布局中的替代方案 (polarity=recommend)</li><li>## [2026-04-12] verify | [Alice] | 跨项目验证 | maturity↑ 2 | #c5f0e2</li><li>- TK-SB-003 &quot;分页查询延迟关联优化&quot; (verified→proven, 2 projects)</li></ul>
+<h3 class="sub">5.4 冲突解决策略</h3>
+<p>当多名成员同时向知识库贡献时，按以下策略自动处理：</p>
+<table><thead><tr><th>冲突类型</th><th>处理方式</th></tr></thead><tbody><tr><td>纯新增 （不同条目）</td><td>自动合并，两条都保留</td></tr><tr><td>证据追加 （同条目验证）</td><td>自动合并，evidence 数组合并去重</td></tr><tr><td>成熟度提升</td><td>自动合并</td></tr><tr><td>内容矛盾</td><td>写入 contributions/conflicts/，通知 maintainer 裁决</td></tr><tr><td>成熟度冲突 （一升一降）</td><td>保留较低成熟度 + 标记 contradiction</td></tr></tbody></table>
+<p>设计理念：大多数情况（纯新增、证据追加、成熟度提升）可以自动处理，只有真正的内容矛盾才需要人工介入。这让知识的共建过程尽可能低摩擦。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>工作流服务知识沉淀</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>16 阶段状态机每阶段与知识流动关联，三通道沉淀：/flow-import 冷启动、/flow-run 每次需求。</li><li>三关键时刻：INIT 注入知识、各阶段按需查询、ARCHIVE 由 @archiver 提取并判定提升。</li><li>各阶段按查询预算聚焦不同知识类型，避免上下文膨胀。</li></ul><div class="pit"><ul><li>Agent 无限制读取知识库会导致上下文膨胀，需用预算让消费精准而非贪婪</li></ul></div></div>
+<p>现在回到工作流。在 AI Team 系统中，我们的 16 阶段状态机不是为了&quot;好看&quot;或&quot;复杂&quot;——它的每一个阶段都与知识的流动紧密关联。</p>
+<h3 class="sub">6.1 知识的完整生命周期：三通道沉淀</h3>
+<ul><li>/flow-import（一次性冷启动）        /flow-run（每次需求）</li><li>│                                │</li><li>▼                                ▼</li><li>冷启动导入                       INIT: git pull 知识仓库</li><li>3 Agent 管道                          │  + 注入查询入口</li><li>→ 知识写入团队仓库                    │</li><li>│  ← Agent 在各阶段按需查询</li><li>│     （三级渐进式索引）</li><li>ARCHIVE: 知识提取 + 提升判定</li><li>├→ Layer 3: docs/knowledge-base/</li><li>├→ Layer 1: tech-wiki/  ← git push</li><li>└→ Layer 2: biz-wiki/  ← git push</li><li>下一个人的 /flow-run 自动受益</li></ul>
+<p>三个关键时刻：</p>
+<ul><li>INIT 阶段（知识注入） ：工作流启动时，自动  git pull  团队知识仓库，将知识全景目录注入 Agent 的查询入口。新启动的工作流自动站在前人肩上。</li><li>各阶段执行中（知识消费） ：Agent 在决策点按需查询知识库。比如  @tech-explorer  在技术分析阶段查询&quot;有没有类似的架构决策&quot;， @backend-architect  在架构设计阶段查询&quot;有没有已知的反模式&quot;。</li><li>ARCHIVE 阶段（知识提取） ：工作流完成后， @archiver  自动从全流程产物中提取知识条目——架构决策变成  decision ，踩过的坑变成  pitfall ，总结的经验变成  guideline 。提取后执行提升判定，符合条件的自动提升到 Layer 1 或 Layer 2。</li></ul>
+<h3 class="sub">6.2 各阶段查询什么知识</h3>
+<p>每个阶段的 Agent 有独立的查询预算，聚焦不同类型的知识：</p>
+<table><thead><tr><th>阶段</th><th>查询焦点</th><th>重点知识类型</th></tr></thead><tbody><tr><td>ANALYSE_PRODUCT</td><td>业务知识 (Layer 2) + 历史需求</td><td>model, process, pitfall</td></tr><tr><td>ANALYSE_TECH</td><td>技术知识 (Layer 1) + 归档索引</td><td>decision, guideline(avoid), pitfall</td></tr><tr><td>ARCHITECT</td><td>架构模式 + 实体关系</td><td>decision, model</td></tr><tr><td>IMPLEMENT</td><td>编码实践 + 团队约定</td><td>guideline, pitfall</td></tr><tr><td>BUILD_VERIFY</td><td>反模式库</td><td>pitfall, guideline(avoid)</td></tr></tbody></table>
+<p>为什么要限制查询预算？ 因为 Agent 如果无限制地读取知识库，会导致上下文膨胀——这恰恰是 Harness Engineering 要解决的核心问题之一。我们通过预算控制，让知识消费&quot;精准&quot;而非&quot;贪婪&quot;。</p>
+<h3 class="sub">6.3 冷启动导入 —— /flow-import</h3>
+<p>对于历史项目（已有大量代码但没有知识库），我们提供了 /flow-import 命令，通过 3 个 Agent 的管道实现冷启动：</p>
+<ul><li>@doc-collector → 多源资料收集</li><li>│              （Git/TAPD/iwiki/本地文档/口述）</li><li>@codebase-profiler → 代码画像</li><li>│                   （技术栈/模块/依赖/模式，60 次搜索预算）</li><li>@knowledge-builder → 知识标准化</li><li>（4 维基线 + ≤13 条知识条目 + 归档总结）</li></ul>
+<p>所有产出条目初始 maturity 为 draft，后续工作流的执行会逐步验证和提升它们。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>三级索引与查询预算</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>从“推送”转向“主动查询”，避免信息过载与不精准。</li><li>三级渐进式索引：全景目录~50行、分类清单~100-300行、完整条目~50-200行，按需逐层深入。</li><li>knowledgeReferences 引用追踪形成闭环，被引用提升、未引用自动衰减。</li></ul><div class="pit"><ul><li>一次性推送 50 条完整知识可能达 5000-10000 行，造成上下文膨胀</li></ul></div></div>
+<h3 class="sub">7.1 从&quot;推送&quot;到&quot;主动查询&quot;的范式转变</h3>
+<p>传统做法是在 Agent 启动时，把一堆知识&quot;推送&quot;给它。这有两个问题：</p>
+<ul><li>信息过载 ：推送太多知识，Agent 反而被淹没，找不到关键信息。</li><li>不精准 ：预先推送的知识不一定是 Agent 当前决策点需要的。</li></ul>
+<p>我们的设计理念是：Agent 不被动接收固定数量的知识推荐，而是通过三级渐进式索引主动按需查阅。</p>
+<h3 class="sub">7.2 三级渐进式索引</h3>
+<p>借鉴 Karpathy 的 LLM Wiki Pattern，我们设计了三层索引结构：</p>
+<table><thead><tr><th>层级</th><th>文件</th><th>大小</th><th>作用</th></tr></thead><tbody><tr><td>Layer A: 全景目录</td><td>knowledge-catalog.md</td><td>~50 行</td><td>&quot;知识库有什么？&quot;——分类统计 + 按阶段推荐查阅路径</td></tr><tr><td>Layer B: 分类清单</td><td>各目录下的 catalog.md</td><td>~100-300 行</td><td>&quot;这个分类有哪些条目？&quot;——每条一行摘要（ID + 标题 + 成熟度 + 标签）</td></tr><tr><td>Layer C: 完整条目</td><td>TK-*.md / BK-*.md</td><td>~50-200 行</td><td>&quot;这条知识说了什么？&quot;——完整内容 + 背景 + 适用场景</td></tr></tbody></table>
+<p>渐进查询流程：</p>
+<ul><li>Step 1: 读全景目录（~50 行，零成本）</li><li>→ 了解知识库有什么分类、每类多少条</li><li>→ 定位当前阶段推荐查阅的 catalog.md 路径</li><li>Step 2: 读分类清单（~100-300 行，低成本）</li><li>→ 每条知识一行摘要</li><li>→ 按 tags / applicable_phases 过滤相关条目</li><li>Step 3: 读完整条目（按需，每条 50-200 行）</li><li>→ 获取完整知识内容</li><li>Step 4: 读原始产物（深入，可选）</li><li>→ 沿 source_references 追溯原始推导过程</li></ul>
+<p>这意味着 Agent 可以用 ~50 行的成本 了解知识库全貌，用 ~300 行的成本 定位到相关条目，只在真正需要时才读取完整内容。对比&quot;一次性推送 50 条完整知识&quot;（可能 5000-10000 行），上下文效率提升了一个数量级。</p>
+<h3 class="sub">7.3 知识引用追踪闭环</h3>
+<p>Agent 查询知识后，在输出产物中记录引用：</p>
+<ul><li>&quot;knowledgeReferences&quot;: [</li><li>{ &quot;id&quot;: &quot;TK-SB-003&quot;, &quot;title&quot;: &quot;分页查询延迟关联优化&quot;, &quot;usedIn&quot;: &quot;复用评级 Step 2&quot; },</li></ul>
+<p>ARCHIVE 阶段会读取所有阶段产物中的 knowledgeReferences，批量更新 evidence.last_referenced 字段。这形成了自动化的引用追踪闭环——被引用的知识 maturity 会自动提升，长期未引用的会自动衰减。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>突破在场依赖</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>在场依赖：一天能坐工位操控 Agent 常不足 4 小时，离开即暂停，效率至少折半。</li><li>解法：Hapi 内网版远程操控+跨设备接管，办公网下用手机/浏览器接管开发机 AI 会话。</li><li>文件系统即状态机使暂停不丢进度，但暂停过久拉长交付周期、降低知识沉淀时效。</li><li>架构启示：状态持久化、断点恢复、异步审批、通知触达。</li></ul><div class="pit"><ul><li>人工确认节点（架构评审、产物验收）导致工作流卡住，交付 1 天变 3 天</li></ul></div></div>
+<p>前面七个章节聚焦于&quot;知识如何沉淀&quot;和&quot;工作流如何服务于知识&quot;。但在实际落地中，我们遇到了一个被普遍忽视的工程现实——</p>
+<p>工作流的流转依赖于人的在场。</p>
+<p>16 阶段状态机设计得再精密，如果 Agent 在执行过程中需要人工确认（比如架构评审节点、产物验收节点），而你恰好在开会、通勤、或者吃饭——工作流就卡住了。这不是知识架构的问题，而是人机交互模式的瓶颈。</p>
+<h3 class="sub">8.1 问题：Harness 工作流的&quot;在场依赖&quot;</h3>
+<p>传统的 Agent 工作流有一个隐含假设：操作者坐在电脑前，IDE 打开着，随时可以响应 Agent 的请求。</p>
+<p>但现实是：</p>
+<ul><li>┌─────────────────────────────────────────────────┐</li><li>│            一个典型的工作日                        │</li><li>├─────────┬──────────────┬────────────────────────┤</li><li>│ 09:00   │ 站会         │ ❌ 无法响应 Agent       │</li><li>│ 10:00   │ 坐在工位     │ ✅ 可以操作              │</li><li>│ 11:30   │ 技术评审会   │ ❌ 无法响应 Agent       │</li><li>│ 12:00   │ 午饭+午休    │ ❌ 无法响应 Agent       │</li><li>│ 14:00   │ 坐在工位     │ ✅ 可以操作              │</li><li>│ 15:30   │ 跨团队沟通   │ ❌ 无法响应 Agent       │</li><li>│ 17:00   │ 通勤回家     │ ❌ 无法响应 Agent       │</li><li>│ 20:00   │ 在家想处理   │ ❌ 内网环境不可达       │</li><li>└─────────┴──────────────┴────────────────────────┘</li></ul>
+<p>一天 8 小时工作，真正能&quot;坐在工位操控 Agent&quot;的时间可能不到 4 小时。更关键的是，那些&quot;碎片时间&quot;——会议间隙的 5 分钟、通勤路上的 30 分钟、晚饭后想 review 一下——恰恰是 Agent 需要你确认的黄金窗口。</p>
+<p>如果工作流在你离开时就暂停，在你回来时才继续，那工作流的效率至少折半。</p>
+<h3 class="sub">8.2 解法：远程操控 + 跨设备接管</h3>
+<p>在实际工程实践中，我们引入了 Hapi 内网版来解决这个问题。它的核心能力是：</p>
+<p>在办公网下（不需要开启IOA远程工作，微信或企微均可直接打开），用手机远程接管运行在开发机上的 AI 编程会话。</p>
+<p>这意味着：</p>
+<ul><li>┌──────────────────────────────────────────────────────────┐</li><li>│                  改进后的工作模式                           │</li><li>├──────────┬───────────────┬───────────────────────────────┤</li><li>│ 09:00    │ 站会          │ 📱 手机扫一眼 Agent 进展       │</li><li>│ 10:00    │ 坐在工位      │ 💻 IDE 深度操作                │</li><li>│ 11:30    │ 评审会间隙    │ 📱 手机确认 Agent 架构方案     │</li><li>│ 12:30    │ 午饭后        │ 📱 手机 review Agent 产物      │</li><li>│ 14:00    │ 坐在工位      │ 💻 IDE 深度操作                │</li><li>│ 15:30    │ 跨团队沟通后  │ 📱 手机批准 Agent 下一阶段     │</li><li>│ 17:30    │ 通勤路上      │ 📱 手机启动新工作流            │</li><li>│ 20:00    │ 在家          │ 💻 浏览器远程操控开发机        │</li><li>└──────────┴───────────────┴───────────────────────────────┘</li></ul>
+<p>核心能力矩阵：</p>
+<table><thead><tr><th>能力</th><th>说明</th><th>对 Harness 工作流的意义</th></tr></thead><tbody><tr><td>跨设备会话接管</td><td>手机/平板/电脑均可接管同一 Agent 会话</td><td>工作流不因设备切换而中断</td></tr><tr><td>24 小时待机</td><td>开发机上的 Agent 持续运行</td><td>工作流可以 7×24 小时流转</td></tr><tr><td>PWA 原生体验</td><td>安装到桌面后像原生 App</td><td>降低远程操控的使用门槛</td></tr><tr><td>多助手切换</td><td>支持 Codebuddy/Codex/Gemini 等</td><td>适配不同 Agent 引擎的工作流</td></tr><tr><td>自主模式</td><td>YOLO 模式让 Agent 自主执行</td><td>减少人工确认频率</td></tr></tbody></table>
+<h3 class="sub">8.3 与知识沉淀闭环的结合</h3>
+<p>远程操控能力不仅解决了&quot;人机交互&quot;的效率问题，更重要的是保障了知识沉淀闭环的完整性。</p>
+<p>回顾第六章的知识流动路径：</p>
+<ul><li>INIT（知识注入）→ 各阶段执行（知识消费）→ ARCHIVE（知识提取）</li></ul>
+<p>需要说明的是，由于我们的 Harness 工作流采用&quot;文件系统即状态机&quot;的设计，暂停本身不会丢失任何进度——所有阶段产物和状态都持久化在文件中，随时可以从断点恢复。但暂停过久带来的真正问题是效率和时效性：</p>
+<ul><li>交付周期拉长 ：一个原本 Agent 可以连续推进的需求，因为卡在人工确认节点（如架构评审、产物验收），从 1 天交付变成 3 天交付。工作流没出错，只是在&quot;等人&quot;。</li><li>知识沉淀的时效性下降 ：ARCHIVE 阶段的知识提取依赖工作流完整走完。流程卡得越久，新产生的知识沉淀到团队知识库的速度就越慢，后续需求无法及时消费到最新的经验。</li><li>碎片时间浪费 ：你在会议间隙有 5 分钟、通勤路上有 30 分钟，这些碎片时间本可以推进工作流，但因为不在工位、没有 IDE 环境而白白流失。</li></ul>
+<p>有了远程操控能力后，这些碎片时间都能被利用——工作流可以更紧凑地走完全流程，从 INIT 的知识注入，到各阶段的知识消费和决策确认，到 ARCHIVE 的知识提取和自动提升，大幅缩短交付周期，加速知识沉淀闭环的流转。</p>
+<h3 class="sub">8.4 工程架构设计启示</h3>
+<p>这个经验给我们的 Harness 工程架构设计带来一个重要启示：</p>
+<p>好的 Harness 工程不仅要设计&quot;Agent 怎么跑&quot;，还要设计&quot;人怎么随时参与&quot;。</p>
+<p>具体到架构层面，这意味着：</p>
+<ul><li>状态持久化 ：工作流的状态必须是持久化的（文件系统即状态机），而不是存在内存中。这样无论从哪个设备接入，都能看到一致的状态。</li><li>断点恢复 ：每个阶段的入口和出口都有明确的持久化产物，支持从任意断点恢复。</li><li>异步审批 ：人工确认节点应设计为异步模式——Agent 提交产物、暂停等待，人类可以在任意时间、任意设备上审批后，Agent 继续执行。</li><li>通知触达 ：关键节点（如架构评审、产物验收）应通过企业微信等渠道主动推送，而非被动等待人来检查。</li></ul>
+<p>这些设计与 AI Team 的&quot;文件系统即状态机&quot;哲学天然契合——所有状态都在文件中，不依赖内存或特定进程，远程设备通过 Web 界面看到的就是真实的工作流状态。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>落地经验与立场</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>冷启动：多源收集 + 渐进导入（初始 draft，置信度 0.5-0.6）+ import-state.json 断点恢复。</li><li>Lint 机制治理知识膨胀：检查索引/孤儿/矛盾/过时/重复/成熟度，支持自动修复与归档。</li><li>Big Model vs Big Harness 找平衡点：模型提升保持开放但不能替代领域知识，知识工程回报确定。</li><li>文件系统即状态机带来可见性、可版本化、可迁移性、IDE 原生。</li></ul><div class="pit"><ul><li>知识库不能只进不出；模型能力提升不能替代领域知识</li></ul></div></div>
+<h3 class="sub">9.1 历史项目引入：从 0 到 1 的冷启动挑战</h3>
+<p>最大的挑战不是设计架构，而是让已有项目的隐性知识显性化。很多团队的知识散落在 Wiki、TAPD 评论、企业微信聊天记录、甚至团队成员的脑子里。</p>
+<p>我们的做法是：</p>
+<ul><li>多源收集 ： /flow-import  支持 Git 仓库扫描、TAPD 需求拉取、iWiki 文档导入、本地文档解析、口述录入等多种输入方式。</li><li>渐进导入 ：不追求一次性导入完美，所有导入知识初始 maturity 为  draft （置信度 0.5-0.6），通过后续工作流的实际使用逐步验证提升。</li><li>断点恢复 ：导入过程通过  import-state.json  持久化进度，支持中断后继续。</li></ul>
+<h3 class="sub">9.2 知识膨胀治理：Lint 机制</h3>
+<p>知识库不能只进不出。我们设计了定期的 Lint 机制（借鉴 Karpathy 的 LLM Wiki）：</p>
+<table><thead><tr><th>检查项</th><th>处理方式</th></tr></thead><tbody><tr><td>索引不一致</td><td>自动修复</td></tr><tr><td>孤儿条目（无引用、无验证）</td><td>降级为 draft</td></tr><tr><td>矛盾检测（同主题相反结论）</td><td>标记冲突，等待 maintainer 裁决</td></tr><tr><td>过时检测（6 月未引用的 draft）</td><td>自动归档</td></tr><tr><td>重复/相似条目</td><td>标记合并候选</td></tr><tr><td>成熟度衰减</td><td>按规则自动降级</td></tr></tbody></table>
+<p>Lint 触发方式包括：每完成 10 个工作流自动触发、/knowledge lint 手动触发、连续 30 天未执行时在下次 /flow-run 启动时提醒。</p>
+<p>9.3 Big Model vs Big Harness —— 我们的务实立场</p>
+<p>业界存在一场争论：该投入更多在&quot;更大更强的模型&quot;上，还是&quot;更复杂的 Harness&quot;上？</p>
+<p>我们的立场是：这不是非此即彼的选择，而是要找到适合你团队的平衡点。</p>
+<ul><li>模型能力提升是大势所趋，投在知识工程上的架构应该 对模型能力的提升保持开放 ——当模型更强时，同样的知识可以被更好地利用。</li><li>但模型能力提升 不能替代 领域知识。再强的模型也不知道你的业务系统里有哪些隐藏的坑。</li><li>知识工程的投入是确定性回报 ：每沉淀一条 proven 知识，所有后续工作流都受益。而模型能力提升的回报是概率性的，你不知道下一代模型在你的特定场景上是否真的更好。</li></ul>
+<h3 class="sub">9.4 从&quot;文件即状态&quot;到&quot;知识即资产&quot;</h3>
+<p>AI Team 的设计哲学中，有一条看似朴素但非常重要的原则：文件系统即状态机。所有的状态、产物、知识都以文件形式存在，没有数据库、没有独立平台。</p>
+<p>这不是技术妥协，而是刻意选择：</p>
+<ul><li>可见性 ：所有知识都是 Markdown 文件，人可以直接阅读、编辑、审查。</li><li>可版本化 ：Git 管理的文件天然有版本历史。</li><li>可迁移性 ：不依赖任何特定平台或服务，换工具链时知识不会丢失。</li><li>IDE 原生 ： .codebuddy/  目录驱动，被 IDE 原生识别，零配置成本。</li></ul>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>总结与展望</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>六个实践结论：分层管理、共建共享、工作流服务沉淀、按需消费、生命周期管理、突破交互瓶颈。</li><li>展望：语义检索增强、跨团队知识联邦、知识质量自动评估、全异步工作流。</li><li>结尾重申：Skill、Agent、工具链会随模型迭代更新，但领域知识是永恒的。</li></ul></div>
+<p>回到文章开头的核心论点：Harness 不是目的，知识才是护城河。</p>
+<p>我们在 AI Team 项目中的实践表明：</p>
+<ul><li>知识分层管理 （五层存储 × 五种类型 × 三级成熟度）让知识有了清晰的组织结构，Agent 可以精准按需消费。</li><li>团队知识库共建共享 （独立 Git 仓库 + 三种角色 + 自动冲突解决）让知识从&quot;个人经验&quot;变成&quot;团队资产&quot;。</li><li>工作流服务于知识沉淀 （INIT 注入 → 各阶段按需查询 → ARCHIVE 自动提取）让每次需求交付都是一次知识积累。</li><li>知识的按需消费 （三级渐进式索引 + 查询预算）解决了上下文膨胀与知识利用的平衡。</li><li>知识的生命周期管理 （自动衰减 + Lint 机制 + 引用追踪闭环）让知识库保持健康和活力。</li><li>突破人机交互瓶颈 （远程操控 + 跨设备接管 + 异步审批）让工作流 7×24 小时顺畅流转，保障知识沉淀闭环的完整性。</li></ul>
+<p>展望未来，我们认为有几个方向值得探索：</p>
+<ul><li>知识的语义检索增强 ：当前的三级索引是基于结构化标签的过滤，未来可以引入向量检索实现语义级的知识发现。</li><li>跨团队知识联邦 ：不同团队的知识仓库之间如何安全地共享通用技术知识（Layer 1），同时保护业务知识（Layer 2）的边界。</li><li>知识质量的自动评估 ：除了基于引用频率的成熟度提升，能否用模型来评估知识条目的质量和时效性。</li><li>全异步工作流 ：结合远程操控能力，探索完全异步的人机协作模式——Agent 自主执行非关键路径，仅在关键决策点异步通知人类审批，进一步释放工作流的 7×24 小时潜力。</li></ul>
+<p>最后，引用我们在项目 README 中写的那句话作为结尾：</p>
+<p>Skill、Agent、工具链会随模型迭代更新，但领域知识是永恒的。AI Team 的每次交付都自动沉淀知识到团队共享仓库，所有成员共建共享，新工作流启动时自动站在前人肩上。</p>
+<p>这就是我们对 Harness Engineering 的理解——工作流是手段，知识是目的。</p>
+<p>参考文献：</p>
+<p>Karpathy LLM Wiki — 知识复合增长：Ingest + Query + Lint</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>知识才是护城河</h4><p>将来的技术护城河不在模型，而在垂直领域知识的沉淀；模型、工具链、工作流会更新，领域知识永恒。</p><a class="src-link" href="#sec-01">原文 → 热潮与核心论断</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>工作流 vs 知识</h4><p>工作流只是可替换的管道，知识才是流过管道的活水；工作流会重构，知识是可累积的复利资产。</p><a class="src-link" href="#sec-01">原文 → 热潮与核心论断</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>知识管理是 Harness 核心能力</h4><p>知识检索注入、长短期记忆、知识生命周期与自动衰减都在三支柱中，知识管理不是附属品。</p><a class="src-link" href="#sec-02">原文 → 三支柱与知识位置</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>没有知识闭环的工作流</h4><p>每次需求从零跑全流程，踩过的坑下次照踩，架构决策重复推导，工具链没有越用越聪明。</p><a class="src-link" href="#sec-03">原文 → 知识为何比工作流重要</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>三维正交知识体系</h4><p>存储层(在哪)×知识类型(是什么)×成熟度(多可信)：五层存储、五种类型、三级成熟度。</p><a class="src-link" href="#sec-04">原文 → 三维知识分层架构</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>三级成熟度 + 自动衰减</h4><p>draft→verified→proven；proven 12 个月未引用降 verified，verified 6 个月降 draft，draft 未引用归档。</p><a class="src-link" href="#sec-04">原文 → 三维知识分层架构</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>独立 Git 仓库作单一事实来源</h4><p>知识库不寄生于业务项目，跨项目共享、生命周期独立、权限独立，贡献暂存异步合并。</p><a class="src-link" href="#sec-05">原文 → 知识库共建共享</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>上下文膨胀</h4><p>Agent 无限制读知识库会导致上下文膨胀，需按阶段查询预算让消费精准而非贪婪。</p><a class="src-link" href="#sec-06">原文 → 工作流服务知识沉淀</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>三级渐进式索引</h4><p>全景目录~50行、分类清单~100-300行、完整条目~50-200行，比一次性推送 50 条省一个数量级。</p><a class="src-link" href="#sec-07">原文 → 三级索引与查询预算</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>knowledgeReferences 引用追踪</h4><p>产物记录 {&quot;id&quot;:&quot;TK-SB-003&quot;,&quot;title&quot;:...,&quot;usedIn&quot;:...}，ARCHIVE 批量更新 evidence.last_referenced。</p><a class="src-link" href="#sec-07">原文 → 三级索引与查询预算</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>在场依赖的现实</h4><p>一天 8 小时能坐工位操控 Agent 常不足 4 小时；工作流离开即暂停，效率至少折半。</p><a class="src-link" href="#sec-08">原文 → 突破在场依赖</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Big Model vs Big Harness</h4><p>不是二选一：模型提升要开放，但替代不了领域知识；知识工程是确定性回报，模型回报是概率性的。</p><a class="src-link" href="#sec-09">原文 → 落地经验与立场</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把知识拆成五层存储、五种类型、三级成熟度，让知识有清晰组织并可按需消费。</li>
+          <li>知识库用独立 Git 仓库共建共享，贡献走暂存+异步合并，只有内容矛盾才人工裁决。</li>
+          <li>让工作流在 INIT 注入、执行中按需查询、ARCHIVE 自动提取，每次交付都沉淀知识。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801437&amp;idx=1&amp;sn=c5e13bae6cc04ef21f1ef819128e50e9" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801437&amp;idx=1&amp;sn=c5e13bae6cc04ef21f1ef819128e50e9</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

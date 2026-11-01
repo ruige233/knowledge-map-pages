@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">AI Coding后端开发实战：解锁AI辅助编程新范式</h1>
+  <p class="lede">后端AI Coding实践：用个人上下文管理与输出判断体系实现人机协同</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 20 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>前言：与AI Coding协作</a>
+          <a href="#sec-02"><span class="n">02</span>个人上下文管理</a>
+          <a href="#sec-03"><span class="n">03</span>输出准确性判断</a>
+          <a href="#sec-04"><span class="n">04</span>核心使用流程实战</a>
+          <a href="#sec-05"><span class="n">05</span>总结：超级开发者</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 前言：与AI Coding协作</a>
+          <a href="#sec-02">02 个人上下文管理</a>
+          <a href="#sec-03">03 输出准确性判断</a>
+          <a href="#sec-04">04 核心使用流程实战</a>
+          <a href="#sec-05">05 总结：超级开发者</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>前言：与AI Coding协作</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AI后台开发输出过程不确定性大，不能只关注最终输出</li><li>AI更像编程高手但缺乏思路，提示词需给足业务上下文</li><li>两大核心能力：个人上下文管理体系与AI输出质量判断</li></ul><div class="pit"><ul><li>误区一：过分依赖最终输出，忽视实现过程</li><li>误区二：把AI当作业务专家，提示词过于简单</li></ul></div></div>
+<p>随着AI技术在软件开发领域的快速发展，AI Coding作为一款强大的AI辅助开发工具，正在深刻改变着我们的开发模式。然而，在实际应用过程中，许多开发人员在早期使用这类工具时存在一些认知误区，影响了工具效能的最大化发挥。</p>
+<p>误区一：过分依赖最终输出，忽视实现过程许多开发者认为有了AI加持后，可以不去详细了解功能和实现的过程，只关注最终的输出。这是一个非常大的误区。AI在后台开发中的输出过程存在非常大的不确定性。</p>
+<p>误区二：把AI当作具有丰富业务经验的专家另一个常见误区是把AI当成了和自己一样有着丰富所在业务方向经验的人，提示词写得过于简单。然而，受限于上下文长度，AI其实更像是一个有着丰富编程经验的编程高手，但他最缺乏的是思路。</p>
+<p>本文档基于在AI Coding应用中的实践经验，旨在为后端开发人员提供系统性的使用指导。通过本次分享，开发者将重点掌握以下两个核心能力：</p>
+<ul><li>在AI Coding之外构建有效的个人上下文管理体系。</li><li>准确判断AI输出质量，确保代码实现的正确性。</li></ul>
+<p>我们期望通过本次分享，帮助开发者在享受AI带来效率提升的同时，能够保持对代码质量和需求理解的精准把控，真正实现人机协同的高效开发模式。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>个人上下文管理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>上下文窗口有限，要在有限空间传递最有价值的信息</li><li>三步法：需求理解与文件筛选、.md文档创建维护、跨会话记忆传递</li><li>.md文件跨会话引用可节省大量重复阅读消耗的token</li><li>分步骤保存，防止一次阅读过多导致上下文压缩后记忆丢失</li></ul><div class="pit"><ul><li>一次阅读过多文件会导致上下文压缩后记忆丢失</li></ul></div></div>
+<h3 class="sub">1.1 为什么AI上下文管理如此重要？</h3>
+<p>在AI Coding的实际应用中，我们发现有效的个人上下文管理是提升AI辅助开发效率的关键因素之一。这主要基于以下几个方面的考虑：</p>
+<ul><li>AI Coding上下文长度限制： AI工具的上下文窗口有限，如何在有限空间内传递最有价值的信息成为关键挑战。</li><li>有效利用上下文空间的重要性： 合理分配和利用上下文空间，能够显著提升AI输出的准确性和相关性。</li><li>个人上下文管理的价值： 通过结构化的上下文管理，开发者能够在复杂项目中保持思路清晰，确保开发过程的连贯性。</li></ul>
+<h3 class="sub">1.2 上下文管理三步法</h3>
+<h3 class="sub">1.2.1 需求理解与文件筛选</h3>
+<p>在启动AI辅助开发之前，系统性的需求理解和文件筛选是必不可少的准备工作：</p>
+<ul><li>如何从需求中提取关键信息，明确核心功能点和约束条件；</li><li>识别代码仓库中相关文件，了解现有实现和架构设计；</li><li>建立需求与代码的映射关系，为后续提示词设计提供依据；</li></ul>
+<h3 class="sub">1.2.2 .md文档的创建与维护</h3>
+<p>.md文档作为上下文管理的核心载体，其创建和维护需要遵循一定的规范：</p>
+<ul><li>创建需求上下文文档，系统性记录关键信息和设计思路；</li><li>持续更新和完善文档内容，保持信息的时效性和准确性；</li><li>遵循文档结构的最佳实践，确保信息的可读性和可维护性；</li></ul>
+<h3 class="sub">1.2.3 跨会话记忆传递</h3>
+<p>在需要开启新会话时，如何有效传递和恢复上下文信息是保证开发连贯性的关键：</p>
+<ul><li>新会话中如何快速恢复上下文，减少重复工作；</li><li>文档阅读与上下文重建的策略和技巧；</li><li>上下文更新与迭代的最佳实践；</li></ul>
+<p>注：将1.2.2产生的.md文件跨会话引用，节省大量重复阅读所消耗的token。</p>
+<h3 class="sub">1.3 实战技巧：让上下文管理事半功倍</h3>
+<p>基于在多个项目中的实践经验，我们总结了以下关键技巧：</p>
+<ul><li>关键信息提炼方法： 用结构化的方式记录核心要点，提高信息传递效率；</li><li>文档组织结构建议： 按照逻辑关系和重要性组织文档内容，便于快速查找；</li><li>版本控制与变更追踪： 通过版本管理机制追踪文档变更历史，确保信息一致性；</li><li>分步骤保存： 像输出代码仓库整体架构的文档会阅读大量文件，需要定义阶段，并分阶段进行保存，防止一次阅读过多，导致的上下文压缩后的记忆丢失问题。</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>输出准确性判断</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>模糊的输入带来混乱的输出，提示词与上下文决定输出质量</li><li>AI擅长模板代码与常见模式，复杂业务与架构决策仍需人工把关</li><li>判断标准：功能正确性（结果）、代码质量（过程）、性能与安全（影响范围）</li><li>开发者需从编码者转向架构师，建立全局视角</li></ul><div class="pit"><ul><li>常见AI输出问题：逻辑错误、代码规范不合规、潜在风险点</li></ul></div></div>
+<h3 class="sub">2.1 重新认识AI的能力边界</h3>
+<p>在AI辅助开发实践中，准确理解AI的能力边界是确保开发质量的前提。基于实践经验，我们需要重新审视以下几个关键认知：</p>
+<ul><li>&quot;模糊的输入，混乱的输出&quot;的现实： AI输出质量与输入质量密切相关，精心设计的提示词和上下文信息是获得高质量输出的基础。</li><li>AI在代码生成中的优势与局限： AI在模板代码生成、常见模式实现等方面具有显著优势，但在复杂业务逻辑处理、架构设计决策等方面仍存在局限性。</li><li>祛魅：AI是辅助工具而非替代品： AI应当被视为提升开发效率的有力工具，而非完全替代开发者思考和判断的自动化系统。</li></ul>
+<h3 class="sub">2.2 需求理解：判断AI输出准确性的基石</h3>
+<h3 class="sub">2.2.1 需求分析方法</h3>
+<p>准确的需求理解是判断AI输出是否符合预期的基础，这要求开发者具备以下能力：</p>
+<ul><li>如何深入理解业务需求，识别核心功能点和约束条件；</li><li>技术需求与业务需求的关联分析，确保技术实现与业务目标一致；</li><li>需求变更的识别与处理机制，及时调整开发方向；</li></ul>
+<h3 class="sub">2.2.2 代码仓库理解</h3>
+<p>对现有代码仓库的深入理解是判断AI输出准确性的关键参考：</p>
+<ul><li>项目架构与模块划分的理解，确保新代码与现有架构保持一致；</li><li>核心领域模型识别，避免重复造轮子或破坏现有设计；</li><li>关键接口与数据流理解，确保新功能与现有系统良好集成；</li></ul>
+<h3 class="sub">2.3 建立AI输出判断体系</h3>
+<h3 class="sub">2.3.1 判断标准建立</h3>
+<p>建立系统性的判断标准是确保AI输出质量的关键：</p>
+<ul><li>功能正确性验证（结果）：检查AI生成的代码是否正确实现了预期功能；</li><li>代码质量评估（过程）：从可读性、可维护性、性能等方面评估代码质量；</li><li>性能与安全性考量（影响范围）：识别潜在的性能瓶颈和安全风险；</li></ul>
+<h3 class="sub">2.3.2 常见错误识别</h3>
+<p>在实际应用中，我们总结了以下常见的AI输出问题类型：</p>
+<ul><li>逻辑错误识别方法：通过边界条件测试、异常路径验证等方式识别逻辑缺陷；</li><li>代码规范问题检查：确保生成代码符合团队编码规范和最佳实践；</li><li>潜在风险点分析：识别可能影响系统稳定性或安全性的风险因素；</li></ul>
+<h3 class="sub">2.3.3 反馈与迭代机制</h3>
+<p>建立有效的反馈和迭代机制能够持续提升AI输出质量：</p>
+<ul><li>与AI的交互式优化策略，通过多轮对话逐步完善输出（结合1.2 上下文管理方法论）；</li><li>结果验证与确认流程，确保修改后的输出符合预期。</li></ul>
+<h3 class="sub">2.4 从编码者到架构师：思维模式的升级</h3>
+<p>通过AI辅助开发的实践，我们发现开发者需要实现从单纯编码向全局思考的思维转变：</p>
+<ul><li>全局视角的重要性： 不仅关注代码实现，更要关注系统架构、业务逻辑、用户体验等多维度因素；</li><li>需求、技术、团队的综合考量： 在开发过程中需要平衡业务需求、技术实现等多重因素。</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>核心使用流程实战</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>标准化流程：PRD理解、人工分析复用/新增/调整、生成开发概要、审核指正</li><li>开发阶段开新会话读.md恢复上下文，及时提交、避免积压修改</li><li>Python脚本适合数据清洗、配置生成、日志统计等寻找规律类任务</li><li>Agent与文档输出遵循需求输入、AI处理、验证迭代的通用流程</li></ul><div class="pit"><ul><li>多轮修改积压会导致问题定位困难、难以回退</li></ul></div></div>
+<h3 class="sub">3.1 后台项目开发标准化流程</h3>
+<h3 class="sub">3.1.1 PRD理解与系统分析</h3>
+<p>基于实践经验，我们推荐采用以下标准化流程进行PRD理解与系统分析：</p>
+<p>该流程的具体实施要点如下：</p>
+<ul><li>输入PRD文件： 将产品的PRD文档作为输入提供给AI Coding，确保文档内容完整、需求明确。在实际操作中，建议对PRD进行结构化处理，提取关键信息点。</li><li>人工介入分析： 开发人员首先需通过经验/AI Coding分析当前代码仓库，识别三类内容：</li><li>可复用的现有代码模块：识别可直接复用或稍作调整即可使用的现有功能；</li><li>需要新增的功能模块：明确需要从零开始开发的新功能点；</li><li>需要调整的现有功能：识别需要修改或扩展的现有功能模块；</li><li>生成开发概要： 将PRD、代码分析结果和人工理解一并提供给AI Coding，要求AI Coding结合这些信息生成开发概要或大纲。此阶段建议采用分步骤渐进式方式，避免一次性处理过多信息。</li><li>审核与指正： 人工审核生成的开发概要，对不正确或不完善的部分进行指正，重复此过程直到产出准确的系统分析文档。审核时应重点关注架构设计的合理性、技术选型的恰当性等关键点。</li></ul>
+<h3 class="sub">3.1.2 代码开发与迭代</h3>
+<p>代码开发阶段建议采用以下迭代式开发流程：</p>
+<p>该流程的实施要点包括：</p>
+<ul><li>会话管理： 建议开启新的会话进行代码开发，新会话直接读取第一阶段产出的.md文件以获取上下文。这样既能保持会话的清晰性，又能有效传承关键信息。</li><li>开发准备： 指定代码开发的目标目录，提供参考代码以帮助AI Coding理解项目结构。参考代码应包含项目中典型的代码模式和架构规范。</li><li>代码开发与版本管理： AI Coding根据系分文档进行代码生成，重要的版本管理策略：</li><li>及时提交可用版本：确保每个可运行的版本都能及时提交，便于回溯和协作</li><li>避免积累过多修改：防止大量修改积压导致问题定位困难</li><li>防止多轮修改后难以回退：通过合理的版本控制策略确保能够快速回退到稳定状态</li><li>功能验证与迭代： 对生成的代码进行功能验证，发现问题时及时提出并要求修改，完善相关文档内容，循环执行此过程直到满足所有需求。验证应包括单元测试、集成测试等多个层次。</li><li>上下文管理： 当上下文不足时，开启新的会话，新会话直接阅读.md文件以补全上下文。通过文档化管理确保上下文信息的完整性和一致性。</li></ul>
+<h3 class="sub">3.1.3 最佳实践建议</h3>
+<p>基于多个项目的实践经验，我们总结了以下关键建议：</p>
+<ul><li>分阶段处理： 严格区分PRD理解和代码开发两个阶段，每个阶段都有明确的输入和产出。这种分阶段处理方式有助于降低复杂度，提高处理效率。</li><li>文档驱动开发： 以.md文件作为核心文档进行开发指导，确保文档与代码保持同步更新。文档不仅是信息载体，更是开发过程的重要指导工具。</li><li>版本控制： 频繁提交，避免大量积压修改，便于问题追踪和版本回退。建议采用语义化的提交信息，便于理解每次修改的内容和目的。</li><li>会话管理： 合理使用新会话避免上下文混乱，利用文档快速恢复上下文。在复杂项目中，良好的会话管理策略能够显著提升开发效率。</li></ul>
+<h3 class="sub">3.2 Python脚本协助数据处理</h3>
+<h3 class="sub">3.2.1 应用场景</h3>
+<p>在日常开发工作中，除了核心的代码开发任务，我们还会遇到大量重复性的脚本工作，如数据处理（csv转json《合并技能评估提示词》）、批量操作（国际化信息数据录入《多语言》、sql脚本数据迁移）等。通过合理运用AI Coding结合Python脚本，能够显著提升这类任务的处理效率和质量。</p>
+<p>典型的应用场景包括但不限于：</p>
+<ul><li>批量数据清洗和转换</li><li>系统配置文件的自动化生成</li><li>日志文件的分析和统计</li><li>测试数据的批量生成</li><li>系统状态监控和报告生成</li></ul>
+<p>*注：由大模型底层架构决定了，模型本身就非常适合做寻找规律的事情，所以使用脚本来协助我们梳理日常的业务数据、寻找规律、提取内容都是非常适合的。</p>
+<h3 class="sub">3.2.2 实现思路</h3>
+<p>基于实践经验，我们推荐采用以下标准化流程来实现Python脚本辅助的数据处理任务：</p>
+<p>该流程的具体实施步骤如下：</p>
+<h3 class="sub">1. 准备阶段：</h3>
+<ul><li>收集处理所需的数据源信息，明确数据格式和结构</li><li>定义清晰的处理逻辑和输出格式要求</li></ul>
+<h3 class="sub">2. AI Coding处理阶段：</h3>
+<ul><li>将处理需求和数据格式提供给AI Coding</li><li>利用AI Coding生成处理脚本的框架和核心逻辑</li></ul>
+<h3 class="sub">3. Python脚本执行阶段：</h3>
+<ul><li>结合生成的框架代码和实际需求编写Python脚本</li><li>通过配置文件管理参数，实现自动化执行</li></ul>
+<h3 class="sub">4. 效果验证：</h3>
+<ul><li>对处理结果进行校验，确保数据准确性和完整性</li><li>对比处理前后的性能指标，评估优化效果</li><li>建立处理过程监控机制，及时发现和处理异常</li></ul>
+<h3 class="sub">3.2.3 成果收益</h3>
+<p>通过采用上述方法，我们观察到以下显著收益：</p>
+<p>1. 效率提升：相比手工处理，自动化脚本能够大幅缩短处理问题的时间；</p>
+<h3 class="sub">2. 质量保障：自动化处理有效避免了手工操作中常见的错误；</h3>
+<p>3. 可复用性：标准化的脚本结构可轻松复用于其他类似处理任务，降低重复开发成本；</p>
+<h3 class="sub">3.2.4 最佳实践建议</h3>
+<p>基于多个项目的实践经验，我们总结了以下关键建议：</p>
+<ul><li>标准化输入： 统一数据格式要求，规范配置文件格式，确保脚本的通用性和可维护性</li><li>模块化设计： 将不同处理逻辑封装为独立模块，使脚本结构清晰，便于维护和扩展</li><li>自动化程度： 尽可能减少人工干预环节，提供详细的日志记录和监控信息，便于问题追踪</li><li>可扩展性： 在设计时考虑支持更多数据类型的处理能力，确保脚本的长期可用性</li></ul>
+<h3 class="sub">3.3 Agent应用与提示词工程</h3>
+<h3 class="sub">3.3.1 应用场景</h3>
+<p>在面对较为复杂的Agent应用开发时，提示词工程和工作流设计变得至关重要。通过合理运用AI Coding作为辅助工具，开发者能够更高效地整理思路、设计提示词和工作流，从而显著提升Agent应用的开发效率和质量。</p>
+<p>典型的应用场景包括：</p>
+<ul><li>智能客服系统：处理用户咨询和技术支持请求</li><li>业务流程自动化：实现复杂业务逻辑的自动化处理</li><li>数据分析助手：提供智能化的数据洞察和报告生成</li><li>代码审查助手：辅助进行代码质量检查和优化建议</li></ul>
+<h3 class="sub">3.3.2 开发流程</h3>
+<p>基于在多个Agent项目中的实践经验，我们推荐采用以下标准化开发流程：</p>
+<p>该流程的具体实施要点如下：</p>
+<h3 class="sub">1. 需求分析阶段：</h3>
+<ul><li>应用背景定义：明确Agent应用的具体场景和目标，确保与业务需求对齐；</li><li>服务人群识别：确定应用面向的用户群体及其特点，为用户体验设计提供依据；</li><li>输入格式规范：定义用户输入的数据格式和类型，确保输入处理的准确性；</li><li>输出格式要求：明确应用需要返回的结果格式，保证输出的一致性和可用性；</li><li>复杂度评估：判断是否需要分布式处理或工作流设计，为技术选型提供指导；</li></ul>
+<h3 class="sub">2. 技术方案设计：</h3>
+<ul><li>将上述需求信息提供给AI Coding；</li><li>要求AI Coding整理出完整的技术方案；</li><li>方案应包含：架构设计、模块划分、数据流设计、错误处理机制等关键要素；</li></ul>
+<h3 class="sub">3. 提示词工程：</h3>
+<ul><li>单LLM场景：利用AI Coding生成针对性的提示词文本；</li><li>多LLM工作流场景：通过AI Coding生成一整套提示词体系；</li><li>提示词应包含：角色定义、任务描述、输出格式约束、示例输入输出等关键要素；</li></ul>
+<h3 class="sub">4. Agent平台搭建：</h3>
+<ul><li>将生成的技术方案和提示词在Agent平台实现；</li><li>搭建完整的应用流程；</li><li>配置必要的参数和环境；</li></ul>
+<h3 class="sub">5. 验证与优化：</h3>
+<ul><li>功能验证：全面测试Agent应用的各项功能；</li><li>性能测试：评估应用的响应速度和准确性；</li><li>问题反馈：将验证中发现的问题返回给AI Coding；</li><li>迭代优化：基于反馈优化提示词和流程设计；</li><li>重复此过程直到符合预期效果；</li></ul>
+<p>*注：通过AI Coding对工作的编排能力，协助我们完成一些复杂的agent提示词构建，可以快速的论证一些agent方案的可行性，并且是后续的调整成本更低，也更加灵活。</p>
+<h3 class="sub">3.4 文档整理与输出</h3>
+<h3 class="sub">3.4.1 应用场景</h3>
+<p>在日常工作中，我们经常需要整理和输出各类文档，包括但不限于工作汇报、系统设计文档、技术方案等。通过合理运用AI Coding作为文档辅助工具，能够帮助我们快速生成结构化、高质量的文档，显著提升文档编写效率。</p>
+<p>典型的应用场景包括：</p>
+<ul><li>项目进展汇报：周报、月报、季度总结等；</li><li>系统设计文档：架构设计、模块设计、接口设计等；</li><li>技术方案文档：技术选型、实现方案、风险评估等；</li><li>知识沉淀文档：最佳实践、经验总结、技术分享等；</li></ul>
+<h3 class="sub">3.4.2 工作流程</h3>
+<p>基于实践经验，我们推荐采用以下标准化流程进行文档整理与输出：</p>
+<p>该流程的具体实施要点如下：</p>
+<h3 class="sub">1. 需求输入阶段：</h3>
+<ul><li>文档大纲：提供文档的整体框架和章节划分，确保结构清晰；</li><li>重点内容：明确哪些部分需要详细描述，哪些部分可以由AI Coding发散；</li><li>结构要求：定义文档的组织方式和逻辑关系，保证内容连贯性；</li><li>图文形式：指定需要使用的图表类型（如mermaid、plantuml等），提升文档可读性；</li></ul>
+<h3 class="sub">2. AI Coding处理阶段：</h3>
+<ul><li>将用户提供的要求和大纲输入AI Coding；</li><li>对于重点内容，提供详细指导以确保准确性；</li><li>对于非重点内容，允许AI Coding进行合理发散以提升效率；</li><li>生成包含文字和图表的完整文档内容；</li></ul>
+<h3 class="sub">3. 文档产出阶段：</h3>
+<ul><li>以.md格式输出文档，确保格式兼容性；</li><li>确保文档结构清晰、内容完整，符合预期要求；</li><li>包含必要的图表和代码示例，提升文档实用性；</li></ul>
+<h3 class="sub">4. 平台转换与验证：</h3>
+<ul><li>将.md文档粘贴到协作平台，实现团队共享；</li><li>利用平台的自动格式转换功能，确保显示效果；</li><li>检查转换后的文档结构是否符合预期，及时调整；</li></ul>
+<h3 class="sub">5. 迭代优化：</h3>
+<ul><li>如结构不符合预期，将问题反馈给AI Coding；</li><li>调整文档结构或内容表达方式；</li><li>重新生成直到满足要求；</li></ul>
+<p>注：文档整理和输出具有天然的跨会话记忆管理的优势，因为每次对话都会整理内容到.md文档中，很适合作为夸回话记忆管理的入门实践。</p>
+<h3 class="sub">3.4.3 实际应用</h3>
+<p>日常工作汇报：</p>
+<h3 class="sub">1. 输入要求：</h3>
+<ul><li>汇报周期：周报/月报</li><li>重点内容：项目进展、遇到的问题、解决方案</li><li>结构：工作概述、详细进展、问题与风险、下周计划</li></ul>
+<h3 class="sub">2. AI Coding处理：</h3>
+<ul><li>根据项目管理系统自动整理工作进展</li><li>结合历史记录生成问题分析</li><li>提出合理的下一步计划建议</li></ul>
+<h3 class="sub">3. 产出效果：</h3>
+<ul><li>从2小时的手工整理缩短到30分钟</li><li>文档结构统一，便于上级审阅</li><li>内容完整，不会遗漏重要信息</li></ul>
+<p>系统设计文档：</p>
+<h3 class="sub">1. 结合代码仓库：</h3>
+<ul><li>基于第一阶段生成的系统分析文档</li><li>结合实际代码结构进行详细设计</li><li>自动生成模块间关系图</li></ul>
+<h3 class="sub">2. 内容生成：</h3>
+<ul><li>架构设计说明</li><li>模块详细设计</li><li>接口定义</li><li>数据库设计</li><li>部署方案</li></ul>
+<h3 class="sub">3. 图表支持：</h3>
+<ul><li>使用mermaid生成架构图</li><li>使用plantuml生成时序图</li><li>使用其他图表工具生成流程图</li></ul>
+<h3 class="sub">3.4.4 支持的图表类型</h3>
+<h3 class="sub">1. Mermaid</h3>
+<ul><li>流程图： 用于展示业务流程、系统架构等</li><li>时序图： 用于展示系统组件间的交互时序</li><li>类图： 用于展示系统中的类及其关系</li><li>状态图： 用于展示对象的状态变化</li><li>甘特图： 用于项目进度管理</li></ul>
+<h3 class="sub">2. PlantUML</h3>
+<ul><li>用例图： 用于展示系统功能和用户关系</li><li>活动图： 用于展示业务流程的活动</li><li>组件图： 用于展示系统组件结构</li><li>部署图： 用于展示系统部署架构</li><li>数据库ER图： 用于展示数据库表结构和关系</li></ul>
+<h3 class="sub">3. 其他图表</h3>
+<ul><li>表格： 用于展示结构化数据</li><li>代码块： 用于展示代码示例</li><li>publicclassUserService {</li><li>public User getUserById(Long id){</li><li>// 查询用户逻辑</li><li>return userRepository.findById(id);</li><li>public List&lt;User&gt; getAllUsers(){</li><li>// 获取所有用户</li><li>return userRepository.findAll();</li></ul>
+<h3 class="sub">3.4.5 最佳实践建议</h3>
+<p>基于多个项目的实践经验，我们总结了以下关键建议：</p>
+<ul><li>明确分工： 重要内容由人工提供详细指导，次要内容可由AI Coding合理发散，保持人工审核关键内容；</li><li>结构优先： 先确定文档结构再填充内容，使用标准模板提高效率，保持章节间逻辑关系清晰；</li><li>图表规范： 统一图表风格和配色，为图表添加必要的说明文字，确保图表与文字内容一致；</li><li>版本管理： 保留文档的多个版本，记录每次修改的内容和原因，建立文档审核流程；</li><li>平台适配： 了解目标平台的格式支持情况，测试文档转换效果，建立标准化的转换流程。</li></ul>
+<h3 class="sub">3.5 提示词沉淀与最佳实践平台</h3>
+<p>在使用AI Coding进行开发的过程中，我们会积累大量的提示词和最佳实践流程。为了更好地管理和复用这些知识资产，建议使用专门的知识管理平台来沉淀和优化我们的提示词。</p>
+<h3 class="sub">1. 提示词模板管理</h3>
+<ul><li>创建和管理各种场景下的提示词模板，支持分类管理；</li><li>支持新功能开发、BUG修复、接口文档编写、系分文档编写等常见场景；</li><li>提供版本控制和变更历史追踪，确保知识资产的可追溯性；</li></ul>
+<h3 class="sub">2. 最佳实践沉淀</h3>
+<ul><li>将成功的开发流程和方法论沉淀为可复用的最佳实践；</li><li>建立标准化的开发流程模板，提升团队整体效率；</li><li>支持团队间的经验分享和学习，促进知识传播；</li></ul>
+<h3 class="sub">3. 持续优化机制</h3>
+<ul><li>基于实际使用效果对提示词进行调优，确保持续改进；</li><li>收集用户反馈，不断改进提示词质量；</li><li>建立A/B测试机制，科学验证不同提示词的效果；</li></ul>
+<h3 class="sub">3.5.1 应用场景</h3>
+<h3 class="sub">1. 新功能开发</h3>
+<ul><li>沉淀新功能开发的标准提示词模板，确保开发一致性；</li><li>建立从需求分析到代码实现的完整流程，提升开发效率；</li><li>确保新功能开发的一致性和质量，降低沟通成本；</li></ul>
+<h3 class="sub">2. BUG修复</h3>
+<ul><li>建立BUG分析和修复的标准提示词，提升问题解决效率；</li><li>沉淀常见问题的解决模式，形成问题解决知识库；</li><li>提高BUG修复效率和质量，减少重复劳动；</li></ul>
+<h3 class="sub">3. 文档编写</h3>
+<ul><li>固化接口文档、系分文档等各类文档的编写规范；</li><li>提供文档结构和内容的标准模板，确保文档质量；</li><li>确保文档质量和一致性，提升知识传递效果；</li></ul>
+<h3 class="sub">3.5.2 使用建议</h3>
+<p>基于团队在多个项目中的实践经验，我们总结了以下关键建议：</p>
+<h3 class="sub">1. 及时沉淀</h3>
+<ul><li>在完成重要开发任务后，及时将有效的提示词和流程沉淀到平台；</li><li>记录使用场景和效果，便于他人理解和复用；</li></ul>
+<h3 class="sub">2. 持续优化</h3>
+<ul><li>定期回顾和优化已有的提示词模板；</li><li>根据实际使用反馈进行调整和改进；</li><li>跟踪提示词效果，不断提升质量；</li></ul>
+<h3 class="sub">3. 团队协作</h3>
+<ul><li>鼓励团队成员共享优秀的提示词和实践；</li><li>建立团队内部的知识分享机制；</li><li>通过平台实现知识的传承和积累。</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>总结：超级开发者</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AI价值取决于使用者的需求理解能力与技术判断能力</li><li>从单纯编码走向全局思考，成为具备超级单兵能力的研发人员</li></ul></div>
+<p>通过本篇文章，希望开发者能够：</p>
+<p>1. 建立有效的个人上下文管理体系，在有限的AI上下文空间中发挥最大价值；</p>
+<h3 class="sub">2. 具备准确判断AI输出的能力，确保代码质量和功能正确性；</h3>
+<p>3. 实现从单纯编码向全局思考的思维转变，成为具备超级单兵能力的研发人员；</p>
+<p>AI Coding作为强大的辅助工具，其价值的发挥最终还是取决于使用者的需求理解能力和技术判断能力。只有将AI工具与个人能力有效结合，才能真正提升开发效率和质量。</p>
+<p>本文档的五个主要部分涵盖了AI Coding在后台开发中的主要应用场景：</p>
+<p>1. 个人上下文管理：解决AI上下文限制问题，通过外部文档管理实现上下文传承；</p>
+<p>2. AI输出准确性判断：培养开发者对需求和代码仓库的理解能力，以准确判断AI输出质量；</p>
+<p>3. AI Coding核心使用流程：从PRD理解到代码开发的完整流程，Python脚本协助数据处理，Agent应用与提示词工程，文档整理与输出；</p>
+<p>4. 实践案例与练习：通过具体案例和练习，巩固培训内容，提升实际应用能力；</p>
+<h3 class="sub">5. 提示词沉淀与最佳实践。</h3>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>AI能力优势与局限</h4><p>优势：模板代码生成、常见模式实现；局限：复杂业务逻辑处理、架构设计决策仍需人工把关。</p><a class="src-link" href="#sec-03">原文 → 输出准确性判断</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>AI vs 业务专家</h4><p>AI更像有丰富编程经验的编程高手但缺乏思路，不是熟悉业务方向的专家，提示词不能过于简单。</p><a class="src-link" href="#sec-01">原文 → 前言：与AI Coding协作</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>模糊的输入，混乱的输出</h4><p>AI输出质量与输入质量密切相关，精心设计的提示词和上下文信息是高质量输出的基础。</p><a class="src-link" href="#sec-03">原文 → 输出准确性判断</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>AI是辅助工具而非替代品</h4><p>AI应被视为提升开发效率的工具，不能替代开发者对需求、代码与质量的思考和判断。</p><a class="src-link" href="#sec-03">原文 → 输出准确性判断</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>工作汇报提速</h4><p>周报从2小时手工整理缩短到30分钟，结构统一、内容完整、便于审阅。</p><a class="src-link" href="#sec-04">原文 → 核心使用流程实战</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Python脚本处理四步</h4><p>准备阶段→AI Coding生成框架与核心逻辑→Python脚本执行→效果验证，覆盖数据清洗、配置生成等。</p><a class="src-link" href="#sec-04">原文 → 核心使用流程实战</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>一次阅读过多丢记忆</h4><p>输出代码仓库整体架构文档时需定义阶段、分步骤保存，防止上下文压缩导致记忆丢失。</p><a class="src-link" href="#sec-02">原文 → 个人上下文管理</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>版本积压难以回退</h4><p>及时提交可用版本，避免大量修改积压，否则多轮修改后难以定位问题和回退。</p><a class="src-link" href="#sec-04">原文 → 核心使用流程实战</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>单LLM vs 多LLM提示词</h4><p>单LLM生成针对性提示词文本；多LLM工作流生成整套提示词体系，含角色、任务、格式、示例。</p><a class="src-link" href="#sec-04">原文 → 核心使用流程实战</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>.md跨会话引用</h4><p>将上下文.md文件跨会话引用，可节省大量重复阅读所消耗的token，保证开发连贯。</p><a class="src-link" href="#sec-02">原文 → 个人上下文管理</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>后端开发两阶段</h4><p>严格区分PRD理解与代码开发两阶段，每阶段明确输入产出；新会话读.md恢复上下文。</p><a class="src-link" href="#sec-04">原文 → 核心使用流程实战</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>文档图表类型</h4><p>Mermaid支持流程/时序/类/状态/甘特图；PlantUML支持用例/活动/组件/部署/ER图。</p><a class="src-link" href="#sec-04">原文 → 核心使用流程实战</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把AI当编程高手而非业务专家：给足上下文与思路，别只盯最终输出。</li>
+          <li>用.md文档做跨会话记忆载体，分步骤保存，防止上下文压缩丢记忆。</li>
+          <li>永远人工把关AI输出：验证功能正确性、评估代码质量、排查性能与安全风险。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247557066&amp;idx=1&amp;sn=c9ea3b12a5e31e76d28c42115f3e21e8" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247557066&amp;idx=1&amp;sn=c9ea3b12a5e31e76d28c42115f3e21e8</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

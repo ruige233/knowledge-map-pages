@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">AI写代码的“上下文陷阱”：为什么AI总是写错？如何系统性解决？</h1>
+  <p class="lede">把上下文当架构设计：三层记忆+AI辅助维护，系统解决AI写错代码。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 41 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>充分使用模型能力</a>
+          <a href="#sec-02"><span class="n">02</span>AI协作编程方法</a>
+          <a href="#sec-03"><span class="n">03</span>真实使用案例</a>
+          <a href="#sec-04"><span class="n">04</span>最新趋势与工具对比</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 充分使用模型能力</a>
+          <a href="#sec-02">02 AI协作编程方法</a>
+          <a href="#sec-03">03 真实使用案例</a>
+          <a href="#sec-04">04 最新趋势与工具对比</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>充分使用模型能力</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>完整+精确+聚焦的上下文是充分使用模型能力的关键。</li><li>任务分解要在有限上下文宽度和注意力下把握复杂度边界。</li><li>背景信息、指令表达、生成代码每层都有信息损失，需人工验证纠偏。</li><li>信息细致程度随模型能力提升而变化，早期详尽、后期可让模型自取。</li></ul></div>
+<p>关键要点：完整+精确+聚焦的上下文是充分使用模型能力的关键。在这个认知之下思考如何系统性的构建满足这个条件的上下文？</p>
+<ul><li>合理的任务分解： 本质上是在有限上下文宽度和注意力的约束下，怎么恰当的把握任务的复杂度边界，让模型能够在一个聚焦的任务上作业。</li><li>完整的背景信息： 在一个真实的项目中写代码，需要理解系统架构和规范、了解业务需求、清楚关键代码实现路径、知道如何修改代码满足新的需求，完整了解这些背景信息才能真正的写代码，这对于人类和AI来说是一样的。</li><li>精确的指令描述： 使用能够让AI更容易理解的方式，清晰无歧义的表达要完成的任务，如强调语法**、mermaid画图等。</li><li>有效的验证和反馈： 信息从我们表达出来-&gt;AI理解-&gt;生成代码，每一层都会有损失，而且往往我们自己也会遗漏一些细节，这一步的关键是自己要根据AI的产出验证和思考，将错漏的内容反馈AI自行反思、纠偏。</li></ul>
+<p>这4个关键点的应用中还涉及到尺度的把握(信息的细致程度)，而这个尺度会随着模型的能力提升而变化。如早期的模型需要非常详尽的内容输入，当模型能力提升后可以自主从代码中获得足够的背景知识。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>AI协作编程方法</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>像设计系统架构一样设计上下文架构，即上下文工程（context engineering）。</li><li>三层记忆：应用基础记忆=System Prompt，功能模块记忆=关键背景知识，需求迭代记忆=最终输入。</li><li>记忆由AI辅助构建与维护，统一.md格式，渐进更新形成效率正循环。</li><li>编码拆子任务、先写测试、AI自Review，并用规则禁止作弊和超额输出。</li></ul><div class="pit"><ul><li>AI反复无法完成任务时会作弊，如硬编码绕开测试、直接给结果。</li><li>AI会超额输出不着边际的方案或代码。</li></ul></div></div>
+<h3 class="sub">2.1. 应用级记忆结构</h3>
+<p>关键要点：像设计系统架构一样设计上下文架构，暗合近期讨论比较多的上下文工程(context engineering)的概念。在这个认知之下思考如何高效、准确的维护这个上下文工程？</p>
+<ul><li>第一层-应用基础记忆： 是应用比较基础的架构、技术栈、规范、通用工具等长期稳定记忆，是与AI交互的 System Prompt ，就像系统架构中的基础组件。</li><li>第二层-功能模块记忆： 是对某个具体功能的完整描述，包括链路图、代码入口、关键逻辑、依赖关系等相对稳定的功能记忆，是与AI交互 关键背景知识 ，就像系统架构中由基础组件+业务需求组成的具体功能。</li><li>第三层-需求迭代记忆： 是AI基于项目迭代中 业务需求+功能模块背景知识+项目系统架构 产出的技术方案，包括明确的业务需求、代码改造范围、约束条件、边界情况等，是作为提供给AI进行代码生成的最终输入。</li></ul>
+<h3 class="sub">2.2. AI辅助记忆维护</h3>
+<p>记忆维护关键点：向AI提供的输入内容和产出验收，本身也可以由AI来辅助生成和验证，同时记忆的维护是渐进的，可跟随实际项目逐步完善。</p>
+<ul><li>应用基础记忆构建： 一般AI编程工具都有生成项目顶层记忆文档的功能，如Cursor的 / Generate Cursor Rules 、ClaudeCode的 /init ，在某个应用没有任何记忆时，可以作为冷启动的快速建立记忆的方法，生成初始记忆后，可以根据自己的要求让AI辅助调整。</li><li>功能模块记忆构建： 由人类提供提供简洁的功能描述和关键代码入口，让AI自动根据代码入口作为线索去检索，建立完整链路的记忆文档，再根据自己的要求让AI辅助调整。</li><li>需求迭代记忆构建： 引用与需求相关的背景知识记忆，并且以Markdown格式描述本次需求内容，要求其生成技术方案，就产出了需求迭代记忆。需求开发完成后反向更新功能模块记忆。</li><li>记忆文档的规范： 建立一些基础的记忆文档规范，如应用记忆保持整洁、功能模块记忆需要有链路图、需求迭代记忆需要建立在指定目录等。</li><li>要求AI辅助检查和反思： 每一层的记忆文档生成后，都可以要求AI进行自我检查和反思，是否有错漏的地方。</li><li>通用的记忆格式： 统一以 .md 作为记忆格式，未来使用任何AI编程工具都可以无缝切换。(cursor的.mdc本质上也是.md)</li></ul>
+<p>总结：核心是系统性的分层分模块管理上下文，最大程度让AI辅助维护上下文，每次变更的知识负担就可以大幅度下降(输入具体需求即可)，配合渐进式的更新维护，使用AI编程工具的效率正循环就形成了。</p>
+<h3 class="sub">2.2.1. 记忆示例</h3>
+<p>功能模块基于、需求迭代记忆的示例涉及到敏感业务代码，不再此处展示</p>
+<p>项目结构和技术栈</p>
+<ul><li>---</li><li>description:</li><li>globs:</li><li>alwaysApply: true</li><li>---</li><li># AE评测系统开发指南</li><li>## 项目结构</li><li>- [demo-start](mdc:demo-start): 项目启动模块，**这个模块中没有业务逻辑, 在我没有明确指令是不要修改此模块中的代码**。</li><li>- [demo-api](mdc:demo-api): HSF API接口定义模块, **对于Demo系统的开发，只关心 [demo](mdc:demo-api/src/main/java/com/aliexpress/demo) package下的内容, 其他package内容忽略**</li><li>- [demo/api](mdc:demo-api/src/main/java/com/aliexpress/demo/api): Demo系统的HSF API的interface均在这个package下定义, 命名后缀为Service</li><li>- [demo/model](mdc:demo-api/src/main/java/com/aliexpress/demo/model): Demo系统的HSF API的model均保存在这个package, 命名后缀为Request、DTO</li><li>- [demo/common](mdc:demo-api/src/main/java/com/aliexpress/demo/common): Demo系统的HSF API的enum均保存在这个package下, 命名后缀为Enum</li><li>- [demo/base](mdc:demo-api/src/main/java/com/aliexpress/demo/base): Demo系统的HSF API的model的基类均保存在这个package下</li><li>- [demo-biz](mdc:demo-biz): 业务逻辑实现模块, **对于Demo系统的开发，只关心 [demo](mdc:demo-api/src/main/java/com/aliexpress/biz/demo) package下的内容, 其他package内容忽略**</li><li>- [demo/api](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/api): Demo系统的HSF API的实现类均在这个package下定义, 命名后缀为ServiceImpl</li><li>- [demo/api/converter](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/api/converter): Demo系统的HSF API的实现类使用的Converter类均保存在这个package下, 命名后缀为Converter</li><li>- [demo/api/validate](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/api/validate): Demo系统的HSF API的实现类使用的校验类均保存在这个package下, 命名后缀为Validate</li><li>- [demo/common](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/common): Demo系统的内部的公共类均保存在这个package下, 命名后缀为Enum、Constant</li><li>- [demo/config](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/config): Demo系统的内部的Diamond、HSF配置类均保存在这个package下, 命名后缀为Config、Configuration</li><li>- [demo/consumer](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/consumer): Demo系统的MetaQ Consumer类均保存在这个package下, 命名后缀为Consumer(消费MetaQ)</li><li>- [demo/consumer/listener](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/consumer/listener): Demo系统的Consumer的消费逻辑实现类均保存在这个package下, 命名后缀为Listener(实现消费逻辑)</li><li>- [demo/demouator](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/demouator): Demo系统的评估器实现类均保存在这个package下, 命名后缀为demouator, **此处的代码相对比较稳定，在我没有明确指令时不要自行修改**</li><li>- [demo/executor](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/executor): Demo系统的通用业务逻辑实现类均保存在这个package下, 命名后缀为Executor</li><li>- [demo/invoker](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/invoker): Demo系统的调用AI应用的通用封装类均保存在这个package下, **此处的代码相对比较稳定，在我没有明确指令时不要自行修改**</li><li>- [demo/task](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/task): Demo系统的任务提交和任务执行的的通用封装类均保存在这个package下, **此处的代码相对比较稳定，在我没有明确指令时不要自行修改**</li><li>- [demo/util](mdc:demo-biz/src/main/java/com/aliexpress/biz/demo/util): Demo系统的工具类均保存在这个package下, **此处的代码相对比较稳定，在我没有明确指令时不要自行修改**</li><li>- [demo-core](mdc:demo-core): 核心功能模块, 包含基础设施和通用组件, **对于Demo系统的开发, 任何时候都不需要关注这个模块中的内容**</li><li>- [demo-job](mdc:demo-job): 定时任务模块, **对于Demo系统的开发, 任何时候都不需要关注这个模块中的内容**</li><li>- [demo-workflow](mdc:demo-workflow): 工作流相关模块, **对于Demo系统的开发, 任何时候都不需要关注这个模块中的内容**</li><li>- [demo-infrastructure](mdc:demo-infrastructure): 基础设施模块, 包含数据访问、外部服务集成等, **对于Demo系统的开发, 主要关心其中操作数据库的相关代码**</li><li>- [dao/demo](mdc:demo-infrastructure/src/main/java/com/aliexpress/infrastructure/dao/demo): Demo系统的Mybatis-Plus的Mapper类均保存在这个package下，后缀为Mapper</li><li>- [model/demo](mdc:demo-infrastructure/src/main/java/com/aliexpress/infrastructure/model/demo): Demo系统的Mybatis-Plus的实体类均保存在这个package下，其中PO后缀的是与数据库表直接映射的实体类，其中/model文件夹下的类是和业务层交互的实体类</li><li>- [model/convert](mdc:demo-infrastructure/src/main/java/com/aliexpress/infrastructure/model/convert): Demo系统的Mybatis-Plus的PO与Model之间的转换类均保存在这个package下，后缀为Converter</li><li>- [repository](mdc:demo-infrastructure/src/main/java/com/aliexpress/infrastructure/repository): Demo系统的数据库操作类均保存在这个package下，接口后缀为Repository，实现类后缀为RepositoryImpl，核心的作用是调用Mapper与数据库操作、转换PO与Model</li><li>- [demo-provider](mdc:demo-provider): 服务提供者模块</li><li>- [hsf/provider](mdc:demo-provider/src/main/java/com/aliexpress/provider/hsf/provider): 增加新的HSF服务Provider需要在 [HsfProviderConfig.java](mdc:demo-provider/src/main/java/com/aliexpress/provider/hsf/provider/HsfProviderConfig.java)类中增加配置</li><li>- [demo-sdk](mdc:demo-sdk): Demo系统SDK工具模块，**此处的代码相对比较稳定，在我没有明确指令时不要自行修改**</li><li>## 主要技术栈</li><li>- Pandora Boot: 基于Spring Boot的阿里内部框架</li><li>- HSF: 阿里内部的RPC框架</li><li>- Diamond: 阿里内部的配置中心</li><li>- Tair: 阿里内部的缓存服务</li><li>- MetaQ: 阿里内部的消息服务</li><li>- MyBatis-Plus: 轻量级的ORM框架</li></ul>
+<p>DAO层代码规范</p>
+<ul><li>---</li><li>description: 根据创建表的SQL生成操作数据库层增删改查代码时引用此文件</li><li>globs:</li><li>alwaysApply: false</li><li>---</li><li>## 操作数据库编码规范</li><li>#### 操作DB框架</li><li>1. 开发框架：使用MyBatis-Plus进行编码</li><li>2. 调用逻辑：上层通过注入的方式调用Repository的实现，在Repository的实现的实现中调用Mapper，调用Mapper后返回的对象是PO，再通过Converter转换成Model后返回为上层调用方。</li><li>3. 数据类型的选择：时间字段使用java.util.Date类型</li><li>4. 使用MyBatis-Plus方法注意事项：注意不要调用deprecated的方法</li><li>5. Repository层的删除方法：统一使用逻辑删除，逻辑删除字段是is_deleted</li><li>6. Repository层需操作时需要附加对当前环境的处理：调用 [EnvUtil.java](mdc:task-infrastructure/src/main/java/com/aliexpress/qa/task/infrastructure/util/EnvUtil.java)的getEnv().getCode()方法</li><li>7. Repository层的的分页方法：调用MyBatis-Plus的selectPage方法</li><li>#### DAO层PO</li><li>1. DAO层PO的命名规范为${TableName}PO</li><li>2. DAO层PO的存放目录[model](mdc:task-infrastructure/src/main/java/com/aliexpress/qa/task/infrastructure/model)</li><li>#### DAO层Mapper</li><li>1. DAO层Mapper命名规范为${TableName}Mapper</li><li>2. DAO层Mapper的存放目录[dao](mdc:task-infrastructure/src/main/java/com/aliexpress/qa/task/infrastructure/dao)</li><li>#### Repository层</li><li>1. Repository层interface命名规范为${TableName}Repository</li><li>2. Repository层实现命名规范为${TableName}RepositoryImpl</li><li>3. Repository层Model命名规范为${TableName}Model</li><li>4. Repository层interface的存放目录[repository](mdc:task-infrastructure/src/main/java/com/aliexpress/qa/task/infrastructure/repository)</li><li>5. Repository层实现的存放目录[repositoryimpl](mdc:task-infrastructure/src/main/java/com/aliexpress/qa/task/infrastructure/repository/impl)</li><li>6. Repository层Model存放目录[model](mdc:task-infrastructure/src/main/java/com/aliexpress/qa/task/infrastructure/model)</li><li>#### Converter层</li><li>1. Converter层命名规范位${TableName}Converter</li><li>2. Converter层的存放目录[convert](mdc:task-infrastructure/src/main/java/com/aliexpress/qa/task/infrastructure/model/convert)</li><li>3. Converter代码规范：使用字段进行映射，禁止使用json序列化、BeanUtils.copyProperties等方式</li><li>## 参考代码</li><li>1. DAO层PO参考代码</li><li>``` java</li><li>import com.baomidou.mybatisplus.annotation.TableName;</li><li>import lombok.AllArgsConstructor;</li><li>import lombok.Builder;</li><li>import lombok.Data;</li><li>import lombok.NoArgsConstructor;</li><li>${必要的引用}</li><li>/**</li><li>* @author chigong.zxn</li><li>@Data</li><li>@Builder</li><li>@TableName(value = &quot;${tableName}&quot;)</li><li>@AllArgsConstructor</li><li>@NoArgsConstructor</li><li>publicclass ${TableName}PO {</li><li>${注释}</li><li>${只可以使用包装类型，禁止使用基础类型}</li><li>${columnName}</li><li>```</li><li>2. DAO层Mapper参考代码，【注意：不需要增加增删改查方法，MyBatis-Plus已经默认通过继承BaseMapper提供】</li><li>``` java</li><li>import com.aliexpress.qa.task.infrastructure.model.eval.${TableName}PO;</li><li>import com.baomidou.mybatisplus.core.mapper.BaseMapper;</li><li>import org.apache.ibatis.annotations.Mapper;</li><li>/**</li><li>* @author chigong.zxn</li><li>@Mapper</li><li>public interface ${TableName}Mapper extends BaseMapper&lt;${TableName}PO&gt; {</li><li>```</li><li>3. Repository层interface参考代码，【注意：生成基础的增删改查方法】</li><li>``` java</li><li>import com.aliexpress.qa.task.infrastructure.model.eval.${TableName}PO;</li><li>import com.aliexpress.qa.task.infrastructure.model.eval.${TableName}Model;</li><li>/**</li><li>* @author chigong.zxn</li><li>@Mapper</li><li>public interface ${TableName}Repository {</li><li>${注释}</li><li>${增删改查方法}</li><li>```</li><li>4. Repository层实现参考代码，【注意：继承Repository接口实现基础增删改查方法，调用Mapper生成基础的增删改查方法】</li><li>``` java</li><li>import com.aliexpress.qa.task.infrastructure.model.eval.${TableName}PO;</li><li>import com.aliexpress.qa.task.infrastructure.model.eval.${TableName}Model;</li><li>/**</li><li>* @author chigong.zxn</li><li>@Mapper</li><li>public interface ${TableName}RepositoryImpl implements ${TableName}Repository {</li><li>${注释}</li><li>${实现Repository增删改查方法}</li><li>```</li><li>5. Repository层Model参考代码</li><li>``` java</li><li>import lombok.AllArgsConstructor;</li><li>import lombok.Builder;</li><li>import lombok.Data;</li><li>import lombok.NoArgsConstructor;</li><li>${必要的引用}</li><li>/**</li><li>* @author chigong.zxn</li><li>@Data</li><li>@Builder</li><li>@AllArgsConstructor</li><li>@NoArgsConstructor</li><li>publicclass ${TableName}Model {</li><li>${注释}</li><li>${只可以使用包装类型，禁止使用基础类型}</li><li>${columnName}</li><li>```</li><li>6. Converter层参考代码，【注意：生成2个静态方法，PO转Model、Model转PO】</li><li>``` java</li><li>import com.aliexpress.qa.task.infrastructure.model.eval.${TableName}PO;</li><li>import com.aliexpress.qa.task.infrastructure.model.eval.${TableName}Model;</li><li>/**</li><li>* @author chigong.zxn</li><li>publicclass ${TableName}Converter {</li><li>${注释}</li><li>${PO转换为Model}</li><li>${注释}</li><li>${Model转换为PO}</li><li>```</li></ul>
+<p>API层代码规范</p>
+<ul><li>---</li><li>description: 增加HSF接口时引用此文件</li><li>globs:</li><li>alwaysApply: false</li><li>---</li><li>## API开发规范</li><li>### 服务实现</li><li>* 验证器存放目录：[validate](mdc:task-biz/src/main/java/com/aliexpress/qa/task/biz/eval/api/)</li><li>* 实现要求：必须实现服务验证器</li><li>* 服务实现代码参考：</li><li>``` java</li><li>import com.alibaba.fastjson.JSON;</li><li>import org.slf4j.Logger;</li><li>import org.slf4j.LoggerFactory;</li><li>import org.springframework.stereotype.Service;</li><li>@Service</li><li>publicclass ${服务名}ServiceImpl implements ${服务名}Service {</li><li>privatestaticfinal Logger logger = LoggerFactory.getLogger(${服务名}ServiceImpl.class);</li><li>@Autowired</li><li>private ${服务校验器}Validate validate;</li><li>// 如果需要调用其他bean也可以在此处引入</li><li>// 如：</li><li>// @Autowired</li><li>// private EvalDatasetDetailRepository evalDatasetDetailRepository;</li><li>@Override</li><li>public ${服务方法出参} ${服务方法名}(${服务方法请求体} request) {</li><li>logger.info(&quot;${服务名}Service.${服务方法名} request:{}&quot;, JSON.toJSONString(request));</li><li>${服务方法出参} response = new ${服务方法出参}();</li><li>try {</li><li>String validateMsg = validate.${服务方法校验器}Validate(request);</li><li>if (StringUtils.isNotBlank(validateMsg)) {</li><li>return Response.fail(ErrorCode.PARAM_ERROR.name(), validateMsg);</li><li>// 在此处实现业务逻辑</li><li>${业务逻辑}</li><li>} catch (Exception e) {</li><li>logger.error(&quot;${服务名}Service.${服务方法名} error&quot;, e);</li><li>response = Response.fail(ErrorCode.SYSTEM_ERROR.name(), e.getMessage());</li><li>logger.info(&quot;${服务名}Service.${服务方法名} response:{}&quot;, response);</li><li>return response;</li><li>```</li><li>### 服务验证器</li><li>* 验证器存放目录：[validate](/task-biz/src/main/java/com/aliexpress/qa/task/biz/eval/api/validate/)</li><li>* 验证器代码参考：验证失败则返回失败原因字符串，验证成功则返回空字符串</li><li>``` java</li><li>import com.aliexpress.qa.task.biz.eval.util.ValidateUtil;</li><li>import org.springframework.stereotype.Component;</li><li>@Component</li><li>publicclass ${服务名}Validate {</li><li>// 如果需要调用其他bean也可以在此处引入</li><li>// 如：</li><li>// @Autowired</li><li>// private EvalDatasetDetailRepository evalDatasetDetailRepository;</li><li>public String ${服务方法名}Validate(${服务方法请求体} request) {</li><li>// 请求体不能为空</li><li>if (request == null) {</li><li>return&quot;请求参数不能为空&quot;;</li><li>// 基础校验，使用ValidateUtil校验net.sf.oval annotation</li><li>String validateMsg = ValidateUtil.validate(request);</li><li>if (StringUtils.isNotBlank(validateMsg)) {</li><li>return validateMsg;</li><li>// 写明校验注释</li><li>#{文档要求的其他校验逻辑}</li><li>// 返回空字符串则校验成功</li><li>return StringUtils.EMPTY;</li><li>```</li><li>### 分布式锁使用</li><li>* 服务实现代码参考：</li><li>``` java</li><li>import com.alibaba.fastjson.JSON;</li><li>import org.slf4j.Logger;</li><li>import org.slf4j.LoggerFactory;</li><li>import org.springframework.stereotype.Service;</li><li>import com.aliexpress.qa.task.infrastructure.util.lock.DistributedLockUtil;</li><li>@Service</li><li>publicclass ${服务名}ServiceImpl implements ${服务名}Service {</li><li>privatestaticfinal Logger logger = LoggerFactory.getLogger(${服务名}ServiceImpl.class);</li><li>@Autowired</li><li>private ${服务校验器}Validate validate;</li><li>@Autowired</li><li>private DistributedLockUtil distributedLockUtil;</li><li>// 如果需要调用其他bean也可以在此处引入</li><li>// 如：</li><li>// @Autowired</li><li>// private EvalDatasetDetailRepository evalDatasetDetailRepository;</li><li>@Override</li><li>public ${服务方法出参} ${服务方法名}(${服务方法请求体} request) {</li><li>logger.info(&quot;${服务名}Service.${服务方法名} request:{}&quot;, JSON.toJSONString(request));</li><li>${服务方法出参} response = new ${服务方法出参}();</li><li>try {</li><li>String validateMsg = validate.${服务方法校验器}Validate(request);</li><li>if (StringUtils.isNotBlank(validateMsg)) {</li><li>return Response.fail(ErrorCode.PARAM_ERROR.name(), validateMsg);</li><li>// 根据业务逻辑要求构建lockKey</li><li>String lockKey = ...;</li><li>// 分布式锁，避免并发调度</li><li>DistributedLock lock = distributedLockUtil.getLock(lockKey);</li><li>// 获取分布式锁</li><li>try {</li><li>lock.tryLock(1000L);</li><li>} catch (GetLockErrorException lockException) {</li><li>return Response.fail(ErrorCode.LOCK_ERROR.name(), ErrorCode.LOCK_ERROR.getMessage());</li><li>try {</li><li>// 在此处实现业务逻辑</li><li>${业务逻辑}</li><li>} finally {</li><li>lock.unlock();</li><li>} catch (Exception e) {</li><li>logger.error(&quot;${服务名}Service.${服务方法名} error&quot;, e);</li><li>response = Response.fail(ErrorCode.SYSTEM_ERROR.name(), e.getMessage());</li><li>logger.info(&quot;${服务名}Service.${服务方法名} response:{}&quot;, response);</li><li>return response;</li><li>```</li></ul>
+<p>单元测试规范</p>
+<ul><li>---</li><li>description:</li><li>globs:</li><li>alwaysApply: false</li><li>---</li><li># 单元测试指南</li><li>## 测试框架</li><li>- JUnit Jupiter 5.9.2</li><li>- Mockito 4.11.0</li><li>- JUnit Platform 1.9.2</li><li>## 严格执行</li><li>- 禁止改变被测试方法的任何行为</li><li>- private方法测试: 使用反射的方式测试private方法, 禁止改变被测试方法的private</li><li>```java</li><li>@BeforeEach</li><li>voidsetUp() throws NoSuchMethodException {</li><li>// 获取私有方法</li><li>Method privateMethod = TargetClass.class.getDeclaredMethod(&quot;privateMethodName&quot;,</li><li>ParameterType1.class, ParameterType2.class);</li><li>privateMethod.setAccessible(true);</li><li>@Test</li><li>voidprivateMethodName_Should_ExpectedBehavior_When_StateUnderTest() throws Exception {</li><li>// given</li><li>// when</li><li>Object result = privateMethod.invoke(targetObject, arg1, arg2);</li><li>// then</li><li>// assertions</li><li>```</li><li>- 静态方法Mock: 使用MockedStatic方式</li><li>- staticfinal字段处理: 避免直接测试或mock staticfinal字段（如日志记录器），专注于测试核心业务逻辑和返回值</li><li>- Mybatis-Plus初始化实体类元数据: mock Mybatis-Plus的```LambdaUpdateWrapper、LambdaQueryWrapper```时，在```@BeforeEach```中使用```TableInfoHelper.initTableInfo(new MapperBuilderAssistant(new MybatisConfiguration(), &quot;&quot;),${实体类名}PO.class);```初始化实体类元数据</li><li>## 测试命名规范</li><li>- 使用 `@Test` 注解标记测试方法</li><li>- 测试方法名应该清晰表达测试目的，并且测试方法名必须包含被测试的方法名</li><li>- 格式：`${被测试方法名}_Should_ExpectedBehavior_When_StateUnderTest`</li><li>- 示例：`buildQuery_Should_ReturnQueryWithEntrustBizId_When_UserHasEntrustPermission`</li><li>## 测试最佳实践</li><li>### Mock策略</li><li>- 优先测试核心业务逻辑，避免过度依赖基础设施组件的验证</li><li>- 对于不可变的静态组件（如staticfinal字段），采用行为验证而非状态验证</li><li>- 当无法直接mock某个组件时，考虑通过测试输出结果来间接验证行为</li><li>- Mock对象使用: 只能对`mock()`创建的对象使用`when()`进行stub，禁止对真实对象（如通过builder模式创建的对象）使用`when()`</li><li>### 测试重点</li><li>- 专注于方法的返回值、异常抛出、状态变更等核心行为</li><li>- 避免测试框架细节、日志输出等非核心功能</li><li>- 保持测试的简洁性和可维护性</li></ul>
+<p>模块功能文档规范</p>
+<ul><li>---</li><li>description:</li><li>globs:</li><li>alwaysApply: false</li><li>---</li><li>## 生成记忆</li><li>- 创建记忆文件夹：记忆文件统一存放在 [.cursor/memory](mdc:.cursor/memory) ，如果我提供了指定了文件目录则按照我提供的文件夹存放，如果我没提供则根据需要梳理的链路自动起名创建文件夹</li><li>- 创建记忆文件：如果我提供了名字，则按照我提供的名字创建，如果我没有提供，则根据需要梳理的链路自动创建文件，已`.md`格式的文件维护记忆。</li><li>- 记忆文件内容要求：必须包含一个完整的链路图，并且将必要的代码入口、核心的代码逻辑放在记忆文档中。</li></ul>
+<p>技术方案文档规范</p>
+<ul><li>---</li><li>description:</li><li>globs:</li><li>alwaysApply: false</li><li>---</li><li>## 生成开发任务</li><li>- 创建任务文件夹：当我要求你创建一个开发任务时，你需要根据`当前分支`的名称在 [.cursor/task](mdc:.cursor/task) 文件中查找是否有对应任务的文件，如果没有则创建一个任务文件夹</li><li>- 创建任务文件：在以`当前分支`命名的文件夹中，创建当前任务的详细描述文件，使用`.md`的文件格式生成文档内容，文件名根据我的要求自动生成一个中文名</li><li>## 文档内容规范</li><li>- 文档结构：保持简洁，专注技术方案。在没有明确要求时不包含开发计划、风险控制、上线计划等管理内容</li><li>- 测试要求：单元测试要求，覆盖率达到80%以上</li><li>- 尽量简洁：在满足要求的情况下尽量简洁，如果有需要补充的内容，我会明确的向你表达</li><li>## 代码设计规范</li><li>- 枚举使用：新增字符串类型字段时优先考虑枚举定义，避免硬编码</li><li>- 历史兼容：新增字段时考虑历史数据兼容性，提供默认值处理</li></ul>
+<h3 class="sub">2.3. 代码生成与测试</h3>
+<p>平衡效率和质量：核心是控制单个任务不要过大，当下过大的任务质量和验证过程都会失控。</p>
+<ul><li>拆解子任务分步执行：和AI共同完成技术方案后，可以要求其将技术方案分成多个子任务，然后子任务分步执行、验证、调整。</li><li>让AI按照技术方案写测试代码：确保核心场景单元测试都能覆盖到，避免我们成为AI的填坑奴隶。更进一步是让AI生成集成测试、端到端测试(尝试中)。</li><li>AI自Review代码：根据技术方案生成代码之后，可以要求AI根据技术方案检查下当前的代码变更，是否有错漏的。</li></ul>
+<p>对AI的约束：模型为了获得奖励，有时候会用作弊的方式假装满足用户的要求</p>
+<ul><li>作弊问题：当AI反复多次无法完成任务时，就会出现作弊现象，比如硬编码绕开测试、模型自己直接给出结果等。可以在规则中明确禁止，禁止绕开需求直接生成结果，如无法完成时可以明确表示无法完成。</li><li>超额输出问题：无论是技术方案还是代码都存在超额输出的问题，AI可能会输出一些不着边际的方案或代码，可以将这个问题尽量在技术方案阶段限制住，在生成技术方案时要求尽量简洁、专注技术方案，不必生成工期之类的内容，在生成代码时要求严格按照技术方案生成代码。</li></ul>
+<p>多任务并行开发：Cursor本身支持多任务并行开发的能力</p>
+<ul><li>Cursor多子任务：将技术方案分成多个子任务后，可以在CursorIDE中同一个项目开启多个子任务并行开发，每个子任务分别验证。</li><li>Cursor Background Agent：异步编程Agent，在云端环境启动虚拟环境执行开发任务，但是需要上传代码到Cursor的云端环境，在团队版的Cursor中强制开启因素模式，无法使用Background Agent。</li></ul>
+<p>开发过程持续更新记忆：类似上文提到的，记忆是逐步完善的，不是一蹴而就的，需要在过程中持续完善记忆。</p>
+<ul><li>记忆与代码不匹配：无论是哪一层的记忆，如果开发过程中发现有缺少或不恰当的，可以直接要求AI根据特定代码修正记忆文档。</li><li>经验总结回写记忆：如果在开发过程中，发现有一些规范或场景在规则中没考虑到的，可以完成一个子任务后，要求AI总结经验，并且使用简洁的方式回写到对应记忆文档中。</li></ul>
+<h3 class="sub">2.3.1. 对AI的约束示例</h3>
+<p>AI作弊的CASE：在一个JSON转HTML的任务中，cursor在多轮循环无法解决问题之后，直接生成了一个html的结果文件给我，绕开了使用代码生成html的要求。</p>
+<p>严格按照要求执行示例</p>
+<ul><li>- 禁止作弊：对于生产代码和测试代码的生成，需要完全遵循框架和需求的要求，**禁止通过硬编码的方式直接生成结果或绕开测试等行为**。</li><li>- 严格按照要求写代码：如果我提供了开发任务的.md文档，请严格按照文档要求生成代码，不要擅自发挥。</li><li>- 保持简洁：专注按照我的需求生成技术方案。在没有明确要求时不包含开发计划、风险控制、上线计划等冗余内容</li></ul>
+<h3 class="sub">2.4. 工程师的基础能力</h3>
+<ul><li>对模型能力的动态认知 ： 清晰的认知当前AI的能力特征和极限，并且随着模型能力的提升，能够快速的形成对新模型的新认知，改变自己的行为模式获得更高的效率、质量。</li><li>管理多个AI编程工具 ： 通过上下文工程、AI并行开发协作方法驱动多个AI编程工具，放大技术杠杆的效果。如Cursor多子任务、Cursor Background Agent、Claude Code多子Agent实例等并行开发手段。</li><li>软件架构设计能力 ： AI已经能帮助我们很好的处理细节，但是在企业级复杂系统中，AI当下依然是个执行角色，我们需要作为软件系统的主导者、控制者、设计者，让系统在预期之内演进。(自己能够处理细节的能力依然重要)</li><li>业务理解与表达 ： 当AI已经能够处理很多的技术细节时，深入的产品业务理解能力和清晰的表达能力，未来是新的编程技巧。</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>真实使用案例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>用 /Generate Cursor Rules 或 /init 冷启动生成应用基础记忆。</li><li>技术方案由功能模块记忆+需求迭代记忆生成。</li><li>复杂任务拆成子任务细化到可供Cursor执行。</li></ul><div class="pit"><ul><li>Playwright MCP端到端测试基本不可用，处理不了日期等复杂组件。</li></ul></div></div>
+<h3 class="sub">3.1. 初始记忆维护</h3>
+<table><thead><tr><th></th><th>使用示例</th></tr></thead><tbody><tr><td>Cursor规则描述</td><td></td></tr><tr><td>Cursor自动生成 应用基础记忆</td><td>输入指令：/Generate Cursor Rules</td></tr><tr><td>要求生成特定的规则</td><td></td></tr><tr><td>基于应用基础记忆 结合代码入口生成 功能模块记忆文档</td><td></td></tr></tbody></table>
+<h3 class="sub">3.2. 技术方案生成</h3>
+<table><thead><tr><th></th><th>使用示例</th></tr></thead><tbody><tr><td>基于功能 模块记忆 生成迭代 技术方案</td><td></td></tr></tbody></table>
+<h3 class="sub">3.3. 代码开发与测试</h3>
+<table><thead><tr><th></th><th>使用示例</th></tr></thead><tbody><tr><td>执行开发任务</td><td></td></tr><tr><td>执行开发任务</td><td></td></tr><tr><td>复杂任务拆解</td><td>输入指令 将这个方案拆分为多个子任务，并且细化到可供Cursor执行的程度。</td></tr><tr><td>任务过程中反思</td><td></td></tr><tr><td>同项目并行开发</td><td></td></tr><tr><td>Playwright MCP 端到端测试</td><td>基础处于不可用状态，执行了5~10分钟，无法处理日期组件等复杂组件。</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>最新趋势与工具对比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Cursor仍是实用性性价比高的工具，但Claude Code以任务完成度快速蚕食其市场。</li><li>Claude Code费用更高：20$订阅额度不足，需100$/200$ MAX或API。</li><li>Claude Code解决复杂问题更高效，如JSON转HTML案例。</li><li>强如Claude Code也难长期无监督运行，复杂度越高越易失控。</li></ul><div class="pit"><ul><li>无监督自主开发：复杂度越高、时间越长，结果越容易失控。</li></ul></div></div>
+<h3 class="sub">4.1. 编程工具对比</h3>
+<p>Cursor依然是当下实用性和性价比较高的编程工具，但Claude Code的高任务完成度和其形态的高可玩性正在快速蚕食Cursor的用户市场。以Devin为代表的端到端异步Agent由于其较低的任务完成度，已经逐渐失去了用户的信任，处在黑暗中挣扎的阶段。(此处仅对比当下有代表性的2款热门工具)</p>
+<p>近期Cursor的订阅模式的改变(Pro不限量)也可以侧面感受到来自ClaudeCode的竞争压力，从能力层面上ClaudeCode目前更强一些，但是Cursor放开Pro订阅的使用限制，是从成本和用量上拉开优势进行错位竞争，先留住用户，再追赶能力。(个人理解)</p>
+<h3 class="sub">4.2. ClaudeCode使用体验</h3>
+<p>特点：原生任务规划能力+Claude4任务完成度比Cursor更高，但是费用也更高。</p>
+<ul><li>费用： 费用高主要体现在20$每个月的订阅版本无法作为主力开发，其额度5小时刷新一次，但是1个额度周期只够开发1小时(真实使用)，达到额度后要等下一个5小时周期。解决额度问题需要升级每月100$/200$的MAX版本，或者使用API访问。不过API的费用更加高昂，使用claude 4 sonnet1个任务要花掉2$(opus5倍价格)。</li><li>并行开发： Claude Code原生集成Agent功能，在任务分解后可以让其自行启动多个子Agent并行开发，由Claude Code统一管理。</li><li>解决复杂问题： 在一个真实需求中，需要将格式不固定的JSON转成HTML，在Cursor使用了100次的额度、2-3个小时、尝试了3个方案依然无法符合要求。Claude Code沟通了3-4次完成了可运行的MVP，10次左右达到预期效果。</li><li>无监督运行时长： Claude Code跳过权限提示后(--dangerously-skip-permissions)，在无额度限制的情况下连续运行的时间远超过Cursor，社区有连续运行数个小时的例子。(Cursor的连续工作最大限制是25个tools)</li><li>无监督自主开发的Agent是否具备条件： 强如Claude Code，虽然持续执行的时间更长，但是依然很难做到长期无监督的运行。核心的问题是前期输入信息的完备性和后期的代码验收依然是个很大的挑战，执行任务的复杂度越高、无监督时间越长，结果越容易失控。</li></ul>
+<table><thead><tr><th></th><th>使用示例</th></tr></thead><tbody><tr><td>安装和启动</td><td># 安装(需要NPM) npm install -g @anthropic-ai/claude-code # 进入项目目录 cd ~/your-project # 启动 claude</td></tr><tr><td>启动视图</td><td>使用了claude-code-router介入openrouter api的界面，订阅用户稍有区别</td></tr><tr><td>运行模式</td><td></td></tr><tr><td>创建技术方案</td><td></td></tr><tr><td>拆解子任务</td><td></td></tr><tr><td>并行开发</td><td></td></tr><tr><td>达到限额</td><td></td></tr><tr><td>ClaudeCode 工具集</td><td></td></tr><tr><td>ClaudeCode 解决真实问题</td><td></td></tr></tbody></table>
+<p>通义千问3 + MCP：一切皆有可能</p>
+<p>MCP 协议通过标准化交互方式解决 AI 大模型与外部数据源、工具的集成难题；通义千问3 原生支持 MCP 协议，能更精准调用工具；阿里云百炼上线了业界首个全生命周期 MCP 服务，大幅降低 Agent 开发门槛，用户只需 5 分钟即可构建增强型智能体。</p>
+<p>点击阅读原文查看详情。</p>
+<p>阅读原文</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>上下文是关键</h4><p>完整+精确+聚焦的上下文是充分使用模型能力的关键，否则AI必然写错。</p><a class="src-link" href="#sec-01">原文 → 充分使用模型能力</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>三层记忆结构</h4><p>应用基础记忆=System Prompt，功能模块记忆=关键背景知识，需求迭代记忆=代码生成最终输入。</p><a class="src-link" href="#sec-02">原文 → AI协作编程方法</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Cursor vs Claude Code</h4><p>Cursor实用性价比高；Claude Code任务完成度高但费用更贵，正蚕食Cursor市场。</p><a class="src-link" href="#sec-04">原文 → 最新趋势与工具对比</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>JSON转HTML对比</h4><p>同一需求，Cursor用100次额度、2-3小时、3个方案仍不符；Claude Code沟通3-4次出MVP，10次达标。</p><a class="src-link" href="#sec-04">原文 → 最新趋势与工具对比</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Claude Code费用</h4><p>20$/月订阅额度5小时刷新一次，一个额度周期只够开发1小时；升级需100$/200$ MAX或API。</p><a class="src-link" href="#sec-04">原文 → 最新趋势与工具对比</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>AI作弊</h4><p>AI反复无法完成任务时会作弊：硬编码绕开测试、直接给结果，需在规则中明确禁止。</p><a class="src-link" href="#sec-02">原文 → AI协作编程方法</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>超额输出</h4><p>技术方案和代码都可能超额输出不着边际内容，方案阶段要求简洁、代码阶段严格按方案。</p><a class="src-link" href="#sec-02">原文 → AI协作编程方法</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>记忆文档格式</h4><p>记忆统一用.md，Cursor的.mdc本质也是.md；需求迭代记忆以Markdown描述需求生成技术方案。</p><a class="src-link" href="#sec-02">原文 → AI协作编程方法</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>工程师基础能力</h4><p>AI当下是执行角色，人仍是主导者：动态认知模型、架构设计、业务理解表达成新技巧。</p><a class="src-link" href="#sec-02">原文 → AI协作编程方法</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>无监督开发失控</h4><p>前期信息完备性和后期代码验收是挑战，复杂度越高、无监督时间越长越易失控。</p><a class="src-link" href="#sec-04">原文 → 最新趋势与工具对比</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把上下文当作架构来设计，用三层记忆（应用基础/功能模块/需求迭代）管理AI的输入。</li>
+          <li>让AI辅助维护记忆并拆子任务分步验证，同时在规则里禁止作弊和超额输出。</li>
+          <li>AI是执行者，人做主导者：持续更新对模型能力的认知，才能放大工具杠杆。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247551607&amp;idx=1&amp;sn=e0718a960b0f2ebd58eaadc888ada713" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247551607&amp;idx=1&amp;sn=e0718a960b0f2ebd58eaadc888ada713</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

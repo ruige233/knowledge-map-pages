@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">赛博鸡生蛋，7小时用Claude Vibe Coding一个Mini-Claude</h1>
+  <p class="lede">7小时Vibe Coding手搓Mini-Claude，还原Agent交互链路</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 18 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>背景</a>
+          <a href="#sec-02"><span class="n">02</span>工程简介</a>
+          <a href="#sec-03"><span class="n">03</span>基础演示</a>
+          <a href="#sec-04"><span class="n">04</span>进阶演示</a>
+          <a href="#sec-05"><span class="n">05</span>开发前置准备</a>
+          <a href="#sec-06"><span class="n">06</span>开发流程</a>
+          <a href="#sec-07"><span class="n">07</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 背景</a>
+          <a href="#sec-02">02 工程简介</a>
+          <a href="#sec-03">03 基础演示</a>
+          <a href="#sec-04">04 进阶演示</a>
+          <a href="#sec-05">05 开发前置准备</a>
+          <a href="#sec-06">06 开发流程</a>
+          <a href="#sec-07">07 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>阿里妹导读</p>
+<p>文章内容基于作者个人技术实践与独立思考，旨在分享经验，仅代表个人观点。</p>
+<p>本文章是小白向文章, 面向想要了解或者自己动手验证 Coding Agent 行为逻辑的技术/非技术同学, 使用Vibe Coding的方式, 参考Claude实现一个精简的Mini-Claude。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>背景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Vibe Coding火热，但Agent Loop、ReAct等机制还需动手实践</li><li>作者决定直调原始LLM API，体验Coding Agent完整行为链路</li><li>受一篇文章启发，用Vibe Coding模拟Claude实现Mini-Claude</li></ul></div>
+<p>最近，Vibe Coding 的风头正盛，无数技术与非技术背景的开发者纷纷投身其中。然而，对于 Coding Agent 背后真实的交互机制——例如 Agent Loop、ReAct 等核心理论，纸上得来终觉浅。于是我决定亲手实践，直接调用原始的 LLM API，亲身感受一次 Coding Agent 的完整行为链路。</p>
+<p>之前看到一篇文章受到启发, 决定用Vibing Coding, 模拟Claude, 实现一个小粒度功能的Mini-Claude。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>工程简介</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Mini-Claude模拟Claude CLI，实现CLI/Chat交互、Tool循环与上下文组装</li><li>目标是构建轻量版Copilot，三个夜晚碎片时间累计不足7小时</li><li>代码仓库q43607238/mini-claude，docs含保姆级注释</li><li>配置ApiKey与模型后启动app.js；dashboard用tnpm install安装依赖</li></ul></div>
+<p>Mini-Claude是模拟Claude CLI给Coding LLM发送API请求, 然后自己实现CLI交互, Chat交互, Tool调用循环, 请求上下文组装等基本的Coding Agent的能力, 实现构建一个轻量版的Copilot能力; 整个开发过程，我特意安排在下班后的三个夜晚进行。利用碎片化的时间一点点打磨，累计投入的开发时间甚至不足 7 小时。</p>
+<h3 class="sub">2.1 代码下载</h3>
+<ul><li>https://github.com/q43607238/mini-claude</li></ul>
+<p>工程内部的docs文件包含关键交互代码的详细解读, 并且都配有保姆级别的细致注释, 阅读起来轻松易懂。</p>
+<h3 class="sub">2.2 准备工作</h3>
+<ul><li>安装node环境: 已经安装过 Claude 的可以跳过这个步骤,我们就不过多赘述了;</li><li>配置ApiKey &amp; 选择模型:</li><li>cd &lt;yourProjectPath&gt;/src/</li><li># 首次启动, 会提示在用户目录创建好了工作目录~/.mini-claude 和配置文件 ~/.mini-claude/mini-claude-config.json</li><li>node app.js</li><li># 这时候将你的baseUrl和ApiKey填入Config的对应位置</li><li>vim ~/.mini-claude/mini-claude-config.json</li><li># 重新启动, 展示出了mini-claude字样则启动成功, 可以开始正常的CLI使用了</li><li>node app.js</li></ul>
+<p>配置参考:</p>
+<p>model:kimi-k2.5,GLM-5等等</p>
+<p>baseUrl: kimi官方https://api.kimi.com/coding</p>
+<ul><li>&quot;apiKey&quot;: &quot;你的API KEY&quot;,</li><li>&quot;model&quot;: &quot;&quot;,</li><li>&quot;thinking&quot;: {</li><li>&quot;enabled&quot;: true,</li><li>&quot;type&quot;: &quot;adaptive&quot;</li><li>&quot;baseURL&quot;: &quot;&quot;,</li><li>&quot;systemPrompt&quot;: &quot;你是一个AI编程助手&quot; // 可以自定义你的system prompt</li><li>dashboard安装node_module:</li><li>cd &lt;yourProjectPath&gt;/src/dashboard</li><li># 下载依赖</li><li>tnpm install</li><li># 下载完毕后, 就可以启动dashboard页面拉</li><li>npm run dev</li></ul>
+<h3 class="sub">2.3 实际演示</h3>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>基础演示</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>基础任务演示：让Agent修改指定代码</li><li>与进阶、高阶任务共同展示Mini-Claude的实际使用效果</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>进阶演示</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>进阶任务演示：让Agent批量修改代码</li><li>高阶任务为使用dashboard查看session日志</li></ul></div>
+<p>3.“高阶”任务：使用dashboard查看session日志</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>开发前置准备</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>安装cc-viewer抓包，直接查看Claude请求明文数据</li><li>准备Coding模型，作者采用KIMI官方KIMI 2.5作开发主力</li></ul></div>
+<ul><li>第一步：强烈安利安装 cc-viewer , 现在可以直接抓包看到 Claude 请求的明文数据。</li><li>第二步：准备好自己的 Claude coding模型, 这里我采用的是KIMI官方的 KIMI 2.5 , 作为开发主力。</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>开发流程</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>按LLM API、工具、对话组装与tool loop、CLI、重构、dashboard的顺序推进</li><li>消息组装保持前缀不变，把工具调用和上轮回复追加到末尾以命中KV Cache</li><li>tool loop即读改写循环，直到LLM不再返回工具调用才回复用户</li><li>重构先让LLM出方案再执行，可减少LLM乱搞事</li></ul><div class="pit"><ul><li>带thinking的tool调用时，下一次Request必须带上thinking信息</li><li>先渲染表格再渲染行内代码，长度变化会导致表格错乱</li><li>header需模拟Claude请求header，否则KIMI后端会校验失败</li></ul></div></div>
+<p>接下来,我们从最底层的工程结构开始, 构建起Mini-Claude的整体框架; 整体思路遵循prompt的大方向, 按照这个顺序, 不仅能够更好地保持各项原子能力的稳定, 也能有效降低整体出错的风险。</p>
+<h3 class="sub">4.1 打通LLM API调用</h3>
+<p>第一步, 我们通过JS自行实现一个针对KIMI的调用, 旨在打通最基础的请求逻辑：</p>
+<p>使用cc-viewr可以抓取到Claude的请求, 同样可以喂给Coding Agent;</p>
+<p>具体代码可访问文末代码学习链接查看。</p>
+<p>Prompt:现在我要求你使用JS生成一个对KIMI的大模型接口调用, 消息格式参考Anthropic_Messages格式, BaseUrl是https://api.kimi.com/coding/v1/messages?beta=true, 请求明文如下</p>
+<p>生成完毕后, 可以让Claude生成一个针对各种返回逻辑的测试。</p>
+<p>Prompt:现在我要求你针对kimi-api.js写一个全面的测试, 测试各种请求逻辑: simple chat, stream chat, tool use response, 重点关注流式是否可以正常消费, tool use是否能合理识别到tool use, 然后mock下tool调用</p>
+<p>测试已基本完成，与后端接口的调用链路畅通无阻, 但有一个细节需要注意：header中要模拟Claude请求的header, 具体可以使用cc-viewer获取, 因为Coding Plan的KIMI后端会校验你的请求是否自范围内的Coding CLI/ IDE。</p>
+<p>当前工程结构：</p>
+<ul><li>project/</li><li>└── src/</li><li>└── kimi-api.js</li></ul>
+<h3 class="sub">4.2 完成tool use的调用</h3>
+<p>Tool use 基本构成了 Coding Agent 实现编程能力的核心逻辑，因此在这一阶段，我们需要让 Agent 具备对工具的实现与调用能力。</p>
+<p>Prompt:现在我要你实现一个tool的实现, 实现Write(创建, 全量写入文件), Read(读取文件), Exec(执行bash指令) 3个工具; 实现了tool后, 修改之前的api测试demo, 让之前mock的tool调用, 实际执行tool的执行, 返回tool执行结果给我;</p>
+<p>至此基础测试已圆满收官, 验证tool的实现没有问题,值得一提的是在构建工具描述时, 直接询问Claude自身具备哪些工具能力，随后，再指令Coding Agent用JS精准复刻并实现相应功能;</p>
+<p>当前工程结构：</p>
+<ul><li>project/</li><li>└── src/</li><li>├── kimi-api.js</li><li>└── tool.js</li></ul>
+<h3 class="sub">4.3 完成对话的组装和tool call循环</h3>
+<p>实际上对于LLM来说, 每一次的api请求都是无状态的, 它不存储历史会话, 所以对话的组装需要我们自己进行处理, 这里要做一个manager来维护session对话和组装system prompt和message;</p>
+<p>同时, 要让Coding Agent顺利完成编程任务, 本质上就是一个不断 &quot;读 -&gt; 改 -&gt; 写 -&gt; 读 -&gt; 改 -&gt; 完成目标&quot; 的循环过程;</p>
+<p>接下来我们将聚焦两大核心功能:</p>
+<ul><li>核心1： 消息的组装, 存储历史message, 每次将工具调用, 上一轮的LLM response, 拼接到message数组的最后面, 保持前缀不变, 这样才可以用命中KV Cache;</li><li>核心2：tool loop的处理;</li></ul>
+<p>Prompt:现在我要你实现一个manager的实现, 它接收用户的文本, 拼接到请求的message信息, 如果是文本回复, 就直接回复, 如果是工具调用, 就先把调用结果返回给LLM, 完成工具Loop, 直到LLM不返回工具调用, 再把文本结果返回给用户;</p>
+<p>在tool loop的处理上, 我投入了相当多的精力进行打磨, 不过整体思路并不复杂：可以通过观察 KIMI 返回的 API 报错信息，来判断是否存在参数缺失或传递不完整的情况。例如我就碰到过一个典型错误&quot;当带thinking的tool调用时, 下一次Request必须带上thinking的部分信息&quot;, 其实这类问题交给Claude持续试错和调整, 就可以顺利完成修改完成;</p>
+<p>当前工程结构：</p>
+<ul><li>project/</li><li>└── src/</li><li>├── kimi-api.js</li><li>├── tool.js</li><li>└── session-manager.js</li></ul>
+<h3 class="sub">4.4 实现可视化CLI界面</h3>
+<p>该界面模块可采用独立开发策略, 暂时无需考虑和session-manager的联动, 类似于我们的前后端独立开发~</p>
+<p>这种界面的prompt就见仁见智了, 完全可以根据个人偏好灵活定制。只要能够实现基本的进入和退出功能，这一阶段的目标就算达成了;</p>
+<p>Prompt:现在我要你实现一个CLI的实现, 先简单实现用户执行CLI进入CLI界面, 双击Ctrl + C退出, /quit, /clear等命令...</p>
+<p>当前工程结构:</p>
+<ul><li>project/</li><li>└── src/</li><li>├── cli.js</li><li>├── kimi-api.js</li><li>├── tool.js</li><li>└── session-manager.js</li></ul>
+<h3 class="sub">4.5 绑定CLI和Session-Manger</h3>
+<p>这一步让我们的Mini-Claude终于已经初具雏形啦~ 它已经可以丝滑得进行终端交互了, 接下来就是持续优化过程, 过程中记得让session-manager把每一次的请求和LLM response信息都储存到一个session文件里, 以便后续我们可以实现快速排查问题哦。</p>
+<p>Prompt:修改CLI的实现, 当用户回车发送消息的时候, 调用session-manager拼接请求给LLM, 接收到返回或者工具调用结果的时候, 在CLI上展示出来; session-manager把每一次的请求和LLM response信息都存到一个session文件里。</p>
+<p>当前工程结构:</p>
+<ul><li>project/</li><li>└── src/</li><li>├── cli.js</li><li>├── kimi-api.js</li><li>├── tool.js</li><li>└── session-manager.js</li></ul>
+<h3 class="sub">4.6 优化CLI展示</h3>
+<p>这一步的核心优化在于 CLI 的展示效果，鉴于LLM返回的结果大多为是markdown形式，所以我们需要额外增加一层 Markdown 渲染处理。该渲染逻辑同样可交由Claude实现。</p>
+<p>Prompt：新增CLI的对LLM文本回复的渲染, 其中优先渲染除了表格之外的行内代码样式, 待渲染结果长度定下后, 再渲染表格的样式</p>
+<p>这一步也是一边走一边调试，不断踩坑进步的过程, 表格部分尤其让人头疼, 因为有些LLM的回复在表格里也有行内代码样式, 如果先渲染表格再渲染行内代码, 长度就会发生变化, 这样展示出来的表格就彻底乱套了XD</p>
+<p>当前工程结构：</p>
+<ul><li>project/</li><li>└── src/</li><li>├── cli.js</li><li>├── kimi-api.js</li><li>├── tool.js</li><li>└── session-manager.js</li></ul>
+<h3 class="sub">4.7 重构项目结构(重要)</h3>
+<p>此刻虽然核心能力已初步完备, 但是代码已经“长的不忍直视了”—— 动辄几千行, 一个 JS 文件里还混杂着多种能力，重复定义随处可见。这个时候，适当的停下来重构一个AI Native项目就显得十分重要! 你可以选择完全交由 LLM 决定如何分层与重组，但我更倾向于结合自己的开发经验，采用 MVC 结构来重新梳理这个小而杂的项目。这样不仅结构更清晰，也能让后续的优化和扩展更顺畅。</p>
+<p>Prompt：现在我想重构这个工程, 我觉得可以采用MVC架构, 你先给我一个拆分方案, 先不要改代码。</p>
+<p>在直接执行改造前, 最好先让LLM给出一份方案, 经过充分的确认后再按照方案执行, 这样能够有效减少LLM“乱搞事”的情况; 这套思路与“SSD驱动编程”等理念有异曲同工之妙, 所以在讨论过程中随时输出自己的观点就显得尤为重要，这样可以确保设计方向与我们预期一致。</p>
+<p>Prompt：嗯, 把tool层里面的工具实现也拆成每个小JS文件... 好, 现在开始改代码</p>
+<p>优化后, 我有了一个相对明朗清晰的工程结构;</p>
+<p>当前工程结构：</p>
+<ul><li>project/</li><li>└── src/</li><li>├── app.js # 应用程序入口，初始化并协调View层和Controller层</li><li>├── controllers/</li><li>│ └── conversation/</li><li>│ └── manager.js # 对话管理控制器，维护对话状态、流程控制、Tool use循环编排</li><li>├── models/</li><li>│ ├── api/</li><li>│ │ └── llm-client.js # LLM API原生调用封装，支持system prompt、tools、stream模式</li><li>│ ├── storage/</li><li>│ │ ├── index.js # 存储模块入口，导出SessionStorage</li><li>│ │ └── session-storage.js # 会话存储模块，负责会话文件的创建和管理、增量追加写入</li><li>│ └── tools/</li><li>│ ├── index.js # 工具模块入口，导出所有工具定义和处理器，执行工具调用分发</li><li>│ ├── definitions.js # 工具定义集合，导出所有可用于LLM调用的工具定义</li><li>│ ├── handlers/</li><li>│ │ ├── exec.js # Bash命令执行工具，用于执行shell命令并返回结果（带安全检查）</li><li>│ │ └── file.js # 文件操作工具，用于读取、写入、编辑文件</li><li>│ └── security/</li><li>│ └── validator.js # 命令安全验证模块，验证bash命令是否包含危险操作</li><li>└── views/</li><li>├── cli/</li><li>│ ├── index.js # CLI视图层主类，负责用户界面、输入输出、事件展示</li><li>│ ├── display.js # 显示模块，负责Logo、帮助信息、提示符等界面元素</li><li>│ ├── input.js # 输入处理模块，负责命令补全、Tab补全、输入捕获</li><li>│ └── loading.js # Loading动画和进度显示模块</li><li>└── renderers/</li><li>└── markdown.js # Markdown渲染器，将Markdown转换为ANSI转义码格</li></ul>
+<h3 class="sub">4.8 优化冗余逻辑(重要)</h3>
+<p>在项目结构基本搭建完毕后, 最终还需对代码进行清理消除冗余内容，并在格式与写法层面加以优化，毕竟AI生成的代码, 最终还是要给人看的。在长期的AI Native项目的开发中, 由于上下文的不断累计, AI常常会忽略一些小细节, 导致出现方法命名不规范、逻辑相似代码重复定义等问题; 为了体验纯Vibe Coding, 我选择让一个完整的上下文贯穿始终，只由Claude做自动执行compact处理。但是在实际工作项目中, 我任然建议还是根据专家经验进行模块化处理, 约束AI的范围进行开发;</p>
+<p>Prompt:现在我需要你给我提供一个方案, 你需要仔细察看所有的逻辑, 优化冗余代码, 有一些命名和逻辑不匹配的, 或者有重复逻辑定义的代码, 都给我一个优化方案, 如果有我没提到的, 你认为可以优化的, 也一并列出来, 先不要改代码;</p>
+<p>在正式大刀阔斧改造前先输出完整方案, 经过多轮探讨和打磨后再动手执行;</p>
+<p>Prompt:好, 按照方案开干吧!</p>
+<h3 class="sub">4.9 构建一个dashboard可以分析session请求</h3>
+<p>这个参考cc-viewer的形式, 简单实现一个读取本地文件, 并在前端渲染展示出来即可。</p>
+<p>Prompt:帮我实现一个前端, 使用react和antdesign, 实现用户点击解析session, 左侧tab显示具体请求摘要, 右侧显示选中的当前请求的详情, request, response, header和body, body要支持json折叠, body和header支持一键复制;</p>
+<p>和之前的工作相比, dashboard的实现简直就是小菜一碟, 访问http://localhost:5173/</p>
+<p>点击想要分析的文件时间戳</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Mini-Claude实现CLI交互、LLM交互与工具调用的最小闭环，支持简单Tool Loop</li><li>TODO：MCP/Skills、并发调用、上下文压缩是后续方向</li><li>作者认为半自动开发加手动约束Agent职责加把控方向最高效</li><li>Agent核心机制可归纳为WHILE循环：取工具调用、执行、返回LLM</li></ul></div>
+<h3 class="sub">5.1 完成工作</h3>
+<p>Mini-Claude实现了最基础的 Coding CLI 交互能力，包括 CLI 交互、LLM 交互及工具调用，形成了初步的闭环操作流程，并能够支持简单的 Tool Loop 机制以进行代码修改。</p>
+<h3 class="sub">5.2 一些TODO</h3>
+<ul><li>MCP / Skills :  在理解tool的调用机制基础上, MCP 和 Skills 的实现方式与之类似, 通过抓包 Claude 可知，Skills的description是放在message数组的首位, 并以&lt;system_reminder&gt;标签包裹, 这和预先内置tools的描述本质上一致; Claude 的具体提现方式是提供一个 Skill 的tool, 该工具以用户所选 Skill 名称为参数，其功能大致为读取 SKILL.md 的内容，以&quot;渐进式披露&quot;的方式, 将Skill预先放置好的脚本或prompt加载至上下文中;</li><li>并发调用： 我们时常可以观察到 Claude 能迅速完成多个文件的更新或查找操作, 通过 Mini-Claude 的监控面板发现, 部分LLM的返回中,有时会包含多个tool_use的内容, 例如执行不同正则内容的bash find, 在当前 Mini-Claude 我采用“循环进行tool_use调用”方式, 实际未来可优化为并行执行方式以提升效率;</li><li>上下文处理 : 目前 Mini-Claude 尚未处理上下文窗口的问题, 如何有效地压缩上下文, 减少前文信息丢失, 是比tool loop更为关键且需深入研究的课题。</li></ul>
+<h3 class="sub">5.3 一些思考</h3>
+<p>到底如何转型AI开发, 把握住一个AI Native项目?</p>
+<p>回顾近半个月的深度实践里, “半自动开发+手动约束Coding Agent的职责范围+随时把控方向,”是我目前认为最高效稳妥的开发方式; 正如Mini-Claude的开发流程一样, 每推进到一个关键节点, 就需要重整架构、梳理冗余代码、合并通用逻辑, 或许本质上LLM还是在进行“文字接龙”, 在当前阶段依然离不开程序员的审阅与干预;</p>
+<p>我一直听闻Opus 4.6表现卓越, 虽然因为预算有限还没有亲自体验, 但我推测这类模型在纯 AI Native 项目中的发挥空间应更为显著，反之对于一些遗留项目，如果试图引入 AI 进行改造，为使其理解复杂的历史包袱，半自动开发反而可能比全 AI 驱动更加高效。</p>
+<p>我主要从事 Java 业务开发,诚如业界大牛所言, Java的项目设计, 设计模式, 高内聚低耦合的业务共识, 可能反而会给LLM带来很多无用的上下文知识, 实际实践过程中我也深有体会;</p>
+<pre><code>Java 依然是不可或缺的存在， Spring 全家桶在 Web 服务时代为开发者和服务稳定性都做出了巨大贡献。然而，站在 AI 原生开发的新时代路口，JS, Python与AI开发确实有天然的优势，写起来都更加流畅顺手。</code></pre>
+<p>到底啥是Agent?</p>
+<p>纵观各家的Coding Agent和近期备受瞩目的OpenClaw, 将其抽丝剥茧来看, 其核心机制均可归纳为以下流程:</p>
+<ul><li>WHILE (!LLM_STOP_TOOL_CALL()) {</li><li>TOOL [] = GET_LLM_TOOL_CALL();</li><li>RES[] = RUN_TOOL(TOOL);</li><li>RETURN_TO_LLM(RES);</li></ul>
+<p>1.如何组装上下文；2.如何检索上下文；3.如何最大程度地保留上下文语义。</p>
+<p>包括OpenClaw这类系统, 也在探索如何更好地管理用户的长期上下文，实现持续的自我进化——这或许正是下一阶段 Agent 发展的关键课题。 既然Mini-Claude已经诞生, 下一步我们或许可以尝试开发一个Mini-Claw以进一步深入体验其上下文管理机制。 XD</p>
+<p>本文抛砖引玉, 作者也一直在学习中, 希望可以帮助到对Coding Agent底层逻辑想有些了解的同学。</p>
+<p>代码学习可参考：https://github.com/q43607238/mini-claude</p>
+<p>工具ccviewer安装：</p>
+<p>https://github.com/weiesky/cc-viewer</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>开发耗时不足7小时</h4><p>三个夜晚的碎片时间，用Vibe Coding完成Mini-Claude核心能力</p><a class="src-link" href="#sec-02">原文 → 工程简介</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>消息组装命中KV Cache</h4><p>保持前缀不变，把工具调用与上轮LLM回复追加到message数组末尾</p><a class="src-link" href="#sec-06">原文 → 开发流程</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Agent核心伪代码</h4><p>WHILE(!LLM_STOP_TOOL_CALL())：取工具调用、执行工具、把结果返回LLM</p><a class="src-link" href="#sec-07">原文 → 总结</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>带thinking的tool调用报错</h4><p>带thinking的tool调用时，下一次Request必须带上thinking部分信息</p><a class="src-link" href="#sec-06">原文 → 开发流程</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Markdown表格渲染顺序</h4><p>先渲染表格再渲染行内代码，长度变化会导致表格错乱</p><a class="src-link" href="#sec-06">原文 → 开发流程</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>header未模拟Claude被拦截</h4><p>header需模拟Claude请求header，否则KIMI Coding后端会校验拦截</p><a class="src-link" href="#sec-06">原文 → 开发流程</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>先出方案再改代码</h4><p>重构前先让LLM给方案、确认后再执行，能减少LLM乱搞事</p><a class="src-link" href="#sec-06">原文 → 开发流程</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>半自动开发更稳妥</h4><p>半自动开发加手动约束Agent职责加随时把控方向，当前最高效</p><a class="src-link" href="#sec-07">原文 → 总结</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>纯Vibe Coding与工作项目</h4><p>纯Vibe Coding全程单上下文由Claude compact；实际项目建议模块化约束AI范围</p><a class="src-link" href="#sec-06">原文 → 开发流程</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>MVC重构后的工程结构</h4><p>app.js协调View与Controller；models含llm-client、session-storage、tools及安全校验</p><a class="src-link" href="#sec-06">原文 → 开发流程</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Skills与内置tools描述</h4><p>Skills的description放message数组首位并用system_reminder包裹，本质与内置tools一致</p><a class="src-link" href="#sec-07">原文 → 总结</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>上下文压缩更关键</h4><p>如何压缩上下文、减少前文信息丢失，是比tool loop更关键的课题</p><a class="src-link" href="#sec-07">原文 → 总结</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>用Vibe Coding直调LLM API，按API、工具、循环、界面、重构的顺序迭代，就能搭出Mini-Claude。</li>
+          <li>Coding Agent的骨架是读改写tool loop：保持前缀命中KV Cache，直到不再返回工具调用。</li>
+          <li>先让LLM出方案再改代码，并用MVC分层和模块化约束AI范围，是控制Agent不跑偏的关键。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559624&amp;idx=1&amp;sn=fc5df385231f0b0418ecfd127158faf2" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559624&amp;idx=1&amp;sn=fc5df385231f0b0418ecfd127158faf2</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">如果古法编程岗位消失了，我们还能干什么？我做了一张技能迁移表</h1>
+  <p class="lede">传统研发转AI应用：约60%技能可直接复用，新学只剩Embedding/RAG/Agent三块。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 9 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>行情对比</a>
+          <a href="#sec-02"><span class="n">02</span>AI工程师的定位</a>
+          <a href="#sec-03"><span class="n">03</span>技能迁移对照表</a>
+          <a href="#sec-04"><span class="n">04</span>新学内容与转型坑</a>
+          <a href="#sec-05"><span class="n">05</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 行情对比</a>
+          <a href="#sec-02">02 AI工程师的定位</a>
+          <a href="#sec-03">03 技能迁移对照表</a>
+          <a href="#sec-04">04 新学内容与转型坑</a>
+          <a href="#sec-05">05 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>随着 AI 越来越火爆，很多开发者会有这样的疑问：&quot;我传统研发做了七八年，这些经验在 AI 时代还有没有用？&quot;</p>
+<p>这个问题我也有过。两年前我转 AI 开发的时候，也带着同样的顾虑。今天这篇文章，给你一个明确的答案。</p>
+<p>读完，你会知道：自己现在站在哪里，从事 AI 开发差的是哪里，接下来该做什么。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>行情对比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>传统研发团队在收缩，如某头部电商组从8人缩到3人，核心功能稳定后不再需要那么多人持续开发。</li><li>AI工程师招聘需求爆发，内容、电商、金融、医疗等与“内容+用户”沾边的行业都在招落地AI应用的人。</li><li>常见误判是“AI开发是全新领域，要从零学起”，作者明确这是错误想法。</li></ul><div class="pit"><ul><li>误以为AI开发是全新领域，要从零学起</li></ul></div></div>
+<p>上个月，一个在某头部电商的朋友跟我说，他们组从 8 个人缩到了 3 个，有裁员的，也有合同到期不续签的。</p>
+<p>这两年很多大小厂陆续在收缩传统研发团队，业务系统的核心功能基本稳定了，用不了那么多人持续开发了。</p>
+<p>与此同时，AI 工程师的招聘需求却在爆发。</p>
+<p>不只是大模型公司，国内的内容、电商、金融、医疗行业，只要业务跟 &quot;内容 + 用户&quot; 沾边，都在招能落地 AI 应用的工程师。</p>
+<p>这里藏着一个让很多传统研发工程师陷入焦虑的误判：</p>
+<p>&quot;AI 开发是全新的领域，我要从零学起。&quot;</p>
+<p>事实上，这是一种错误的想法!</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>AI工程师的定位</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AI岗位分两类：模型研究员研究算法、损失函数、GPU集群；AI应用工程师调用成熟模型API解决业务。</li><li>二者关系类似Linux系统开发与应用开发：一个做底层，一个调API写业务，互不需要懂对方细节。</li><li>AI应用工程师做企业知识库、智能客服、内容生成，不需懂Transformer内部运算，公式是会写代码+会用大模型。</li></ul></div>
+<p>我已经转型 AI 开发两年了，根据这两年学习的技能，整理了一张 传统研发工程师和 AI 工程师的技能对照表 。</p>
+<p>在看迁移表之前，先花两分钟搞清楚一件事：AI 工程师每天的工作，到底是什么 ？</p>
+<p>很多人一听 &quot;AI 工程师&quot;，脑子里浮现的是：好像很复杂啊，是不是要研究算法，搞推导损失函数、GPU 集群什么的……非也，那叫模型研究员 ，不是 AI 应用工程师。</p>
+<p>模型研究员和 AI 应用工程师这两个岗位的关系，就像 Linux 系统开发和应用开发者的关系：</p>
+<ul><li>Linux 系统开发者负责设计操作系统、优化底层性能，做的是底层那层的事。</li><li>应用开发者调用系统提供的 API，写业务逻辑，做的是上层应用的事</li></ul>
+<p>两边互相不需要懂对方的细节。</p>
+<p>AI 应用工程师做的，和后者如出一辙：拿 OpenAI、DeepSeek 这些公司训练好的模型，调它们的 API，解决真实业务问题 —— 搭一个企业知识库、做一个智能客服、写一套内容自动生成系统。</p>
+<p>我们使用各类成熟开发组件的时候，不需要懂它底层的实现细节。同样的，做 AI 应用，也不需要知道 Transformer 内部怎么运算。</p>
+<p>所以说，AI 工程师 = 会写代码 + 知道怎么用好大模型 。</p>
+<p>前半部分，是我们已经有的</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>技能迁移对照表</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>直接复用：HTTP调用→LLM API、流式处理→SSE、拦截器/中间件→LLM中间件、应用监控→调用链追踪。</li><li>小幅学习：状态管理→多轮上下文管理、异步任务调度→AI任务队列、依赖注入→服务抽象、关系型持久化→向量数据库。</li><li>需要新学：Embedding、RAG、Agent工具调用、LangChain/LangGraph，难度两到三星。</li><li>整体占比：直接复用约60%，小幅学习约20%，真正新学只剩约20%。</li></ul></div>
+<p>我把自己过往积累的研发技能，逐一对照了 AI 应用工程师实际工作中用到的技能。</p>
+<p>按迁移难度分三档：直接复用 / 小幅学习 / 需要新学 。</p>
+<h3 class="sub">3.1 这些是能直接复用的</h3>
+<table><thead><tr><th>传统研发技能</th><th>对应 AI 工程师技能</th><th>备注</th></tr></thead><tbody><tr><td>各类网络库 HTTP 调用</td><td>调用 LLM API（OpenAI / DeepSeek SDK）</td><td>本质都是网络请求，逻辑类似</td></tr><tr><td>流式数据处理 / 渲染</td><td>SSE 流式响应处理（Stream API）</td><td>一条一条拿数据、一条一条处理 / 显示，处理思路相同</td></tr><tr><td>请求拦截器 / 中间件</td><td>LLM 调用中间件（日志 / 限流 / 重试）</td><td>请求前后插逻辑，设计模式一模一样</td></tr><tr><td>应用性能监控 / 异常采集</td><td>LLM 调用链追踪（LangSmith / 自建日志）</td><td>可观测性思路一致，采集对象从应用变成了 AI 调用链</td></tr></tbody></table>
+<h3 class="sub">3.2 需要小幅学习的</h3>
+<table><thead><tr><th>传统研发技能</th><th>对应 AI 工程师技能</th><th>迁移说明</th></tr></thead><tbody><tr><td>状态管理 / 上下文管理</td><td>多轮对话上下文管理（Session）</td><td>核心都是 &quot;管好有生命周期的状态&quot;，新增 Token 窗口限制的概念</td></tr><tr><td>后台 / 异步任务调度</td><td>AI 异步任务队列（Celery / Redis Queue）</td><td>任务入队、执行、重试的逻辑如出一辙，换了个运行环境</td></tr><tr><td>依赖注入 / 服务抽象</td><td>AI 服务抽象层（支持多模型切换）</td><td>抽象接口、注入实现的思路完全一样，用来灵活替换底层大模型</td></tr><tr><td>关系型数据持久化</td><td>向量数据库（Chroma / Milvus）</td><td>存取数据的操作方式类似，新增 &quot;向量&quot; 这个概念</td></tr></tbody></table>
+<h3 class="sub">3.3 需要新学，但没你想象的复杂</h3>
+<table><thead><tr><th>需要新学的技能</th><th>难度</th><th>一句话说清楚</th></tr></thead><tbody><tr><td>Embedding 向量化</td><td>⭐⭐</td><td>把一段文字变成一组数字，数字里藏着这段话的语义特征</td></tr><tr><td>RAG 检索增强生成</td><td>⭐⭐⭐</td><td>给大模型开卷考试 —— 考前把参考资料塞进去，让它对着回答</td></tr><tr><td>Agent 工具调用（Function Calling）</td><td>⭐⭐</td><td>注册一批工具，让大模型自己决定调哪个、按什么顺序调</td></tr><tr><td>LangChain / LangGraph 框架</td><td>⭐⭐⭐</td><td>AI 调用层的通用开发框架，封装了常用操作，不用重复造轮子</td></tr></tbody></table>
+<p>可以看到，从传统古法研发到 AI 应用开发，直接复用的经验约 60%，小幅学习的大概 20%，真正要新学的只剩 20%。</p>
+<p>而那 20%，核心就是三个概念：Embedding、RAG、Agent。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>新学内容与转型坑</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Embedding把文字变成数字，语义越近数字越近，用于RAG、特征提取、搜索推荐。</li><li>RAG把闭卷考试改成开卷：先检索相关资料再让模型对着回答，是私有知识问答的基础。</li><li>Agent让大模型决定执行路径，未来岗位分“做智能体的和用智能体的”。</li><li>三个坑：Prompt只是AI开发的一小部分；Agent建立在RAG之上，勿跳过RAG；只看教程不跑真实数据，学不会。</li></ul><div class="pit"><ul><li>会写Prompt不等于会做AI开发</li><li>跳过RAG直接学Agent</li><li>只看教程不跑真实数据：本地召回90%，真实用户数据上线掉到60%，问题出在文本分块策略</li></ul></div></div>
+<p>先把三个新概念建立认识，快速过一遍。</p>
+<p>Embedding（向量化）</p>
+<p>你玩过英雄联盟吗？每个英雄都有攻击力、防御力、法力值这几个数字来描述他的特征 —— 两个特征相近的英雄，数字组合也接近。</p>
+<p>Embedding 做的是同一件事：把一段文字变成一组数字。&quot;今天天气真好&quot; 和 &quot;今天阳光明媚&quot; 变出来的数字很接近，因为语义相近。&quot;今天天气真好&quot; 和 &quot;我要吃火锅&quot; 就差很多。语义越像，数字越近，这就是语义搜索的原理。</p>
+<p>实际 AI 业务里，向量化不仅仅用在 RAG，还会用于特征提取、搜推等场景。</p>
+<p>RAG（检索增强生成）</p>
+<p>不论大模型怎么发展，业务私有的知识它始终无法感知。一旦要用到内部知识，就需要用到 RAG 。</p>
+<p>它把闭卷考试改成开卷：用户问问题之前，先去资料库里搜出相关内容，把它一起塞给大模型，让它对着这些资料回答。</p>
+<p>这就是为什么做企业知识库、智能客服、私有数据问答，都离不开 RAG。</p>
+<p>Agent（智能体）</p>
+<p>在 AI Native 组织的终极形态里，一定是 AI Agent 作为执行任务的主题。</p>
+<p>很多公司已经明确了未来的岗位，基本就两类：做智能体的和用智能体的。</p>
+<p>Agent 其实也不复杂，以前是我们代码里写死执行路径，尔 Agent 是让大模型来决定执行路径。</p>
+<p>好，这是要学习的几个点的基本概念。</p>
+<p>下面说三个转型 AI 开发常踩的坑。</p>
+<p>坑一：以为会写 Prompt 就等于会做 AI 开发</p>
+<p>Prompt 只是 AI 应用开发的一小部分。</p>
+<p>会写 Prompt，你只是能用好 ChatGPT。但企业里的 AI 系统，要处理上下文截断、要对接私有数据、要保证稳定性和线上可观测性 —— 这些都需要写代码解决，不是调整几句 Prompt 能搞定的。</p>
+<p>坑二：跳过 RAG 直接学 Agent</p>
+<p>Agent 是建在 RAG 之上的。很多人觉得 Agent 更高级、更酷，直接去学 LangGraph 多智能体，学到一半发现根本不知道工具的数据从哪来、怎么检索。</p>
+<p>正确学习顺序是：LLM API 调用 → 上下文管理 → RAG → Agent 。</p>
+<p>按着顺序来才能学的扎实。</p>
+<p>坑三：只看教程，不跑真实数据</p>
+<p>AI 工程里的大量问题，只有在真实数据面前才会暴露。</p>
+<p>我在公司做第一个 RAG 项目的时候，本地测试召回率 90%，信心满满上线。结果切换到真实用户的提问数据，直接掉到 60%。排查了将近两个星期，才把问题收敛到文本分块策略上 —— 用户的问题太口语化，和我们按标准段落切的内容对不上。</p>
+<p>这个教训是：不跑真实数据，你不知道自己到底学会了没有。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>迁移成本比想象低：60%可直接继承，真正新学只有Embedding/RAG/Agent编排三块。</li><li>学习顺序比学什么更重要：LLM API→上下文管理→RAG→Agent，一步步来。</li><li>Prompt工程是起点不是终点，Agent是高阶不是入门；上线跑过真实数据才算学会。</li></ul></div>
+<p>总结一下这篇文章，主要讲了：</p>
+<ul><li>传统研发工程师转 AI 的迁移成本，比大多数人想象的低 ——60% 的技能可以直接继承，真正需要新学的只有 Embedding / RAG / Agent 编排这三块</li><li>学习顺序比学什么更重要：LLM API → 上下文管理 → RAG → Agent，一步步来</li><li>Prompt 工程是起点，不是终点；Agent 是高阶，不是入门</li><li>教程里的 Demo 不算数，上线跑过真实数据才算真正学会</li></ul>
+<p>知道了要学什么，接着怎么学呢？</p>
+<p>我还有一张学习地图。前面的对照表，就是那张地图的第一页。</p>
+<p>下一步，是把表格右边那一列真正跑通 —— 从调第一个 LLM API，到搭出一个生产级 RAG 系统，到写出能自主决策的 Agent。</p>
+<p>如果你想系统学习 AI 应用开发 ，欢迎看看我在做的 AI 工程师专栏，完整覆盖从 API 调用到 Multi-Agent 的全链路，每一步都有可以直接跑起来的代码和真实项目。</p>
+<p>学完你就能得到至少 3 个可以直接上线的 AI 项目，直接丰富你的 AI 项目经历：</p>
+<ul><li>多模态大模型应用 ：支持文本聊天、图片 / 视频生成的全功能多模态聊天应用，还自带短期 + 长期记忆功能，是当下最热门的可落地 AI 应用形态</li><li>复杂 RAG 企业级系统 ：基于进阶 RAG 技术实现的电商智能客服，用到了本地向量模型、检索重排等生产级技术，完美适配企业私有数据问答场景</li><li>代码编排 Agent ：复刻精简版 Claude Code，能根据你的需求自动生成代码、编排任务执行，掌握当下最前沿的 Agent 落地能力</li></ul>
+<p>这些项目全部有完整的可运行代码，跟着做下来，你不仅能学会技术，还能直接拥有拿得出手的 AI 项目经历，帮你节省大量的 AI 学习时间。</p>
+<p>摘取几个读者反馈：</p>
+<p>为了保证服务质量，专栏采用阶梯定价模式 ：</p>
+<ul><li>第 1 - 400 名：229 元 / 年（当前阶段 🔥）</li><li>400 名以后：298 元 / 年</li></ul>
+<p>续费以首次购买费用为准： 只要你现在以 229 元入社，未来续费永久锁定 229 元，哪怕以后涨到 500 元。早买就是赚到！</p>
+<p>体系化的 AI 技能干货更新完成后，每月更新还会最新 AI 技术发展和工具教程，比如 OpenClaw、HarnessEngineering 等。</p>
+<p>苏三说技术</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>模型研究员 vs AI应用工程师</h4><p>前者研究算法、损失函数、GPU集群；后者调用成熟模型API解决业务问题，类似Linux系统开发与应用开发者的关系，彼此无需懂对方细节。</p><a class="src-link" href="#sec-02">原文 → AI工程师的定位</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>AI工程师的公式</h4><p>AI工程师 = 会写代码 + 知道怎么用好大模型；前半部分“会写代码”是传统研发已经具备的。</p><a class="src-link" href="#sec-02">原文 → AI工程师的定位</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>技能迁移占比</h4><p>从传统研发到AI应用开发：直接复用约60%，小幅学习约20%，真正要新学的只剩约20%。</p><a class="src-link" href="#sec-03">原文 → 技能迁移对照表</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>可直接复用的技能</h4><p>HTTP调用→LLM API；流式处理→SSE；请求拦截器/中间件→LLM中间件；应用监控→LLM调用链追踪，思路几乎一致。</p><a class="src-link" href="#sec-03">原文 → 技能迁移对照表</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>小幅学习即可迁移</h4><p>状态管理→多轮上下文（新增Token窗口）；异步队列→AI任务队列；依赖注入→服务抽象；关系型持久化→向量数据库（新增“向量”概念）。</p><a class="src-link" href="#sec-03">原文 → 技能迁移对照表</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>需要新学的三块</h4><p>Embedding（⭐⭐）、RAG（⭐⭐⭐）、Agent工具调用（⭐⭐）、LangChain/LangGraph（⭐⭐⭐）：文字变数字、开卷考试、自主调工具。</p><a class="src-link" href="#sec-03">原文 → 技能迁移对照表</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>坑一：Prompt ≠ AI开发</h4><p>会写Prompt只是能用好ChatGPT；企业AI系统要处理上下文截断、私有数据、稳定性与可观测性，仍需写代码。</p><a class="src-link" href="#sec-04">原文 → 新学内容与转型坑</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>坑二：跳过RAG直接学Agent</h4><p>Agent建立在RAG之上；正确学习顺序是LLM API调用 → 上下文管理 → RAG → Agent。</p><a class="src-link" href="#sec-04">原文 → 新学内容与转型坑</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>坑三：只看教程不跑真实数据</h4><p>首个RAG项目本地测试召回率90%，真实用户数据上线掉到60%，问题收敛在文本分块策略。</p><a class="src-link" href="#sec-04">原文 → 新学内容与转型坑</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>RAG：闭卷改开卷</h4><p>业务私有知识大模型无法感知；RAG先检索相关资料再交给模型回答，是知识库、智能客服的基础。</p><a class="src-link" href="#sec-04">原文 → 新学内容与转型坑</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先认清定位：AI应用工程师是“会写代码+用好大模型”，不是模型研究员，不必从零学算法。</li>
+          <li>迁移成本比想象低：直接复用约60%，小幅学习约20%，真正新学只剩Embedding、RAG、Agent。</li>
+          <li>按顺序学并跑真实数据：LLM API→上下文管理→RAG→Agent，上线验证才算真正学会。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkwNjMwMTgzMQ==&amp;mid=2247538178&amp;idx=1&amp;sn=28c24383f091fdc0be9380d08e696f54" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkwNjMwMTgzMQ==&amp;mid=2247538178&amp;idx=1&amp;sn=28c24383f091fdc0be9380d08e696f54</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

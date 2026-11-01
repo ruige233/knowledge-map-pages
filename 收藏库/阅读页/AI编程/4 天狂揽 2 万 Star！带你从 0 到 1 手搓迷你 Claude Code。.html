@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">4 天狂揽 2 万 Star！带你从 0 到 1 手搓迷你 Claude Code。</h1>
+  <p class="lede">12 步带你从 0 到 1 复刻迷你 Claude Code 的教学项目</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 8 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>项目定位与理念</a>
+          <a href="#sec-02"><span class="n">02</span>12 步学习路线</a>
+          <a href="#sec-03"><span class="n">03</span>快速上手</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 项目定位与理念</a>
+          <a href="#sec-02">02 12 步学习路线</a>
+          <a href="#sec-03">03 快速上手</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>去年刚用 Claude Code 时，确实被惊艳到了。</p>
+<p>没上手前，以为它只是个命令行里的模型外壳，用过才发现，这分明是个通用的 Agent。</p>
+<p>LLM 的文本处理属性与 TUI 的指令交互天然契合，加之命令行环境自带的系统级权限，让 Claude 的编程思维和 Agent 能力发挥到了极致。</p>
+<p>像是 Claude 这种编程、Agentic 能力特别强的模型，和 Claude Code 组合简直是降维打击。</p>
+<p>你应该也好奇：这个黑盒子里到底装了什么？</p>
+<p>想要彻底掌握 Claude Code 的精髓，最好的办法就是亲手复刻一套类似的逻辑。</p>
+<p>推荐你看一下最近杀疯了的一个开源项目：learn-Claude-code。 没过几天，它的 Star 数就直接冲到了 18 K。</p>
+<p>它不仅是在教你写代码，更是在教你如何构建一个能理解系统上下文、能自主执行任务的数字生命。</p>
+<p>相信我，自己撸一遍后的收获，比单纯用它写一百个需求都要大。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>项目定位与理念</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>0→1 教学项目，从不到 200 行代码的最小 Agent 搭出迷你 Claude Code。</li><li>具备工具调用、规划、子 Agent、任务系统、后台任务、多 Agent 协作与任务隔离。</li><li>理念：模型本身就是 Agent，给工具、状态与协议，尽量少打扰。</li><li>非生产级克隆，教学内核故意简化工程细节，用 Python+文档+Web 平台讲解。</li></ul></div>
+<p>这是一个 0→1 教学型项目，带你从不到 200 行代码的最小 Agent 循序渐进搭出一个迷你 Claude Code。</p>
+<p>具备工具调用、规划、子 Agent、任务系统、异步后台任务、多 Agent 协作、任务隔离等能力。</p>
+<ul><li>开源地址：https://github.com/shareAI-lab/learn-claude-code</li></ul>
+<p>它的理念是：模型本身就是 Agent，我们只需要给它合适的工具、状态与协议，然后尽量少打扰它。</p>
+<p>项目不是生产级 Claude Code 克隆，而是教学用的内核实现：故意简化很多工程细节，把真正的Agent 思维模型讲清楚，再用一套递进的 Python+文档+可视化 Web 平台帮你理解。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>12 步学习路线</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>s01–s12 每节只引入一个核心机制，配 Python 实现与文档。</li><li>每节用 Motto 一句话点出该机制的心智模型。</li><li>docs 用问题→方案→ASCII 图→少量代码解释特性背后的模型。</li></ul><div class="pit"><ul><li>把一堆说明塞进 system prompt 会降低上下文利用效率。</li></ul></div></div>
+<p>这个开源项目非常有结构化的学习路线：s01–s12。每一节只引入一个核心机制，并配套：Python 实现、对应文档。</p>
+<p>第一节：The Agent Loop</p>
+<p>Motto：&quot;Bash is all you need&quot; — one tool + one loop = an agent</p>
+<p>最小 Agent 循环，教你基础 LLM 调用 + 工具调用 bash + 循环执行</p>
+<p>第二节：Tool Use</p>
+<p>Motto：&quot;The loop didn&#x27;t change&quot; — adding tools means adding handlers, not logic</p>
+<p>多工具扩展，在保持 agent_loop 结构几乎不变的情况下，扩展多个工具与对应 handler。</p>
+<p>核心循环稳定，扩展只在工具层。</p>
+<p>第三节：Todo Write / Structured Planning</p>
+<p>Motto：&quot;Plan before you act&quot; — visible plans improve task completion</p>
+<p>显式规划：引入 Todo / 任务列表工具，类似 Claude Code 中的 todo。</p>
+<p>让模型先生成计划，再据此调度工具，增强长任务 / 多步骤任务的可靠性</p>
+<p>第四节：Subagent</p>
+<p>Motto：&quot;Process isolation = context isolation&quot; — fresh messages[] per subagent</p>
+<p>子 Agent：可以生成新的子会话/子 Agent执行子任务，每个子 Agent 拥有独立的 messages []，避免上下文互相污染。</p>
+<p>类似拆分大任务给不同的角色或子线程。</p>
+<p>第五节：Skill Loading</p>
+<p>Motto：&quot;Load on demand, not upfront&quot; — inject knowledge via tool_result, not system prompt</p>
+<p>按需加载技能文件，使用 skills/ 目录中的 JSON/配置文件作为技能包</p>
+<p>Agent 可以通过工具按需加载技能内容，并以 tool_result 的形式注入模型上下文。</p>
+<p>避免将一堆说明塞进 system prompt，提升上下文利用效率</p>
+<p>第六节：Context Compact</p>
+<p>Motto：&quot;Strategic forgetting&quot; — forget old context to enable infinite sessions</p>
+<p>上下文压缩与遗忘：对长会话进行摘要或裁剪，保留关键任务状态和知识，而丢弃冗余聊天细节。</p>
+<p>让 Agent 可以无限持续工作，而不会撞上上下文长度上限。</p>
+<p>第七节：Task System</p>
+<p>Motto：&quot;State survives /compact&quot; — file-based state outlives context compression</p>
+<p>任务系统与持久化状态：引入任务（task）概念及文件级持久化，通常以 JSONL 或文件形式。</p>
+<p>把关键任务信息写入磁盘，这些状态不依赖上下文，即便进行了上下文压缩，任务状态仍然存在于文件系统中</p>
+<p>第八节：Background Tasks</p>
+<p>Motto：&quot;Fire and forget&quot; — non-blocking threads + notification queue</p>
+<p>后台任务与非阻塞执行：使用线程或后台进程执行长耗时任务。主 Agent 不阻塞，依靠某种通知队列或轮询查看任务结果。</p>
+<p>模仿我先去跑测试，跑完再通知你这种行为</p>
+<p>第九节：Agent Teams</p>
+<p>Motto：&quot;Append to send, drain to read&quot; — async mailboxes for persistent teammates</p>
+<p>多 Agent 团队协作：每个 Agent 有一个类似邮箱 / 队列的消息收发机制</p>
+<p>通过写入/读取队列实现 Agent 间异步通信，支持长时间存在的虚拟队友，可以随时被唤醒参与协作</p>
+<p>第 10 节：Team Protocols</p>
+<p>Motto：&quot;Same request_id, two protocols&quot; — one FSM pattern powers shutdown + plan approval</p>
+<p>通信协议与有限状态机（FSM）：在多 Agent 协作之上，引入更严格的协议，比如：任务审批、关机流程。</p>
+<p>使用 request_id + 状态机模式管理一次请求的生命周期，统一处理类似计划确认 / 中止等流程</p>
+<p>第 11 节：Autonomous Agents</p>
+<p>Motto：&quot;Poll, claim, work, repeat&quot; — no coordinator needed, agents self-organize</p>
+<p>自组织的自治 Agent：通过轮询任务队列 → 认领任务 → 执行 → 写回结果的模式</p>
+<p>让一群 Agent 在没有中心协调者的情况下协同工作，类似任务池 + 工人自抢任务的模式</p>
+<p>第 12 节：Worktree Task Isolation</p>
+<p>Motto：&quot;Isolate by directory, coordinate by task ID&quot; — task board + optional worktree lanes</p>
+<p>工作目录隔离 + 任务看板：不同任务使用不同 git worktree / 目录，从物理上隔离代码与环境</p>
+<p>引入任务看板概念，用 Task ID 将工作与目录状态关联起来。模拟 Claude Code 中多 worktree、多分支并行开发的体验</p>
+<p>每一节在 docs 中都有一篇文档，用问题 → 方案 → ASCII 图 → 少量代码片段的方式解释该特性背后的心智模型。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>快速上手</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>clone 后 pip install -r requirements.txt 安装依赖。</li><li>cp .env.example .env，配置 ANTHROPIC_API_KEY 等变量。</li><li>从 s01_agent_loop.py 起步，可跑 s11/s12 体验完整能力。</li><li>Web：cd web 后 npm install、npm run dev 即可。</li></ul></div>
+<p>这个 0 到 1 的学习型项目，为保证学习路径清晰，有意简化或省略了部分机制。</p>
+<p>没你可以通过下面的方式学习起来。</p>
+<ul><li>git clone https://github.com/shareAI-lab/learn-claude-code</li><li>cd learn-claude-code</li><li>pip install -r requirements.txt</li><li>cp .env.example .env</li><li># 然后在 .env 里填写你的 ANTHROPIC_API_KEY、MODEL_ID 等</li><li># 从最小 Agent Loop 开始</li><li>python agents/s01_agent_loop.py</li><li># 想看完全体自治 Agent 团队：</li><li>python agents/s11_autonomous_agents.py</li><li># 想体验带 worktree 任务隔离：</li><li>python agents/s12_worktree_task_isolation.py</li></ul>
+<p>.env.example 里会列出所有需要配置的环境变量，比如模型 ID、Anthropic API 相关变量等。</p>
+<p>运行 Web 学习平台</p>
+<ul><li>cd web</li><li>npm install</li><li>npm run dev</li><li># 浏览器访问</li><li>http://localhost:3000</li></ul>
+<p>适合在上手前先「扫一遍概念和可视化」，或者边看 front-end 页面边对照 agents 代码。</p>
+<p>逛逛GitHub</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>Star 增速</h4><p>learn-claude-code 上线没几天 Star 数就冲到 18K。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>模型即 Agent</h4><p>模型本身就是 Agent，只需给它合适的工具、状态与协议，尽量少打扰。</p><a class="src-link" href="#sec-01">原文 → 项目定位与理念</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>教学内核 vs 生产级克隆</h4><p>项目是教学用内核实现，故意简化工程细节，并非生产级 Claude Code 克隆。</p><a class="src-link" href="#sec-01">原文 → 项目定位与理念</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>最小 Agent 循环</h4><p>一个工具加一个循环：LLM 调用 + bash 工具 + 循环执行。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>核心循环稳定，扩展在工具层</h4><p>加工具只加 handler，不改逻辑，agent_loop 结构几乎不变。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>按需加载技能</h4><p>技能以 tool_result 注入上下文，而非塞进 system prompt。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>子 Agent 的上下文隔离</h4><p>每个子 Agent 拥有独立 messages[]，进程隔离即上下文隔离。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>任务状态持久化</h4><p>任务信息写入 JSONL/文件，状态不依赖上下文，压缩后仍存活。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>后台任务不阻塞</h4><p>线程/后台进程跑长耗时任务，主 Agent 靠通知队列或轮询取结果。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>自治 Agent 自组织</h4><p>轮询任务队列→认领→执行→写回结果，无需中心协调者。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>别把说明塞进 system prompt</h4><p>一次性塞大量技能说明会浪费上下文，应按需加载。</p><a class="src-link" href="#sec-02">原文 → 12 步学习路线</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>想彻底掌握 Claude Code，最好亲手复刻一套类似逻辑。</li>
+          <li>每节只学一个核心机制，配合 Motto 与文档消化心智模型。</li>
+          <li>从 s01 最小循环跑起，再逐步体验子 Agent、多 Agent 与 worktree 隔离。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&amp;mid=2247531659&amp;idx=1&amp;sn=2b7e497d7d58f668e92d04a39935f19b" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzUxNjg4NDEzNA==&amp;mid=2247531659&amp;idx=1&amp;sn=2b7e497d7d58f668e92d04a39935f19b</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

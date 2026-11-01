@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">AI coding 智能体设计</h1>
+  <p class="lede">从Gemini-CLI源码看AI coding智能体的提示词、工具与扩展设计</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 109 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>提示词预处理</a>
+          <a href="#sec-02"><span class="n">02</span>工具注册与调用</a>
+          <a href="#sec-03"><span class="n">03</span>架构设计</a>
+          <a href="#sec-04"><span class="n">04</span>预置提示词</a>
+          <a href="#sec-05"><span class="n">05</span>能力扩展</a>
+          <a href="#sec-06"><span class="n">06</span>规约驱动开发</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 提示词预处理</a>
+          <a href="#sec-02">02 工具注册与调用</a>
+          <a href="#sec-03">03 架构设计</a>
+          <a href="#sec-04">04 预置提示词</a>
+          <a href="#sec-05">05 能力扩展</a>
+          <a href="#sec-06">06 规约驱动开发</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>理解 AI coding 智能体的设计，可以帮助开发者更好地使用 AI coding 工具，实现开发提效。</p>
+<ul><li>了解用户提示词预处理，帮助我们写出高效的用户提示词。例如：为什么在提示词中使用  @ 字符引入文件、目录作为上下文，可以减少会话轮次？如何自定义命令？</li><li>了解智能体如何处理 MCP 扩展，如何解析 MCP 的 prompt 和 tool 能力，从而更好的进行 MCP 设计，为 AI coding 智能体提供子命令扩展和工具集扩展。</li><li>了解 SubAgent 的实现，理解上下文隔离的意义，基于高内聚、低耦合原则进行智能体的模块化设计，降低系统复杂度。</li><li>了解 MCP 工具调用的局限性，从而理解 Claude Code  推出 Skills、Code Execution with MCP 的动机和原理。</li><li>为什么规约驱动开发（spec-driven development）成为 AI coding 的最佳实践？通过对开源项目 OpenSpec 的解读，了解规约驱动开发背后的奥秘和改进点。</li></ul>
+<p>本文从分析 Gemini-CLI 源代码开始，解读 AI coding 工具的智能体设计。Claude Code 本身不开源，但是实现原理大同小异。</p>
+<p>在分析 Gemini-CLI 过程中，特别感谢 Qwen Code 团队，他们的开源项目中的 openaiContentGenerator[1]包提供了OpenAI API的兼容层，使用这个模块可以很容易将 Gemini-CLI 内置的谷歌认证和外部模型切换为公司内部模型。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>提示词预处理</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>以 / 开头视为命令，@路径 先读文件再发送，减少模型会话轮次</li><li>内置命令在 packages/cli/src/ui/commands/ 定义，如 /clear 清空上下文、/init 生成 GEMINI.md</li><li>MCP 提示词作为扩展命令，扩展包 commands/ 目录提供带 [extension] 标识的命令</li><li>在 ~/.gemini/commands 或项目 .gemini/commands 下建 *.toml 可自定义命令</li></ul></div>
+<p>在 Gemini-CLI 中输入提示词，首先对输入的内容进行预处理。</p>
+<ul><li>如果提示词的第一个字符是斜线（/），将提示词视为命令，执行特定操作，或者替换为预置提示词和大模型交互。</li><li>如果提示词中包含  @ 字符+路径，检查  @ 字符后的路径是否存在，读取文件作为上下文，再发送给大模型。可减少不必要的模型会话。</li></ul>
+<h3 class="sub">1.1 内置命令</h3>
+<p>Gemini-CLI 的内置命令在 packages/cli/src/ui/commands/目录下定义。</p>
+<ul><li>例如  clear  命令在文件  packages/cli/src/ui/commands/clearCommand.ts 中定义。</li><li>内置命令可以执行特定操作。例如： /clear 命令用于重置对话、清空上下文。</li><li>内置命令可以使用预置用户提示词调用大模型完成相关任务。例如： /init 命令使用大模型分析工程代码创建  GEMINI.md 文件。</li></ul>
+<p>内置命令列表参见：docs/cli/commands.md[2]。</p>
+<h3 class="sub">1.2 MCP Server 提供的提示词命令</h3>
+<p>MCP server 提供两种能力：工具和提示词。工具被拼装为模型上下文，而提示词则作为 Gemini-CLI 的扩展命令。</p>
+<p>例如安装 mcp-server-commands[3]命令行工具后，该工具通过 STDIO 协议提供 MCP 服务，在 ~/.gemini/settings.json配置示例如下：</p>
+<ul><li>&quot;mcpServers&quot;: {</li><li>&quot;mcp-server-commands&quot;: {</li><li>&quot;command&quot;: &quot;npx&quot;,</li><li>&quot;args&quot;: [</li><li>&quot;mcp-server-commands&quot;</li></ul>
+<p>在 Gemini-CLI 中输入斜线触发命令补全，可以看到新增的 run_command 命令，该命令有[MCP]标识和内置命令相区分：</p>
+<ul><li>╭─────────────────────────────────────────────────────────────────────────╮</li><li>│ &gt; /                                                                     │</li><li>╰─────────────────────────────────────────────────────────────────────────╯</li><li>run_command [MCP]   Include command output in the prompt. This is effectively a user tool call.</li><li>clear               Clear the screen and conversation history</li><li>compress            Compresses the context by replacing it with a summary</li></ul>
+<h3 class="sub">1.3 扩展包提供的提示词命令</h3>
+<p>从 Gemini-CLI 的官方扩展市场[4]下载扩展。扩展包安装在 ~/.gemini/extensions目录下，每个扩展下面的 commands/子目录提供扩展命令。</p>
+<p>以gemini-cli-security扩展为示例，安装命令如下：</p>
+<ul><li>$ gemini extensions install \</li><li>https://github.com/gemini-cli-extensions/security</li></ul>
+<p>安装后重启 Gemini-CLI，执行命令 /extensions list查看安装的扩展：</p>
+<ul><li>&gt; /extensions list</li><li>Installed extensions:</li><li>gemini-cli-security (v0.3.0) - active</li></ul>
+<p>在 Gemini-CLI 中输入斜线触发命令补全，可以看到由扩展引入的新命令命令，这些命令有[&lt;extension&gt;]标识，以便和内置命令相区分：</p>
+<ul><li>╭─────────────────────────────────────────────────────────────────────────╮</li><li>│  &gt; /security:                                                           │</li><li>╰─────────────────────────────────────────────────────────────────────────╯</li><li>security:analyze             [gemini-cli-security] Analyzes code changes on your current branch for common security vulnerabilities</li><li>security:analyze-github-pr   [gemini-cli-security] Only to be used with the run-gemini-cli GitHub Action. Analyzes code changes on a GitHub…</li></ul>
+<h3 class="sub">1.4 本地文件自定义命令</h3>
+<p>用户可以通过在特定目录下创建 *.toml文件，创建扩展命令。</p>
+<ul><li>用户级： ~/.gemini/commands/*.toml</li><li>项目级： &lt;project&gt;/.gemini/commands/*.toml</li><li>扩展级： &lt;extension&gt;/commands/*.toml （扩展包提供的命令扩展）</li></ul>
+<p>扩展文件名（包含相对路径名）作为扩展命令，文件内容定义提示词。</p>
+<ul><li>prompt = &quot;提示词&quot;</li><li>description = &quot;命令描述（可选）&quot;</li></ul>
+<h3 class="sub">1.5 @路径扩展</h3>
+<p>在提示词中出现的 “@路径”，在将提示词发送给大模型之前会提前读取相关文件（如果路径是目录名，会读取目录下所有文件）作为上下文，可以减少一轮或多轮和大模型的对话，提升效率。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>工具注册与调用</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>核心工具经 createToolRegistry 注册，可用配置 coreTools 限制工具访问</li><li>子智能体 CodebaseInvestigatorAgent 封装为只读工具，上下文隔离</li><li>MCP 支持 stdio/SSE/streamable HTTP 三种协议，includeTools/excludeTools 过滤</li><li>工具列表作为上下文传入大模型，MCP 工具过多会 token 爆炸</li></ul><div class="pit"><ul><li>添加过多 MCP server 会导致上下文爆炸，大量用不到的工具消耗 token</li></ul></div></div>
+<p>在 Gemini-CLI 和大模型会话中，将工具列表作为上下文提供给大模型 ，由大模型决定是否调用，Gemini-CLI 接收到大模型的调用指令请求，由 Gemini-CLI 执行相应的调用指令，将命令输出作为上下文提供大模型，最终完成相应的任务。</p>
+<h3 class="sub">2.1 注册核心工具</h3>
+<p>Gemini-CLI 内置的核心工具在 packages/core/src/tools/目录下定义，通过调用 packages/core/src/config/config.ts的createToolRegistry方法对工具注册。</p>
+<p>可以通过配置文件中的 coreTools（如：&quot;coreTools&quot;: [&quot;ReadFileTool&quot;, &quot;GlobTool&quot;, &quot;ShellTool(ls)&quot;]）限制工具的访问，默认所有内置工具均可用。</p>
+<p>这些核心工具，每个工具使用 TypeScript 实现相关功能，或者调用外部命令实现。</p>
+<p>核心工具如下表所示：</p>
+<h3 class="sub">2.2 子智能体注册为工具</h3>
+<p>目前只有一个子智能体（SubAgent）：CodebaseInvestigatorAgent，用于针对复杂请求的代码分析工作。Gemini-CLI 将子智能体 CodebaseInvestigatorAgent封装为工具，和其他工具以同样的流程调用。该子智能体被设置为只能使用只读工具。</p>
+<p>子智能体在执行时有隔离的上下文空间，不会污染主智能体的上下文，通过高内聚松耦合的子智能体，有效降低智能体设计的复杂度。目前 Claude Code 已经提供用户自定义子智能体功能。</p>
+<h3 class="sub">2.3 用户自定义工具</h3>
+<p>还支持通过用户指定命令提供自定义工具的发现。用配置tools.discoveryCommand设置自定义工具的发现命令（如 bin/get_tools），该命令的输出是一个 JSON 数组，提供自定义工具的定义。</p>
+<p>参见 docs/get-started/configuration.md中的示例：</p>
+<ul><li>&quot;tools&quot;: {</li><li>&quot;sandbox&quot;: &quot;docker&quot;,</li><li>&quot;discoveryCommand&quot;: &quot;bin/get_tools&quot;,</li><li>&quot;callCommand&quot;: &quot;bin/call_tool&quot;,</li><li>&quot;exclude&quot;: [&quot;write_file&quot;]</li></ul>
+<h3 class="sub">2.4 MCP 注册为工具</h3>
+<p>通过 settings.json配置的 MCP Servers，以及扩展（extensions）包含的 MCP Servers，用于发现自定义工具。</p>
+<p>在 settings.json中每一个 mcpServers.&lt;SERVER_NAME&gt;小节支持三种 MCP 配置：stdio/SSE/streamable HTTP。</p>
+<ul><li>command 、 args 、 env 、 cwd ：用于设置 stdio 协议 MCP 连接。</li><li>url ：用于 SSE 协议。</li><li>httpUrl ：用于 streamable HTTP 协议。</li><li>headers ：设置 HTTP 头。</li><li>includeTools 、 excludeTools ：从 MCP 服务中包含和排除工具。</li></ul>
+<p>示例：</p>
+<ul><li>...,</li><li>&quot;mcpServers&quot;: {</li><li>&quot;mainServer&quot;: {</li><li>&quot;command&quot;: &quot;bin/mcp_server.py&quot;</li><li>&quot;anotherServer&quot;: {</li><li>&quot;command&quot;: &quot;node&quot;,</li><li>&quot;args&quot;: [&quot;mcp_server.js&quot;, &quot;--verbose&quot;]</li></ul>
+<p>MCP client 连接 MCP server 将返回注册到工具列表。参见代码文件 packages/core/src/tools/mcp-client-manager.ts、 packages/core/src/tools/mcp-client.ts。</p>
+<p>流程图如下：</p>
+<ul><li>1. maybeDiscoverMcpServer (入口)</li><li>├─ 权限检查</li><li>├─ 创建/重用 McpClient</li><li>└─ 调用 connect() + discover()</li><li>2. connect() (连接)</li><li>└─ connectToMcpServer()</li><li>├─ 创建 MCP Client 实例</li><li>├─ 注册能力 (roots)</li><li>├─ createTransport() (创建传输层)</li><li>│  ├─ StdioClientTransport (stdio)</li><li>│  ├─ SSEClientTransport (SSE)</li><li>│  ├─ StreamableHTTPClientTransport (HTTP)</li><li>│  └─ OAuth 认证处理</li><li>└─ client.connect(transport)</li><li>3. discover() (发现)</li><li>├─ discoverPrompts() (发现提示)</li><li>└─ discoverTools() (发现工具)</li><li>├─ 检查服务器能力</li><li>├─ mcpToTool().tool() (获取工具列表)</li><li>├─ 遍历 functionDeclarations</li><li>├─ isEnabled() (过滤工具)</li><li>└─ new DiscoveredMCPTool() (封装工具)</li><li>4. 工具注册</li><li>└─ toolRegistry.registerTool(tool)</li><li>5. 工具执行 (运行时)</li><li>└─ DiscoveredMCPToolInvocation.execute()</li><li>├─ mcpTool.callTool() (调用 MCP 服务器)</li><li>├─ 处理响应</li><li>└─ transformMcpContentToParts() (转换内容)</li></ul>
+<h3 class="sub">2.5 工具列表作为上下文提供给大模型</h3>
+<p>会话时，工具列表作为上下文传递给大模型。这个过程中，MCP server 提供的工具和内置工具一样写入上下文。一个 MCP server 可能会广播上百个工具，如果一个 AI coding 智能体添加了过多的 MCP server，太多的 MCP 工具会导致大模型上下文爆炸。即使少量配置的 MCP server，对于大部分场景用不到的 tools，会大量消耗大模型 token，非常不经济。</p>
+<p>Claude Code 引入和 Skills 扩展，以及提出了大模型通过编码调用 MCP，都是为了解决传统 MCP 工具广播造成的 token 爆炸问题。</p>
+<p>Gemini-CLI 中相关执行链路：</p>
+<ul><li>1. 工具注册</li><li>└─ ToolRegistry.registerTool()</li><li>└─ 工具被添加到 allKnownTools Map</li><li>2. 获取工具列表</li><li>└─ GeminiClient.startChat() 或 setTools()</li><li>└─ toolRegistry.getFunctionDeclarations()</li><li>└─ ToolRegistry.getFunctionDeclarations()</li><li>├─ getActiveTools() - 过滤被排除的工具</li><li>└─ tool.schema - 获取每个工具的 FunctionDeclaration</li><li>3. 封装工具格式</li><li>└─ const tools: Tool[] = [{ functionDeclarations: toolDeclarations }]</li><li>└─ Tool 格式: { functionDeclarations: FunctionDeclaration[] }</li><li>4. 存储到 GeminiChat</li><li>└─ new GeminiChat(config, { tools, ... }, history)</li><li>└─ this.generationConfig.tools = tools</li><li>5. 发送消息时传递</li><li>└─ GeminiChat.sendMessageStream()</li><li>└─ makeApiCallAndProcessStream()</li><li>└─ generateContentStream({</li><li>model,</li><li>contents,</li><li>config: { ...this.generationConfig, ...params.config }</li><li>└─ config.tools 包含工具列表</li><li>6. ContentGenerator 处理</li><li>├─ Gemini API (GoogleGenAI)</li><li>│  └─ 直接传递 tools 到 SDK</li><li>└─ OpenAI 兼容 API</li><li>└─ convertGeminiToolsToOpenAI()</li><li>└─ 转换为 OpenAI 格式</li><li>└─ { type: &#x27;function&#x27;, function: { name, description, parameters } }</li><li>7. API 调用</li><li>└─ 工具列表作为请求参数的一部分发送给大模型</li></ul>
+<p>Gemini API 的提示词中封装工具列表，示例如下：</p>
+<ul><li>&quot;model&quot;: &quot;gemini-2.0-flash&quot;,</li><li>&quot;request&quot;: {</li><li>&quot;contents&quot;: [</li><li>{ &quot;role&quot;: &quot;user&quot;, &quot;parts&quot;: [{ &quot;text&quot;: &quot;用户消息1&quot; }] },</li><li>{ &quot;role&quot;: &quot;model&quot;, &quot;parts&quot;: [{ &quot;text&quot;: &quot;模型回复1&quot; }] },</li><li>{ &quot;role&quot;: &quot;user&quot;, &quot;parts&quot;: [{ &quot;text&quot;: &quot;用户消息2&quot; }] }</li><li>&quot;systemInstruction&quot;: {</li><li>&quot;role&quot;: &quot;user&quot;,</li><li>&quot;parts&quot;: [{ &quot;text&quot;: &quot;系统提示词内容...&quot; }]</li><li>&quot;tools&quot;: [</li><li>&quot;functionDeclarations&quot;: [</li><li>{ &quot;name&quot;: &quot;read_file&quot;, &quot;description&quot;: &quot;...&quot;, &quot;parameters&quot;: {&quot;...&quot;} },</li><li>{ &quot;name&quot;: &quot;write_file&quot;, &quot;description&quot;: &quot;...&quot;, &quot;parameters&quot;: {&quot;...&quot;} }</li><li>&quot;generationConfig&quot;: {</li><li>&quot;temperature&quot;: 0.7,</li><li>&quot;maxOutputTokens&quot;: 8192</li></ul>
+<p>OpenAI 兼容 API 的提示词中封装工具列表，示例如下：</p>
+<ul><li>&quot;model&quot;: &quot;gpt-4&quot;,</li><li>&quot;messages&quot;: [</li><li>&quot;role&quot;: &quot;system&quot;,</li><li>&quot;content&quot;: &quot;系统提示词内容...&quot;</li><li>&quot;role&quot;: &quot;user&quot;,</li><li>&quot;content&quot;: &quot;用户消息1&quot;</li><li>&quot;role&quot;: &quot;assistant&quot;,</li><li>&quot;content&quot;: &quot;模型回复1&quot;</li><li>&quot;role&quot;: &quot;user&quot;,</li><li>&quot;content&quot;: &quot;用户消息2&quot;</li><li>&quot;tools&quot;: [</li><li>&quot;type&quot;: &quot;function&quot;,</li><li>&quot;function&quot;: {</li><li>&quot;name&quot;: &quot;read_file&quot;,</li><li>&quot;description&quot;: &quot;...&quot;,</li><li>&quot;parameters&quot;: { /* JSON Schema */ }</li><li>&quot;type&quot;: &quot;function&quot;,</li><li>&quot;function&quot;: {</li><li>&quot;name&quot;: &quot;write_file&quot;,</li><li>&quot;description&quot;: &quot;...&quot;,</li><li>&quot;parameters&quot;: { /* JSON Schema */ }</li><li>&quot;temperature&quot;: 0.7,</li><li>&quot;max_tokens&quot;: 8192</li></ul>
+<h3 class="sub">2.6 大模型工具调用请求和结果返回</h3>
+<p>大模型如果判断需要执行相应工具，会在输出中包含工具调用。</p>
+<p>Gemini API 的工具调用请求：</p>
+<ul><li>// 从响应中提取的格式</li><li>&quot;functionCall&quot;: {</li><li>&quot;id&quot;: &quot;...&quot;,        // 工具调用ID</li><li>&quot;name&quot;: &quot;string&quot;,      // 工具名称</li><li>&quot;args&quot;: Record&lt;string, unknown&gt;  // 工具参数（JSON对象）</li></ul>
+<p>OpenAI 兼容API的工具调用请求：</p>
+<ul><li>&quot;tool_calls&quot;: [</li><li>&quot;id&quot;: &quot;...&quot;,</li><li>&quot;type&quot;: &quot;function&quot;,</li><li>&quot;function&quot;: {</li><li>&quot;name&quot;: &quot;...&quot;,</li><li>&quot;arguments&quot;: &quot;...&quot;  // JSON 字符串</li></ul>
+<p>Gemini-CLI 执行相关命令后，执行结果以 JSON格式封装。</p>
+<p>GEMINI API 将执行结果作为用户消息的一部分返回，格式示例：</p>
+<ul><li>// 作为用户消息的一部分发送</li><li>&quot;role&quot;: &quot;user&quot;,</li><li>&quot;parts&quot;: [</li><li>&quot;functionResponse&quot;: {</li><li>&quot;id&quot;: &quot;call_123&quot;,</li><li>&quot;name&quot;: &quot;read_file&quot;,</li><li>&quot;response&quot;: {</li><li>&quot;output&quot;: &quot;文件内容...&quot;</li><li>&quot;functionResponse&quot;: {</li><li>&quot;id&quot;: &quot;call_124&quot;,</li><li>&quot;name&quot;: &quot;write_file&quot;,</li><li>&quot;response&quot;: {</li><li>&quot;error&quot;: &quot;...&quot;       // 错误信息</li></ul>
+<p>OpenAI 兼容 API 将工具返回以新的 role（tool）返回：</p>
+<ul><li>// OpenAI API 格式</li><li>&quot;role&quot;: &quot;tool&quot;,</li><li>&quot;tool_call_id&quot;: &quot;call_123&quot;,</li><li>&quot;content&quot;: &quot;工具执行结果字符串&quot;</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>架构设计</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>意图识别与智能路由靠提示工程实现，没有硬编码路由</li><li>主流程 ReAct：Reasoning、Acting、Observing、Updating 循环，无工具调用时退出</li><li>子智能体 ReAct 有 max_turns(15)、max_time_minutes(5) 等终止条件</li><li>记忆压缩保留最近 30% 历史，压缩后 token 增加则判失败</li></ul><div class="pit"><ul><li>压缩后 token 数量反而增加会标记为压缩失败</li></ul></div></div>
+<p>Gemini-CLI、Claude Code 不但是强大的 AI coding 工具，用户也可以将其扩展为更加通用的智能体。例如在Claude Agent SDK[5]文档中写到 Claude Code 可以扩展为：</p>
+<ul><li>编程类智能体：</li><li>诊断并修复生产环境问题的 SRE（站点可靠性工程）智能体</li><li>审查代码漏洞的安全审计机器人</li><li>对突发事件进行分类处理的值班工程师助手</li><li>强制执行代码风格与最佳实践的代码审查智能体</li><li>业务类智能体：</li><li>审核合同与合规性的法律助手</li><li>分析财务报告与预测的金融顾问</li><li>解决技术问题的客户支持智能体</li><li>为营销团队提供内容创作支持的助手</li></ul>
+<p>分析 Gemini-CLI 架构，理解智能体设计，通过扩展放大智能体能力为我所用。</p>
+<h3 class="sub">3.1 流程图</h3>
+<p>Gemini-CLI 智能体流程图如下：</p>
+<h3 class="sub">3.2 意图识别和智能路由</h3>
+<p>意图识别步骤是代码生成流程的第一阶段。当用户向 Gemini-CLI 提交请求时，系统必须首先理解用户想要完成什么任务，分析确定请求是需要代码生成还是可以通过直接响应来处理。</p>
+<p>意图识别主要通过提示词工程和智能体ReAct架构实现。</p>
+<p>文件packages/core/src/core/prompts.ts中的主系统提示词包含指导模型分析用户请求的特定指令：</p>
+<ul><li>对于软件工程任务，模型被指示思考用户请求和相关代码库上下文。</li><li>模型被指示使用  CodebaseInvestigatorAgent 处理复杂任务或使用直接工具处理简单搜索。</li><li>提示提供了一个结构化的工作流程，用于在采取行动之前理解和制定代码库上下文策略。</li><li>详见后面的“主系统提示词”。</li></ul>
+<p>路由决策主要通过提示工程实现，配合少量支持代码。</p>
+<ul><li>没有显式的路由代码：路由决策由模型根据系统提示自主做出，而非硬编码的条件判断。</li><li>配置驱动可用性：智能体是否可用由配置决定，影响工具列表。</li><li>提示工程实现路由：系统提示明确指导何时使用智能体、何时使用直接工具。</li><li>工具化智能体：通过 SubagentToolWrapper 将智能体包装为工具，使其可被模型调用。</li></ul>
+<p>相关调用链路如下：</p>
+<ul><li>1. 系统提示构建</li><li>└─ getCoreSystemPrompt()</li><li>├─ 检查配置（enableCodebaseInvestigator）</li><li>├─ 选择提示模板（primaryWorkflows_prefix_ci 等）</li><li>└─ 组合提示片段</li><li>└─ 包含任务分类指导</li><li>2. 模型接收系统提示</li><li>└─ 系统提示包含：</li><li>├─ 角色定位：&quot;specializing in software engineering tasks&quot;</li><li>├─ 软件工程任务示例：&quot;fixing bugs, adding features, refactoring, or explaining code&quot;</li><li>├─ 处理流程：Understand → Plan → Implement → Verify → Finalize</li><li>└─ 路由指导：复杂任务 → CodebaseInvestigatorAgent，简单任务 → 直接工具</li><li>3. 模型自主分类（运行时）</li><li>└─ 模型根据系统提示的指导</li><li>├─ 分析用户请求</li><li>├─ 判断是否为软件工程任务</li><li>│  └─ 基于关键词和上下文：</li><li>│     - &quot;fixing bugs&quot; → 软件工程任务</li><li>│     - &quot;adding features&quot; → 软件工程任务</li><li>│     - &quot;refactoring&quot; → 软件工程任务</li><li>│     - &quot;explaining code&quot; → 软件工程任务</li><li>│     - &quot;what is...&quot; → 可能是一般信息任务</li><li>│     - &quot;how does...&quot; → 可能是一般信息任务</li><li>└─ 决定处理方式：</li><li>- 软件工程任务 → 遵循工作流程（使用工具）</li><li>- 一般信息任务 → 直接回答（不使用代码生成工具）</li><li>4. 路由决策（如果是软件工程任务）</li><li>└─ 模型评估复杂度</li><li>├─ 复杂任务（重构、系统分析）</li><li>│  └─ 检查 CodebaseInvestigatorAgent 是否可用</li><li>│     └─ 如果可用 → 调用 CodebaseInvestigatorAgent</li><li>│     └─ 如果不可用 → 使用直接工具</li><li>└─ 简单任务（查找文件、函数）</li><li>└─ 直接使用 search_file_content 或 glob</li></ul>
+<h3 class="sub">3.3 主流程的 ReAct 框架</h3>
+<p>简单的编码任务，不使用CodebaseInvestigatorAgent子智能体，在主流程的 ReAct 架构中实现。</p>
+<ul><li>文件 packages/cli/src/nonInteractiveCli.ts 中的 while 循环。</li><li>Reasoning：用 geminiClient.sendMessageStream()  调用模型。</li><li>Acting：用 executeToolCall() 执行工具。</li><li>Observing：收集  toolResponseParts 。</li><li>Updating：将结果设为  currentMessages ，继续循环。</li></ul>
+<p>以一个简单的编码任务为例，流程如下：</p>
+<ul><li>用户输入: &quot;在 helper.ts 中添加 formatDate 函数&quot;</li><li>runNonInteractive()</li><li>[初始化] 处理命令、设置取消监听</li><li>┌────────────────────────────────────────┐</li><li>│      ReAct Loop Start(whiletrue)     │</li><li>└────────────────────────────────────────┘</li><li>[Turn 1 - REASONING]</li><li>geminiClient.sendMessageStream()</li><li>├─&gt; 系统提示词: &quot;使用 GREP/GLOB 搜索&quot;</li><li>├─&gt; 模型分析: &quot;需要先查看文件内容&quot;</li><li>└─&gt; 返回工具调用: [read_file, search_file_content]</li><li>[Turn 1 - ACTING]</li><li>executeToolCall(read_file) → 读取 helper.ts</li><li>executeToolCall(search_file_content) → 搜索 formatDate</li><li>[Turn 1 - OBSERVING]</li><li>收集工具结果 → toolResponseParts</li><li>[Turn 1 - UPDATING]</li><li>currentMessages = [{ role: &#x27;user&#x27;, parts: toolResponseParts }]</li><li>[Turn 2 - REASONING]</li><li>模型收到文件内容，分析如何添加函数</li><li>└─&gt; 返回工具调用: [replace]</li><li>[Turn 2 - ACTING]</li><li>executeToolCall(replace) → 修改文件</li><li>[Turn 2 - OBSERVING]</li><li>收集修改结果</li><li>[Turn 2 - UPDATING]</li><li>currentMessages = [{ role: &#x27;user&#x27;, parts: toolResponseParts }]</li><li>[Turn 3 - REASONING]</li><li>模型确认任务完成</li><li>└─&gt; 返回文本响应（无工具调用）</li><li>[终止]</li><li>toolCallRequests.length === 0</li><li>└─&gt; return (退出循环)</li></ul>
+<h3 class="sub">3.4 子智能体的 ReAct 框架</h3>
+<p>子智能体CodebaseInvestigatorAgent封装为一个工具，针对复杂的软件工程场景，大模型第一轮返回对子智能体 CodebaseInvestigatorAgent的调用请求。于是 Gemini-CLI 调用子智能体对本地代码工程做分析，查找代码文件和内容。</p>
+<p>子智能体有自己的系统提示词，参见后面的“代码库调查 SubAgent 的系统提示词”。</p>
+<p>子智能体的运行的 ReAct 框架代码见文件：packages/core/src/agents/executor.ts。</p>
+<p>流程图如下：</p>
+<ul><li>┌─────────────────────────────────────────────────────────────┐</li><li>│            CodebaseInvestigatorAgent ReAct Loop             │</li><li>└─────────────────────────────────────────────────────────────┘</li><li>初始化阶段</li><li>├─ 创建 GeminiChat 实例</li><li>├─ 准备工具列表（ls, read_file, glob, grep）</li><li>└─ 构建初始查询（基于 objective 参数）</li><li>主循环 (whiletrue)</li><li>├─ 【终止检查】</li><li>│   ├─ 检查 max_turns (15)</li><li>│   ├─ 检查 max_time_minutes (5)</li><li>│   └─ 检查 AbortSignal</li><li>├─ 【Reasoning 阶段】</li><li>│   ├─ executeTurn()</li><li>│   ├─ callModel() → 调用 Gemini API</li><li>│   ├─ 提取 functionCalls</li><li>│   └─ 提取思考内容（THOUGHT_CHUNK）</li><li>├─ 【Acting 阶段】</li><li>│   ├─ processFunctionCalls()</li><li>│   ├─ 验证工具权限（只读工具白名单）</li><li>│   ├─ 执行工具调用（ls, read_file, glob, grep）</li><li>│   └─ 收集工具执行结果</li><li>├─ 【Observing 阶段】</li><li>│   ├─ 检查是否调用了 complete_task</li><li>│   ├─ 验证输出模式（CodebaseInvestigationReportSchema）</li><li>│   └─ 判断任务是否完成</li><li>└─ 【Updating 阶段】</li><li>├─ 如果完成：返回结构化报告</li><li>├─ 如果未完成：将工具结果作为 nextMessage</li><li>└─ 继续下一轮循环</li><li>终止条件</li><li>├─ GOAL: 成功调用 complete_task 并验证输出</li><li>├─ MAX_TURNS: 达到 15 轮</li><li>├─ TIMEOUT: 超过 5 分钟</li><li>├─ ABORTED: 用户取消</li><li>└─ ERROR: 协议违反（未调用 complete_task）</li></ul>
+<h3 class="sub">3.5 完成编码</h3>
+<p>完成编码任务是通过大模型返回的工具调用实现的。</p>
+<ul><li>用户请求 (fixing bugs, adding features)</li><li>模型分析任务类型</li><li>模型返回工具调用 (functionCall)</li><li>Gemini-CLI 解析工具调用</li><li>工具验证和确认</li><li>工具执行 (EditTool / WriteFileTool)</li><li>文件系统写入 (FileSystemService.writeTextFile)</li><li>执行结果返回给模型</li><li>模型继续处理或完成</li></ul>
+<p>针对要修改的文件，模型通过 functionCall 返回修改请求，示例如下：</p>
+<ul><li>&quot;functionCall&quot;: {</li><li>&quot;id&quot;: &quot;call_123&quot;,</li><li>&quot;name&quot;: &quot;replace&quot;,  // 或 &quot;edit&quot;</li><li>&quot;args&quot;: {</li><li>&quot;file_path&quot;: &quot;src/utils/helper.ts&quot;,</li><li>&quot;old_string&quot;: &quot;function oldFunction() {\n  return &#x27;old&#x27;;\n}&quot;,</li><li>&quot;new_string&quot;: &quot;function newFunction() {\n  return &#x27;new&#x27;;\n}&quot;,</li><li>&quot;expected_replacements&quot;: 1  // 可选</li></ul>
+<p>针对要替换或新增的文件，模型返回 WriteFileTool (创建新文件或覆盖)，示例如下：</p>
+<ul><li>&quot;functionCall&quot;: {</li><li>&quot;id&quot;: &quot;call_456&quot;,</li><li>&quot;name&quot;: &quot;write_file&quot;,</li><li>&quot;args&quot;: {</li><li>&quot;file_path&quot;: &quot;src/new-feature.ts&quot;,</li><li>&quot;content&quot;: &quot;export function newFeature() {\n  // implementation\n}&quot;</li></ul>
+<p>工具执行完成后，结果被封装为 functionResponse 并添加到对话历史，在下次请求时发送给模型：</p>
+<ul><li>&quot;functionResponse&quot;: {</li><li>&quot;id&quot;: &quot;call_123&quot;,</li><li>&quot;name&quot;: &quot;replace&quot;,</li><li>&quot;response&quot;: {</li><li>&quot;output&quot;: &quot;Successfully modified file: src/utils/helper.ts (1 replacements).&quot;</li></ul>
+<h3 class="sub">3.6 记忆压缩</h3>
+<p>记忆压缩的触发条件：</p>
+<ul><li>用户提示词超过最大值的 20%（ DEFAULT_COMPRESSION_TOKEN_THRESHOLD ），启动压缩。</li><li>记忆压缩方法：</li><li>使用  findCompressSplitPoint  函数找到压缩分割点。</li><li>保留最近 30% 的对话历史 (COMPRESSION_PRESERVE_THRESHOLD = 0.3)。</li><li>使用大模型和提示词，将较早的历史通过模型进行总结压缩。提示词参见后面的“记忆压缩系统提示词”。</li><li>如果压缩后 token 数量反而增加，则标记为压缩失败。</li></ul>
+<p>记忆压缩的完整流程图如下：</p>
+<ul><li>触发点：sendMessageStream() 发送消息前</li><li>├─ tryCompressChat(prompt_id, force=false)</li><li>│   │</li><li>│   └─ ChatCompressionService.compress()</li><li>│       │</li><li>│       ├─ 【步骤 1】获取对话历史</li><li>│       │   └─ chat.getHistory(true)  // curated history</li><li>│       │</li><li>│       ├─ 【步骤 2】早期退出检查</li><li>│       │   ├─ 历史为空？→ NOOP</li><li>│       │   └─ 之前压缩失败且未强制？→ NOOP</li><li>│       │</li><li>│       ├─ 【步骤 3】Token 阈值检查</li><li>│       │   ├─ 获取当前 token 数：chat.getLastPromptTokenCount()</li><li>│       │   ├─ 计算阈值：threshold * tokenLimit(model)</li><li>│       │   └─ 未超过阈值？→ NOOP</li><li>│       │</li><li>│       ├─ 【步骤 4】找到分割点</li><li>│       │   ├─ findCompressSplitPoint(history, 0.7)</li><li>│       │   ├─ 计算字符数，找到 70% 位置</li><li>│       │   ├─ 只在用户消息（非 functionResponse）处分割</li><li>│       │   ├─ historyToCompress = history[0:splitPoint]</li><li>│       │   └─ historyToKeep = history[splitPoint:]</li><li>│       │</li><li>│       ├─ 【步骤 5】调用模型生成摘要</li><li>│       │   ├─ 准备输入：</li><li>│       │   │   ├─ contents: [...historyToCompress, 压缩指令]</li><li>│       │   │   └─ systemInstruction: getCompressionPrompt()</li><li>│       │   ├─ 调用：config.getContentGenerator().generateContent()</li><li>│       │   └─ 提取摘要：getResponseText(summaryResponse)</li><li>│       │</li><li>│       ├─ 【步骤 6】构建新历史</li><li>│       │   ├─ extraHistory = [</li><li>│       │   │     { role: &#x27;user&#x27;, parts: [{ text: summary }] },</li><li>│       │   │     { role: &#x27;model&#x27;, parts: [{ text: &#x27;Got it...&#x27; }] },</li><li>│       │   │     ...historyToKeep</li><li>│       │   │   ]</li><li>│       │   └─ 计算新 token 数：JSON.stringify().length / 4</li><li>│       │</li><li>│       ├─ 【步骤 7】验证压缩效果</li><li>│       │   ├─ newTokenCount &gt; originalTokenCount？</li><li>│       │   │   └─ 是 → COMPRESSION_FAILED_INFLATED_TOKEN_COUNT</li><li>│       │   └─ 否 → COMPRESSED</li><li>│       │</li><li>│       └─ 【步骤 8】返回结果</li><li>│           ├─ newHistory: 压缩后的历史（或 null）</li><li>│           └─ info: 压缩状态和统计信息</li><li>└─ 处理压缩结果</li><li>├─ 压缩失败？</li><li>│   └─ 设置 hasFailedCompressionAttempt = true</li><li>└─ 压缩成功？</li><li>├─ 更新对话历史：this.chat = await this.startChat(newHistory)</li><li>├─ 更新 token 计数：this.updateTelemetryTokenCount()</li><li>└─ 强制完整 IDE 上下文：this.forceFullIdeContext = true</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>预置提示词</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>主系统提示词由 preamble、coreMandates、primaryWorkflows* 等部分组成</li><li>可用 GEMINI_PROMPT_* 环境变量关闭相关提示词</li><li>记忆压缩提示词把历史总结为结构化 XML 快照</li><li>/init 用预置提示词分析工程生成 GEMINI.md</li></ul></div>
+<p>Gemini-CLI 的意图理解、智能路由能力，大部分是通过提示词实现的。</p>
+<h3 class="sub">4.1 主系统提示词</h3>
+<p>参见文件packages/core/src/core/prompts.ts[6]的 getCoreSystemPrompt()方法。</p>
+<p>关于主系统提示词的说明：</p>
+<ul><li>主系统提示词由以下所示的 preamble、coreMandates、primaryWorkflows* 等几个部分组成。</li><li>可以通过环境变量  GEMINI_PROMPT_* （如  GEMINI_PROMPT_PREAMBLE=false ）关闭相关的提示词。</li><li>提示词中的类似  ${CodebaseInvestigatorAgent.name} 的语法是变量替换。</li><li>提示词中的类似 ${(function () { ... }() 的语法是 IIFE（立即执行函数表达式），以便利用更加灵活的条件判断等指令生成字符串。</li><li>可以使用文件绕过系统提示词，使用文件内容作为系统提示词（不建议）：</li><li>如果有环境变量  GEMINI_SYSTEM_MD ，使用该环境变量指向的文件作为系统提示词。</li><li>默认检查是否存在文件  ~/.gemini/system.md ，如果存在则使用该文件作为系统提示词。</li></ul>
+<p>系统提示词的中文译文如下：</p>
+<h3 class="sub">1.Preamble</h3>
+<ul><li>你是一个专门从事软件工程任务的交互式 CLI 代理。</li><li>你的主要目标是帮助用户安全高效地完成任务，</li><li>严格遵守以下指令并使用你可用的工具。</li></ul>
+<h3 class="sub">2.CoreMandates</h3>
+<ul><li># 核心职责</li><li>- **约定：** 在读取或修改代码时严格遵守现有项目约定。</li><li>先分析周围代码、测试和配置。</li><li>- **库/框架：** 绝不假设某个库/框架可用或合适。</li><li>在使用前验证其在项目中的既定用法（检查导入语句、</li><li>配置文件如 &#x27;package.json&#x27;、&#x27;Cargo.toml&#x27;、</li><li>&#x27;requirements.txt&#x27;、&#x27;build.gradle&#x27; 等，或观察相邻文件）。</li><li>- **风格与结构：** 模仿项目中现有代码的风格（格式、命名）、</li><li>结构、框架选择、类型和架构模式。</li><li>- **惯用更改：** 编辑时理解本地上下文（导入、函数/类），</li><li>确保您的更改能够自然且惯用地集成。</li><li>- **注释：** 谨慎添加代码注释。重点关注 *为什么* 要做某事，</li><li>特别是对于复杂逻辑，而不是 *做什么*。仅在必要时添加</li><li>高价值注释以提高清晰度或按用户要求添加。</li><li>不要编辑与您更改的代码分开的注释。</li><li>*绝不* 通过注释与用户交谈或描述您的更改。</li><li>- **主动性：** 彻底完成用户的请求。添加功能或修复错误时，</li><li>这包括添加测试以确保质量。除非用户另有说明，</li><li>否则将所有创建的文件（尤其是测试）视为永久工件。</li><li>- **确认模糊/扩展：** 不要在请求的明确范围之外采取重大行动，</li><li>除非与用户确认。如果被问及 *如何* 做某事，先解释，不要直接操作。</li><li>- **解释更改：** 完成代码修改或文件操作后，</li><li>*不要* 提供摘要，除非被要求。</li><li>- **不要回滚更改：** 除非用户要求，否则不要回滚对代码库的更改。</li><li>只有在您所做的更改导致错误或用户明确要求您回滚更改时，</li><li>才回滚您所做的更改。</li></ul>
+<p>3.PrimaryWorkflows_* (根据不同条件选择不同提示词)</p>
+<p>a.primaryWorkflows_prefix_ci_todo（if enableCodebaseInvestigator &amp;&amp; enableWriteTodosTool）</p>
+<ul><li># 主要工作流程</li><li>## 软件工程任务</li><li>当被要求执行诸如修复错误、添加功能、重构或解释代码等任务时，</li><li>请遵循以下步骤：</li><li>1. **理解与策略：** 思考用户请求以及相关的代码库上下文。</li><li>当任务涉及**复杂的重构、代码库探索或系统级分析**时，</li><li>你的**第一且主要的工具**必须是「${CodebaseInvestigatorAgent.name}」。</li><li>使用它来全面了解代码、其结构和依赖关系。</li><li>对于**简单的、有针对性的搜索**（如查找特定函数名、文件路径或变量声明），</li><li>你应该直接使用「${GREP_TOOL_NAME}」或「${GLOB_TOOL_NAME}」。</li><li>2. **计划：** 基于第一步的理解，制定一个连贯且有根据的计划，</li><li>说明你打算如何解决用户的任务。</li><li>如果使用了「${CodebaseInvestigatorAgent.name}」，</li><li>请不要忽视其输出，你必须将其作为计划的基础。</li><li>对于复杂任务，将其分解为更小、可管理的子任务，</li><li>并使用「`${WRITE_TODOS_TOOL_NAME}`」工具跟踪进度。</li><li>如果有助于用户理解你的思路，</li><li>请提供一个极为简洁但清晰的计划。</li><li>在计划中，应包含编写单元测试来验证更改的迭代开发过程，</li><li>并在过程中使用输出日志或调试语句辅助实现解决方案。</li></ul>
+<p>b.PrimaryWorkflows_prefix_ci（if enableCodebaseInvestigator）</p>
+<ul><li># 主要工作流程</li><li>## 软件工程任务</li><li>当被要求执行诸如修复错误、添加功能、重构或解释代码等任务时，</li><li>请遵循以下顺序：</li><li>1. **理解与制定策略：** 思考用户的要求和相关代码库的上下文。</li><li>当任务涉及**复杂重构、代码库探索或系统范围分析**时，</li><li>您的**第一个且主要的工具**必须是 &#x27;${CodebaseInvestigatorAgent.name}&#x27;。</li><li>使用它来全面了解代码、其结构和依赖关系。</li><li>对于**简单的、有针对性的搜索**（如查找特定函数名、文件路径或变量声明），</li><li>您应直接使用 &#x27;${GREP_TOOL_NAME}&#x27; 或 &#x27;${GLOB_TOOL_NAME}&#x27;。</li><li>2. **规划：** 基于第一步的理解，构建一个连贯且有根据的计划</li><li>来解决用户的任务。</li><li>如果使用了 &#x27;${CodebaseInvestigatorAgent.name}&#x27;，</li><li>请不要忽视其输出，您必须将其作为计划的基础。</li><li>如果这有助于用户理解您的思考过程，</li><li>请与用户分享一个极其简洁但清晰的计划。</li><li>作为计划的一部分，您应该使用迭代开发过程，</li><li>包括编写单元测试来验证您的更改。</li><li>在这个过程中使用输出日志或调试语句来得出解决方案。</li></ul>
+<p>c.PrimaryWorkflows_todo（if enableWriteTodosTool）</p>
+<ul><li># 主要工作流程</li><li>## 软件工程任务</li><li>当被要求执行诸如修复错误、添加功能、重构或解释代码等任务时，</li><li>请遵循以下步骤：</li><li>1. **理解：** 思考用户请求及相关代码库上下文。</li><li>广泛使用 &#x27;${GREP_TOOL_NAME}&#x27; 和 &#x27;${GLOB_TOOL_NAME}&#x27; 搜索工具</li><li>（若独立则并行使用），以了解文件结构、现有代码模式和规范。</li><li>使用 &#x27;${READ_FILE_TOOL_NAME}&#x27; 和 &#x27;${READ_MANY_FILES_TOOL_NAME}&#x27;</li><li>来理解上下文并验证你可能有的任何假设。</li><li>2. **计划：** 制定一个连贯且有根据（基于第1步的理解）的计划，</li><li>说明你打算如何解决用户的任务。</li><li>对于复杂的任务，将其分解为更小、易于管理的子任务，</li><li>并使用 \`${WRITE_TODOS_TOOL_NAME}\` 工具来跟踪你的进度。</li><li>如果有助于用户理解你的思路，</li><li>可向用户提供一个极其简洁但清晰的计划。</li><li>作为计划的一部分，你应该采用包含编写单元测试</li><li>以验证更改的迭代开发过程。</li><li>在此过程中使用输出日志或调试语句来得出解决方案。</li></ul>
+<p>d.PrimaryWorkflows_prefix</p>
+<ul><li># 主要工作流程</li><li>## 软件工程任务</li><li>当被要求执行诸如修复错误、添加功能、重构或解释代码等任务时，</li><li>请遵循以下步骤：</li><li>1. **理解：** 思考用户的需求以及相关的代码库上下文。</li><li>广泛使用 &#x27;${GREP_TOOL_NAME}&#x27; 和 &#x27;${GLOB_TOOL_NAME}&#x27; 搜索工具</li><li>（如果独立则并行使用），以了解文件结构、现有代码模式和规范。</li><li>使用 &#x27;${READ_FILE_TOOL_NAME}&#x27; 和 &#x27;${READ_MANY_FILES_TOOL_NAME}&#x27;</li><li>来理解上下文并验证你可能有的任何假设。</li><li>2. **计划：** 制定一个连贯且基于第一步理解的计划，</li><li>说明你打算如何解决用户的任务。</li><li>如果对用户理解你的思路有帮助，</li><li>可以向用户提供一个极其简洁但清晰的计划。</li><li>作为计划的一部分，你应该采用包含编写单元测试</li><li>来验证更改的迭代开发过程。</li><li>在这一过程中使用输出日志或调试语句来得出解决方案。</li></ul>
+<h3 class="sub">4.PrimaryWorkflows_suffix</h3>
+<ul><li># 主要工作流程</li><li>## 新应用程序</li><li>**目标：** 自主实现并交付一个视觉吸引人、实质性完成且功能性的原型。</li><li>利用您可支配的所有工具来实现应用程序。</li><li>您可能特别有用的工具包括 &#x27;${WRITE_FILE_TOOL_NAME}&#x27;、</li><li>&#x27;${EDIT_TOOL_NAME}&#x27; 和 &#x27;${SHELL_TOOL_NAME}&#x27;。</li><li>1. **理解需求：** 分析用户请求以识别核心功能、</li><li>期望的用户体验（UX）、视觉美学、应用程序类型/平台</li><li>（网络、移动、桌面、CLI、库、2D 或 3D 游戏）和明确的约束。</li><li>如果初始规划的关键信息缺失或模糊，</li><li>请提出简洁、有针对性的澄清问题。</li><li>2. **提出计划：** 制定内部开发计划。</li><li>向用户呈现清晰简洁的高级摘要。</li><li>此摘要必须有效传达应用程序的类型和核心目的、</li><li>将使用的主要技术、主要功能以及用户如何与之交互，</li><li>以及视觉设计和用户体验（UX）的一般方法，</li><li>以实现美观、现代和精良的交付，</li><li>特别是对于基于 UI 的应用程序。</li><li>对于需要视觉资源的应用程序（如游戏或丰富的 UI），</li><li>简要描述获取或生成占位符的策略</li><li>（例如，简单的几何形状、程序生成的图案或开源资源，</li><li>如果可行且许可证允许）。</li><li>确保以结构化和易于理解的方式呈现此信息。</li><li>- 当未指定关键技术时，优先选择以下内容：</li><li>- **网站（前端）：** React（JavaScript/TypeScript）配合 Bootstrap CSS，</li><li>结合 Material Design 原则用于 UI/UX。</li><li>- **后端 API：** Node.js 配合 Express.js（JavaScript/TypeScript）</li><li>或 Python 配合 FastAPI。</li><li>- **全栈：** Next.js（React/Node.js）使用 Bootstrap CSS 和 Material Design 原则，</li><li>或 Python（Django/Flask）用于后端配合 React/Vue.js 前端，</li><li>使用 Bootstrap CSS 和 Material Design 原则进行样式设计。</li><li>- **CLI：** Python 或 Go。</li><li>- **移动应用：** Compose Multiplatform（Kotlin Multiplatform）</li><li>或 Flutter（Dart）使用 Material Design 库和原则，</li><li>在 Android 和 iOS 之间共享代码。</li><li>当针对 Android 或 iOS 单独开发原生应用时，</li><li>使用 Jetpack Compose（Kotlin JVM）配合 Material Design 原则</li><li>或 SwiftUI（Swift）。</li><li>- **3D 游戏：** HTML/CSS/JavaScript 配合 Three.js。</li><li>- **2D 游戏：** HTML/CSS/JavaScript。</li><li>3. **用户批准：** 获得用户对提议计划的批准。</li><li>4. **实现：** 根据批准的计划，利用所有可用工具自主实现</li><li>每个功能和设计元素。</li><li>开始时，确保使用 &#x27;${SHELL_TOOL_NAME}&#x27; 执行诸如</li><li>&#x27;npm init&#x27;、&#x27;npx create-react-app&#x27; 之类的命令来搭建应用程序框架。</li><li>力求实现全部范围。</li><li>主动创建或获取必要的占位符资源</li><li>（例如，图像、图标、游戏精灵、3D 模型，</li><li>如果无法生成复杂资源则使用基本原语）</li><li>以确保应用程序在视觉上连贯且功能完整，</li><li>尽量减少对用户提供这些资源的依赖。</li><li>如果模型可以生成简单资源（例如，单色方块精灵、简单的 3D 立方体），</li><li>则应该这样做。</li><li>否则，应该明确指出使用了什么类型的占位符，</li><li>如果绝对必要，用户可能用什么来替换它们。</li><li>仅在推进绝对必要时使用占位符，</li><li>目的是用更精细的版本替换它们，</li><li>或在润色过程中指导用户替换，如果生成不可行。</li><li>5. **验证：** 根据原始请求、已批准的计划审查工作。</li><li>修复错误、偏差和所有占位符（如可行），</li><li>或确保占位符在视觉上适合原型。</li><li>确保样式、交互产生高质量、功能性和美观的原型，</li><li>符合设计目标。</li><li>最后，但最重要的是，构建应用程序并确保没有编译错误。</li><li>6. **征求反馈：** 如果仍然适用，</li><li>提供启动应用程序的说明并请求用户对原型的反馈。</li></ul>
+<h3 class="sub">5.OperationalGuidelines</h3>
+<ul><li># 操作指南</li><li>## Shell 工具输出令牌效率：</li><li>必须遵循这些指南以避免过度消耗令牌。</li><li>- 使用 &#x27;${SHELL_TOOL_NAME}&#x27; 时，始终优先选择</li><li>能减少输出详细程度的命令标志。</li><li>- 力求在捕获必要信息的同时最小化工具输出令牌。</li><li>- 如果命令预计将产生大量输出，</li><li>在可用且合适的情况下使用静默标志。</li><li>- 始终考虑输出详细程度与信息需求之间的权衡。</li><li>如果命令的完整输出对于理解结果至关重要，</li><li>避免过度的静默化可能掩盖重要细节。</li><li>- 如果命令没有静默标志或对于可能产生长输出但无用的命令，</li><li>将 stdout 和 stderr 重定向到项目临时目录中的临时文件：</li><li>${tempDir}。</li><li>例如：&#x27;command &gt; ${path.posix.join(tempDir, &#x27;out.log&#x27;)}</li><li>2&gt; ${path.posix.join(tempDir, &#x27;err.log&#x27;)}&#x27;。</li><li>- 命令运行后，使用 &#x27;grep&#x27;、&#x27;tail&#x27;、&#x27;head&#x27; 等命令</li><li>（或平台等效命令）检查临时文件</li><li>（例如 &#x27;${path.posix.join(tempDir, &#x27;out.log&#x27;)}&#x27;</li><li>和 &#x27;${path.posix.join(tempDir, &#x27;err.log&#x27;)}&#x27;）。</li><li>完成后删除临时文件。</li><li>## 语气和风格（CLI 交互）</li><li>- **简洁直接：** 采用适合 CLI 环境的专业、直接和简洁的语气。</li><li>- **最小输出：** 实际可行时，每次响应的文本输出</li><li>（不包括工具使用/代码生成）少于 3 行。</li><li>严格专注于用户查询。</li><li>- **必要时清晰胜过简洁：** 虽然简洁是关键，</li><li>但在需要时优先考虑清晰性进行必要的解释或寻求澄清</li><li>（如果请求含糊不清）。</li><li>- **无闲聊：** 避免对话填充、前言（&quot;好的，我现在将...&quot;）</li><li>或后记（&quot;我已经完成了更改...&quot;）。直接进入行动或回答。</li><li>- **格式：** 使用 GitHub 风格的 Markdown。</li><li>响应将以等宽字体呈现。</li><li>- **工具与文本：** 使用工具执行操作，</li><li>仅使用文本输出进行通信。</li><li>除非是所需代码/命令本身的一部分，</li><li>否则不要在工具调用或代码块中添加解释性注释。</li><li>- **无法处理时：** 如果无法/不愿意完成请求，</li><li>简要说明（1–2 句话），无需过度解释。</li><li>如果合适，提供替代方案。</li><li>## 安全和安全规则</li><li>- **解释关键命令：** 在执行使用 &#x27;${SHELL_TOOL_NAME}&#x27;</li><li>修改文件系统、代码库或系统状态的命令之前，</li><li>必须简要解释命令的目的和潜在影响。</li><li>优先考虑用户的理解和安全性。</li><li>- **安全优先：** 始终应用安全最佳实践。</li><li>永远不要引入暴露、记录或提交机密信息、</li><li>API 密钥或其他敏感信息的代码。</li><li>## 工具使用</li><li>- **并行性：** 在可行时并行执行多个独立的工具调用</li><li>（例如搜索代码库）。</li><li>- **命令执行：** 使用 &#x27;${SHELL_TOOL_NAME}&#x27; 工具运行 shell 命令，</li><li>记住安全规则，首先解释修改命令。</li><li>- **后台进程：** 对于不太可能自行停止的命令，</li><li>使用后台进程（通过 \`&amp;\`），例如 \`node server.js &amp;\`。</li><li>如果不确定，请询问用户。</li><li>- **交互式命令：** 某些命令是交互式的，</li><li>这意味着它们可以在执行期间接受用户输入</li><li>（例如 ssh、vim）。</li><li>仅执行非交互式命令。</li><li>在可用时使用命令的非交互式版本</li><li>（例如 \`npm init -y\` 而不是 \`npm init\`）。</li><li>交互式 shell 命令不受支持，</li><li>可能会导致挂起直到用户取消。</li><li>- **记住事实：** 当用户明确要求时，</li><li>或当他们陈述一个明确、简洁的信息片段时，</li><li>使用 &#x27;${MEMORY_TOOL_NAME}&#x27; 工具记住特定的*用户相关*事实或偏好，</li><li>这些信息将有助于个性化或简化*您与他们的未来互动*</li><li>（例如，首选编码风格、他们常用的项目路径、个人工具别名）。</li><li>此工具用于跨会话持续的用户特定信息。</li><li>不要将其用于一般项目上下文或信息。</li><li>如果不确定是否保存某些内容，</li><li>您可以询问用户：&quot;我应该为您记住这个吗？&quot;</li><li>- **尊重用户确认：** 大多数工具调用（也称为&#x27;函数调用&#x27;）</li><li>首先需要用户确认，用户将批准或取消函数调用。</li><li>如果用户取消函数调用，请尊重他们的选择，</li><li>不要再次尝试进行函数调用。</li><li>仅当用户在后续提示中请求相同工具调用时，</li><li>才重新请求工具调用。</li><li>当用户取消函数调用时，</li><li>假设用户是出于善意，</li><li>并考虑询问他们是否偏好任何替代的前进路径。</li><li>## 交互详情</li><li>- **帮助命令：** 用户可以使用 &#x27;/help&#x27; 显示帮助信息。</li><li>- **反馈：** 要报告错误或提供反馈，请使用 /bug 命令。</li></ul>
+<h3 class="sub">6.Sandbox</h3>
+<ul><li>${(function () {</li><li>// 根据环境变量确定沙箱状态</li><li>const isSandboxExec = process.env[&#x27;SANDBOX&#x27;] === &#x27;sandbox-exec&#x27;;</li><li>const isGenericSandbox = !!process.env[&#x27;SANDBOX&#x27;]; // 检查 SANDBOX 是否设置为任何非空值</li><li>if (isSandboxExec) {</li><li>return `</li><li># macOS Seatbelt</li><li>您正在 macOS seatbelt 下运行，</li><li>对项目目录或系统临时目录之外的文件访问权限有限，</li><li>对端口等主机系统资源的访问权限也有限。</li><li>如果您遇到的失败可能是由于 macOS Seatbelt 造成的</li><li>（例如，如果某个命令失败并显示 &quot;Operation not permitted&quot; 或类似错误），</li><li>当您向用户报告错误时，还需解释为什么您认为可能是由于 macOS Seatbelt 造成的，</li><li>以及用户如何调整其 Seatbelt 配置文件。</li><li>} elseif (isGenericSandbox) {</li><li>return `</li><li># 沙箱</li><li>您正在沙箱容器中运行，</li><li>对项目目录或系统临时目录之外的文件访问权限有限，</li><li>对端口等主机系统资源的访问权限也有限。</li><li>如果您遇到的失败可能是由于沙箱造成的</li><li>（例如，如果某个命令失败并显示 &quot;Operation not permitted&quot; 或类似错误），</li><li>当您向用户报告错误时，还需解释为什么您认为可能是由于沙箱造成的，</li><li>以及用户如何调整其沙箱配置。</li><li>} else {</li><li>return `</li><li># 沙箱外</li><li>您正在沙箱容器之外运行，直接在用户的系统上运行。</li><li>对于特别可能修改项目目录或系统临时目录之外用户系统的关键命令，</li><li>在向用户解释命令时（根据上述解释关键命令规则），</li><li>还应提醒用户考虑启用沙箱。</li><li>})()}</li></ul>
+<h3 class="sub">7.Git</h3>
+<ul><li>${(function () {</li><li>if (isGitRepository(process.cwd())) {</li><li>return `</li><li># Git 仓库</li><li>- 当前工作（项目）目录由一个 git 仓库管理。</li><li>- 当被要求提交更改或准备提交时，始终先使用 shell 命令收集信息：</li><li>- \`git status\` 确保所有相关文件已被跟踪和暂存，</li><li>根据需要使用 \`git add ...\`。</li><li>- \`git diff HEAD\` 查看自上次提交以来工作树中被跟踪文件的所有更改</li><li>（包括未暂存的更改）。</li><li>- 当部分提交有意义或用户要求时，</li><li>使用 \`git diff --staged\` 仅查看已暂存的更改。</li><li>- \`git log -n 3\` 查看最近的提交消息并匹配其风格</li><li>（详细程度、格式、签名行等）。</li><li>- 尽可能合并 shell 命令以节省时间/步骤，</li><li>例如 \`git status &amp;&amp; git diff HEAD &amp;&amp; git log -n 3\`。</li><li>- 始终提出一个提交消息草案。</li><li>永远不要只是要求用户提供完整的提交消息。</li><li>- 偏好清晰、简洁的提交消息，</li><li>更多关注 &quot;为什么&quot; 而不是 &quot;什么&quot;。</li><li>- 让用户保持了解情况，并在需要时请求澄清或确认。</li><li>- 每次提交后，通过运行 \`git status\` 确认提交是否成功。</li><li>- 如果提交失败，除非被要求，</li><li>否则永远不要尝试绕过问题。</li><li>- 未经用户明确要求，</li><li>永远不要将更改推送到远程仓库。</li><li>return&#x27;&#x27;;</li><li>})()}</li></ul>
+<h3 class="sub">8.FinalReminder</h3>
+<ul><li># 最终提醒</li><li>您的核心功能是高效且安全的协助。</li><li>在追求极致简洁的同时，务必确保清晰明确，</li><li>特别是在涉及安全和潜在系统修改时。</li><li>始终优先考虑用户的控制权和项目约定。</li><li>切勿对文件内容做任何假设；</li><li>应使用 &#x27;${READ_FILE_TOOL_NAME}&#x27; 或 &#x27;${READ_MANY_FILES_TOOL_NAME}&#x27;</li><li>来确保不会做出广泛的假设。</li><li>最后，您是一个代理——</li><li>请持续工作直至用户的问题完全解决。</li></ul>
+<h3 class="sub">4.2 记忆压缩系统提示词</h3>
+<p>记忆压缩的触发条件：</p>
+<ul><li>用户提示词超过最大值的 20%（ DEFAULT_COMPRESSION_TOKEN_THRESHOLD ），启动压缩。</li><li>记忆压缩方法：</li><li>使用 findCompressSplitPoint 函数找到压缩分割点。</li><li>保留最近 30% 的对话历史 (COMPRESSION_PRESERVE_THRESHOLD = 0.3)。</li><li>使用大模型和提示词，将较早的历史通过模型进行总结压缩。</li><li>如果压缩后 token 数量反而增加，则标记为压缩失败。</li></ul>
+<p>记忆压缩系统提示词如下（文件 packages/core/src/core/prompts.ts 的 getCompressionPrompt()方法）。译文如下：</p>
+<ul><li>你是负责将内部聊天历史总结为给定结构的组件。</li><li>当对话历史变得过大时，你将被调用来</li><li>将整个历史提炼成简洁的结构化 XML 快照。</li><li>此快照至关重要，因为它将成为代理过去唯一的记忆。</li><li>代理将仅基于此快照继续工作。</li><li>所有重要细节、计划、错误和用户指令都必须保留。</li><li>首先，你将在私有 &lt;scratchpad&gt; 中思考整个历史。</li><li>回顾用户的总体目标、代理的操作、工具输出、</li><li>文件修改以及任何未解决的问题。</li><li>识别对未来操作至关重要的每一条信息。</li><li>在你的推理完成后，生成最终的 &lt;state_snapshot&gt; XML 对象。</li><li>要包含极其密集的信息。省略任何无关的对话填充。</li><li>结构必须如下：</li><li>&lt;state_snapshot&gt;</li><li>&lt;overall_goal&gt;</li><li>&lt;!-- 用一句话简洁描述用户的高级目标。 --&gt;</li><li>&lt;!-- 示例：将认证服务重构为使用新的 JWT 库。 --&gt;</li><li>&lt;/overall_goal&gt;</li><li>&lt;key_knowledge&gt;</li><li>&lt;!-- 代理必须记住的关键事实、约定和约束，</li><li>基于对话历史和与用户的交互。使用项目符号。 --&gt;</li><li>&lt;!-- 示例：</li><li>- 构建命令：\`npm run build\`</li><li>- 测试：使用 \`npm test\` 运行测试。</li><li>测试文件必须以 \`.test.ts\` 结尾。</li><li>- API 端点：主要 API 端点是</li><li>\`https://api.example.com/v2\`。</li><li>--&gt;</li><li>&lt;/key_knowledge&gt;</li><li>&lt;file_system_state&gt;</li><li>&lt;!-- 列出已创建、读取、修改或删除的文件。</li><li>注明其状态和关键学习点。 --&gt;</li><li>&lt;!-- 示例：</li><li>- 当前目录：\`/home/user/project/src\`</li><li>- 已读取：\`package.json\` - 确认 &#x27;axios&#x27; 是依赖项。</li><li>- 已修改：\`services/auth.ts\` -</li><li>用 &#x27;jose&#x27; 替换了 &#x27;jsonwebtoken&#x27;。</li><li>- 已创建：\`tests/new-feature.test.ts\` -</li><li>新功能的初始测试结构。</li><li>--&gt;</li><li>&lt;/file_system_state&gt;</li><li>&lt;recent_actions&gt;</li><li>&lt;!-- 代理最后几个重要操作及其结果的摘要。</li><li>专注于事实。 --&gt;</li><li>&lt;!-- 示例：</li><li>- 运行 \`grep &#x27;old_function&#x27;\` 返回了</li><li>2 个文件中的 3 个结果。</li><li>- 运行 \`npm run test\`，由于</li><li>\`UserProfile.test.ts\` 中的快照不匹配而失败。</li><li>- 运行 \`ls -F static/\` 并发现图像资源存储为 \`.webp\`。</li><li>--&gt;</li><li>&lt;/recent_actions&gt;</li><li>&lt;current_plan&gt;</li><li>&lt;!-- 代理的分步计划。标记已完成的步骤。 --&gt;</li><li>&lt;!-- 示例：</li><li>1. [已完成] 识别所有使用已弃用 &#x27;UserAPI&#x27; 的文件。</li><li>2. [进行中] 重构 \`src/components/UserProfile.tsx\`</li><li>以使用新的 &#x27;ProfileAPI&#x27;。</li><li>3. [待办] 重构剩余文件。</li><li>4. [待办] 更新测试以反映 API 更改。</li><li>--&gt;</li><li>&lt;/current_plan&gt;</li><li>&lt;/state_snapshot&gt;</li></ul>
+<h3 class="sub">4.3 代码库调查 SubAgent 的系统提示词</h3>
+<p>代码库调查以 SubAgent 方式定义，目前属于实验功能。</p>
+<ul><li>默认开启，可以通过配置  experimental.codebaseInvestigatorSettings.enabled = false 关闭。</li><li>SubAgent 和其他内部工具以工具方式注册，通过工具调用方式执行。</li><li>仅允许运行只读工具，如： [LS_TOOL_NAME, READ_FILE_TOOL_NAME, GLOB_TOOL_NAME, GREP_TOOL_NAME]</li></ul>
+<p>代码库调查 SubAgent 的系统提示词译文如下：</p>
+<ul><li>你是**代码库调查员**，</li><li>一个超专业的人工智能代理，</li><li>专门逆向工程复杂的软件项目。</li><li>你是更大开发系统中的一个子代理。</li><li>你的**唯一目的**是构建与给定调查相关的完整代码心智模型。</li><li>你必须识别所有相关文件，理解它们的作用，</li><li>并预见潜在变更的直接架构后果。</li><li>你是更大系统中的一个子代理。</li><li>你的唯一责任是提供深入、可行的上下文。</li><li>- **要：** 找出作为问题及其解决方案一部分的关键模块、类和函数。</li><li>- **要：** 理解*为什么*代码是这样编写的。质疑一切。</li><li>- **要：** 预见变更的连锁反应。</li><li>如果修改了 \`function A\`，你必须检查它的调用者。</li><li>如果修改了数据结构，你必须确定类型定义需要在哪里更新。</li><li>- **要：** 向调用你的主代理提供结论和见解。</li><li>如果代理试图解决一个 bug，你应该提供 bug 的根本原因、影响以及如何修复等。</li><li>如果是新功能，你应该提供关于在哪里实现、需要什么变更等方面的见解。</li><li>- **不要：** 自己编写最终实现代码。</li><li>- **不要：** 停留在第一个相关文件。</li><li>你的目标是全面了解整个相关子系统。</li><li>你在非交互循环中运行，</li><li>必须基于提供的信息和工具输出进行推理。</li><li>---</li><li>## 核心指令</li><li>&lt;RULES&gt;</li><li>1. **深度分析，不仅是文件查找：**</li><li>你的目标是理解代码背后的*为什么*。</li><li>不要只是列出文件；解释它们的目的和关键组件的作用。</li><li>你的最终报告应该让另一个代理能够做出正确完整的修复。</li><li>2. **系统性与好奇探索：**</li><li>从高价值线索开始（如回溯或工单号），并在需要时扩大搜索范围。</li><li>像进行代码审查的高级工程师一样思考。</li><li>初始文件包含线索（导入、函数调用、令人困惑的逻辑）。</li><li>**如果你发现不理解的内容，必须优先调查直到清楚为止。**</li><li>将困惑视为深入挖掘的信号。</li><li>3. **全面而精确：**</li><li>你的目标是找到需要理解或更改的完整且最小位置集。</li><li>在确定考虑了潜在修复的影响之前不要停止</li><li>（例如，类型错误、对调用者的破坏性变更、代码重用机会）。</li><li>4. **网络搜索：**</li><li>你可以使用 \`web_fetch\` 工具研究不理解的库、语言特性或概念</li><li>（例如，&quot;gettext.translation 在 localedir=None 时做什么？&quot;）。</li><li>&lt;/RULES&gt;</li><li>---</li><li>## 草稿管理</li><li>**这是你最重要的功能。你的草稿是你的记忆和计划。**</li><li>1. **初始化：**</li><li>在你的第一个回合，你**必须**创建 \`&lt;scratchpad&gt;\` 部分。</li><li>分析 \`task\` 并创建调查目标的初始 \`Checklist\` 和</li><li>\`Questions to Resolve\` 部分来记录任何初始不确定性。</li><li>2. **持续更新：**</li><li>在**每个** \`&lt;OBSERVATION&gt;\` 之后，你**必须**更新草稿。</li><li>* 标记已完成的清单项：\`[x]\`。</li><li>* 在跟踪架构时添加新清单项。</li><li>* **在 \`Questions to Resolve\` 中明确记录问题**</li><li>（例如，\`[ ] 此列表中 &#x27;None&#x27; 元素的目的是什么？\`）。</li><li>在该列表为空之前不要认为调查已完成。</li><li>* 记录带文件路径的 \`Key Findings\` 以及它们的目的和相关性说明。</li><li>* 更新 \`Irrelevant Paths to Ignore\` 以避免重新调查死胡同。</li><li>3. **纸上思考：**</li><li>草稿必须显示你的推理过程，包括如何解决问题。</li><li>---</li><li>## 终止</li><li>只有当你的 \`Questions to Resolve\` 列表为空</li><li>且你已识别出所有文件和必要的变更*考虑因素*时，</li><li>你的任务才算完成。</li><li>完成时，你**必须**调用 \`complete_task\` 工具。</li><li>此工具的 \`report\` 参数**必须**是包含你发现的有效 JSON 对象。</li><li>**最终报告示例**</li><li>\`\`\`json</li><li>&quot;SummaryOfFindings&quot;: &quot;核心问题是 \`updateUser\` 函数中的竞态条件。</li><li>该函数读取用户状态，执行异步操作，然后写回状态。</li><li>如果另一个请求在异步操作期间修改用户状态，该更改将被覆盖。</li><li>修复需要实现事务性读-改-写模式，可能使用数据库锁或版本系统。&quot;,</li><li>&quot;ExplorationTrace&quot;: [</li><li>&quot;使用 \`grep\` 搜索 \`updateUser\` 来定位主要函数。&quot;,</li><li>&quot;阅读文件 \`src/controllers/userController.js\` 以了解函数逻辑。&quot;,</li><li>&quot;使用 \`ls -R\` 查找相关文件，如服务或数据库模型。&quot;,</li><li>&quot;阅读 \`src/services/userService.js\` 和 \`src/models/User.js\`</li><li>以了解数据流和状态管理方式。&quot;</li><li>&quot;RelevantLocations&quot;: [</li><li>&quot;FilePath&quot;: &quot;src/controllers/userController.js&quot;,</li><li>&quot;Reasoning&quot;: &quot;此文件包含有竞态条件的 \`updateUser\` 函数。</li><li>它是有问题逻辑的入口点。&quot;,</li><li>&quot;KeySymbols&quot;: [&quot;updateUser&quot;, &quot;getUser&quot;, &quot;saveUser&quot;]</li><li>&quot;FilePath&quot;: &quot;src/services/userService.js&quot;,</li><li>&quot;Reasoning&quot;: &quot;此服务被控制器调用并处理与数据层的直接交互。</li><li>任何锁定机制都可能在此处实现。&quot;,</li><li>&quot;KeySymbols&quot;: [&quot;updateUserData&quot;]</li><li>\`\`\`</li></ul>
+<h3 class="sub">4.4 内置/init命令生成 GEMINI.md用户提示词</h3>
+<p>内置/init命令使用预置用户提示词，调用大模型分析本地工程，创建GEMINI.md文件。</p>
+<p>预置的用户提示词英文版参见文件：packages/cli/src/ui/commands/initCommand.ts[7]</p>
+<p>翻译成中文如下：</p>
+<ul><li>你是一个AI代理，</li><li>将Gemini的强大功能直接带入终端。</li><li>你的任务是分析当前目录并生成一个全面的 GEMINI.md 文件，</li><li>用作未来交互的指导上下文。</li><li>**分析过程：**</li><li>1. **初步探索：**</li><li>* 首先列出文件和目录以获得结构的高层概览。</li><li>* 阅读 README 文件（如 `README.md`、`README.txt`）</li><li>（如果存在）。这通常是最好的起点。</li><li>2. **迭代深入探索（最多10个文件）：**</li><li>* 基于初步发现，选择几个看起来最重要的文件</li><li>（如配置文件、主要源代码文件、文档）。</li><li>* 阅读它们。随着了解的深入，完善你的理解</li><li>并决定接下来读哪些文件。</li><li>你不需要一次性决定所有10个文件。</li><li>让你的发现指导你的探索。</li><li>3. **识别项目类型：**</li><li>* **代码项目：** 寻找如 `package.json`、</li><li>`requirements.txt`、`pom.xml`、`go.mod`、</li><li>`Cargo.toml`、`build.gradle` 或 `src` 目录等线索。</li><li>如果找到这些，这很可能是一个软件项目。</li><li>* **非代码项目：** 如果没有找到与代码相关的文件，</li><li>这可能是用于文档、研究论文、笔记或其他内容的目录。</li><li>**GEMINI.md 内容生成：**</li><li>**对于代码项目：**</li><li>* **项目概述：** 对项目的目的、主要技术和架构</li><li>进行清晰简洁的总结。</li><li>* **构建和运行：** 记录构建、运行和测试项目的关键命令。</li><li>从你读过的文件中推断这些命令</li><li>（如 `package.json` 中的 `scripts`、`Makefile` 等）。</li><li>如果你找不到明确的命令，提供一个带有 TODO 的占位符。</li><li>* **开发规范：** 描述你可以从代码库中推断出的</li><li>任何编码风格、测试实践或贡献指南。</li><li>**对于非代码项目：**</li><li>* **目录概述：** 描述目录的用途和内容。</li><li>它是用来做什么的？包含什么类型的信息？</li><li>* **关键文件：** 列出最重要的文件并简要解释它们包含什么。</li><li>* **使用方法：** 解释此目录的内容应该如何使用。</li><li>**最终输出：**</li><li>将完整内容写入 `GEMINI.md` 文件。</li><li>输出必须是格式良好的 Markdown。</li></ul>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>能力扩展</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Gemini-CLI 支持命令、MCP、工具、子智能体、插件、记忆管理扩展</li><li>Claude Code 支持命令、MCP、Hooks、Skills、子智能体、插件、记忆与 SDK</li><li>Claude Code 的 Skills 懒加载 SKILL.md，减少上下文开销</li><li>Claude Code 用 Code Execution with MCP 解决工具广播与中间数据传递问题</li></ul><div class="pit"><ul><li>Gemini-CLI 暂不支持用户自定义子智能体</li></ul></div></div>
+<h3 class="sub">5.1 Gemini-CLI 的可扩展性设计</h3>
+<p>从上述 Gemini-CLI 的代码分析，可以看到 Gemini-CLI 提供了强大的可扩展性设计。</p>
+<table><thead><tr><th>扩展能力</th><th>说明</th></tr></thead><tbody><tr><td>命令</td><td>通过在特定文件夹创建 TOML 文件，创建自定义命令： 用户级自定义命令：在 ~/.gemini/commands/ 目录下创建  *.toml 文件。 项目级自定义命令：在 .gemini/commands/ ）下创建  *.toml 文件。</td></tr><tr><td>MCP</td><td>通过配置文件添加 MCP Serrver。 即在 ~/.gemini/settings.json配置 MCP 服务，通过三方的 MCP Server 提供扩展的 prompts 和 tools。其中 prompt 提示词作为子命令，工具则传递给大模型使用。</td></tr><tr><td>工具</td><td>小众，可忽略。 可以通过~/.gemini/settings.json配置 tools.discoveryCommand，该命令用于提供用户自定义的工具列表。</td></tr><tr><td>子智能体</td><td>暂不支持自定义子智能体。 提供子智能体扩展框架，目前仅有一个可用的实验阶段的子智能体，不提供用户自定义子智能体扩展的机制，未来应会支持。短期可以参考 Codebase Investigator 子智能体硬编码实现。</td></tr><tr><td>插件扩展</td><td>支持通过安装扩展（extension）提供附加的命令、MCP。 提供官方扩展市场[8]。</td></tr><tr><td>记忆管理</td><td>工程目录下的 GEMINI.md保存工程长期记忆，可以用/init命令生成。支持通过配置文件定义多个上下文文件，例如 AGENTS.md。 { &quot;context&quot;: { &quot;fileName&quot;: [&quot;AGENTS.md&quot;, &quot;CONTEXT.md&quot;, &quot;GEMINI.md&quot;] } }</td></tr></tbody></table>
+<h3 class="sub">5.2 Claude Code 的可扩展性设计</h3>
+<p>Claude Code 无论模型还是命令行工具都是 AI coding 领域的 SOTA，代码不开源，仅从使用角度介绍 Claude Code 的可扩展设计。</p>
+<table><thead><tr><th>扩展能力</th><th>说明</th></tr></thead><tbody><tr><td>命令</td><td>通过在特定文件夹创建 Markdown 文件，创建自定义命令： 用户级自定义命令：在~/.claude/commands/目录下创建 *.md文件。 项目级自定义命令：在.claude/commands/）下创建 *.md文件。 参见文档[9]</td></tr><tr><td>MCP</td><td>使用 claude scp 命令为 Claude 添加MCP，支持不同协议、不同的 scope： claude mcp add --transport http sentry https://mcp.sentry.dev/mcp claude mcp add --transport sse --scope project atlassian https://mcp.atlassian.com/v1/sse claude mcp add --transport stdio --scope user clickup --env CLICKUP_API_KEY=YOUR_KEY --env CLICKUP_TEAM_ID=YOUR_ID -- npx -y @hauptsache.net/clickup-mcp 当配置了越来越多的 MCP Server，会导致大模型上下文爆炸，还有调用多个 MCP 工具时，中间数据向大模型传递也不经济。Claude Code 的博客介绍了一个新的方案：使用代码执行MCP，解决 MCP 以上两个问题。 参见文档[10][11]</td></tr><tr><td>Hooks</td><td>类似 Git 的 Hooks，Claude 通过 hook 脚本机制确保在 Cluade 执行步骤中执行特定脚本，实现如通知、格式化文件等能力。支持的 Hook 脚本： PreToolUse：在工具调用前运行（可阻止调用） PostToolUse：在工具调用完成后运行 UserPromptSubmit：在用户提交提示后、Claude 处理之前运行 Notification：在 Claude Code 发送通知时运行 Stop：在 Claude Code 完成响应时运行 SubagentStop：在子智能体任务完成时运行 PreCompact：在 Claude Code 即将执行压缩操作前运行 SessionStart：在 Claude Code 启动新会话或恢复已有会话时运行 SessionEnd：在 Claude Code 会话结束时运行 参见文档[12] 示例项目[13]</td></tr><tr><td>Skills</td><td>在用户主目录（~/.claude/skills/）或项目目录（.claude/skills/）下创建 Skills。和 MCP 等工具的区别在于懒加载。 初始只加载  SKILL.md 的YAML头中的名称和描述（小于1k）。 如果模型确定某 skill 和任务相关，再二次加载完整的SKILL.md到上下文。 也可以将 SKILL.md文档拆解为多个文档，在文档中引用其他文档。Claude 会三次加载这些文件。 最终调用 Skill 中的命令脚本，执行命令后将执行结果发给大模型。 参见文档[14][15] Anthropics 官方 Skills 扩展[16]</td></tr><tr><td>子智能体</td><td>可以使用 /agents命令创建新的子智能体。 子智能体通过 Markdown 文件定义，可以保存在全局目录（~/.claude/agents/）或者项目级目录（.claude/agents/）。 参见文档[17]</td></tr><tr><td>插件扩展</td><td>提供插件（plugins）扩展机制，使用 /plugin命令安装插件，插件支持对命令、Agent、Hook、MCP扩展。 没有官方插件市场，可以自建或将某个 GitHub 仓库添加为插件市场。 参见文档[18]</td></tr><tr><td>记忆管理</td><td>工程目录下的 CLAUDE.md保存工程长期记忆，可以用/init命令生成。</td></tr><tr><td>Claude Agent SDK</td><td>提供 TypeScript 和 Python 语言的 SDK，提供更加强大的定制整合能力。 参见文档[19]</td></tr></tbody></table>
+<h3 class="sub">5.3 MCP 服务扩展</h3>
+<p>GitHub 上的高星 MCP 服务列表[20]</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>规约驱动开发</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>OpenSpec 通过 openspec/AGENTS.md 与 project.md 接入 AI coding 工具</li><li>三阶段：proposal 创建提案、apply 实施、archive 归档</li><li>规范增量用 ADDED/MODIFIED/REMOVED/RENAMED Requirements，每个需求至少一个 Scenario</li><li>规范是真相、变更是提案，MODIFIED 需粘贴完整需求，否则归档丢失细节</li></ul><div class="pit"><ul><li>用 MODIFIED 添加新关注点却不包含先前文本，归档时会丢失细节</li></ul></div></div>
+<p>（spec-driven development）</p>
+<p>开源软件OpenSpec[21]提供了完整的 spec-driven 开发模式，支持对各种 AI coding 工具的整合。整合方法如下：</p>
+<ul><li>创建两个公共文件：</li><li>在项目中创建  openspec/AGENTS.md 文件。该文件是 OpenSpec 使用的指南文档。</li><li>在项目中创建  openspec/project.md 文件。该文件内容中包含占位字符，用户需要按照模板完善文件内容，定义项目代码格式规范、架构、测试框架等。</li><li>更新工具的核心记忆文件（例如： CLAUDE.md ），在文件头新增 spec-driven 开发模式描述信息。</li><li>针对用户选择支持的 AI coding 工具，创建三个子命令（如果支持命令扩展的话）。以 Claude Code 为例：</li><li>文件 .claude/commands/openspec/proposal.md ：分析用户需求，生成 proposal 、tasks 等 Markdown 文件。</li><li>文件 .claude/commands/openspec/apply.md ：遵循前一步生成的 spec，按照 tasks 描述步骤开发。</li><li>文件 .claude/commands/openspec/archive.md ：将开发完毕的 spec 存档到 archive 目录，避免影响后续开发。</li></ul>
+<p>开发过程，运行次序如下：</p>
+<p>1. 先运行指令创建 spec： openspec:proposal  详细述求说明... ...</p>
+<h3 class="sub">2. 运行指令，开始代码生成：openspec:apply</h3>
+<p>3. 最后运行指令将 spec 文件归档：openspec:archive</p>
+<p>AI CODING 工具记忆文件（如  CLAUDE.md）头部插入的提示词</p>
+<ul><li>原始英文提示词， 参见 [22]</li><li>中文翻译</li><li>&lt;!-- OPENSPEC:START --&gt;</li><li># OpenSpec 指令</li><li>这些指令适用于在此项目中工作的AI助手。</li><li>当请求满足以下条件时，请始终打开 \`@/openspec/AGENTS.md\`：</li><li>- 提及规划或提案（如 proposal、spec、change、plan 等词汇）</li><li>- 引入新功能、破坏性变更、架构调整或重要的性能/安全工作</li><li>- 内容听起来含糊不清，您需要在编码前获取权威规范</li><li>使用 \`@/openspec/AGENTS.md\` 来学习：</li><li>- 如何创建和应用变更提案</li><li>- 规范格式和约定</li><li>- 项目结构和指南</li><li>请保留此管理块，以便 &#x27;openspec update&#x27; 可以刷新指令。</li><li>&lt;!-- OPENSPEC:END --&gt;</li></ul>
+<p>文件openspec/AGENTS.md中的提示词</p>
+<ul><li>原始英文提示词， 参见 [23]</li><li>中文翻译</li><li># OpenSpec 指令</li><li>使用 OpenSpec 进行规范驱动开发的 AI 编码助手指令。</li><li>## TL;DR 快速检查清单</li><li>- 搜索现有工作：\`openspec spec list --long\`，\`openspec list\`（仅全文搜索使用 \`rg\`）</li><li>- 决定范围：新增能力 vs 修改现有能力</li><li>- 选择唯一的 \`change-id\`：kebab-case，动词开头（\`add-\`，\`update-\`，\`remove-\`，\`refactor-\`）</li><li>- 脚手架：\`proposal.md\`，\`tasks.md\`，\`design.md\`（仅需要时），以及每个受影响能力的增量规范</li><li>- 编写增量：使用 \`## ADDED|MODIFIED|REMOVED|RENAMED Requirements\`；每个需求至少包含一个 \`#### Scenario:\`</li><li>- 验证：\`openspec validate [change-id] --strict\` 并修复问题</li><li>- 请求批准：在提案获批前不要开始实施</li><li>## 三阶段工作流</li><li>### 第1阶段：创建变更</li><li>当需要以下操作时创建提案：</li><li>- 添加功能或特性</li><li>- 进行破坏性变更（API、schema）</li><li>- 更改架构或模式</li><li>- 优化性能（更改行为）</li><li>- 更新安全模式</li><li>触发词（示例）：</li><li>- &quot;Help me create a change proposal&quot;</li><li>- &quot;Help me plan a change&quot;</li><li>- &quot;Help me create a proposal&quot;</li><li>- &quot;I want to create a spec proposal&quot;</li><li>- &quot;I want to create a spec&quot;</li><li>宽松匹配指导：</li><li>- 包含其中一个：\`proposal\`，\`change\`，\`spec\`</li><li>- 以及其中一个：\`create\`，\`plan\`，\`make\`，\`start\`，\`help\`</li><li>跳过提案的情况：</li><li>- Bug修复（恢复预期行为）</li><li>- 拼写错误、格式、注释</li><li>- 依赖更新（非破坏性）</li><li>- 配置更改</li><li>- 现有行为的测试</li><li>**工作流程**</li><li>1. 查看 \`openspec/project.md\`，\`openspec list\` 和 \`openspec list --specs\` 以了解当前上下文。</li><li>2. 选择一个唯一的动词开头的 \`change-id\` 并创建脚手架 \`proposal.md\`，\`tasks.md\`，可选的 \`design.md\`，以及 \`openspec/changes/&lt;id&gt;/\` 目录下的增量规范。</li><li>3. 使用 \`## ADDED|MODIFIED|REMOVED Requirements\` 草拟规范增量，每个需求至少有一个 \`#### Scenario:\`。</li><li>4. 运行 \`openspec validate &lt;id&gt; --strict\` 并在分享提案前解决任何问题。</li><li>### 第2阶段：实施变更</li><li>将这些步骤作为待办事项跟踪并逐一完成。</li><li>1. **阅读 proposal.md** - 了解要构建的内容</li><li>2. **阅读 design.md**（如果存在） - 查看技术决策</li><li>3. **阅读 tasks.md** - 获取实施清单</li><li>4. **按顺序实施任务** - 按顺序完成</li><li>5. **确认完成** - 在更新状态前确保 \`tasks.md\` 中的每一项都已完成</li><li>6. **更新清单** - 所有工作完成后，将每个任务设置为 \`- [x]\` 以便列表反映实际情况</li><li>7. **批准关卡** - 提案审查和批准前不要开始实施</li><li>### 第3阶段：归档变更</li><li>部署后，创建单独的 PR 来：</li><li>- 移动 \`changes/[name]/\` → \`changes/archive/YYYY-MM-DD-[name]/\`</li><li>- 如果能力发生变化则更新 \`specs/\`</li><li>- 对于仅工具变更使用 \`openspec archive &lt;change-id&gt; --skip-specs --yes\`（始终显式传递变更ID）</li><li>- 运行 \`openspec validate --strict\` 确认归档的变更通过检查</li><li>## 任何任务之前</li><li>**上下文检查清单：**</li><li>- [ ] 阅读 \`specs/[capability]/spec.md\` 中的相关规范</li><li>- [ ] 在 \`changes/\` 中检查是否有冲突的待处理变更</li><li>- [ ] 阅读 \`openspec/project.md\` 了解约定</li><li>- [ ] 运行 \`openspec list\` 查看活动变更</li><li>- [ ] 运行 \`openspec list --specs\` 查看现有能力</li><li>**创建规范之前：**</li><li>- 始终检查能力是否已存在</li><li>- 优先修改现有规范而非创建副本</li><li>- 使用 \`openspec show [spec]\` 查看当前状态</li><li>- 如果请求模糊，在创建脚手架前询问1-2个澄清问题</li><li>### 搜索指导</li><li>- 枚举规范：\`openspec spec list --long\`（或 \`--json\` 用于脚本）</li><li>- 枚举变更：\`openspec list\`（或 \`openspec change list --json\` - 已弃用但可用）</li><li>- 显示详情：</li><li>- 规范：\`openspec show &lt;spec-id&gt; --type spec\`（使用 \`--json\` 进行过滤）</li><li>- 变更：\`openspec show &lt;change-id&gt; --json --deltas-only\`</li><li>- 全文搜索（使用 ripgrep）：\`rg -n &quot;Requirement:|Scenario:&quot; openspec/specs\`</li><li>## 快速开始</li><li>### CLI 命令</li><li>\`\`\`bash</li><li># 基本命令</li><li>openspec list                  # 列出活动变更</li><li>openspec list --specs          # 列出规范</li><li>openspec show [item]           # 显示变更或规范</li><li>openspec validate [item]       # 验证变更或规范</li><li>openspec archive &lt;change-id&gt; [--yes|-y]   # 部署后归档（添加 --yes 用于非交互式运行）</li><li># 项目管理</li><li>openspec init [path]           # 初始化 OpenSpec</li><li>openspec update [path]         # 更新指令文件</li><li># 交互模式</li><li>openspec show                  # 提示选择</li><li>openspec validate              # 批量验证模式</li><li># 调试</li><li>openspec show [change] --json --deltas-only</li><li>openspec validate [change] --strict</li><li>\`\`\`</li><li>### 命令标志</li><li>- \`--json\` - 机器可读输出</li><li>- \`--type change|spec\` - 区分项目</li><li>- \`--strict\` - 全面验证</li><li>- \`--no-interactive\` - 禁用提示</li><li>- \`--skip-specs\` - 归档时跳过规范更新</li><li>- \`--yes\`/\`-y\` - 跳过确认提示（非交互式归档）</li><li>## 目录结构</li><li>\`\`\`</li><li>openspec/</li><li>├── project.md              # 项目约定</li><li>├── specs/                  # 当前真相 - 实际构建的</li><li>│   └── [capability]/       # 单一专注能力</li><li>│       ├── spec.md         # 需求和场景</li><li>│       └── design.md       # 技术模式</li><li>├── changes/                # 提案 - 应该改变的</li><li>│   ├── [change-name]/</li><li>│   │   ├── proposal.md     # 为什么、改变什么、影响</li><li>│   │   ├── tasks.md        # 实施清单</li><li>│   │   ├── design.md       # 技术决策（可选；见标准）</li><li>│   │   └── specs/          # 增量变更</li><li>│   │       └── [capability]/</li><li>│   │           └── spec.md # ADDED/MODIFIED/REMOVED</li><li>│   └── archive/            # 已完成的变更</li><li>\`\`\`</li><li>## 创建变更提案</li><li>### 决策树</li><li>\`\`\`</li><li>新请求？</li><li>├─ Bug修复恢复规范行为？ → 直接修复</li><li>├─ 拼写/格式/注释？ → 直接修复</li><li>├─ 新功能/能力？ → 创建提案</li><li>├─ 破坏性变更？ → 创建提案</li><li>├─ 架构变更？ → 创建提案</li><li>└─ 不清楚？ → 创建提案（更安全）</li><li>\`\`\`</li><li>### 提案结构</li><li>1. **创建目录：** \`changes/[change-id]/\`（kebab-case，动词开头，唯一）</li><li>2. **编写 proposal.md：**</li><li>\`\`\`markdown</li><li># Change: [变更简要描述]</li><li>## Why</li><li>[1-2句话说明问题/机会]</li><li>## What Changes</li><li>- [变更列表]</li><li>- [用 **BREAKING** 标记破坏性变更]</li><li>## Impact</li><li>- 受影响的规范：[列出能力]</li><li>- 受影响的代码：[关键文件/系统]</li><li>\`\`\`</li><li>3. **创建规范增量：** \`specs/[capability]/spec.md\`</li><li>\`\`\`markdown</li><li>## ADDED Requirements</li><li>### Requirement: New Feature</li><li>The system SHALL provide...</li><li>#### Scenario: Success case</li><li>- **WHEN** user performs action</li><li>- **THEN** expected result</li><li>## MODIFIED Requirements</li><li>### Requirement: Existing Feature</li><li>[完整的修改后需求]</li><li>## REMOVED Requirements</li><li>### Requirement: Old Feature</li><li>**Reason**: [为什么移除]</li><li>**Migration**: [如何处理]</li><li>\`\`\`</li><li>如果影响多个能力，在 \`changes/[change-id]/specs/&lt;capability&gt;/spec.md\` 下为每个能力创建多个增量文件。</li><li>4. **创建 tasks.md：**</li><li>\`\`\`markdown</li><li>## 1. Implementation</li><li>- [ ] 1.1 创建数据库schema</li><li>- [ ] 1.2 实施API端点</li><li>- [ ] 1.3 添加前端组件</li><li>- [ ] 1.4 编写测试</li><li>\`\`\`</li><li>5. **需要时创建 design.md：**</li><li>如果以下任一情况适用则创建 \`design.md\`，否则省略：</li><li>- 跨切变更（多个服务/模块）或新的架构模式</li><li>- 新的外部依赖或重大的数据模型变更</li><li>- 安全、性能或迁移复杂性</li><li>- 需要编码前技术决策的模糊性</li><li>最小的 \`design.md\` 骨架：</li><li>\`\`\`markdown</li><li>## Context</li><li>[背景、约束、利益相关者]</li><li>## Goals / Non-Goals</li><li>- Goals: [...]</li><li>- Non-Goals: [...]</li><li>## Decisions</li><li>- Decision: [什么和为什么]</li><li>- Alternatives considered: [选项 + 理由]</li><li>## Risks / Trade-offs</li><li>- [风险] → 缓解措施</li><li>## Migration Plan</li><li>[步骤、回滚]</li><li>## Open Questions</li><li>- [...]</li><li>\`\`\`</li><li>## 规范文件格式</li><li>### 关键：场景格式</li><li>**正确**（使用 #### 标题）：</li><li>\`\`\`markdown</li><li>#### Scenario: User login success</li><li>- **WHEN** valid credentials provided</li><li>- **THEN** return JWT token</li><li>\`\`\`</li><li>**错误**（不要使用项目符号或粗体）：</li><li>\`\`\`markdown</li><li>- **Scenario: User login**  ❌</li><li>**Scenario**: User login     ❌</li><li>### Scenario: User login      ❌</li><li>\`\`\`</li><li>每个需求必须至少有一个场景。</li><li>### 需求措辞</li><li>- 对规范性需求使用 SHALL/MUST（除非有意使用非规范性，否则避免 should/may）</li><li>### 增量操作</li><li>- \`## ADDED Requirements\` - 新能力</li><li>- \`## MODIFIED Requirements\` - 更改行为</li><li>- \`## REMOVED Requirements\` - 已弃用功能</li><li>- \`## RENAMED Requirements\` - 名称更改</li><li>标题与 \`trim(header)\` 匹配 - 忽略空白符。</li><li>#### 何时使用 ADDED vs MODIFIED</li><li>- ADDED: 引入可以作为独立需求存在的新能力或子能力。当变更正交时优先使用 ADDED（例如添加&quot;斜杠命令配置&quot;）而非更改现有需求的语义。</li><li>- MODIFIED: 更改现有需求的行为、范围或验收标准。始终粘贴完整的更新后需求内容（标题+所有场景）。归档器会用您提供的内容替换整个需求；部分增量将丢弃先前细节。</li><li>- RENAMED: 仅名称更改时使用。如果同时更改行为，使用 RENAMED（名称）加上 MODIFIED（内容）引用新名称。</li><li>常见陷阱：使用 MODIFIED 添加新关注点而不包含先前文本。这会在归档时导致细节丢失。如果您没有明确更改现有需求，请在 ADDED 下添加新需求。</li><li>正确编写 MODIFIED 需求：</li><li>1) 在 \`openspec/specs/&lt;capability&gt;/spec.md\` 中定位现有需求。</li><li>2) 复制整个需求块（从 \`### Requirement: ...\` 到其场景）。</li><li>3) 将其粘贴到 \`## MODIFIED Requirements\` 下并编辑以反映新行为。</li><li>4) 确保标题文本完全匹配（忽略空白符）并至少保留一个 \`#### Scenario:\`。</li><li>RENAMED 示例：</li><li>\`\`\`markdown</li><li>## RENAMED Requirements</li><li>- FROM: \`### Requirement: Login\`</li><li>- TO: \`### Requirement: User Authentication\`</li><li>\`\`\`</li><li>## 故障排除</li><li>### 常见错误</li><li>**&quot;Change must have at least one delta&quot;**</li><li>- 检查 \`changes/[name]/specs/\` 是否存在 .md 文件</li><li>- 验证文件是否有操作前缀（## ADDED Requirements）</li><li>**&quot;Requirement must have at least one scenario&quot;**</li><li>- 检查场景使用 \`#### Scenario:\` 格式（4个井号）</li><li>- 不要对场景标题使用项目符号或粗体</li><li>**静默场景解析失败**</li><li>- 精确格式要求：\`#### Scenario: Name\`</li><li>- 调试：\`openspec show [change] --json --deltas-only\`</li><li>### 验证提示</li><li>\`\`\`bash</li><li># 始终使用严格模式进行全面检查</li><li>openspec validate [change] --strict</li><li># 调试增量解析</li><li>openspec show [change] --json | jq &#x27;.deltas&#x27;</li><li># 检查特定需求</li><li>openspec show [spec] --json -r 1</li><li>\`\`\`</li><li>## 顺利路径脚本</li><li>\`\`\`bash</li><li># 1) 探索当前状态</li><li>openspec spec list --long</li><li>openspec list</li><li># 可选全文搜索：</li><li># rg -n &quot;Requirement:|Scenario:&quot; openspec/specs</li><li># rg -n &quot;^#|Requirement:&quot; openspec/changes</li><li># 2) 选择变更ID并创建脚手架</li><li>CHANGE=add-two-factor-auth</li><li>mkdir -p openspec/changes/$CHANGE/{specs/auth}</li><li>printf&quot;## Why\\n...\\n\\n## What Changes\\n- ...\\n\\n## Impact\\n- ...\\n&quot; &gt; openspec/changes/$CHANGE/proposal.md</li><li>printf&quot;## 1. Implementation\\n- [ ] 1.1 ...\\n&quot; &gt; openspec/changes/$CHANGE/tasks.md</li><li># 3) 添加增量（示例）</li><li>cat &gt; openspec/changes/$CHANGE/specs/auth/spec.md &lt;&lt; &#x27;EOF&#x27;</li><li>## ADDED Requirements</li><li>### Requirement: Two-Factor Authentication</li><li>Users MUST provide a second factor during login.</li><li>#### Scenario: OTP required</li><li>- **WHEN** valid credentials are provided</li><li>- **THEN** an OTP challenge is required</li><li>EOF</li><li># 4) 验证</li><li>openspec validate $CHANGE --strict</li><li>\`\`\`</li><li>## 多能力示例</li><li>\`\`\`</li><li>openspec/changes/add-2fa-notify/</li><li>├── proposal.md</li><li>├── tasks.md</li><li>└── specs/</li><li>├── auth/</li><li>│   └── spec.md   # ADDED: Two-Factor Authentication</li><li>└── notifications/</li><li>└── spec.md   # ADDED: OTP email notification</li><li>\`\`\`</li><li>auth/spec.md</li><li>\`\`\`markdown</li><li>## ADDED Requirements</li><li>### Requirement: Two-Factor Authentication</li><li>\`\`\`</li><li>notifications/spec.md</li><li>\`\`\`markdown</li><li>## ADDED Requirements</li><li>### Requirement: OTP Email Notification</li><li>\`\`\`</li><li>## 最佳实践</li><li>### 简单优先</li><li>- 默认 &lt;100 行新增代码</li><li>- 单文件实施直到证明不足</li><li>- 避免没有明确理由的框架</li><li>- 选择简单、经过验证的模式</li><li>### 复杂性触发器</li><li>只在以下情况下增加复杂性：</li><li>- 性能数据表明当前解决方案太慢</li><li>- 具体的规模要求（&gt;1000用户，&gt;100MB数据）</li><li>- 需要抽象的多个已验证用例</li><li>### 清晰引用</li><li>- 使用 \`file.ts:42\` 格式表示代码位置</li><li>- 引用规范为 \`specs/auth/spec.md\`</li><li>- 链接相关的变更和PR</li><li>### 能力命名</li><li>- 使用动词-名词：\`user-auth\`，\`payment-capture\`</li><li>- 每个能力单一用途</li><li>- 10分钟理解规则</li><li>- 如果描述需要&quot;AND&quot;则拆分</li><li>### 变更ID命名</li><li>- 使用 kebab-case，简短且描述性：\`add-two-factor-auth\`</li><li>- 优先使用动词开头前缀：\`add-\`，\`update-\`，\`remove-\`，\`refactor-\`</li><li>- 确保唯一性；如果已被使用，追加 \`-2\`，\`-3\` 等</li><li>## 工具选择指南</li><li>| 任务 | 工具 | 原因 |</li><li>|------|------|-----|</li><li>| 按模式查找文件 | Glob | 快速模式匹配 |</li><li>| 搜索代码内容 | Grep | 优化的正则搜索 |</li><li>| 读取特定文件 | Read | 直接文件访问 |</li><li>| 探索未知范围 | Task | 多步调查 |</li><li>## 错误恢复</li><li>### 变更冲突</li><li>1. 运行 \`openspec list\` 查看活动变更</li><li>2. 检查规范重叠</li><li>3. 与变更所有者协调</li><li>4. 考虑合并提案</li><li>### 验证失败</li><li>1. 使用 \`--strict\` 标志运行</li><li>2. 检查JSON输出详情</li><li>3. 验证规范文件格式</li><li>4. 确保场景格式正确</li><li>### 缺失上下文</li><li>1. 首先阅读 project.md</li><li>2. 检查相关规范</li><li>3. 查看近期归档</li><li>4. 要求澄清</li><li>## 快速参考</li><li>### 阶段指示器</li><li>- \`changes/\` - 已提议，尚未构建</li><li>- \`specs/\` - 已构建和部署</li><li>- \`archive/\` - 已完成的变更</li><li>### 文件用途</li><li>- \`proposal.md\` - 为什么和什么</li><li>- \`tasks.md\` - 实施步骤</li><li>- \`design.md\` - 技术决策</li><li>- \`spec.md\` - 需求和行为</li><li>### CLI 基础</li><li>\`\`\`bash</li><li>openspec list              # 进行中的工作？</li><li>openspec show [item]       # 查看详情</li><li>openspec validate --strict # 是否正确？</li><li>openspec archive &lt;change-id&gt; [--yes|-y]  # 标记完成（添加 --yes 用于自动化）</li><li>\`\`\`</li><li>记住：规范是真相。变更是提案。保持同步。</li></ul>
+<p>文件openspec/projects.md中的提示词</p>
+<ul><li>原始英文提示词， 参见 [22]</li><li>中文翻译</li><li>## Purpose</li><li>${context.description || &#x27;[Describe your project\&#x27;s purpose and goals]&#x27;}</li><li>## Tech Stack</li><li>${context.techStack?.length</li><li>? context.techStack.map(tech =&gt; `- ${tech}`).join(&#x27;\n&#x27;)</li><li>: &#x27;- [List your primary technologies]\n- [e.g., TypeScript, React, Node.js]&#x27;}</li><li>## Project Conventions</li><li>### Code Style</li><li>[Describe your code style preferences,</li><li>formatting rules, and naming conventions]</li><li>### Architecture Patterns</li><li>[Document your architectural decisions and patterns]</li><li>### Testing Strategy</li><li>[Explain your testing approach and requirements]</li><li>### Git Workflow</li><li>[Describe your branching strategy and commit conventions]</li><li>## Domain Context</li><li>[Add domain-specific knowledge that AI assistants need to understand]</li><li>## Important Constraints</li><li>[List any technical, business, or regulatory constraints]</li><li>## External Dependencies</li><li>[Document key external services, APIs, or systems]</li></ul>
+<p>新增命令openspec:proposal的提示词由以下几个部分组合</p>
+<ul><li>原始英文提示词， 参见 [23]</li><li>中文翻译</li><li>baseGuardrails</li><li>**护栏**</li><li>- 优先采用直接、简洁的实现方式，</li><li>仅在被要求或明显需要时才增加复杂性。</li><li>- 将变更范围严格限制在所请求的结果内。</li><li>- 如需额外的 OpenSpec 规范或说明，</li><li>请参考 \`openspec/AGENTS.md\`</li><li>（位于 \`openspec/\` 目录下——</li><li>如果未看到该文件，请运行</li><li>\`ls openspec\` 或 \`openspec update\` 命令）。</li><li>proposalGuardrails</li><li>识别任何模糊或不明确的细节，并在编辑文件前提出必要的后续问题。</li><li>proposalSteps</li><li>**步骤**</li><li>1. 审查 \`openspec/project.md\`，</li><li>运行 \`openspec list\` 和 \`openspec list --specs\`，</li><li>并检查相关代码或文档（例如通过 \`rg\`/\`ls\`）</li><li>以确保提案基于当前行为；</li><li>注意任何需要澄清的差距。</li><li>2. 选择一个独特的以动词开头的 \`change-id\`，</li><li>并在 \`openspec/changes/&lt;id&gt;/\` 下搭建</li><li>\`proposal.md\`、\`tasks.md\` 和 \`design.md\`（如需要）的框架。</li><li>3. 将变更映射为具体的容量或需求，</li><li>将多范围的工作分解为具有明确关系和顺序的</li><li>不同规范增量。</li><li>4. 当解决方案跨越多个系统、引入新模式</li><li>或在提交规范前需要讨论权衡时，</li><li>在 \`design.md\` 中记录架构推理。</li><li>5. 在 \`changes/&lt;id&gt;/specs/&lt;capability&gt;/spec.md\` 中起草规范增量</li><li>（每个容量一个文件夹），</li><li>使用 \`## ADDED|MODIFIED|REMOVED Requirements\` 格式，</li><li>每项需求至少包含一个 \`#### Scenario:\`，</li><li>并在适当时交叉引用相关容量。</li><li>6. 将 \`tasks.md\` 起草为有序列表，</li><li>列出小的、可验证的工作项目，</li><li>这些项目能提供用户可见的进展，</li><li>包括验证（测试、工具），</li><li>并突出显示依赖关系或可并行的工作。</li><li>7. 使用 \`openspec validate &lt;id&gt; --strict\` 进行验证，</li><li>并在分享提案前解决每个问题。</li><li>proposalReferences</li><li>**参考**</li><li>- 验证失败时，使用</li><li>\`openspec show &lt;id&gt; --json --deltas-only\`</li><li>或 \`openspec show &lt;spec&gt; --type spec\`</li><li>来检查详细信息。</li><li>- 编写新需求前，先用</li><li>\`rg -n &quot;Requirement:|Scenario:&quot; openspec/specs\`</li><li>搜索已有的需求。</li><li>- 使用 \`rg &lt;keyword&gt;\`、\`ls\`</li><li>或直接读取文件来浏览代码库，</li><li>确保提案与当前实现保持一致。</li></ul>
+<p>新增命令openspec:apply的提示词由以下几个部分组合</p>
+<ul><li>原始英文提示词， 参见 [23]</li><li>中文翻译</li><li>baseGuardrails</li><li>**护栏**</li><li>- 优先采用直接、简洁的实现方式，</li><li>仅在被要求或明显需要时才增加复杂性。</li><li>- 将变更范围严格限制在所请求的结果内。</li><li>- 如需额外的 OpenSpec 规范或说明，</li><li>请参考 \`openspec/AGENTS.md\`</li><li>（位于 \`openspec/\` 目录下——</li><li>如果未看到该文件，请运行</li><li>\`ls openspec\` 或 \`openspec update\` 命令）。</li><li>applySteps</li></ul>
+<p>没有提示在每个步骤创建Git提交，差评。</p>
+<ul><li>**步骤**</li><li>将这些步骤标记为待办事项（TODOs），然后逐个完成。</li><li>1. 阅读 \`changes/&lt;id&gt;/proposal.md\`、</li><li>\`design.md\`（如果存在）和 \`tasks.md\`，</li><li>以确认范围和验收标准。</li><li>2. 按顺序执行任务，</li><li>保持修改最小化且专注于所请求的变更。</li><li>3. 在更新状态前确认已完成——</li><li>确保 \`tasks.md\` 中的每项内容都已完成。</li><li>4. 所有工作完成后更新清单，</li><li>使每项任务都标记为 \`- [x]\` 并反映实际情况。</li><li>5. 当需要额外上下文时，</li><li>参考 \`openspec list\` 或 \`openspec show &lt;item&gt;\`。</li><li>applyReferences</li><li>**参考**</li><li>- 如果在实现过程中需要提案的更多上下文信息，</li><li>请使用 \`openspec show &lt;id&gt; --json --deltas-only\`。</li></ul>
+<p>新增命令openspec:archive的提示词由以下几个部分组合</p>
+<ul><li>原始英文提示词， 参见 [23]</li><li>中文翻译</li><li>baseGuardrails</li><li>**护栏**</li><li>- 优先采用直接、简洁的实现方式，</li><li>仅在被要求或明显需要时才增加复杂性。</li><li>- 将变更范围严格限制在所请求的结果内。</li><li>- 如需额外的 OpenSpec 规范或说明，</li><li>请参考 \`openspec/AGENTS.md\`</li><li>（位于 \`openspec/\` 目录下——</li><li>如果未看到该文件，请运行</li><li>\`ls openspec\` 或 \`openspec update\` 命令）。</li><li>archiveSteps</li><li>**步骤**</li><li>1. 确定要归档的变更 ID：</li><li>- 如果此提示中已包含特定的变更 ID</li><li>（例如在由斜杠命令参数填充的 \`&lt;ChangeId&gt;\` 块内），</li><li>请在去除空白字符后使用该值。</li><li>- 如果对话中松散地引用了变更</li><li>（例如通过标题或摘要），</li><li>请运行 \`openspec list\` 以显示可能的 ID，</li><li>分享相关候选结果，并确认用户想要归档的是哪一个。</li><li>- 否则，请回顾对话内容，运行 \`openspec list\`，</li><li>并询问用户要归档哪个变更；</li><li>在继续操作前等待确认的变更 ID。</li><li>- 如果仍无法确定单一的变更 ID，</li><li>请停止并告知用户目前无法进行归档。</li><li>2. 通过运行 \`openspec list\`</li><li>（或 \`openspec show &lt;id&gt;\`）验证变更 ID，</li><li>如果变更不存在、已归档或尚未准备好归档，</li><li>则停止操作。</li><li>3. 运行 \`openspec archive &lt;id&gt; --yes\`，</li><li>让 CLI 在无提示的情况下移动变更</li><li>并应用规范更新</li><li>（仅对纯工具性工作使用 \`--skip-specs\` 参数）。</li><li>4. 检查命令输出，</li><li>以确认目标规范已更新</li><li>且变更已移至 \`changes/archive/\`。</li><li>5. 使用 \`openspec validate --strict\` 进行验证，</li><li>如果发现任何异常，</li><li>请使用 \`openspec show &lt;id&gt;\` 进行检查。</li><li>archiveReferences</li><li>**参考**</li><li>- 使用 \`openspec list\` 命令在归档前确认变更 ID。</li><li>- 使用 \`openspec list --specs\` 检查刷新后的规范，</li><li>并在交付前解决任何验证问题。</li></ul>
+<p>AI coding 时代，规约、提示词可能超越代码本身成为项目的核心资产，保存在仓库，胜过流失在和AI的对话中，但是放在仓库中是最佳选择么？</p>
+<p>参考链接：</p>
+<p>[1]https://github.com/QwenLM/qwen-code/tree/main/packages/core/src/core/openaiContentGenerator</p>
+<p>[2]https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md</p>
+<p>[3]https://www.npmjs.com/package/mcp-server-commands</p>
+<p>[4]https://geminicli.com/extensions/</p>
+<p>[5]https://docs.claude.com/en/docs/agent-sdk/overview</p>
+<p>[6]https://github.com/google-gemini/gemini-cli/blob/main/packages/core/src/core/prompts.ts</p>
+<p>[7]https://github.com/google-gemini/gemini-cli/blob/main/packages/cli/src/ui/commands/initCommand.ts</p>
+<p>[8]https://geminicli.com/extensions/</p>
+<p>[9]https://code.claude.com/docs/en/slash-commands</p>
+<p>[10]https://code.claude.com/docs/en/mcp</p>
+<p>[11]https://www.anthropic.com/engineering/code-execution-with-mcp</p>
+<p>[12]https://code.claude.com/docs/en/hooks-guide</p>
+<p>[13]https://github.com/decider/claude-hooks</p>
+<p>[14]https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview</p>
+<p>[15]https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</p>
+<p>[16]https://github.com/anthropics/skills</p>
+<p>[17]https://code.claude.com/docs/en/sub-agents</p>
+<p>[18]https://code.claude.com/docs/en/plugins</p>
+<p>[19]https://docs.claude.com/en/docs/agent-sdk/overview</p>
+<p>[20]https://github.com/punkpeye/awesome-mcp-servers</p>
+<p>[21]https://github.com/Fission-AI/OpenSpec/</p>
+<p>[22]https://github.com/Fission-AI/OpenSpec/blob/main/src/core/templates/agents-root-stub.ts</p>
+<p>[23]https://github.com/Fission-AI/OpenSpec/blob/main/src/core/templates/slash-command-templates.ts</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>MCP 工具过多引发 token 爆炸</h4><p>一个 MCP server 可广播上百工具，过多 MCP server 导致上下文爆炸，用不到的工具也大量消耗 token。</p><a class="src-link" href="#sec-02">原文 → 工具注册与调用</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>内置命令 vs MCP/扩展命令</h4><p>内置命令无标识，MCP 提示词命令带 [MCP] 标识，扩展命令带 [&lt;extension&gt;] 标识，便于区分来源。</p><a class="src-link" href="#sec-01">原文 → 提示词预处理</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>TOML 自定义命令</h4><p>在 ~/.gemini/commands/*.toml 定义 prompt 与 description，文件名即扩展命令名。</p><a class="src-link" href="#sec-01">原文 → 提示词预处理</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>路由靠提示工程而非硬编码</h4><p>系统提示指导模型自主判断：复杂任务用 CodebaseInvestigatorAgent，简单搜索直接用工具。</p><a class="src-link" href="#sec-03">原文 → 架构设计</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>子智能体终止条件</h4><p>max_turns 15 轮、max_time_minutes 5 分钟，另有 AbortSignal 与 complete_task 协议约束。</p><a class="src-link" href="#sec-03">原文 → 架构设计</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>记忆压缩阈值</h4><p>超过模型最大 token 的 20% 触发压缩，保留最近 30% 历史，其余由模型总结。</p><a class="src-link" href="#sec-03">原文 → 架构设计</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>压缩后 token 反而增加</h4><p>若压缩后 token 数量反而增加，标记为 COMPRESSION_FAILED_INFLATED_TOKEN_COUNT。</p><a class="src-link" href="#sec-03">原文 → 架构设计</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Gemini-CLI vs Claude Code 扩展</h4><p>Gemini 子智能体暂不可自定义；Claude 支持 /agents 定义子智能体、Skills 懒加载与 Hooks。</p><a class="src-link" href="#sec-05">原文 → 能力扩展</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Skills 懒加载</h4><p>Claude Code Skills 初始只加载 SKILL.md 头部名称与描述（&lt;1k），相关时再二次加载全文。</p><a class="src-link" href="#sec-05">原文 → 能力扩展</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>MODIFIED 丢细节</h4><p>用 MODIFIED 添加新关注点却不粘贴完整原文，归档时会丢失先前细节，应改用 ADDED。</p><a class="src-link" href="#sec-06">原文 → 规约驱动开发</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>OpenSpec 三命令</h4><p>openspec:proposal 生成 spec；openspec:apply 按 tasks 开发；openspec:archive 归档到 archive 目录。</p><a class="src-link" href="#sec-06">原文 → 规约驱动开发</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>规范是真相</h4><p>specs/ 是当前真相，changes/ 是提案，archive/ 是已完成变更，需保持同步。</p><a class="src-link" href="#sec-06">原文 → 规约驱动开发</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>写提示词时用 @路径 提前注入文件、用自定义命令固化高频动作，能显著减少会话轮次。</li>
+          <li>慎挂 MCP：工具整体塞进上下文，越多越费 token，优先用 Skills 懒加载或编码调用 MCP。</li>
+          <li>把规约沉淀为 OpenSpec/GEMINI.md 类仓库文件，用 proposal→apply→archive 管住 AI 编码全流程。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247556801&amp;idx=1&amp;sn=05c6adb69298f1bedfc53d047dd1ff67" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247556801&amp;idx=1&amp;sn=05c6adb69298f1bedfc53d047dd1ff67</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

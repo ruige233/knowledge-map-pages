@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">DeepSeek V4+Claude Code一手实战！夯爆了还是拉完了？</h1>
+  <p class="lede">DeepSeek V4 Pro/Flash 接 Claude Code 三场实战与定价实测</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 14 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>接入 DeepSeek V4</a>
+          <a href="#sec-02"><span class="n">02</span>实战一：升级模型预设</a>
+          <a href="#sec-03"><span class="n">03</span>实战二：诊断迁移并集成 Flyway</a>
+          <a href="#sec-04"><span class="n">04</span>实战三：面试平台接 Flash</a>
+          <a href="#sec-05"><span class="n">05</span>V4 参数与定价</a>
+          <a href="#sec-06"><span class="n">06</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 接入 DeepSeek V4</a>
+          <a href="#sec-02">02 实战一：升级模型预设</a>
+          <a href="#sec-03">03 实战二：诊断迁移并集成 Flyway</a>
+          <a href="#sec-04">04 实战三：面试平台接 Flash</a>
+          <a href="#sec-05">05 V4 参数与定价</a>
+          <a href="#sec-06">06 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>就在昨天，DeepSeek V4 Preview 发布，同步开源。</p>
+<p>从技术报告里的 benchmark 数据到社区的实测反馈，到处都在讨论，刷屏了已经。</p>
+<p>开源模型在对话和写作上已经做得相当成熟，各家你追我赶，迭代速度肉眼可见。但 Agent Coding 是另一回事。</p>
+<p>让模型自主分析项目结构、理解多文件依赖、给出能直接落地的工程方案——这种活没有捷径，全靠硬实力。</p>
+<p>所以这次 V4 发布，Guide 第一反应就是直接接入 Claude Code 上手干活。</p>
+<p>我其实知道大家也不愿意看各种无聊的参数和架构解读，这玩意交给 AI 一个小时能给你产出十几篇。</p>
+<p>这篇文章接近 7000 字，建议收藏，通过本文你将搞懂：</p>
+<ul><li>两个真实开发任务的实战记录 ：V4 Pro 干起活来到底怎么样</li><li>通过 API 方式对接 DeepSeek ：V4 Flash 使用效果到底怎么样</li><li>DeepSeek V4 Pro 和 Flash 的核心参数与定价 ：值不值得用</li></ul>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>接入 DeepSeek V4</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Claude 官方模型太贵且易封号，DeepSeek 的 Anthropic 兼容接口可直连。</li><li>配置文件法：~/.claude/settings.json 写 BASE_URL、MODEL、AUTH_TOKEN 等 env。</li><li>CC Switch 可多 Provider 一键切换，填 Base URL 与 API Key 即可。</li><li>启动后 /status 确认 model 为 DeepSeek-V4-Pro 即接入成功。</li></ul></div>
+<p>Claude Code 强在它的工具链和执行力，但 Claude 官方模型太贵，加上现在 Claude 太容易封号。</p>
+<p>DeepSeek V4 提供了一个 Anthropic 兼容接口，这意味着 Claude Code 可以直接对接 DeepSeek，不需要任何第三方适配层。</p>
+<p>方式一：配置文件法（推荐）</p>
+<p>如果你本机没有安装 Claude Code 的话，先运行下面这行命令安装（Node.js 18+）：</p>
+<ul><li>npm install -g @anthropic-ai/claude-code</li></ul>
+<p>编辑或新增 Claude Code 配置文件 ~/.claude/settings.json，添加 env 字段，把后端地址、模型和 API Key 都写进去：</p>
+<ul><li>&quot;env&quot;: {</li><li>&quot;ANTHROPIC_AUTH_TOKEN&quot;: &quot;your_deepseek_api_key&quot;,</li><li>&quot;ANTHROPIC_BASE_URL&quot;: &quot;https://api.deepseek.com/anthropic&quot;,</li><li>&quot;ANTHROPIC_MODEL&quot;: &quot;DeepSeek-V4-Pro&quot;,</li><li>&quot;API_TIMEOUT_MS&quot;: &quot;3000000&quot;,</li><li>&quot;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC&quot;: &quot;1&quot;</li></ul>
+<p>注意替换 your_deepseek_api_key 为你的 DeepSeek API Key，申请地址：https://platform.deepseek.com/api_keys 。</p>
+<p>如果你使用的是 DeepSeek-V4-Flash，把 ANTHROPIC_MODEL 改为 DeepSeek-V4-Flash 即可。</p>
+<p>配置完成后启动 Claude Code：</p>
+<ul><li>claude</li></ul>
+<p>首次启动需要选择信任当前文件夹。</p>
+<p>方式二：CC Switch（可视化切换）</p>
+<p>如果你想在 DeepSeek、Claude、MiniMax 等多个 Provider 之间灵活切换，推荐安装 CC Switch。</p>
+<p>这是一个专门管理 Claude Code 模型切换的小工具，支持一键横跳，还支持管理 Skills、MCP 和提示词。</p>
+<p>启动 CC Switch，点击右上角 &quot;+&quot; ，选择自定义供应商，Base URL 填写 https://api.deepseek.com/anthropic，API Key 填写你的 DeepSeek API Key。</p>
+<p>CC Switch 添加 DeepSeek Provider</p>
+<p>将模型名称改为 DeepSeek-V4-Pro（或 DeepSeek-V4-Flash），完成后点击右下角的“添加”。</p>
+<p>验证是否生效</p>
+<p>直接在命令行输入 claude 或者进入 Claude 界面之后再次输入 /status 确认，model 为 DeepSeek-V4-Pro 即表示接入成功。</p>
+<p>验证是否生效</p>
+<p>之后你就可以用 DeepSeek V4 Pro 来驱动 Claude Code 的所有能力了。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>实战一：升级模型预设</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>不配 Tavily 时靠模型记忆猜最新版本易出错。</li><li>V4 Pro 一次完成搜索、更新三家模型并改三个文件。</li><li>更新后 DashScope/DeepSeek/GLM/Kimi 预设均切到最新模型。</li></ul><div class="pit"><ul><li>不配 /tavily-search，靠训练数据截止日期猜版本大概率出错</li></ul></div></div>
+<p>我手头有一个多智能体股票分析项目，已经快一个月没启动了。这次重新启动，第一件事就是把过时的模型配置更新掉。</p>
+<p>项目 Settings 页面之前只有一个纯文本输入框让用户手动填写模型名，不够友好。</p>
+<p>我需要做两件事：搜索各家 LLM 的最新模型版本，然后给前端加一个下拉选择。</p>
+<p>提示词很简单：</p>
+<p>/tavily-search 搜索当前 deepseek、glm 和 openai 最新的模型，然后调整全局配置中默认模型推荐和示例。并且，当前这几个 LLM 图标太 AI 味了，帮我换一个上档次点。</p>
+<p>任务不大，但有个细节值得说——如果不配 /tavily-search Skill，单纯靠大模型的训练数据截止日期来猜最新版本，大概率会出错。</p>
+<p>我之前用其他模型没配 Tavily 的时候，反复提示了好几遍才把各家最新模型版本搞对。</p>
+<p>关于 Tavily 的使用可以参考我前段时间写的这篇文章：Claude Code 对接 AI Agent 搜索引擎 Tavily 实现高质量搜索。</p>
+<p>DeepSeek V4 Pro 一次搞定。</p>
+<p>搜索并更新最新 LLM 模型</p>
+<p>模型配置全部更新成功，各家推荐的模型示例都切到了最新版本。改了三个文件：</p>
+<ul><li>application.yml  ——新增 DeepSeek 预设 Provider，GLM 默认模型升级到  glm-5</li><li>.env.example  ——补上 DeepSeek 环境变量，Kimi 默认改为  kimi-k2.6</li><li>SettingsPage.tsx  ——加了  PROVIDER_PRESETS  常量，Model 和 Embedding Model 改成 combo box</li></ul>
+<p>最终四个 Provider 的推荐模型列表（截至 2026.04.25）：</p>
+<table><thead><tr><th>Provider</th><th>推荐模型</th></tr></thead><tbody><tr><td>DashScope</td><td>qwen3.6-flash 、qwen3.5-plus、qwen3-max、qwq-32b 等 8 款</td></tr><tr><td>DeepSeek</td><td>deepseek-v4-flash 、deepseek-v4-pro</td></tr><tr><td>GLM</td><td>glm-5.1 、glm-5、glm-4.7-flash 等 8 款</td></tr><tr><td>Kimi</td><td>kimi-k2.6 、kimi-k2.5、kimi-k2-thinking 等 5 款</td></tr></tbody></table>
+<p>编辑 DeepSeek 模型配置</p>
+<p>就是这个样式依然是很丑啊，图标是换成了挺奇怪的样式。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>实战二：诊断迁移并集成 Flyway</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>V2__knowledge_skill.sql 未挂载容器且无迁移工具，init.sql 由 Compose 写死执行。</li><li>集成 Flyway 按命名约定管理迁移顺序，两轮调试后修复。</li><li>Spring Boot 4.x 将 FlywayAutoConfiguration 拆到 spring-boot-flyway 模块。</li></ul><div class="pit"><ul><li>只引 flyway-core 不会触发迁移，启动日志无任何 Flyway 输出</li></ul></div></div>
+<p>第二个任务更有挑战性。</p>
+<p>因为换了新电脑，所有环境都是重新搭建的。项目有两个 SQL 文件，一个在项目启动时自动执行了，另一个没有。这块逻辑我也忘了，需要让模型帮我诊断。</p>
+<p>技能管理界面报错</p>
+<p>提示词：</p>
+<p>当前项目有两个 SQL 文件，sql/init.sql 在项目启动自动执行了，sql/V2__knowledge_skill.sql 没有自动执行。请你帮我分析一下是什么原因，然后用合理的方式优化现存的问题。</p>
+<p>DeepSeek V4 Pro 的分析很到位： V2__knowledge_skill.sql 没有被挂载到 Docker 容器中，项目也没有引入任何数据库迁移工具 ，而 init.sql 是在容器启动时自动执行的——这是 Docker Compose 配置里写死的。</p>
+<p>数据库表未执行原因分析</p>
+<p>它给出的解决方案是集成 Flyway 作为数据库迁移工具。</p>
+<p>Flyway 是 Java 生态中最成熟的数据库迁移方案之一，用文件命名约定（如 V1__init.sql、V2__knowledge_skill.sql）自动管理迁移顺序。</p>
+<p>整个过程 DeepSeek V4 Pro 完成了以下工作：</p>
+<ul><li>分析了 Docker Compose 配置中  init.sql  的挂载逻辑</li><li>发现  V2__knowledge_skill.sql  缺失的原因</li><li>引入 Flyway 依赖，编写迁移配置</li><li>重构 SQL 文件命名，确保迁移顺序正确</li></ul>
+<p>这里踩了个坑：我中途不小心调整了 iTerm2 的窗口大小，导致终端里的对话历史突然错乱了。看来是时候跟 iTerm2 说再见了。</p>
+<p>或者说，有小伙伴知道这种问题是怎么导致的吗？</p>
+<p>第一次运行后，Flyway 没有成功执行。我把错误日志贴过去，经过两轮调教后修复成功。</p>
+<p>DeepSeek 完成 Flyway 集成后的总结</p>
+<p>这个问题值得单独拿出来讲——因为 DeepSeek V4 Pro 在第一次集成时也踩到了这个坑，经过两轮调试才找到根因。</p>
+<p>Spring Boot 4.x 对自动配置模块做了大规模拆分，FlywayAutoConfiguration 已从 spring-boot-autoconfigure 中移除，迁移到了独立模块 spring-boot-flyway。</p>
+<p>如果你只引入了 flyway-core 这个第三方库，Spring Boot 不会自动触发任何迁移。最坑的是，启动日志里也不会有任何 Flyway 相关输出——完全没有报错，只是静默地什么都不做。</p>
+<p>这个坑特别容易迷惑人，让你怀疑是配置写错了，然后在 yml 文件里反复折腾。</p>
+<p>使用官方 Starter，它会将自动配置模块一并带入：</p>
+<ul><li>&lt;dependency&gt;</li><li>&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</li><li>&lt;artifactId&gt;spring-boot-starter-flyway&lt;/artifactId&gt;</li><li>&lt;/dependency&gt;</li><li>&lt;!-- PostgreSQL 方言支持仍需单独引入 --&gt;</li><li>&lt;dependency&gt;</li><li>&lt;groupId&gt;org.flywaydb&lt;/groupId&gt;</li><li>&lt;artifactId&gt;flyway-database-postgresql&lt;/artifactId&gt;</li><li>&lt;/dependency&gt;</li></ul>
+<p>记住这个教训：Spring Boot 4.x 时代，很多你习惯直接引第三方库就能自动装配的功能，现在需要找对应的官方 Starter。 自动配置被拆出去了，但文档里不一定显眼地提醒你。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>实战三：面试平台接 Flash</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>面试平台已支持多模型切换，默认模型切到 deepseek-v4-flash。</li><li>Flash 非思考模式生成模拟面试题与答案，质量不错。</li></ul></div>
+<p>我们的 AI 智能面试辅助平台 + RAG 知识库（已开源）目前已经新增了多模型切换和配置功能，DeepSeek 也已经支持了。</p>
+<p>项目地址（欢迎 star 鼓励）：</p>
+<ul><li>GitHub： https://github.com/Snailclimb/interview-guide</li><li>Gitee： https://gitee.com/SnailClimb/interview-guide</li></ul>
+<p>和实战一一样，对接最新模型整个过程是一遍过的，就不重复贴过程了。我们直接看效果。</p>
+<p>通过配置界面，将默认模型切换到 DeepSeek，选择 deepseek-v4-flash。</p>
+<p>将面试平台的模型切换到 deepseek-v4-flash</p>
+<p>然后上传一份简历，基于这份简历生成一次模拟面试，来看看效果。</p>
+<p>面试题是通过 deepseek-v4-flash 生成的，答案也是让 DeepSeek 在快速非思考模式下给出的（有两个问题没有回答）。</p>
+<p>模拟面试评估结果</p>
+<p>Flash 模型，非思考模式，生成质量已经不错了。考虑到 Flash 的定价，这个性价比相当能打。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>V4 参数与定价</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Pro 1.6T/49B、Flash 284B/13B，均 1M 上下文、MIT 开源。</li><li>SWE-bench Verified 80.6% 接近 Opus 4.6 的 80.8%，价格便宜两个数量级。</li><li>Flash 输出 $0.28/M、Pro $3.48/M，远低于 Sonnet 4.7。</li></ul><div class="pit"><ul><li>deepseek-chat 与 deepseek-reasoner 于 7 月 24 日后停用，需尽早切换</li></ul></div></div>
+<p>看完上面三个实战任务，再来补一下 DeepSeek V4 的硬参数，会更有体感。</p>
+<p>这次 V4 系列同时发布了两款模型：</p>
+<table><thead><tr><th>规格</th><th>DeepSeek-V4-Pro</th><th>DeepSeek-V4-Flash</th></tr></thead><tbody><tr><td>总参数</td><td>1.6T</td><td>284B</td></tr><tr><td>每 token 激活参数</td><td>49B</td><td>13B</td></tr><tr><td>上下文窗口</td><td>1M tokens</td><td>1M tokens</td></tr><tr><td>推理模式</td><td>非思考 / Think High / Think Max</td><td>非思考 / Think High / Think Max</td></tr><tr><td>开源协议</td><td>MIT</td><td>MIT</td></tr></tbody></table>
+<p>几个关键数字值得注意：</p>
+<ul><li>V4-Pro 的 Codeforces 评分 3206  ，在四家主流模型（Claude Opus 4.6、GPT-5.4 xHigh、Gemini 3.1 Pro High）中排第一</li><li>SWE-bench Verified 80.6%  ，跟 Claude Opus 4.6（80.8%）几乎打平，但 API 价格便宜了两个数量级</li><li>1M 上下文场景下  ，V4-Pro 的单 token 推理 FLOPs 只有 V3.2 的  27%  ，KV 缓存用量只有  10%</li></ul>
+<p>回看实战二里的 Agent Coding 表现，SWE-bench 80.6% 这个数字确实不是虚的——跨文件分析、工程方案生成，V4 Pro 确实上了个台阶。</p>
+<p>再看定价：</p>
+<table><thead><tr><th>API 定价（每百万 token）</th><th>DeepSeek-V4-Flash</th><th>DeepSeek-V4-Pro</th><th>Claude Sonnet 4.7</th></tr></thead><tbody><tr><td>输入（缓存未命中）</td><td>$0.14</td><td>$1.74</td><td>$3.00</td></tr><tr><td>输入（缓存命中）</td><td>$0.028</td><td>$0.145</td><td>$0.30</td></tr><tr><td>输出</td><td>$0.28</td><td>$3.48</td><td>$15.00</td></tr></tbody></table>
+<p>Flash 的输出价格不到 Claude Sonnet 的 1/50，Pro 的输出价格约为 Sonnet 的 1/4，输入端两者差距更小。</p>
+<p>实战三里用的就是 V4-Flash——非思考模式，面试题和答案的生成效果在上面已经看到了。放到这个定价体系里看，Flash 几乎没什么对手。</p>
+<p>另外有一点需要注意：API 迁移零成本，改个 model 名就行。deepseek-chat 和 deepseek-reasoner 将在 7 月 24 日后停用，尽早切换到新模型名。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>V4 在 Agent Coding 与代码理解上明显上台阶。</li><li>Pro 无 Coding Plan 价格偏高，Flash 暂非日常开发主力。</li><li>复杂编码、精准问答与前沿推理仍不及 Claude Opus 4.6 / GPT 5.5。</li></ul></div>
+<p>DeepSeek V4 在 Agent Coding 和代码理解场景上，明显上了一个台阶。不过，DeepSeek-V4-Pro 在没有 Coding Plan 的情况下，价格还是偏高。V4-Flash 的定价很香，但在开发场景还无法成为主力，暂没有资格成为日常开发的默认选项。</p>
+<p>另外，在复杂的编码、精准问答和前沿科学推理上，跟 Claude Opus 4.6 以及 GPT 5.5 还有不小距离。</p>
+<p>我后续又继续实测了几个场景，发现一些比较复杂的用 DeepSeek 还是会差一些，需要调教多次，但换成  Claude 和 GPT 很快就完成了。</p>
+<p>不过考虑到价格优势——还要什么自行车？</p>
+<ul><li>《SpringAI 智能面试平台》（2.0 版本已开源）</li><li>GLM-5.1 发布，实测两周，太猛了！</li><li>Java 版小龙虾终于有人开源了！</li><li>一文搞懂 Harness Engineering：六层架构、上下文管理与一线团队实战</li></ul>
+<p>阅读原文</p>
+<p>JavaGuide</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>V4-Pro vs V4-Flash</h4><p>Pro 1.6T/49B，Flash 284B/13B；均 1M 上下文、MIT。Pro 强在 Agent Coding，Flash 胜在性价比。</p><a class="src-link" href="#sec-05">原文 → V4 参数与定价</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>SWE-bench 与价格差</h4><p>V4-Pro SWE-bench Verified 80.6%，几乎打平 Opus 4.6 的 80.8%，API 价格却便宜两个数量级。</p><a class="src-link" href="#sec-05">原文 → V4 参数与定价</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>API 定价对比</h4><p>Flash 输出 $0.28/M，不到 Sonnet 4.7 的 1/50；Pro 输出 $3.48/M，约为 1/4。</p><a class="src-link" href="#sec-05">原文 → V4 参数与定价</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>1M 上下文效率</h4><p>1M 上下文下，V4-Pro 单 token 推理 FLOPs 仅 V3.2 的 27%，KV 缓存用量 10%。</p><a class="src-link" href="#sec-05">原文 → V4 参数与定价</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>settings.json 接入</h4><p>~/.claude/settings.json 的 env 写 ANTHROPIC_BASE_URL、ANTHROPIC_MODEL、AUTH_TOKEN 即可对接。</p><a class="src-link" href="#sec-01">原文 → 接入 DeepSeek V4</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Flyway 官方 Starter</h4><p>用 spring-boot-starter-flyway 带入自动配置；PostgreSQL 方言另加 flyway-database-postgresql。</p><a class="src-link" href="#sec-03">原文 → 实战二：诊断迁移并集成 Flyway</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Spring Boot 4.x 拆包坑</h4><p>FlywayAutoConfiguration 已移出 spring-boot-autoconfigure，只引 flyway-core 会静默不执行。</p><a class="src-link" href="#sec-03">原文 → 实战二：诊断迁移并集成 Flyway</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>模型版本别靠记忆</h4><p>不配 Tavily 搜索，单靠训练数据截止日期猜最新模型版本大概率出错。</p><a class="src-link" href="#sec-02">原文 → 实战一：升级模型预设</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>V4 总评</h4><p>Agent Coding 明显上台阶；Pro 无 Coding Plan 偏贵，Flash 暂非开发主力；复杂任务仍逊于 Claude/GPT。</p><a class="src-link" href="#sec-06">原文 → 总结</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>接入方式对比</h4><p>配置文件法改 settings.json（推荐）；CC Switch 可视化一键切换多 Provider。</p><a class="src-link" href="#sec-01">原文 → 接入 DeepSeek V4</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>Claude Code 接 DeepSeek 走 Anthropic 兼容接口：改 settings.json 或用 CC Switch。</li>
+          <li>Spring Boot 4.x 集成 Flyway 用官方 Starter，只引 flyway-core 会静默失败。</li>
+          <li>Flash 便宜能打但非开发主力，复杂任务换 Claude/GPT；Pro 无 Coding Plan 偏贵。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&amp;mid=2247554204&amp;idx=1&amp;sn=87ada30fdb5c2bcdd9ad1c9f5f979eef" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&amp;mid=2247554204&amp;idx=1&amp;sn=87ada30fdb5c2bcdd9ad1c9f5f979eef</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

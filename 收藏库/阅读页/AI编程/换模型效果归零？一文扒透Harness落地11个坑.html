@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">换模型效果归零？一文扒透Harness落地11个坑</h1>
+  <p class="lede">反向警示Harness落地：认知、实践、组织三层共11个误区</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 11 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>认知层面误区</a>
+          <a href="#sec-02"><span class="n">02</span>实践层面误区</a>
+          <a href="#sec-03"><span class="n">03</span>组织层面误区</a>
+          <a href="#sec-04"><span class="n">04</span>尾声总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 认知层面误区</a>
+          <a href="#sec-02">02 实践层面误区</a>
+          <a href="#sec-03">03 组织层面误区</a>
+          <a href="#sec-04">04 尾声总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>关注腾讯云开发者，一手技术干货提前解锁👇</p>
+<p>开发者公众号专属群聊</p>
+<p>谈到Harness Engineering，我们有着自己的独到见解。我们看到的现象是：只要努力搞，没有折腾不垮的团队。虽然硅谷大厂在这个领域的实践堪称教科书，但更多团队正在“全面Harness化”的光环下，以惊人的速度走向瓦解。</p>
+<p>2026年初，Harness Engineering取代Prompt Engineering和Context Engineering成为硅谷最流行的AI工程化范式。Agent = Model + Harness这个公式一夜之间成了CTO们挂在嘴边的圣经。</p>
+<p>模型提供智能，Harness让智能变得有用。但问题恰恰出在：太多团队把Harness当成了一根救命稻草，却忘了它本质上是一套马具，而马具，既能驾驭马，也能勒死马。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>认知层面误区</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>提示词解决&quot;这次怎么告诉AI&quot;，Harness解决&quot;以后每次AI在什么边界里做事&quot;。</li><li>框架解决&quot;怎么造Agent&quot;，Harness解决&quot;运行时世界如何与它交互&quot;。</li><li>记忆需保鲜、标置信度，并按个人偏好/团队约定/项目知识分层，检索返回泛化后的当前偏好。</li></ul><div class="pit"><ul><li>把Harness当高级Prompt，陷入&quot;Prompt调优→效果波动→再调优&quot;死循环。</li><li>记忆绑在会话上，新会话一来任务进度归零。</li></ul></div></div>
+<p>误区一：把Harness Engineering当成“高级Prompt”</p>
+<p>这是最普遍也最致命的认知错误。很多人第一次听Harness Engineering，会以为它是“高级提示词”。提示词解决的是“这次你怎么告诉AI做事”，Harness解决的是“以后每一次AI都要在什么边界里做事”。这两件事不是一个层级。</p>
+<p>如果只靠提示词，你会进入一种经典状态：这次写得不错，下次换个需求又飘了；这次Agent很听话，下次上下文一长就忘了；这次你盯得紧，下次你没盯它就开始自由发挥。提示词是一次性的说服，Harness是结构性的约束。</p>
+<p>把Harness当成高级Prompt来搞，本质上是用战术勤奋掩盖战略懒惰。你花了十倍的时间调Prompt，却没有多花点时间来设计约束环境。这个误区一旦踩实，团队就会陷入“Prompt调优→效果波动→再调优”的死循环，所有人的精力被耗尽在毫无产出的Loop游戏里。</p>
+<p>误区二：把SDK/框架当成Harness</p>
+<p>LangChain、LangGraph、CrewAI这些工具经常被误认为是Harness。但二者解决的根本不是同一个问题：SDK/框架回答的是“怎么造AI Agent”，Harness回答的是“AI Agent运行时，世界如何与它交互”。</p>
+<p>你可以用LangChain实现Harness的某个模块，但LangChain本身不是Harness。把框架当Harness来用，就像买了把锤子就以为自己是建筑师。你有工具，但没有设计图、没有施工规范、没有验收标准。结果就是Agent跑起来了，但跑得乱七八糟。</p>
+<p>误区三：忽视记忆管理的“保鲜”和“置信度”</p>
+<p>这是最容易被忽视但极其重要的一环。如果把Agent当成真员工来管理，记忆就是员工的工作日志和经验库。短期记忆（当前任务上下文）、长期记忆（历史决策和经验沉淀）、以及记忆的检索、更新和遗忘机制都是需要被管理的。</p>
+<p>很多团队搭了记忆系统，但管得一塌糊涂。记忆没有“保鲜”机制，三个月前的决策被当成今天的真理，Agent在过时的信息上做决策；记忆没有“置信度”标签，来自用户确认的信息和来自模型猜测的信息混在一起，Agent分不清哪个可靠。</p>
+<p>更致命的是，记忆不分层级。当记忆被绑定在会话上，新会话一来就“失忆”，任务进度全部归零。正确的做法是要为记忆建立分层机制，哪些是个人偏好，哪些是团队约定，哪些是项目级业务知识，这些都需要有分层机制，检索时返回的应该是泛化后的当前偏好主张，而非原始事实的堆砌。</p>
+<p>记忆不保鲜、不标置信度、不归属项目，三个错误叠在一起，Agent就成了一个永远在“失忆”和“乱记”之间摇摆的精神分裂患者。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>实践层面误区</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>同一模型仅改Harness设计，编码基准从6.7%跃升至68.3%，Terminal Bench 2.0从52.8%升至66.5%。</li><li>缺可观测性会让Agent退化不可见；生成与评估应拆成两个AI，选手和裁判不能是同一人。</li><li>只看二元结果会与真实使用错位，应看过程是否遵守规范。</li><li>Harness是被Bug逼出来的迭代产物，不能照抄别家实践或一次设计到位。</li></ul><div class="pit"><ul><li>让AI自己评估自己，质量门禁交给最不可靠的质检员。</li><li>只看通过/失败，最强模型2/3任务中代码对但过程违规。</li><li>照抄AGENTS.md/CLAUDE.md，不按自身失败模式定制而全面溃败。</li></ul></div></div>
+<p>误区四：迷信模型，忽视Harness</p>
+<p>OpenAI的实验给出了一个震撼的数据：同一模型，仅改变Harness设计，编码基准测试分数可以从6.7%跃升至68.3%。LangChain的实验也印证了这一点，同一个模型换上一套更精巧的Harness架构，Terminal Bench 2.0的通过率直接从52.8%拉升到66.5%。换句话说，模型能力固然重要，但是Harness的设计质量也是重要的决定性因素。</p>
+<p>但绝大多数团队的做法恰恰相反。Agent表现不好，第一反应是“换更强的模型”。于是半年换了五个模型，每次迁移都让团队加班加点，开销巨大，效果为零，甚至为负。</p>
+<p>真正的瓶颈不在马的肌肉，而在你手上的缰绳。Harness之于Model，如同操作系统之于CPU，无论CPU多强大，如果操作系统频繁崩溃，实际体验依然很差。</p>
+<p>误区五：没有可观测性的Harness</p>
+<p>很多团队搭了Harness：文件系统、沙箱、工具调用、编排逻辑，该有的都有。但唯独缺少了可观测性层。</p>
+<p>没有持续评估流水线的Harness，Agent的表现退化是完全不可见的，直到有人恰好注意到，或者已经退化到无法接受的程度。</p>
+<p>试想：你的Agent每天都在生产代码，但你根本不知道它的质量是在提升还是在下降。你有了一个会自己写代码的黑盒，而这个黑盒正在悄悄地把技术债务堆成一座山。等到你发现问题的时候，已经没有人能说清楚这座山是怎么堆起来的。</p>
+<p>误区六：让AI自己评估自己</p>
+<p>Anthropic的工程师发现了一个有趣的问题：AI评估自己的工作完全不靠谱。不管做得好不好，AI给自己的评价永远是“很不错”。</p>
+<p>很多团队的做法是：让Agent写完代码，再问它“做得怎么样？”Agent回答“很好”，然后就直接上线了。这是把质量门禁交给了世界上最不可靠的质检员：它自己。</p>
+<p>Anthropic的解法是把生成和评估拆成两个AI。生成器负责做，评估器拿着工具去实际操作、截图、检查功能，然后对照标准打分。选手和裁判不能是同一个人。</p>
+<p>误区七：评测只看二元结果（通过/失败），不看过程</p>
+<p>当前主流评测体系，不管是SWE-bench verified还是各类基于terminal环境的测试，核心理念几乎都是结果导向指标。只问两个问题：测试通过了吗？Bug修复了吗？</p>
+<p>这种评估方式，不看模型在沙盒里的输出过程，也不看真实场景的交互体验。最后的结果是：评估和真实使用场景，完全错位。</p>
+<p>MiniMax开源了OctoCodingBench，专门评测Coding Agent在完成任务的过程中有没有遵守规矩。结果令人震惊：即便是最强的模型，在2/3的任务中，代码可能是对的，但过程是错的。</p>
+<p>过程错在哪里？系统提示里明确要求“不要使用emoji”，Agent却在代码注释里加上笑脸；用户要求“先备份再修改”，Agent上手就是一键rm -rf删除文件。任务最终可能完成了，但过程违反了规范。用户要的不只是“能跑的代码”，还有“符合团队协作规范的代码”。</p>
+<p>只看二元结果的评测，就像只问学生“考没及格”却不看卷面过程，你永远不知道Agent是怎么“作弊”通过的。</p>
+<p>误区八：想抄袭别家的Harness实践</p>
+<p>很多团队的做法是：看到OpenAI发了AGENTS.md的实验报告，立刻照抄一份放到自己仓库根目录；看到Anthropic的CLAUDE.md火了，马上复制粘贴。但Context Engineering的最佳实践也照做了，实际跑起来，全面溃败。</p>
+<p>为什么？你的项目、你的问题、你的技术栈、你的失败模式，跟别人完全不一样。别人的Harness是为百万行代码的长期项目设计的，你只有几千行；别人的Harness是为多Agent协作设计的，你只有一个Agent在跑；别人的Harness是为生产环境设计的，你还在做概念验证。</p>
+<p>Harness Engineering没有标准定义。它不是一套可以“一键复制”的配置，而是一套需要根据你自己的失败模式量身定制的工程体系。</p>
+<p>OpenAI和Anthropic的实验不约而同指向了智能体最常见的三种致命失败模式：过早宣布胜利（没有强制反馈循环，判定来自自我感觉而非机器可验证的事实）、上下文焦虑（长任务做到70%，Token快撑满窗口，Agent开始赶进度）、越权操作（Agent调用被禁止的命令）。</p>
+<p>你的团队的失败模式是哪几种？你清楚吗？不清楚就照抄，等于在别人的地基上盖自己的房子，塌了都不知道为什么。</p>
+<p>误区九：认为Harness能“一次设计到位”</p>
+<p>很多团队的做法是：花三个月搭一套“完美的Harness”，然后宣布“Harness工程化完成”。但Harness Engineering从来不是“一次设计到位”，而是跑一段、撞墙、补洞、再跑一段、再升级。</p>
+<p>Mitchell Hashimoto给出了最精准的定义：“每当Agent犯了一个错误，你就花时间设计一个解决方案，使得Agent在未来不会再犯同样的错误”。</p>
+<p>Harness是被Bug硬生生逼出来的。它不是设计出来的，是迭代出来的。把它当成一次性项目来做，就等于宣告了它的死亡。</p>
+<p>更有趣的是，就在全行业拼命往Harness上砌砖的时候，Anthropic已经在默默地拆墙了。随着模型迭代，当年费尽心力的控制组件正在被果断拆除。一边在疯狂加盖，一边在果断拆除，这场充满割裂感的行业狂热，本质上是因为绝大多数人并没有真正理解工程的本质。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>组织层面误区</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Harness本意是控制马的方向和力道，约束人按流程干活才是组织难题。</li><li>AI提效打折的主因是人侧掉链子：需求不清、不写测试、自检靠感觉。</li><li>企业场景有权限控制、长周期交互、行业合规等学术benchmark几乎缺位的约束。</li></ul><div class="pit"><ul><li>只约束AI不约束人，Harness搭得再好也白搭。</li><li>用学术思维做企业级Harness，像在实验室造船，开到海里才发现浮不起来。</li></ul></div></div>
+<p>误区十：Harness只管AI，不管人</p>
+<p>这是最容易被忽视但破坏力最大的误区。</p>
+<p>“Harness”的本意是控制马的方向和力道，在软件工程中指流程规范、编码标准、测试纪律。但很多人只看到了“约束AI”这一层，完全忽略了另一层：约束AI容易，约束人按流程干活才是组织难题。</p>
+<p>AI编程提效打折扣的主因是人侧“掉链子”：需求不清晰、测试不写、自检靠感觉，导致返工和缺陷累积。</p>
+<p>Harness首先是“挽人”而非“挽AI”。如果你的人连基本的测试驱动开发都不做，连基本的代码审查都走过场，那Harness搭得再好也是白搭。AI不缺智商，缺的是被工程机制约束后的稳定执行力。而人的工程纪律，是这种约束能够成立的前提。</p>
+<p>误区十一：忽视企业级场景的特殊约束</p>
+<p>学术benchmark几乎都预设了无限制的理想环境，但真实企业场景完全不同：</p>
+<ul><li>权限控制： 企业里不同用户能访问的数据和功能各不相同，Agent必须遵守同样的边界。同一个Agent面对不同用户时可行动空间完全不一样，现有benchmark压根没考虑过这一层。</li><li>长周期交互： 企业任务经常跨越数天甚至数周，Agent需要在如此之长的时间跨度中保持上下文连贯。</li><li>行业合规： 金融领域的反洗钱、医疗领域的数据隐私，这些约束在学术benchmark里几乎完全缺位。</li></ul>
+<p>学术研究与产业实践之间存在可观的差异。现有评估体系大量建立在理想化假设上，一旦进入真实业务环境，适用性存疑。用学术思维做企业级Harness，就像在实验室里造了一艘船，开到海里才发现它根本浮不起来。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>尾声总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Harness的本质是给AI搭建持续、可靠、可验证工作的环境，核心公式是Agent=Model+Harness。</li><li>Harness照出的是工程纪律、组织能力与对&quot;质量&quot;的真实理解。</li><li>真正的壁垒是把AI放进可持续运转的工程系统里，这件事AI帮不了你。</li></ul><div class="pit"><ul><li>把公式理解成&quot;Model+一堆复杂工具&quot;，堆砌工具却不知在解决什么问题。</li></ul></div></div>
+<p>Harness Engineering的本质，不是给AI套上枷锁，而是给AI搭建一个能持续、可靠、可验证地工作的环境。它的核心公式很简单：Agent = Model + Harness。</p>
+<p>但太多团队把这个公式理解成了：Agent = Model + 一堆复杂工具。于是他们疯狂地堆砌工具、搭建环境、配置规则，却忘了问一个最基本的问题：我们到底在解决什么问题？</p>
+<p>Harness是一面镜子。它照出的不是AI的能力，而是你的工程纪律、你的组织能力、你对“质量”二字的真实理解。如果你的团队本身就没有工程纪律，Harness只会让混乱以更快的速度蔓延。如果你的组织本身就没有质量意识，Harness只会让缺陷以更大的规模堆积。</p>
+<p>模型不是壁垒，Harness也不是。真正的壁垒，是你有没有能力把AI放进一套可持续运转的工程系统里。而这件事，AI帮不了你。</p>
+<p>本文纯属反向警示。如果你正在带领团队落地Harness Engineering，请对照上述“误区”逐一排查，并避开它们，你就已经赢过了80%的团队。</p>
+<p>-End-</p>
+<p>原创作者｜茹炳晟</p>
+<p>感谢你读到这里，不如关注一下？👇</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>提示词 vs Harness</h4><p>提示词是&quot;这次怎么说&quot;的一次性说服；Harness是&quot;以后每次在什么边界里做事&quot;的结构性约束，两者不是同一层级。</p><a class="src-link" href="#sec-01">原文 → 认知层面误区</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>SDK/框架 vs Harness</h4><p>框架回答&quot;怎么造AI Agent&quot;；Harness回答&quot;Agent运行时世界如何与它交互&quot;。框架只是工具，不是Harness。</p><a class="src-link" href="#sec-01">原文 → 认知层面误区</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>改Harness比换模型更有效</h4><p>同一模型仅改Harness设计，编码基准从6.7%跃升至68.3%；Terminal Bench 2.0通过率从52.8%升到66.5%。</p><a class="src-link" href="#sec-02">原文 → 实践层面误区</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>让AI自己评估自己</h4><p>AI给自己的评价永远是&quot;很不错&quot;，把质量门禁交给它自己等于交给最不可靠的质检员。</p><a class="src-link" href="#sec-02">原文 → 实践层面误区</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>生成与评估要拆分</h4><p>Anthropic把生成和评估拆成两个AI：生成器负责做，评估器拿工具实操截图检查，再对照标准打分。</p><a class="src-link" href="#sec-02">原文 → 实践层面误区</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>OctoCodingBench：过程违规</h4><p>MiniMax开源的OctoCodingBench显示，最强模型在2/3任务中代码可能是对的，但过程是错的。</p><a class="src-link" href="#sec-02">原文 → 实践层面误区</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>三种致命失败模式</h4><p>过早宣布胜利、上下文焦虑（长任务70%时Token撑满赶进度）、越权操作，是智能体最常见的三种失败模式。</p><a class="src-link" href="#sec-02">原文 → 实践层面误区</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>照抄别家Harness</h4><p>项目规模、技术栈、失败模式不同，照抄AGENTS.md/CLAUDE.md等于在别人的地基上盖自己的房子。</p><a class="src-link" href="#sec-02">原文 → 实践层面误区</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>一次设计到位</h4><p>Harness是被Bug逼出来的、迭代出来的；把它当成一次性项目来做，就等于宣告它的死亡。</p><a class="src-link" href="#sec-02">原文 → 实践层面误区</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Harness先挽人再挽AI</h4><p>Harness首先是&quot;挽人&quot;而非&quot;挽AI&quot;；人的工程纪律是AI约束能够成立的前提。</p><a class="src-link" href="#sec-03">原文 → 组织层面误区</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>企业级约束缺位</h4><p>权限控制、长周期交互、行业合规是学术benchmark几乎完全缺位的企业级约束。</p><a class="src-link" href="#sec-03">原文 → 组织层面误区</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Harness是一面镜子</h4><p>它照出的不是AI的能力，而是你的工程纪律、组织能力和对&quot;质量&quot;的真实理解。</p><a class="src-link" href="#sec-04">原文 → 尾声总结</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先问&quot;我们在解决什么问题&quot;：Harness是给AI搭建可持续验证的工作环境，不是堆工具。</li>
+          <li>按自身失败模式迭代Harness，别照抄大厂配置；生成与评估拆开，看过程而非只看二元结果。</li>
+          <li>约束AI之前先约束人：工程纪律是Harness成立的前提，企业场景还要补权限、长周期与合规。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzI2NDU4OTExOQ==&amp;mid=2247697854&amp;idx=1&amp;sn=e3712442caedb37e56364ab1a592c6c9" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzI2NDU4OTExOQ==&amp;mid=2247697854&amp;idx=1&amp;sn=e3712442caedb37e56364ab1a592c6c9</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

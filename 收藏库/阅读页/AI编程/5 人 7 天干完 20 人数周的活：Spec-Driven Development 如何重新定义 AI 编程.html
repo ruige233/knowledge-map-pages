@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">5 人 7 天干完 20 人数周的活：Spec-Driven Development 如何重新定义 AI 编程</h1>
+  <p class="lede">用 Spec 当唯一事实源，把 AI 编程从“快”变成“可控”</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 29 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>SDD 是什么</a>
+          <a href="#sec-02"><span class="n">02</span>完整流程拆解</a>
+          <a href="#sec-03"><span class="n">03</span>Spec 怎么写</a>
+          <a href="#sec-04"><span class="n">04</span>工具生态全景</a>
+          <a href="#sec-05"><span class="n">05</span>实战数据</a>
+          <a href="#sec-06"><span class="n">06</span>SDD vs Vibe Coding</a>
+          <a href="#sec-07"><span class="n">07</span>与 Harness Engineering 关系</a>
+          <a href="#sec-08"><span class="n">08</span>五大陷阱与局限</a>
+          <a href="#sec-09"><span class="n">09</span>三级光谱模型</a>
+          <a href="#sec-10"><span class="n">10</span>结语</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 SDD 是什么</a>
+          <a href="#sec-02">02 完整流程拆解</a>
+          <a href="#sec-03">03 Spec 怎么写</a>
+          <a href="#sec-04">04 工具生态全景</a>
+          <a href="#sec-05">05 实战数据</a>
+          <a href="#sec-06">06 SDD vs Vibe Coding</a>
+          <a href="#sec-07">07 与 Harness Engineering 关系</a>
+          <a href="#sec-08">08 五大陷阱与局限</a>
+          <a href="#sec-09">09 三级光谱模型</a>
+          <a href="#sec-10">10 结语</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>阿里妹导读</p>
+<p>文章内容基于作者个人技术实践与独立思考，旨在分享经验，仅代表个人观点。</p>
+<p>&quot;5 人 7 天&quot; 震撼实验</p>
+<p>本文分享一个让人震撼的案例：&quot;5人、7天，用 Qoder 开发 QoderWork&quot;——完成了传统需要 20 人数周的工作量。</p>
+<p>这不是 PPT 里的概念验证，而是一个已经上线的产品。它的时间线值得逐日复盘：</p>
+<p>DAY 0：不写一行代码，只写 Spec。</p>
+<p>团队没有急着打开 IDE，而是花了一整天做四件事——定义 MVP 边界、拆解模块、为每个模块撰写 Spec、将所有 Spec 汇入 Repo Wiki。这一天的产出是零行代码，但它决定了后面六天的一切。</p>
+<p>DAY 1-2：用 Qoder 完成架构开发。</p>
+<p>框架与容器同步开发。每个人都是 &quot;Spec 工程师&quot;——不是写代码的人，而是定义代码应该长什么样的人。通过 Skill 驱动并行推进，Quest 模式同时执行多个开发任务。两天时间，系统骨架成型。</p>
+<p>DAY 3-4：Spec 迭代增量需求。</p>
+<p>发现新需求或 BUG？不用排期——立即写一个增量 Spec，委派 Quest 执行。AI 自动写代码并提交 PR，人负责 Review 与合并。单人日均处理多个 PR，效率惊人。</p>
+<p>DAY 5-6：打磨、Dogfooding。</p>
+<p>用 QoderWork 的早期版本测试 QoderWork 自身。发现问题？写 Spec，Quest 修复。这是一个自举式的正反馈循环。</p>
+<p>DAY 7：正式发布上线。</p>
+<p>七天，从零到一个可用的产品。</p>
+<p>这个案例之所以震撼，不是因为 &quot;AI 写代码很快&quot;——快只是表象。真正值得追问的是：为什么 5 个人能驾驭 AI 同时推进这么多并行任务而不失控？</p>
+<p>答案藏在 DAY 0 那个看似 &quot;什么都没做&quot; 的日子里。那一天写下的 Spec，就是整个项目的锚点。</p>
+<p>这套方法论有一个正式的名字：Spec-Driven Development（SDD）。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>SDD 是什么</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>SDD 把 Spec 当唯一事实来源，代码是派生产物，先定义 WHAT 再让 AI 做 HOW。</li><li>AI 不会追问边界情况，Spec 质量直接决定代码质量，推断错就是 Bug。</li><li>2025 年 Vibe Coding、GitHub Spec Kit、AWS Kiro 等方向收敛，SDD 是结构性需求。</li><li>Microsoft 点评：SDD is version control for your thinking。</li></ul></div>
+<h3 class="sub">1.1 一句话定义</h3>
+<p>Spec-Driven Development：将规格说明（Specification）作为唯一真实来源（Single Source of Truth），代码作为其派生产物。</p>
+<p>用更直白的话说：先定义 WHAT，再让 AI 做 HOW。</p>
+<p>这不是一个全新的发明。如果你做过 API-First Development、Design by Contract、或者严格的 TDD，你会觉得 SDD 似曾相识。但 SDD 的核心差异在于——它是为AI 编程时代量身设计的工程方法。</p>
+<p>在传统开发中，Spec 写得好不好主要影响沟通效率；在 AI 编程时代，Spec 写得好不好直接决定代码质量。因为 AI 不会追问你 &quot;这个边界情况怎么处理&quot;，它只会按照你给的上下文尽力推断——推断对了是运气，推断错了是 Bug。</p>
+<h3 class="sub">1.2 不是一个人的发明，而是一个时代的汇聚</h3>
+<p>SDD 没有单一发明者。2025 年，多个方向同时收敛到了这个理念：</p>
+<ul><li>Karpathy 的 Vibe Coding （2025.2.2）作为反面参照，暴露了 &quot;不管代码、只管 vibes&quot; 的致命问题，倒逼社区思考 &quot;AI 编程到底需要什么样的约束&quot;；</li><li>GitHub 推出 Spec Kit ，提供了 agent-agnostic 的 SDD 工具链；</li><li>AWS 发布 Kiro ，成为第一个内置 SDD 工作流的 IDE；</li><li>Fission-AI 的 OpenSpec ，走轻量迭代路线；</li><li>阿里的 QoderWork ，通过 Qoder Quest 模式实践了 SDD 的规模化执行。</li></ul>
+<p>这种多方同时推动的局面，说明 SDD 不是某个团队的灵光一闪，而是 AI 编程发展到当前阶段的结构性需求。</p>
+<h3 class="sub">1.3 Microsoft 的那句点评</h3>
+<p>Microsoft 对 SDD 有一个精辟的评价：</p>
+<p>&quot;SDD is version control for your thinking.&quot;</p>
+<p>传统的版本控制管理的是代码的演变历史。SDD 管理的是思考的演变历史——为什么做这个功能、边界在哪里、成功标准是什么。当代码可以被 AI 秒级重写时，真正有价值的不是代码本身，而是代码背后的决策。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>完整流程拆解</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>四阶段 Specify/Plan/Implement/Validate，人定义 WHAT、AI 实现 HOW，流程可多轮迭代。</li><li>Spec Kit 三文件：spec.md 需求、plan.md 架构、tasks.md 任务清单，成功标准要可测试。</li><li>constitution.md 固化不可违背的团队约束，作为 AI 的“潜意识”。</li></ul></div>
+<h3 class="sub">2.1 四阶段模型</h3>
+<p>SDD 的标准流程分为四个阶段：</p>
+<ul><li>Specify（规格定义）-&gt; Plan（方案规划）-&gt; Implement（代码实现）-&gt; Validate（验证确认）</li></ul>
+<table><thead><tr><th>阶段</th><th>主导者</th><th>核心产出</th><th>关键动作</th></tr></thead><tbody><tr><td>Specify</td><td>人</td><td>spec.md</td><td>定义问题、边界、成功标准</td></tr><tr><td>Plan</td><td>人 + AI</td><td>plan.md</td><td>架构选型、模块划分、接口定义</td></tr><tr><td>Implement</td><td>AI</td><td>代码 + 测试</td><td>按 plan 逐任务实现</td></tr><tr><td>Validate</td><td>人 + AI</td><td>测试报告</td><td>自动化测试 + 人工 Review</td></tr></tbody></table>
+<p>人机分工的核心原则：人定义 WHAT，AI 实现 HOW。</p>
+<p>这不是一个僵硬的瀑布流程。在实践中，Specify 和 Plan 之间会有多轮迭代，Implement 和 Validate 之间也是持续循环的。</p>
+<h3 class="sub">2.2 三文件体系：Spec Kit 的核心设计</h3>
+<p>GitHub 的 Spec Kit 提出了一个简洁的三文件体系：</p>
+<p>spec.md —— 需求规格</p>
+<p>这是 &quot;唯一真实来源&quot;。它回答 &quot;做什么&quot; 和 &quot;为什么做&quot;，不涉及 &quot;怎么做&quot;。</p>
+<ul><li># Feature: 用户权限管理模块</li><li>## Problem Statement</li><li>当前系统缺乏细粒度的权限控制。所有用户要么是管理员（全部权限），</li><li>要么是普通用户（只读权限）。产品团队需要支持至少 5 种角色，</li><li>以满足不同部门的差异化需求。</li><li>## Success Metrics</li><li>- 支持自定义角色，每个角色可配置不少于 20 种独立权限</li><li>- 权限校验 API 响应 P95 &lt; 50ms</li><li>- 权限变更实时生效，无需用户重新登录</li><li>- 向后兼容：现有管理员/普通用户的权限行为不变</li><li>## User Stories</li><li>1. 作为系统管理员，我可以创建自定义角色并分配权限组合</li><li>2. 作为部门主管，我可以将部门成员批量分配到指定角色</li><li>3. 作为普通用户，我的权限变更后无需重新登录即可生效</li><li>## Acceptance Criteria</li><li>- [ ] RBAC 模型支持角色继承（最多 3 层）</li><li>- [ ] 单用户可拥有多个角色，权限取并集</li><li>- [ ] 提供权限变更审计日志，保留 90 天</li><li>- [ ] 权限校验支持通配符匹配（如 `resource:*:read`）</li><li>## Non-Goals</li><li>- 本期不实现跨组织的权限委托</li><li>- 不支持基于时间段的临时权限</li><li>- 不涉及 UI 层的权限管理界面（由前端团队单独出 Spec）</li><li>## Constraints</li><li>- 必须兼容现有的 OAuth2.0 认证流程</li><li>- 权限数据存储使用现有 PostgreSQL 实例，不引入新的存储组件</li><li>- 权限模型设计需参考 AWS IAM Policy 语法规范</li></ul>
+<p>注意这个 Spec 的几个特征：</p>
+<ul><li>成功标准是 可测试的 ：&quot; P95 &lt; 50ms &quot; 而非 &quot;系统应该很快&quot;</li><li>Non-Goals 明确划定了边界：告诉 AI &quot;这些不要做&quot;</li><li>Constraints 约束了技术选型：防止 AI 自作主张引入新组件</li></ul>
+<p>plan.md —— 架构方案</p>
+<p>基于 spec.md 生成的技术方案。这一步通常由 AI 起草、人审核修改。</p>
+<ul><li># Plan: 用户权限管理模块</li><li>## Architecture Decision</li><li>采用 RBAC (Role-Based Access Control) 模型，使用 Casbin 作为权限引擎。</li><li>## Module Breakdown</li><li>1. `permission-model` - 权限模型定义与 Casbin 适配层</li><li>2. `permission-api` - RESTful API 层</li><li>3. `permission-cache` - Redis 缓存层（解决 P95 &lt; 50ms 要求）</li><li>4. `permission-audit` - 审计日志模块</li><li>## Interface Contracts</li><li>### POST /api/v1/roles</li><li>### GET /api/v1/users/{userId}/permissions</li><li>### PUT /api/v1/roles/{roleId}/permissions</li><li>（接口详细定义省略）</li><li>## Risk Assessment</li><li>- 风险：角色继承层级过深可能导致权限计算性能下降</li><li>- 缓解：限制最大继承深度为 3 层，权限结果做预计算缓存</li></ul>
+<p>tasks.md —— 任务清单</p>
+<p>将 plan 拆解为可执行的原子任务，每个任务对应一个可独立验证的交付物。</p>
+<ul><li># Tasks</li><li>## Task 1: 数据库 Schema 设计</li><li>- 创建 roles、permissions、role_permissions、user_roles 四张表</li><li>- 支持角色继承的 parent_role_id 字段</li><li>- 验证：migration 脚本可在空库上成功执行</li><li>## Task 2: Casbin 适配层</li><li>- 实现 RBAC 模型的 Casbin 配置</li><li>- 支持通配符匹配</li><li>- 验证：单元测试覆盖率 &gt; 90%</li><li>## Task 3: 权限校验 API</li><li>- 实现 GET /api/v1/users/{userId}/permissions</li><li>- 集成 Redis 缓存</li><li>- 验证：压测 P95 &lt; 50ms</li><li>（后续任务省略）</li></ul>
+<h3 class="sub">2.3 constitution.md：不可变的项目原则</h3>
+<p>除了三文件体系，Spec Kit 还引入了一个重要概念——constitution.md。这是项目级别的 &quot;宪法&quot;，定义了不可违背的约束条件，所有 Spec 都必须遵守。</p>
+<ul><li># Project Constitution</li><li>## Immutable Principles</li><li>### 1. API Design</li><li>- 所有 API 遵循 RESTful 规范，版本化路径（/api/v1/...）</li><li>- 错误响应统一使用 RFC 7807 Problem Details 格式</li><li>- 所有 API 必须有 OpenAPI 3.0 文档</li><li>### 2. Security</li><li>- 所有用户输入必须经过校验和清洗</li><li>- 敏感数据（密码、Token）禁止出现在日志中</li><li>- 数据库查询必须使用参数化查询，禁止字符串拼接</li><li>### 3. Code Quality</li><li>- 单元测试覆盖率不低于 80%</li><li>- 所有公共方法必须有文档注释</li><li>- 禁止引入未经安全审计的第三方依赖</li><li>### 4. Infrastructure</li><li>- 所有服务必须支持优雅关闭（Graceful Shutdown）</li><li>- 配置项通过环境变量注入，禁止硬编码</li><li>- 日志格式统一使用结构化 JSON</li></ul>
+<p>constitution.md 的价值在于：它把团队的技术决策固化为 AI 的 &quot;潜意识&quot;。没有它，每个 Spec 都需要重复声明 &quot;要用参数化查询&quot; &quot;要写单元测试&quot; 这些基本约束。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>Spec 怎么写</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>好 Spec 六要素缺一不可，成功标准要写成 P95&lt;200ms 这类可测硬指标。</li><li>粒度检验：换技术栈实现 Spec 仍有效，说明没把 HOW 混进 WHAT。</li><li>淘特经验：Spec 要经 3-5 次“Spec→Plan→回看 Spec”迭代才合格。</li></ul><div class="pit"><ul><li>坏 Spec 四大问题：模糊、遗漏边界、缺乏理由、混入 HOW。</li></ul></div></div>
+<p>Spec 写作是 SDD 中最关键、也最容易被低估的环节。经验印证了这一点——DAY 0 花整整一天写 Spec，不是因为 &quot;仪式感&quot;，而是因为Spec 的质量直接决定了 DAY 1-6 的效率。</p>
+<h3 class="sub">3.1 好 Spec 的六要素</h3>
+<table><thead><tr><th>要素</th><th>作用</th><th>示例</th></tr></thead><tbody><tr><td>Problem Statement</td><td>定义 &quot;为什么做&quot;</td><td>&quot;当前系统不支持细粒度权限控制&quot;</td></tr><tr><td>Success Metrics</td><td>定义 &quot;做到什么程度算完&quot;</td><td>&quot;P95 &lt; 50ms，覆盖 20+ 权限类型&quot;</td></tr><tr><td>User Stories</td><td>定义 &quot;谁在什么场景下用&quot;</td><td>&quot;作为管理员，我可以创建自定义角色&quot;</td></tr><tr><td>Acceptance Criteria</td><td>定义 &quot;怎么验证&quot;</td><td>&quot;单用户多角色，权限取并集&quot;</td></tr><tr><td>Non-Goals</td><td>定义 &quot;什么不做&quot;</td><td>&quot;本期不做跨组织权限委托&quot;</td></tr><tr><td>Constraints</td><td>定义 &quot;技术约束&quot;</td><td>&quot;必须兼容现有 OAuth2.0 流程&quot;</td></tr></tbody></table>
+<h3 class="sub">3.2 好 Spec vs 坏 Spec：一组对比</h3>
+<p>坏 Spec：</p>
+<ul><li>系统需要一个快速的搜索功能。搜索结果应该相关且准确。</li><li>界面要美观易用。</li></ul>
+<p>这个 Spec 有四个致命问题：</p>
+<h3 class="sub">1. 模糊——&quot;快速&quot; 是多快？100ms？1s？10s？</h3>
+<h3 class="sub">2. 遗漏边界——搜索什么？全文？标题？支持模糊匹配吗？</h3>
+<h3 class="sub">3. 缺乏理由——为什么需要搜索功能？解决什么问题？</h3>
+<p>4. 混入了 HOW——&quot;界面要美观&quot; 是 UI Spec 的范畴，不应出现在后端功能 Spec 里</p>
+<p>好 Spec：</p>
+<ul><li>## Problem Statement</li><li>用户反馈在 10,000+ 文档的知识库中找到目标文档平均需要 3 分钟。</li><li>目标是将查找时间缩短到 10 秒以内。</li><li>## Success Metrics</li><li>- 搜索 API 响应时间 P95 &lt; 200ms</li><li>- 搜索结果 Top-5 相关性准确率 &gt; 85%（基于人工标注测试集）</li><li>- 支持中英文混合查询</li><li>## Non-Goals</li><li>- 不实现语义搜索（本期仅关键词匹配 + 分词）</li><li>- 不支持搜索附件内容（仅搜索文档标题和正文）</li></ul>
+<p>差异的本质：好 Spec 是可测试的，坏 Spec 是可解释的。</p>
+<p>&quot;系统应该很快&quot; 给了 AI 无限的解释空间——它可能选择一个 &quot;对它来说够快&quot; 的实现。&quot;P95 &lt; 200ms&quot; 则是一个硬约束，AI 必须确保实现满足这个指标，否则就是 fail。</p>
+<h3 class="sub">3.3 粒度控制：一个实用的检验标准</h3>
+<p>Spec 的粒度很难拿捏。太粗，AI 会自作主张填补大量细节；太细，本质上就是在写伪代码，失去了 SDD 的意义。</p>
+<p>Spec Kit 提出了一个优雅的检验标准：</p>
+<p>&quot;用不同技术栈实现这个 Spec，Spec 是否仍然有效？&quot;</p>
+<p>如果你的 Spec 写了 &quot;使用 Redis 的 ZSET 结构存储排行榜&quot;，那它只对 Redis 方案有效——换成 PostgreSQL 实现就失效了。这说明你把 HOW 混进了 WHAT。</p>
+<p>如果你的 Spec 写了 &quot;排行榜需支持实时更新，延迟不超过 1 秒，支持 Top-100 查询&quot;，那无论底层用 Redis、PostgreSQL 还是自研存储，这个 Spec 都成立。这才是正确的粒度。</p>
+<p>当然，Constraints 部分可以出现技术约束——但那是 &quot;外部限制&quot;（比如 &quot;必须使用现有 PostgreSQL 实例&quot;），不是 &quot;实现方案&quot;。</p>
+<h3 class="sub">3.4 淘特团队的实战经验</h3>
+<p>淘特团队在实践 SDD 时发现一个重要规律：Spec 编写需要 3-5 次迭代才合格。</p>
+<p>第一版 Spec 通常问题百出——遗漏边界条件、成功标准模糊、Non-Goals 不够明确。让 AI 基于第一版 Spec 生成 plan 之后再回头审视 Spec，往往能暴露出大量盲点。这个 &quot;Spec -&gt; Plan -&gt; Review Spec -&gt; 修改 Spec -&gt; 重新 Plan&quot; 的循环通常要跑 3-5 轮。</p>
+<p>这看似低效，实则是把传统开发中 &quot;开发到一半发现需求有问题&quot; 的代价前移到了成本最低的阶段。改一行 Spec 的成本远低于改一百行代码。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>工具生态全景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Spec Kit 通用、OpenSpec 轻量、Kiro 原生 IDE、QoderWork 的 Quest 模式贴合执行。</li><li>按通用性/轻量/生态选工具，Quest 自动写码、提 PR、跑测试。</li></ul></div>
+<p>SDD 已经形成了一个快速发展的工具生态。以下是主要工具的对比：</p>
+<table><thead><tr><th>维度</th><th>Spec Kit (GitHub)</th><th>OpenSpec (Fission-AI)</th><th>Kiro (AWS)</th><th>QoderWork (阿里)</th></tr></thead><tbody><tr><td>定位</td><td>Agent-agnostic 框架</td><td>轻量迭代工具</td><td>SDD-native IDE</td><td>Qoder Quest 执行引擎</td></tr><tr><td>Agent 支持</td><td>8+ Agent</td><td>25+ 工具</td><td>内置 Agent</td><td>Qoder 生态</td></tr><tr><td>核心特点</td><td>三文件体系 + constitution</td><td>轻量、快速迭代</td><td>完整 IDE 集成</td><td>Spec + Quest 并行执行</td></tr><tr><td>适用场景</td><td>通用项目</td><td>小型快速迭代</td><td>AWS 生态项目</td><td>阿里生态项目</td></tr><tr><td>学习曲线</td><td>中</td><td>低</td><td>中</td><td>中（需理解 Quest）</td></tr><tr><td>核心理念</td><td>Spec 即文档</td><td>Spec 即对话</td><td>Spec 即工作流</td><td>Spec 即任务单</td></tr></tbody></table>
+<p>各工具的差异化选择建议</p>
+<p>如果你追求通用性：选 Spec Kit。它不绑定任何特定 Agent，支持 Claude、GPT、Gemini 等主流模型，三文件体系清晰易懂。43.7k Star 说明社区认可度高。</p>
+<p>如果你追求轻量和速度：选 OpenSpec。它的核心理念是 &quot;Spec 不需要一步到位，可以在对话中迭代完善&quot;，对小型项目非常友好。</p>
+<p>如果你在 AWS 生态内：Kiro 是最省心的选择。SDD 工作流直接内嵌在 IDE 中，不需要自己搭建工具链。</p>
+<p>QoderWork 的 Quest 模式是最贴合 SDD 的执行引擎—— &quot;5 人 7 天&quot; 案例就是明证。Spec 写好后直接委派 Quest 执行，AI 自动写代码、提 PR、跑测试。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>实战数据</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>金融 SDD 实践 API 变更周期缩短 75%；精炼 Spec 让 LLM 代码错误减少 50%。</li><li>Stripe 以 Harness Engineering 交付 1300 个 AI PR 且可控。</li><li>无 Spec 约束 45% AI 代码含漏洞；代码重复率 4 年增 4 倍。</li></ul></div>
+<h3 class="sub">5.1 成功案例的硬数据</h3>
+<p>API 变更效率提升</p>
+<p>一篇 arXiv 论文记录了金融领域的 SDD 实践：API 变更周期缩短75%。原因很直接——当 API 的 Spec 已经完整定义了接口契约、错误码、数据格式时，AI 可以直接生成符合 Spec 的代码，省去了大量的沟通和返工。</p>
+<p>代码错误率下降</p>
+<p>研究数据显示：人工精炼 Spec 可以将 LLM 代码错误减少 50%。这不是说 AI 变聪明了，而是说好的 Spec 消除了 AI 的 &quot;猜测空间&quot;——错误往往来自 AI 对模糊需求的错误推断。</p>
+<p>Stripe 的规模化实践</p>
+<p>Stripe 通过 Harness Engineering 方法（SDD 是其重要组成部分）交付了1,300 个 AI PR。这个数字的意义不在于 &quot;多&quot;，而在于 &quot;可控&quot;——1,300 个 PR 没有引发系统性问题，说明 Spec 约束下的 AI 编程是可以规模化的。</p>
+<h3 class="sub">5.2 失败案例的警示数据</h3>
+<p>无 Spec 约束的安全灾难</p>
+<p>Veracode 2025 年的报告揭示了一个触目惊心的数字：45% 的 AI 生成代码包含安全漏洞。注意前提——这是无 Spec 约束时的数据。当 Spec 中明确定义了安全约束（如 &quot;必须使用参数化查询&quot; &quot;敏感数据禁止出现在日志中&quot;），漏洞率会大幅下降。</p>
+<p>这 45% 和前面的 &quot;错误减少 50%&quot; 形成了鲜明对比：</p>
+<table><thead><tr><th>场景</th><th>关键指标</th></tr></thead><tbody><tr><td>无 Spec 约束的 AI 编程</td><td>45% 代码含安全漏洞</td></tr><tr><td>有 Spec 约束的 AI 编程</td><td>代码错误减少 50%</td></tr></tbody></table>
+<p>代码重复率的隐性成本</p>
+<p>GitClear 对 2.11 亿行代码的研究发现：AI 编程时代的代码重复率4 年增长 4 倍。这不难理解——AI 倾向于 &quot;复制粘贴式&quot; 的解决方案，因为它的训练数据中充满了类似的模式。SDD 通过 constitution.md 中的代码规范约束和 plan.md 中的模块化设计，可以在一定程度上缓解这个问题，但无法完全消除。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>SDD vs Vibe Coding</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Vibe Coding 主张忘掉代码让 AI 全权处理，原型有效但不可持续。</li><li>三个月墙：项目变大后 AI 基于局部信息决策，新功能总破坏旧功能。</li><li>SDD 的 Spec 是代码压缩表示，AI 能读全局约束；二者是光谱两端可混合。</li></ul></div>
+<h3 class="sub">6.1 什么是 Vibe Coding</h3>
+<p>2025 年 2 月 2 日，Andrej Karpathy 在社交媒体上创造了 &quot;Vibe Coding&quot; 这个概念：</p>
+<p>&quot;Forget that the code even exists.&quot;（忘掉代码的存在。）</p>
+<p>Vibe Coding 的核心主张是：不要去读代码、不要去理解代码，用自然语言描述你要什么，让 AI 全权处理。如果报错了，就把错误信息扔给 AI，让它自己修。</p>
+<p>这听起来很诱人。在某些场景下，它确实有效——比如快速原型验证、个人工具脚本、一次性的数据处理任务。</p>
+<p>但问题在于：它不可持续。</p>
+<h3 class="sub">6.2 &quot;三个月墙&quot;：Vibe Coding 的生死劫</h3>
+<p>社区观察到一个反复出现的模式，被称为 &quot;三个月墙&quot;：</p>
+<table><thead><tr><th>阶段</th><th>时间</th><th>状态</th><th>典型表现</th></tr></thead><tbody><tr><td>兴奋期</td><td>1-3 个月</td><td>高产出</td><td>&quot;AI 太神了！一天搞定一个功能！&quot;</td></tr><tr><td>平台期</td><td>4-9 个月</td><td>停滞</td><td>&quot;为什么新功能总是破坏旧功能？&quot;</td></tr><tr><td>衰退期</td><td>10-15 个月</td><td>崩溃</td><td>&quot;这坨代码没人能维护了，不如重写&quot;</td></tr></tbody></table>
+<p>为什么会撞墙？因为 Vibe Coding 本质上是零上下文的编程。</p>
+<p>当项目只有几百行代码时，AI 可以 &quot;看到&quot; 全貌，它的推断和猜测大概率是对的。但当项目膨胀到几万行、几十个模块、几百个接口时，AI 的上下文窗口装不下全部代码——它开始基于局部信息做决策，而这些决策往往和其他模块冲突。</p>
+<p>SDD 的 Spec 恰好解决了这个问题：Spec 是代码的压缩表示。10 万行代码的项目，它的 Spec 体系可能只有几千行文本。AI 可以轻松读完所有 Spec，理解全局约束后再动手改代码。</p>
+<h3 class="sub">6.3 核心差异对比</h3>
+<table><thead><tr><th>维度</th><th>Vibe Coding</th><th>SDD</th></tr></thead><tbody><tr><td>核心假设</td><td>AI 能理解你的意图</td><td>AI 需要明确的规格才能正确执行</td></tr><tr><td>启动速度</td><td>极快</td><td>较慢（需要先写 Spec）</td></tr><tr><td>可维护性</td><td>差（无文档、无约束）</td><td>好（Spec 即文档）</td></tr><tr><td>可协作性</td><td>差（只有作者知道 &quot;vibes&quot;）</td><td>好（Spec 是共享语言）</td></tr><tr><td>安全性</td><td>差（45% 安全漏洞）</td><td>较好（Spec 约束安全边界）</td></tr><tr><td>适用规模</td><td>小项目（&lt; 1000 行）</td><td>中大型项目</td></tr><tr><td>天花板</td><td>三个月墙</td><td>取决于 Spec 体系质量</td></tr></tbody></table>
+<h3 class="sub">6.4 我的判断：不是非此即彼</h3>
+<p>Vibe Coding 和 SDD 不是对立的，而是一个光谱的两端。</p>
+<p>对于一个验证想法的周末项目，写 Spec 是过度工程化。对于一个要长期维护的生产系统，Vibe Coding 是慢性自杀。</p>
+<p>更务实的选择是混合策略：</p>
+<p>1. 探索阶段用 Vibe Coding——快速试错，验证可行性</p>
+<p>2. 一旦决定要做，立刻补 Spec——把探索阶段的发现固化为规格</p>
+<p>3. 进入正式开发后严格 SDD——所有变更先改 Spec 再改代码</p>
+<p>实践就是这个策略的一个变体：DAY 0 写 Spec 之前，团队必然已经对 QoderWork 的产品形态有了充分的探索和讨论（那属于更早的 Vibe 阶段），但一旦决定动手做，立刻切换到 Spec-Driven 模式。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>与 Harness Engineering 关系</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三层递进：Prompt→Context→Harness Engineering，SDD 处于后两者交叉地带。</li><li>Spec 是结构化上下文；constitution/spec/plan/tasks 四层构成完整 AI 驾驭框架。</li></ul></div>
+<p>如果你关注 AI 编程方法论的演进，会发现一条清晰的三层递进链：</p>
+<ul><li>Prompt Engineering -&gt; Context Engineering -&gt; Harness Engineering</li><li>Prompt Engineering： 关注 &quot;怎么写好一条指令&quot;</li><li>Context Engineering： 关注 &quot;怎么给 AI 提供足够且精准的上下文&quot;</li><li>Harness Engineering： 关注 &quot;怎么构建一个系统性的框架来约束和驱动 AI&quot;</li></ul>
+<p>SDD 位于Context Engineering 和 Harness Engineering 的交叉地带。</p>
+<p>从 Context Engineering 的角度看，Spec 就是一种高度结构化的上下文提供方式——它不是把所有代码丢给 AI（那太嘈杂），也不是只说一句话（那太模糊），而是提供了一个 &quot;恰到好处&quot; 的信息密度。</p>
+<p>从 Harness Engineering 的角度看，SDD 是 HE 的一个重要应用模式——constitution.md 是约束层，spec.md 是需求层，plan.md 是执行层，tasks.md 是调度层。这四层组合在一起，构成了一个完整的 &quot;AI 驾驭框架&quot;（Harness）。</p>
+<p>Stripe 交付 1,300 个 AI PR 的实践就是 HE 方法论的典型案例，而 SDD 是其中 &quot;确保每个 PR 都有明确规格和验收标准&quot; 的关键组件。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>五大陷阱与局限</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>五大陷阱：过度规格化、规格腐烂、规格官僚化、虚假信心、工具复杂性，各有缓解法。</li><li>SDD 非瀑布：Spec 是活文档，迭代粒度是单模块而非整个项目。</li></ul><div class="pit"><ul><li>过度规格化退化为伪代码；规格腐烂让 AI 基于过期 Spec 生成冲突代码；Spec 替代需求文档而非 Code Review。</li></ul></div></div>
+<p>SDD 不是银弹。在拥抱它之前，你需要正视以下五大陷阱：</p>
+<p>陷阱一：过度规格化（Over-Specification）</p>
+<p>症状：Spec 写得比代码还长，每个实现细节都规定得死死的。</p>
+<p>后果：本质上退化为 &quot;用自然语言写伪代码&quot;，完全失去了 SDD &quot;人定义 WHAT、AI 实现 HOW&quot; 的核心优势。AI 成了一个打字机，而不是一个有创造力的执行者。</p>
+<p>缓解：用前文提到的粒度检验标准——&quot;换一个技术栈实现，这个 Spec 是否仍然有效？&quot; 如果答案是否，说明你在 Spec 里混入了 HOW。</p>
+<p>陷阱二：规格腐烂（Spec Rot）</p>
+<p>症状：代码已经迭代了十几个版本，但 Spec 还停留在 V1。</p>
+<p>后果：Spec 和代码脱节，新人看 Spec 理解的和看代码理解的是两个系统。当需要 AI 做增量开发时，它基于过时的 Spec 生成的代码必然和现有代码冲突。</p>
+<p>缓解：团队的做法值得借鉴——DAY 3-4 中，&quot;发现需求或 BUG 立即写增量 Spec&quot;。Spec 的更新不是定期的仪式，而是和代码变更同步的日常操作。</p>
+<p>陷阱三：规格官僚化（Spec Bureaucracy）</p>
+<p>症状：改一个按钮的颜色也要走 &quot;写 Spec -&gt; Review Spec -&gt; 更新 Plan -&gt; 生成 Tasks&quot; 的全流程。</p>
+<p>后果：团队怨声载道，开始绕过 Spec 流程直接改代码，SDD 名存实亡。</p>
+<p>缓解：区分重大变更和微小变更。不是所有变更都需要完整的 Spec 流程。一个实用的判断标准：如果这个变更可能影响其他模块的行为，就需要 Spec；如果它是纯粹的局部修改（改文案、调样式），直接改就行。</p>
+<p>陷阱四：虚假信心（False Confidence）</p>
+<p>症状：因为有了详尽的 Spec，团队放松了对 AI 生成代码的审查。</p>
+<p>后果：Spec 只定义了 &quot;做什么&quot;，它不能保证 AI 的实现是正确的、安全的、高效的。45% 的安全漏洞数据提醒我们——即使有 Spec，AI 代码仍需要严格的 Review。</p>
+<p>缓解：Spec 替代的是需求文档，不是 Code Review。SDD 的 Validate 阶段不是走过场，而是整个流程中最后也最重要的安全网。</p>
+<p>陷阱五：工具复杂性（Tool Overhead）</p>
+<p>症状：为了 &quot;做好 SDD&quot;，团队引入了 Spec Kit + Kiro + CI/CD 集成 + 自定义校验脚本 + Spec Linter...</p>
+<p>后果：工具链本身成为了负担。团队花在配置工具上的时间超过了写 Spec 的时间。</p>
+<p>缓解：从最简单的方案开始。一个 spec.md 文件 + 一个你已经在用的 AI Agent，这就够了。不要为了 SDD 而 SDD。</p>
+<p>正面回应：&quot;SDD 是 Markdown 版的瀑布模型&quot; 批评</p>
+<p>这是 SDD 面临的最尖锐的批评，值得认真对待。</p>
+<p>批评者的逻辑是：SDD 要求先写完 Spec 再写代码，这本质上就是瀑布模型——先完整定义需求，再线性地实现。而瀑布模型早已被敏捷运动证伪，SDD 不过是换了个马甲。</p>
+<p>我的判断：这个批评有一半道理，但结论是错的。</p>
+<p>&quot;有一半道理&quot; 是因为：如果你把 SDD 实践成 &quot;花两周写一个巨大的 Spec，然后完全不改地执行&quot;，那确实是瀑布模型的翻版，必然失败。</p>
+<p>&quot;结论是错的&quot; 是因为：SDD 的 Spec 是活的，不是死的。团队的 DAY 3-4 就是最好的反驳——Spec 不是一次写完的圣经，而是随时可以增量更新的活文档。发现新需求？加一个增量 Spec。发现 BUG？补一个约束条件。这更接近 &quot;持续需求细化&quot; 而不是 &quot;瀑布式需求冻结&quot;。</p>
+<p>更本质的区别在于迭代粒度：</p>
+<ul><li>瀑布模型的迭代粒度是 整个项目 （需求全部定义完 -&gt; 全部开发完 -&gt; 全部测试完）</li><li>SDD 的迭代粒度是 单个功能模块 （一个模块的 Spec -&gt; 该模块的 Plan -&gt; 该模块的实现 -&gt; 该模块的验证，然后进入下一个模块）</li></ul>
+<p>SDD 实际上更接近 &quot;Spec 级别的迭代&quot;——每个 Spec 就是一个最小可交付单元，写完就执行、执行完就验证、验证完就下一个。这和敏捷的 Sprint 理念是兼容的，只是把 User Story 升级成了更结构化的 Spec。</p>
+<p>另外一个反对 &quot;瀑布论&quot; 的事实是：SDD 中 Spec 的平均生命周期远短于瀑布模型中需求文档的生命周期。一个 Spec 从编写到被 AI 实现可能只需要几小时甚至几分钟，而瀑布模型的需求文档生命周期以月计。</p>
+<p>当然，SDD 确实有瀑布化的风险。但这是实践问题，不是方法论问题。一把菜刀可以切菜也可以伤人，问题不在刀上。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>三级光谱模型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三级光谱：L1 Spec-First 主流、L2 Spec-Anchored 测试锚定、L3 Spec-as-Source 代码由 Spec 编译。</li><li>L2 用 Acceptance Criteria 自动生成测试，CI 拒绝漂移合并；L3 人只编辑 Spec。</li></ul></div>
+<p>SDD 并不是一个固定不变的方法论，它正在沿着一个三级光谱演进：</p>
+<table><thead><tr><th>级别</th><th>名称</th><th>当前状态</th><th>特征</th><th>代表实践</th></tr></thead><tbody><tr><td>L1</td><td>Spec-First</td><td>当前主流</td><td>编码前写 Spec，但 Spec 和代码可能漂移</td><td>Spec Kit, 大多数团队</td></tr><tr><td>L2</td><td>Spec-Anchored</td><td>先进实践</td><td>Spec 和代码持续同步，测试强制执行一致性</td><td>Kiro 的内置工作流</td></tr><tr><td>L3</td><td>Spec-as-Source</td><td>未来愿景</td><td>人只编辑 Spec，代码完全由 AI 生成和维护</td><td>尚无成熟实践</td></tr></tbody></table>
+<p>L1 Spec-First：编码前写 Spec，但 Spec 可能漂移</p>
+<p>这是目前大多数团队的实践状态。Spec 在项目初期发挥了巨大价值，但随着项目推进，Spec 和代码之间的漂移几乎不可避免——因为没有自动化机制来强制保持一致。</p>
+<p>L2 Spec-Anchored：持续同步，测试强制执行</p>
+<p>这是当前先进团队正在探索的状态。核心思路是：用自动化测试来锚定 Spec 和代码的一致性。</p>
+<p>具体做法是：从 Spec 的 Acceptance Criteria 自动生成测试用例，任何代码变更都必须通过这些测试。如果代码变了但测试（即 Spec 的自动化映射）没变，CI 会拒绝合并。这就像 &quot;类型系统&quot; 防止类型错误一样，&quot;Spec 测试&quot; 防止 Spec 漂移。</p>
+<p>AWS Kiro 正在朝这个方向做——它的 SDD 工作流中内置了 Spec -&gt; Test 的自动生成链路。</p>
+<p>L3 Spec-as-Source：人只编辑 Spec，代码完全生成</p>
+<p>这是 SDD 的终极愿景：代码不是被 &quot;编写&quot; 的，而是被 &quot;编译&quot; 的——从 Spec 编译而来。</p>
+<p>在这个范式下，人类工程师的工作完全聚焦在 Spec 层面。需要改功能？改 Spec。需要修 Bug？改 Spec。需要重构？改 Spec。AI 负责将 Spec 的变更自动反映到代码中。</p>
+<p>这听起来像科幻，但想想看——团队的 DAY 3-4 已经有了 L3 的雏形：发现 BUG -&gt; 写增量 Spec -&gt; Quest 自动修复代码并提 PR。如果这个循环足够顺滑、覆盖足够全面，L3 就不再是幻想。</p>
+<p>Thoughtworks 技术雷达也在关注这个趋势。在 Vol.33（2025.11）中，SDD 被放在Assess环——意味着 &quot;值得研究，但尚未准备好全面采用&quot;。到了 Vol.34，越来越多团队开始采用 SDD，它正在向 Trial 环迁移。</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>DAY 0 把需求边界、成功标准、约束固化为 Spec，是后六天的导航系统。</li><li>SDD 本质价值：不让 AI 变聪明，让 AI 变可控；从写一个 spec.md 开始。</li></ul></div>
+<p>回到 &quot;5 人 7 天&quot; 案例。</p>
+<p>如果只看表面，你会觉得奇迹发生在 DAY 1-6——AI 飞速写代码、自动提 PR、并行推进多个任务。</p>
+<p>但真正的关键手在 DAY 0。</p>
+<p>DAY 0 的一天 &quot;什么都没做&quot;，实际上做了最重要的一件事：把人类的思考——需求边界、成功标准、技术约束、非目标清单——结构化地固化到了 Spec 中。</p>
+<p>这些 Spec 成为了后面六天的导航系统。5 个人之所以能驾驭 AI 并行推进大量任务而不失控，不是因为他们有超强的并行管理能力，而是因为每个 Quest 都有一个清晰的 Spec 锚定——AI 知道要做什么、不做什么、做到什么程度算完。</p>
+<p>这就是 SDD 的本质价值：它不让 AI 变聪明，它让 AI 变可控。</p>
+<p>在 AI 编程能力以月为单位飞速进化的今天，&quot;让 AI 变聪明&quot; 不是你需要操心的事——模型厂商会卷。你真正需要操心的是：当 AI 越来越强大时，你能不能驾驭它？</p>
+<p>SDD 给出的答案是：与其试图理解和控制 AI 的每一行代码，不如把精力放在定义那个 &quot;WHAT&quot;——因为 WHAT 永远是人类的领地。</p>
+<p>从今天开始，试着在下一个功能需求前先写一个 spec.md。</p>
+<p>不需要完美，3-5 次迭代后它会变好。不需要工具链，一个 Markdown 文件就够了。不需要全员推广，从一个人、一个模块开始就行。</p>
+<p>DAY 0 是最贵的一天，也是最值的一天。</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>SDD vs Vibe Coding</h4><p>Vibe Coding 零上下文、启动快但撞“三个月墙”；SDD 以 Spec 压缩全局上下文，启动慢但可维护、可协作、可规模化。</p><a class="src-link" href="#sec-06">原文 → SDD vs Vibe Coding</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>版本控制的对象</h4><p>Microsoft 点评：“SDD is version control for your thinking”，管理思考演变而非代码演变；代码可被 AI 秒级重写，决策才最有价值。</p><a class="src-link" href="#sec-01">原文 → SDD 是什么</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>5 人 7 天实验</h4><p>5 人 7 天用 Qoder 开发出已上线产品 QoderWork，完成传统 20 人数周工作量；DAY 0 只写 Spec、零行代码。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Spec 提效数据</h4><p>金融 SDD 实践 API 变更周期缩短 75%；人工精炼 Spec 让 LLM 代码错误减少 50%；Stripe 交付 1300 个 AI PR。</p><a class="src-link" href="#sec-05">原文 → 实战数据</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>无 Spec 的代价</h4><p>无 Spec 约束时 45% AI 生成代码含安全漏洞；GitClear 研究显示代码重复率 4 年增长 4 倍。</p><a class="src-link" href="#sec-05">原文 → 实战数据</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>spec.md 骨架</h4><p>含 Problem Statement、Success Metrics、User Stories、Acceptance Criteria、Non-Goals、Constraints；成功标准必须可测试（如 P95&lt;50ms）。</p><a class="src-link" href="#sec-02">原文 → 完整流程拆解</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>好 Spec vs 坏 Spec</h4><p>“系统应该很快”可解释但不可测；“P95&lt;200ms”是硬约束。好 Spec 可测试，坏 Spec 只可解释。</p><a class="src-link" href="#sec-03">原文 → Spec 怎么写</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>SDD 五大陷阱</h4><p>过度规格化、规格腐烂、规格官僚化、虚假信心、工具复杂性；分别用粒度检验、增量 Spec、区分变更大小、严格 Review、最小方案缓解。</p><a class="src-link" href="#sec-08">原文 → 五大陷阱与局限</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>不是瀑布模型</h4><p>瀑布迭代粒度是整个项目且需求冻结；SDD 迭代粒度是单个模块，Spec 是随时可增量更新的活文档。</p><a class="src-link" href="#sec-08">原文 → 五大陷阱与局限</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>三级光谱</h4><p>L1 Spec-First：先写 Spec 但会漂移；L2 Spec-Anchored：测试强制同步；L3 Spec-as-Source：代码由 Spec 编译生成。</p><a class="src-link" href="#sec-09">原文 → 三级光谱模型</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>SDD 的本质</h4><p>SDD 不让 AI 变聪明，而是让 AI 变可控：每个 Quest 有清晰 Spec 锚定，知道做什么、不做什么、做到什么程度。</p><a class="src-link" href="#sec-10">原文 → 结语</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把“做什么”写进 spec.md，让 AI 的推断变成有锚点的执行。</li>
+          <li>成功标准必须可测试：用 P95 指标替代“快”、“好用”这类形容词。</li>
+          <li>从最小方案开始：一个 spec.md 加一个 AI Agent，先小步跑起来。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559877&amp;idx=1&amp;sn=bc1f8fef9cb91d8e52aece383040d265" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559877&amp;idx=1&amp;sn=bc1f8fef9cb91d8e52aece383040d265</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

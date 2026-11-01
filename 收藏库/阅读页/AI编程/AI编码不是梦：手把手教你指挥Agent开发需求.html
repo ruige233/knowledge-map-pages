@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">AI编码不是梦：手把手教你指挥Agent开发需求</h1>
+  <p class="lede">用Agent+Prompt分层+技术方案模板，把AI编码落地到后端需求开发</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 63 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>应用层编码</a>
+          <a href="#sec-02"><span class="n">02</span>数据层编码</a>
+          <a href="#sec-03"><span class="n">03</span>业务逻辑层编码</a>
+          <a href="#sec-04"><span class="n">04</span>代生成质量建议</a>
+          <a href="#sec-05"><span class="n">05</span>工程结构建议</a>
+          <a href="#sec-06"><span class="n">06</span>AI幻觉问题</a>
+          <a href="#sec-07"><span class="n">07</span>确定性要求</a>
+          <a href="#sec-08"><span class="n">08</span>现实复杂性</a>
+          <a href="#sec-09"><span class="n">09</span>提效平衡点</a>
+          <a href="#sec-10"><span class="n">10</span>技术方案模板</a>
+          <a href="#sec-11"><span class="n">11</span>项目资料章节</a>
+          <a href="#sec-12"><span class="n">12</span>需求价值章节</a>
+          <a href="#sec-13"><span class="n">13</span>需求分析章节</a>
+          <a href="#sec-14"><span class="n">14</span>术语解释章节</a>
+          <a href="#sec-15"><span class="n">15</span>系统工程结构</a>
+          <a href="#sec-16"><span class="n">16</span>Prompt分层</a>
+          <a href="#sec-17"><span class="n">17</span>案例1数据层</a>
+          <a href="#sec-18"><span class="n">18</span>案例2数据层</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 应用层编码</a>
+          <a href="#sec-02">02 数据层编码</a>
+          <a href="#sec-03">03 业务逻辑层编码</a>
+          <a href="#sec-04">04 代生成质量建议</a>
+          <a href="#sec-05">05 工程结构建议</a>
+          <a href="#sec-06">06 AI幻觉问题</a>
+          <a href="#sec-07">07 确定性要求</a>
+          <a href="#sec-08">08 现实复杂性</a>
+          <a href="#sec-09">09 提效平衡点</a>
+          <a href="#sec-10">10 技术方案模板</a>
+          <a href="#sec-11">11 项目资料章节</a>
+          <a href="#sec-12">12 需求价值章节</a>
+          <a href="#sec-13">13 需求分析章节</a>
+          <a href="#sec-14">14 术语解释章节</a>
+          <a href="#sec-15">15 系统工程结构</a>
+          <a href="#sec-16">16 Prompt分层</a>
+          <a href="#sec-17">17 案例1数据层</a>
+          <a href="#sec-18">18 案例2数据层</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>前情介绍</p>
+<p>AI已经持续火爆3年有余了，相关知识及理论本文不再赘述。本文主要聚焦于AI实践应用，首先从实操讲起（可直接复刻），然后再是实践背后的设计及思考，接着列举了团队在生产中的实践案例，最后谈谈感想展望。</p>
+<ul><li>实践场景： 后端领域开发</li><li>AI编码工具： 可使用 通义灵码等（ 可 在生成的rule文件夹下创建多规则并按需选择， 本文实践由其他内部 AI 软件进行 ）</li><li>AI大模 型 ： Qwen-Max（编码，默认模型）、Claude-4-Sonnet（生成工程结构）</li></ul>
+<p>实践拆解</p>
+<p>本章节以简单的增删改查为例来演示及说明AI在需求编码中的实践流程及应用，但并不意味着AI不能写业务逻辑，实际上我们已上线的需求业务逻辑也都先由AI编码完成。先睹为快（视频是一口气录制的，全程由AI完成编码及文件创建，无剪辑无快进）：</p>
+<p>🎬点击观看视频</p>
+<p>视频中AI编码过程说明：接口定义-&gt;接口文档（至此再也不会成为开发瓶颈了）-&gt;建表shema（复制后可直接在DB控制台通过建表语句执行建表）-&gt;持久化层-&gt;业务逻辑层-&gt;接口实现。实际研发中也是按照这个过程分开执行的，未来继续探索更加丝滑的过程一体化编码。</p>
+<p>材料准备</p>
+<p>1.技术方案：技术方案模版参考（见文末），AI编写代码的依据，复制到钉钉文档编辑好后转为markdown格式，专门建个目录存放。</p>
+<p>2.工程结构：代码工程的详细目录结构，借助AI生成，用来指导AI将代码文件放至合适的工程目录下。</p>
+<p>3.内部AI软件（可使用通义灵码等）：AI编码工具，本文实践使用的相关能力如下（具体介绍见官方文档）：</p>
+<p>a.Agent：类似自然人，有大脑、有手、有脚，可自动完成各种动作。（与之对应是Chat，只有大脑，需要手动采纳代码）</p>
+<p>b.Copilot Rules：可用来沉淀Prompt、工程结构等可复用的相关资料，会在每次会话中作为上下文带给大模型，以实现模型输出可控及Prompt等资产共享。</p>
+<p>i.User Rules：全局Rules，在所有Agent及行内会话生效。</p>
+<p>ii.Project Rules：工程级Rules，只在当前工程中生效，也是本文实践使用重点。当前只有Always（一直生效）、Never（可手动选择生效）两种模式，相比Cursor有4种模式，但主打够用，如何呢，又能怎！</p>
+<p>接下来按照下述拆解步骤，可以尽情享受一边喝茶一边指挥AI牛马来干活的时刻了。</p>
+<p>分层拆解</p>
+<p>说明：本章节每个小结由3部分组成：Agent提示词+Prompt Rule+AI输出截图，前2部分可直接复制，必要时进行微调即可。另外只有生成的工程结构的rule有必要设置为Always模式，其他rule均设置为Never，需要哪个选哪个。</p>
+<p>工程结构</p>
+<p>根据工程结构prompt生成当前工程的目录结构</p>
+<p>注意：claude-4-Sonnet生成的目录结构是最全面且最准确的，其他模型怎么调prompt都差点意思</p>
+<ul><li>帮我生成当前工程的文件夹目录树并用*中文注释*，生成结果以*树形结构*输出：</li><li>1. 排除target目录和.git目录，其他目录保留。</li><li>2. 使用最高效的方式列出每个工程模块的文件夹目录树，直到叶节点文件夹，但又不能包含具体文件。</li><li>3. 生成结果整合到一个”工程结构.aonerule“文件中，并放在aone_copilot合适目录下。</li><li>------------------------------</li><li>下面是其中一个模块输出格式示例：</li><li>fulfill-admin-service/    # 服务层模块，主要包含业务逻辑和服务配置。</li><li>├── src/</li><li>├── main/</li><li>├── java/</li><li>└── com/</li><li>└── ifp/</li><li>└── service/</li><li>├── config/                # 配置类</li><li>│   ├── diamod  # diamod配置</li><li>│   ├── model  # 数据模型配置</li><li>│   ├── resource  # 资源配置配置</li><li>│   └── xstream  # xstream配置</li><li>└── fbi/          # fbi类</li><li>└── resources/                             # 资源文件目录</li><li>└── explain-mapping/                         # 解释映射配置</li></ul>
+<p>具体内容：</p>
+<ul><li># IFP智能运营平台工程结构</li><li>## 项目概述</li><li>本项目是一个基于Maven的多模块智能运营平台，主要用于履约管理、异常处理、机器人调度等业务功能。</li><li>## 工程结构树</li><li>```</li><li>ifp-intelligent-ops/                           # IFP智能运营平台根目录</li><li>├── .aone_copilot/                             # Aone Copilot配置目录</li><li>│   └── rules/                                 # 规则配置文件目录</li><li>├── APP-META/                                  # 应用元数据配置</li><li>│   └── docker-config/                         # Docker配置文件目录</li><li>├── TRequest/                                  # 技术方案文档目录</li><li>├── shell/                                     # Shell脚本目录</li><li>│   ├── batchRestart/                          # 批量重启脚本</li><li>│   └── cleanLog/                              # 日志清理脚本</li><li>├── fulfill-admin-adapter/                     # 适配器模块，负责外部系统接口适配</li><li>│   └── src/</li><li>│       └── main/</li><li>│           └── java/</li><li>│               └── com/</li><li>│                   └── ifp/</li><li>│                       └── adapter/</li><li>│                           ├── DTO/           # 数据传输对象</li><li>│                           ├── fbi/           # FBI相关适配</li><li>│                           └── touch/         # Touch系统适配</li><li>├── fulfill-admin-archive/                     # 归档模块，负责数据归档和历史数据管理</li><li>│   └── src/</li><li>│       └── main/</li><li>│           └── java/</li><li>│               └── com/</li><li>│                   └── ifp/</li><li>│                       └── archive/</li><li>│                           ├── common/        # 归档公共组件</li><li>│                           ├── param/         # 归档参数</li><li>│                           └── service/       # 归档服务</li><li>│                               └── impl/      # 服务实现</li><li>├── fulfill-admin-client/                      # 客户端模块，提供外部调用接口</li><li>│   └── src/</li><li>│       └── main/</li><li>│           └── java/</li><li>│               └── com/</li><li>│                   └── ifp/</li><li>│                       └── client/</li><li>│                           ├── constants/     # 客户端常量</li><li>│                           ├── enums/         # 枚举定义</li><li>│                           ├── model/         # 数据模型</li><li>│                           │   ├── duty/      # 值班相关模型</li><li>│                           │   ├── fbi/       # FBI相关模型</li><li>│                           │   └── sls/       # SLS日志相关模型</li><li>│                           ├── protocol/      # 协议定义</li><li>│                           │   ├── dto/       # 协议数据传输对象</li><li>│                           │   └── result/    # 协议返回结果</li><li>│                           ├── request/       # 请求对象</li><li>│                           ├── result/        # 返回结果</li><li>│                           ├── service/       # 客户端服务接口</li><li>│                           └── util/          # 工具类</li><li>├── fulfill-admin-common/                      # 公共模块，包含通用组件和工具</li><li>│   └── src/</li><li>│       └── main/</li><li>│           └── java/</li><li>│               └── com/</li><li>│                   └── ifp/</li><li>│                       └── common/</li><li>│                           ├── constants/     # 系统常量</li><li>│                           ├── domain/        # 领域对象</li><li>│                           │   ├── service/   # 领域服务</li><li>│                           │   └── xflush/    # 刷新相关</li><li>│                           ├── enums/         # 枚举定义</li><li>│                           ├── exception/     # 异常定义</li><li>│                           ├── switchcenter/  # 开关中心</li><li>│                           └── util/          # 通用工具类</li><li>├── fulfill-admin-dal/                         # 数据访问层模块，负责数据库操作</li><li>│   └── src/</li><li>│       └── main/</li><li>│           ├── java/</li><li>│           │   └── com/</li><li>│           │       └── ifp/</li><li>│           │           └── dal/</li><li>│           │               ├── config/        # 数据库配置</li><li>│           │               ├── dao/           # 数据访问对象</li><li>│           │               │   ├── archive/   # 归档数据访问</li><li>│           │               │   ├── dump/      # 导出数据访问</li><li>│           │               │   ├── ifp/       # IFP数据访问</li><li>│           │               │   │   └── basic/ # 基础数据访问</li><li>│           │               │   ├── pos/       # POS数据访问</li><li>│           │               │   ├── query/     # 查询数据访问</li><li>│           │               │   └── reboot/    # 重启数据访问</li><li>│           │               ├── dataobject/    # 数据对象</li><li>│           │               ├── mapper/        # MyBatis映射器</li><li>│           │               └── model/         # 数据模型</li><li>│           └── resources/</li><li>│               ├── mappers/                   # MyBatis映射文件</li><li>│               │   ├── ifp_service_center/    # IFP服务中心映射</li><li>├── fulfill-admin-metaq/                       # 消息队列模块，负责消息处理</li><li>│   └── src/</li><li>├── fulfill-admin-service/                     # 服务层模块，主要包含业务逻辑和服务配置</li><li>│   └── src/</li><li>│       └── main/</li><li>│           ├── java/</li><li>│           │   └── com/</li><li>│           │       └── ifp/</li><li>│           │           └── service/</li><li>│           │               ├── abnormal/      # 异常处理服务</li><li>│           │               ├── biz/           # 业务服务</li><li>│           │               ├── bizquality/    # 业务质量服务</li><li>│           │               │   ├── operate/   # 操作相关</li><li>│           │               │   └── strategy/  # 策略相关</li><li>│           │               ├── config/        # 配置类</li><li>│           │               │   ├── diamond/   # Diamond配置</li><li>│           │               │   ├── model/     # 数据模型配置</li><li>│           │               │   ├── resource/  # 资源配置</li><li>│           │               │   └── xstream/   # XStream配置</li><li>│           │               ├── eagleeye/      # 鹰眼监控服务</li><li>│           │               ├── fbi/           # FBI服务</li><li>│           │               ├── judge/         # 判断服务</li><li>│           │               │   ├── constants/ # 判断常量</li><li>│           │               │   └── rules/     # 判断规则</li><li>│           │               ├── model/         # 服务模型</li><li>│           │               │   └── vo/        # 值对象</li><li>│           │               ├── mq/            # 消息队列服务</li><li>│           │               ├── protocol/      # 协议服务</li><li>│           │               │   ├── business/  # 业务协议</li><li>│           │               │   ├── impl/      # 协议实现</li><li>│           │               │   └── param/     # 协议参数</li><li>│           │               ├── provider/      # 服务提供者</li><li>│           │               ├── proxy/         # 代理服务</li><li>│           │               │   └── impl/      # 代理实现</li><li>│           │               ├── qianwen/       # 千问AI服务</li><li>│           │               ├── report/        # 报表服务</li><li>│           │               │   ├── entity/    # 报表实体</li><li>│           │               │   └── handler/   # 报表处理器</li><li>│           │               ├── robot/         # 机器人服务</li><li>│           │               │   ├── order/     # 订单机器人</li><li>│           │               │   ├── protocol/  # 机器人协议</li><li>│           │               │   ├── schedule/  # 调度机器人</li><li>│           │               │   └── slslog/    # SLS日志机器人</li><li>│           │               ├── schedulerx/    # SchedulerX调度服务</li><li>│           │               ├── sls/           # SLS日志服务</li><li>│           │               │   ├── processor/ # 日志处理器</li><li>│           │               │   └── query/     # 日志查询</li><li>│           │               ├── test/          # 测试服务</li><li>│           │               ├── tt/            # TT工单服务</li><li>│           │               └── util/          # 服务工具类</li><li>│           └── resources/</li><li>│               └── explain-mapping/           # 解释映射配置</li><li>├── fulfill-admin-start/                       # 启动模块，应用程序入口和Web资源</li><li>│   └── src/</li><li>│       ├── main/</li><li>│       │   ├── java/</li><li>│       │   │   └── com/</li><li>│       │   │       └── ifp/</li><li>│       │   │           └── start/</li><li>│       │   │               ├── config/        # 启动配置</li><li>│       │   │               ├── controller/    # Web控制器</li><li>│       │   │               │   ├── duty/      # 值班相关控制器</li><li>│       │   │               │   ├── external/  # 外部接口控制器</li><li>│       │   │               │   ├── fbi/       # FBI控制器</li><li>│       │   │               │   ├── oms/       # OMS控制器</li><li>│       │   │               │   ├── page/      # 页面控制器</li><li>│       │   │               │   ├── qianwen/   # 千问控制器</li><li>│       │   │               │   ├── robot/     # 机器人控制器</li><li>│       │   │               │   └── sls/       # SLS控制器</li><li>│       │   │               └── interceptor/   # 拦截器</li><li>│       │   └── resources/</li><li>│       │       ├── static/                    # 静态资源</li><li>│       │       │   ├── adminlte/              # AdminLTE主题</li><li>│       │       │   │   ├── css/               # CSS样式</li><li>│       │       │   │   ├── js/                # JavaScript脚本</li><li>│       │       │   │   └── plugins/           # 插件</li><li>│       │       │   │       ├── font-awesome/  # FontAwesome图标</li><li>│       │       │   │       └── ionicons/      # Ionicons图标</li><li>│       │       │   ├── bootstrap/             # Bootstrap框架</li><li>│       │       │   │   ├── css/               # CSS样式</li><li>│       │       │   │   ├── fonts/             # 字体文件</li><li>│       │       │   │   └── js/                # JavaScript脚本</li><li>│       │       │   ├── jquery/                # jQuery库</li><li>│       │       │   ├── jsoneditor/            # JSON编辑器</li><li>│       │       │   │   └── img/               # 图片资源</li><li>│       │       │   └── main/                  # 主要资源</li><li>│       │       │       ├── css/               # CSS样式</li><li>│       │       │       ├── img/               # 图片资源</li><li>│       │       │       └── js/                # JavaScript脚本</li><li>│       │       └── velocity/                  # Velocity模板</li><li>│       │           ├── layout/                # 布局模板</li><li>│       │           └── templates/             # 页面模板</li><li>│       │               ├── modify/            # 修改页面模板</li><li>│       │               ├── outer/             # 外部页面模板</li><li>│       │               ├── querytool/         # 查询工具模板</li><li>│       │               └── stable/            # 稳定页面模板</li><li>│       └── test/</li><li>│           ├── java/</li><li>│           │   └── com/</li><li>│           │       └── ifp/</li><li>│           │           └── test/</li><li>│           │               ├── autoconfig/    # 自动配置测试</li><li>│           │               ├── diamond/       # Diamond测试</li><li>│           │               └── sls/           # SLS测试</li><li>│           └── resources/                     # 测试资源</li><li>└── fulfill-admin-test/                        # 测试模块，包含集成测试和单元测试</li><li>└── src/</li><li>├── main/</li><li>│   └── java/</li><li>│       ├── com/</li><li>│       │   ├── auto/                  # 自动化测试</li><li>│       │   ├── dto/                   # 测试DTO</li><li>│       │   └── ifp/                   # IFP测试</li><li>└── test/</li><li>├── java/</li><li>│   └── com/</li><li>│       └── ifp/</li><li>│           ├── common/            # 公共测试</li><li>│           └── config/            # 配置测试</li><li>└── resources/</li><li>└── ddl/                       # 数据库DDL脚本</li><li>```</li><li>## 模块说明</li><li>### 核心业务模块</li><li>- **fulfill-admin-service**: 核心业务逻辑层，包含机器人调度、异常处理、质量监控等主要功能</li><li>- **fulfill-admin-dal**: 数据访问层，负责与数据库交互，支持多数据源</li><li>### 接口和适配模块</li><li>- **fulfill-admin-client**: 对外提供的客户端SDK，包含接口定义和调用工具</li><li>- **fulfill-admin-adapter**: 外部系统适配器，负责与FBI、Touch等系统集成</li><li>### 支撑模块</li><li>- **fulfill-admin-common**: 公共工具和组件，提供通用功能支持</li><li>- **fulfill-admin-start**: 应用启动模块，包含Web界面和启动配置</li><li>- **fulfill-admin-archive**: 数据归档模块，负责历史数据管理</li><li>- **fulfill-admin-metaq**: 消息队列处理模块</li><li>- **fulfill-admin-test**: 测试模块，包含集成测试和单元测试</li><li>### 运维支持</li><li>- **shell/**: 运维脚本，包含应用重启、日志清理等自动化脚本</li><li>- **APP-META/**: 应用部署配置，包含各环境的Docker配置</li><li>## 技术架构特点</li><li>1. **分层架构**: 采用经典的分层架构模式，职责清晰</li><li>2. **模块化设计**: 各模块独立，便于维护和扩展</li><li>3. **多数据源支持**: 支持多个数据库的数据访问</li><li>4. **消息驱动**: 集成MetaQ消息队列，支持异步处理</li><li>5. **可视化管理**: 提供Web管理界面，支持可视化操作</li></ul>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>应用层编码</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>接口定义：按技术方案应用服务章节生成接口，入参&gt;3封装Request，出参用DTO并加Result包装。</li><li>接口文档：按方法签名生成JSON出入参，含继承组合字段，不假设不遗漏。</li><li>接口实现：ServiceI/ServiceImpl后缀，trycatch包裹并打印异常，catch后不再抛出。</li></ul><div class="pit"><ul><li>禁止使用BeanUtils或类似工具做对象转换。</li><li>出参禁止使用void类型。</li></ul></div></div>
+<p>接口定义</p>
+<p>参照三层架构，根据*接口定义prompt*的提示生成应用层的接口定义（包括出、入参定义），已存在的接口不要重复定义</p>
+<ul><li>【目标需求】</li><li>根据__技术方案文档__中“应用服务”章节的*服务接口*和*服务方法*，为每个服务接口都生成相应的接口类代码，同时确保接口设计符合SOLID原则（**应用层接口定义**）。</li><li>【设计要求】</li><li>1. **入参设计**：</li><li>- 复杂入参：方法入参个数大于3个时，首先将参数封装为 Request 后缀的复杂类型，然后再将 Request对象作为入参（比如 OrderRequest ），相同服务接口内方法的复杂入参须共享 OrderRequest。</li><li>- 简单入参：方法入参个数小于等于3个时，直接使用原始参数作为入参。</li><li>2. **出参设计**：</li><li>- 出参类以大写 DTO 作为后缀，比如 OrderDTO（简单类型除外，比如 Boolean）。</li><li>- 出参要合理且有意义，优先使用 Boolean 等简单类型，禁止使用void类型。</li><li>- 出参应使用 xxxResult 或 xxxResponse 类型再包装作为方法完整出参，比如 `SingleResult&lt;OrderDTO&gt;`、`SingleResult&lt;Boolean&gt;`（需替换为实际输入的合适代码类）。</li><li>3. **路径要求**：</li><li>- 接口路径需符合__工程结构文档__中的规范，确保代码组织清晰。</li><li>4. **注释要求**：</li><li>- 所有接口和参数类均需添加 JavaDoc 标准中文注释，说明其功能和用途。</li><li>【实现步骤】</li><li>1. **提取服务接口与服务方法**</li><li>- 遵照事实：仅从__技术方案文档__提到的内容进行分析，不要编造内容。</li><li>- 分析__技术方案文档__中的“应用服务”章节，列出所有服务接口及其对应的服务方法。每个服务接口应明确其职责范围，服务方法则描述具体的操作或行为。</li><li>2. **设计参数类**</li><li>- 根据服务方法的描述，参考“业务实体”章节设计入参Request类和出参DTO类，每个字段都要加上 JavaDoc 标准的中文注解，不要省略或遗漏字段。</li><li>- 额外再追加字段：`id`（主键）、`gmtCreate`（创建时间）、`gmtModified`（修改时间），日期类型统一为 `Date`。</li><li>- 使用 Lombok 的 `@Data` 注解DTO类和Request类，且实现 `java.io.Serializable`。</li><li>3. **编写接口代码**</li><li>- 根据上文的分析，生成每个服务接口的类定义，并以 ServiceI 作为后缀。</li><li>4. **路径组织**</li><li>- 确保接口路径符合__工程结构文档__的规范要求。</li><li>【输出内容】</li><li>**根据&lt;目标需求&gt;严格按照上下文要求生成完整的目标代码，不要遗漏服务代码，也不要只给部分示例**</li><li>- **入参类代码**：符合上文要求的入参Request类实现代码。</li><li>- **出参类代码**：符合上文要求的出参DTO类实现代码。</li><li>- **接口代码**：按照上文要求生成每个服务接口的类定义，服务接口间相互独立。</li><li>接口文档</li></ul>
+<p>根据*接口文档prompt*和选择的类文件及相关代码，依次为选择的类文件生成每个接口方法的完整接口文档，不能假设不存在的字段</p>
+<ul><li># 任务目标：</li><li>你擅长根据程序上下文及打开的文件分析方法的签名结构，包括参数类的继承、组合等复杂关系。请根据方法签名生成详细的接口信息。</li><li># 要求及约束：</li><li>* 接口的出参、入参以json格式输出。如果参数类有继承、组合关系，生成的json也应该包含继承、组合类的字段，否则只需包含自身的字段；</li><li>* 严格根据方法签名及出入参数生成要求内容，不要做假设和猜测，也不要遗漏参数中的字段。</li><li># 输出内容：</li><li>1. 接口签名及描述</li><li>2. 接口入参：严格按照参数定义的字段解析并输出，不允许自定义字段</li><li>3. 接口出参：严格按照参数定义的字段解析并输出，不允许自定义字段</li><li># 输出内容示例：</li><li>1. 接口签名及描述</li><li>* 签名：long com.ifp.client.service.BizQualityMonitorService.addDO(BizQualityMonitorDTO bizQualityMonitorDTO)</li><li>* 描述：新增业务监控规则</li><li>2. 接口入参</li><li>&quot;bizQualityMonitorDTO&quot;: {</li><li>&quot;gmt_create&quot;: &quot;2025-01-01 12:34:56&quot;,</li><li>&quot;gmt_modified&quot;: &quot;2025-0-01 12:34:56&quot;,</li><li>&quot;type&quot;: &quot;类型&quot;,</li><li>&quot;team&quot;: &quot;团队&quot;</li><li>3. 接口出参</li><li>&quot;success&quot;: true,</li><li>&quot;errorCode&quot;: &quot;&quot;,</li><li>&quot;errorMessage&quot;: &quot;&quot;,</li><li>&quot;data&quot;: {</li><li>&quot;id&quot;: 1,</li><li>&quot;data_source_id&quot;: 10,</li><li>&quot;data_source_name&quot;: &quot;数据源名称&quot;,</li><li>&quot;field_name&quot;: &quot;字段名称&quot;,</li><li>&quot;field_desc&quot;: &quot;字段描述&quot;,</li><li>&quot;owners&quot;: &quot;owner&quot;,</li><li>&quot;report_link&quot;: &quot;报表链接&quot;,</li><li>&quot;report_tab&quot;: &quot;报表tab&quot;,</li><li>&quot;attribute&quot;: &quot;扩展属性&quot;</li><li>接口实现</li></ul>
+<p>参照三层架构，根据*接口实现prompt*及相关代码实现应用层*服务包管理*功能模块，应用层接口定义已存在</p>
+<ul><li>【目标需求】</li><li>根据__技术方案文档__中“应用服务”章节的*方法流程描述*和*校验约束*，请实现用户输入的功能模块（**应用层接口实现**）。代码实现需要满足良好的性能、健壮性和可读性要求，同时遵循代码规范和工程结构。</li><li>【任务清单】</li><li>1. 分析服务方法：分析&lt;目标需求&gt;包含哪些方法，每个方法的具体流程描述和校验约束是什么。</li><li>2. 方法校验约束分析：针对每个方法，分析其实现过程中需要满足的校验约束。</li><li>3. 代码实现：按照以下要求完成&lt;目标需求&gt;的代码实现。</li><li>【具体要求】</li><li>1. 方法定义与校验约束分析</li><li>* 遵照事实：仅从__技术方案文档__提到的内容进行分析，不要编造内容。</li><li>* 列出所有方法：提取&lt;目标需求&gt;的所有方法，并为每个方法提供清晰详细的描述， 不要输出与&lt;目标需求&gt;无关的方法。</li><li>* 明确校验约束：分析每个方法在实现过程中需要满足的校验约束（如参数校验、数据校验、权限校验等）。</li><li>2. 代码实现要求</li><li>* 优先使用已有依赖：在实现过程中，优先复用已有的类或工具方法，避免重复造轮子。</li><li>* 对象转换方法：如果涉及对象之间的转换，请编写专门的转换方法，确保字段映射完整，不要遗漏字段。禁止使用 BeanUtils 或类似工具。</li><li>* 路径规范：参考__工程结构文档__，将代码文件放置到合适的路径下，优先选择已存在的路径，确保模块划分清晰。</li><li>* 参数校验：入参字段为字符串时优先使用 `org.apache.commons.lang3.StringUtils` 工具校验。</li><li>* 注释标准：所有代码文件必须添加符合 JavaDoc 标准的注释，包括类注释、方法注释以及关键逻辑的行内注释。</li><li>3. 编码规范</li><li>* 命名规范：</li><li>* 变量名、方法名和类名应具有语义化，避免使用无意义的缩写，DO、DTO、VO等专有词汇保持大写。</li><li>* 接口的实现类名以 ServiceImpl 作后缀。</li><li>* 代码格式：遵循团队统一的代码格式规范（如缩进、空格、换行等）。</li><li>* 注释清晰：对于复杂的逻辑，务必添加清晰的注释说明其目的和实现方式。</li><li>4. 编码质量</li><li>* 性能与健壮性：</li><li>* 确保代码具有良好的性能，避免不必要的计算或查询。</li><li>* 添加必要的异常处理逻辑，提升代码的健壮性。</li><li>* 可读性：</li><li>* 确保代码具有良好的易读性、简单性以及最短层级嵌套。</li><li>* 日志记录：</li><li>* 方法体使用 trycatch 包裹整个代码块，且在异常日志中要打印异常对象，catch 后不要再向外抛异常。</li><li>* 添加必要的中文日志，日志内容应包含问题定位的关键信息，例如：异常原因、方法入参和出参、异常堆栈等，复杂类型使用 JSON.toJSONString 工具转换为字符串。</li><li>* 日志格式要清晰易懂，包含异常堆栈的日志示例代码，`logger.error(&quot;签约失败，异常信息：{}，paramId：{}，param：{}”, e.getMessage(), paramId, JSON.toJSONString(param), eStack)`。其中`param`代表复杂参数，`eStack`代表异常堆栈，编码中需要将param*等字符替换为实际方法参数名称。</li><li>【交付物】</li><li>完整的&lt;目标需求&gt;代码实现，包括符合要求的日志等，禁止使用伪代码以及省略代码。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>数据层编码</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>建表schema：默认添加id、gmt_create、gmt_modified字段，参照示例建表语句。</li><li>持久化DAO：按schema生成含CRUD的DO.java、Mapper.java与mapper.xml。</li><li>生成需严格参照样例，文件路径符合工程结构规范。</li></ul><div class="pit"><ul><li>禁止简化生成内容。</li></ul></div></div>
+<p>建表schema</p>
+<p>根据*建表prompt*帮我生成技术方案中相关实体的建表schema</p>
+<ul><li>根据__技术方案文档__中的“业务实体”章节帮我建表，字段id、gmt_create、gmt_modified默认添加,并参考以下建表语句：</li><li>CREATE TABLE biz_quality_monitor(</li><li>id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#x27;主键&#x27;,</li><li>gmt_create datetime NOT NULL COMMENT &#x27;创建时间&#x27;,</li><li>gmt_modified datetime NOT NULL COMMENT &#x27;修改时间&#x27;,</li><li>type varchar(32) NOT NULL COMMENT &#x27;数据源类型&#x27;,</li><li>team varchar(32) NOT NULL COMMENT &#x27;团队名称&#x27;,</li><li>data_source_id bigint(20) NOT NULL COMMENT &#x27;数据源id&#x27;,</li><li>data_source_name varchar(64) NOT NULL COMMENT &#x27;数据源名称&#x27;,</li><li>field_name varchar(64) NOT NULL COMMENT &#x27;字段名称&#x27;,</li><li>field_desc varchar(64) NOT NULL COMMENT &#x27;字段描述&#x27;,</li><li>owners varchar(256) NOT NULL COMMENT &#x27;负责任，格式：花名-工号，多个用英文逗号隔开&#x27;,</li><li>report_link varchar(256) DEFAULT NULL COMMENT &#x27;报表连接&#x27;,</li><li>report_tab varchar(128) DEFAULT NULL COMMENT &#x27;数据源所在报表位置，格式：报表名-tab名&#x27;,</li><li>attribute text COMMENT &#x27;扩展字段&#x27;,</li><li>PRIMARY KEY (id),</li><li>KEY idx_team (team),</li><li>KEY idx_source_id (data_source_id),</li><li>KEY idx_gmt_create (gmt_create)</li><li>) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT=&#x27;业务质量预警规则&#x27;</li><li>持久化DAO</li></ul>
+<p>根据*持久化prompt*帮我生成数据访问层相关代码，下面是建表schema：</p>
+<p>-- 服务包表（替换成自己的表schema）</p>
+<pre><code>CREATE TABLE service_package (</code></pre>
+<p>id bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#x27;主键&#x27;,</p>
+<p>gmt_create datetime NOT NULL COMMENT &#x27;创建时间&#x27;,</p>
+<p>gmt_modified datetime NOT NULL COMMENT &#x27;修改时间&#x27;,</p>
+<p>package_id bigint NOT NULL COMMENT &#x27;服务包ID&#x27;,</p>
+<p>name varchar(255) NOT NULL COMMENT &#x27;名称&#x27;,</p>
+<p>description text COMMENT &#x27;描述&#x27;,</p>
+<p>type varchar(255) NOT NULL COMMENT &#x27;类型: 超客、自配送、平台配送&#x27;,</p>
+<p>PRIMARY KEY (id),</p>
+<p>UNIQUE KEY unique_package_id (package_id),</p>
+<p>KEY idx_type_name (type, name)</p>
+<p>) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT=&#x27;服务包表&#x27;;</p>
+<ul><li># 你是java领域专家，擅长mysql及mybatis，请根据用户提供的建表schema生成包含CRUD操作的mapper.xml、Mapper.java及DO.java文件。</li><li># 下面是一个样例，输入或者选中：</li><li>CREATE TABLE `question_exercise` (</li><li>`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#x27;主键&#x27;,</li><li>`gmt_create` datetime NOT NULL COMMENT &#x27;创建时间&#x27;,</li><li>`gmt_modified` datetime NOT NULL COMMENT &#x27;修改时间&#x27;,</li><li>`type` varchar(32) NOT NULL COMMENT &#x27;类型&#x27;,</li><li>`user_id` varchar(32) NOT NULL COMMENT &#x27;用户id&#x27;,</li><li>`user_nick` varchar(32) NOT NULL COMMENT &#x27;用户nick&#x27;,</li><li>`team` varchar(64) NOT NULL COMMENT &#x27;团队名称&#x27;,</li><li>`question_code` varchar(32) NOT NULL COMMENT &#x27;问题编码&#x27;,</li><li>`question` varchar(256) NOT NULL COMMENT &#x27;问题描述&#x27;,</li><li>`answer` varchar(2048) DEFAULT NULL COMMENT &#x27;回题答案&#x27;,</li><li>`score` decimal(10,2) DEFAULT NULL COMMENT &#x27;答题得分&#x27;,</li><li>`attribute` varchar(4096) DEFAULT NULL COMMENT &#x27;json扩展字段&#x27;,</li><li>`status` varchar(32) NOT NULL DEFAULT &#x27;INIT&#x27; COMMENT &#x27;状态&#x27;,</li><li>PRIMARY KEY (`id`),</li><li>KEY `idx_gmt_type_team` (`gmt_create`,`type`,`team`),</li><li>KEY `idx_user_id` (`user_id`),</li><li>KEY `idx_status_type_gmt` (`status`,`type`,`gmt_create`)</li><li>) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT=&#x27;问答得分表&#x27;</li><li># 输出</li><li>1. com.ifp.dal.model.QuestionExerciseDO.java</li><li>package com.ifp.dal.model;</li><li>import lombok.Data;</li><li>import java.io.Serializable;</li><li>import java.math.BigDecimal;</li><li>import java.util.Date;</li><li>/**</li><li>* @author AI</li><li>* @date 2025/01/01</li><li>@Data</li><li>publicclassQuestionExerciseDOimplementsSerializable {</li><li>privatestaticfinallong serialVersionUID = -1L;</li><li>/**</li><li>* 主键</li><li>private Long id;</li><li>/**</li><li>* 创建时间</li><li>private Date gmtCreate;</li><li>/**</li><li>* 修改时间</li><li>private Date gmtModified;</li><li>/**</li><li>* 类型</li><li>private String type;</li><li>/**</li><li>* 状态</li><li>private String status;</li><li>/**</li><li>* 用户id</li><li>private String userId;</li><li>/**</li><li>* 用户nick</li><li>private String userNick;</li><li>/**</li><li>* 团队名称</li><li>private String team;</li><li>/**</li><li>* 问题编码</li><li>private String questionCode;</li><li>/**</li><li>* 问题描述</li><li>private String question;</li><li>/**</li><li>* 回题答案</li><li>private String answer;</li><li>/**</li><li>* 得分</li><li>private BigDecimal score;</li><li>/**</li><li>* json扩展字段</li><li>private String attribute;</li><li>2. com.ifp.dal.mapper.QuestionExerciseMapper.java</li><li>package com.ifp.dal.mapper;</li><li>import com.ifp.dal.model.QuestionExerciseDO;</li><li>import org.apache.ibatis.annotations.Mapper;</li><li>import org.apache.ibatis.annotations.Param;</li><li>import java.util.List;</li><li>/**</li><li>* @author AI</li><li>* @date 2025/01/01</li><li>@Mapper</li><li>public interface QuestionExerciseMapper {</li><li>/**</li><li>* 新增</li><li>* @param questionExerciseDO DO对象</li><li>* @return 返回插入数据条数</li><li>intinsert(QuestionExerciseDO questionExerciseDO);</li><li>/**</li><li>* 根据id查询</li><li>* @param id 主键id</li><li>* @return 返回结果</li><li>QuestionExerciseDO getById(@Param(&quot;id&quot;) Long id);</li><li>/**</li><li>* 根据key查询</li><li>* @param gmtCreate 创建时间</li><li>* @param type 类型</li><li>* @param team 团队</li><li>* @param userId 用户ID</li><li>* @param status 状态</li><li>* @return 返回结果</li><li>List&lt;QuestionExerciseDO&gt; getByKey(@Param(&quot;gmtCreate&quot;) Date gmtCreate, @Param(&quot;type&quot;) String type,</li><li>@Param(&quot;team&quot;) String team, @Param(&quot;userId&quot;) String userId,</li><li>@Param(&quot;status&quot;) String status);</li><li>/**</li><li>* 根据id更新数据</li><li>* @param questionExerciseDO DO对象</li><li>* @return 返回结果</li><li>intupdateById(QuestionExerciseDO questionExerciseDO);</li><li>/**</li><li>* 根据ids物理删除</li><li>* @param ids 主键列表</li><li>* @return 返回结果</li><li>intdeleteByIds(@Param(&quot;ids&quot;) List&lt;Long&gt; ids);</li><li>3. question-exercise.xml</li><li>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</li><li>&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</li><li>&lt;mapper namespace=&quot;com.ifp.dal.mapper.QuestionExerciseMapper&quot;&gt;</li><li>&lt;resultMap type=&quot;com.ifp.dal.model.QuestionExerciseDO&quot; id=&quot;questionExerciseDO&quot;&gt;</li><li>&lt;result column=&quot;id&quot; property=&quot;id&quot; /&gt;</li><li>&lt;result column=&quot;gmt_create&quot; property=&quot;gmtCreate&quot; /&gt;</li><li>&lt;result column=&quot;gmt_modified&quot; property=&quot;gmtModified&quot; /&gt;</li><li>&lt;result column=&quot;type&quot; property=&quot;type&quot; /&gt;</li><li>&lt;result column=&quot;status&quot; property=&quot;status&quot; /&gt;</li><li>&lt;result column=&quot;user_id&quot; property=&quot;userId&quot; /&gt;</li><li>&lt;result column=&quot;user_nick&quot; property=&quot;userNick&quot; /&gt;</li><li>&lt;result column=&quot;team&quot; property=&quot;team&quot; /&gt;</li><li>&lt;result column=&quot;question_code&quot; property=&quot;questionCode&quot; /&gt;</li><li>&lt;result column=&quot;question&quot; property=&quot;question&quot; /&gt;</li><li>&lt;result column=&quot;answer&quot; property=&quot;answer&quot; /&gt;</li><li>&lt;result column=&quot;score&quot; property=&quot;score&quot; /&gt;</li><li>&lt;result column=&quot;attribute&quot; property=&quot;attribute&quot; /&gt;</li><li>&lt;/resultMap&gt;</li><li>&lt;!-- 所有字段 --&gt;</li><li>&lt;sql id=&quot;questionExerciseDO_columns&quot;&gt;</li><li>id,gmt_create,gmt_modified,type,status,user_id,user_nick,team,question_code,question,answer,score,attribute</li><li>&lt;/sql&gt;</li><li>&lt;insert id=&quot;insert&quot; parameterType=&quot;com.ifp.dal.model.QuestionExerciseDO&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;</li><li>insert into question_exercise(gmt_create,gmt_modified,type,status,user_id,user_nick,team,question_code,question,answer,score,attribute)</li><li>values(CURRENT_TIMESTAMP(3),CURRENT_TIMESTAMP(3),#{type},#{status},#{userId},#{userNick},#{team},#{questionCode},#{question},#{answer},#{score},#{attribute})</li><li>&lt;/insert&gt;</li><li>&lt;select id=&quot;getById&quot; resultMap=&quot;questionExerciseDO&quot; parameterType=&quot;java.util.Map&quot;&gt;</li><li>select</li><li>&lt;include refid=&quot;questionExerciseDO_columns&quot;/&gt;</li><li>from question_exercise</li><li>where id = #{id}</li><li>&lt;/select&gt;</li><li>&lt;select id=&quot;getByKey&quot; resultMap=&quot;questionExerciseDO&quot; parameterType=&quot;java.util.Map&quot;&gt;</li><li>select</li><li>&lt;include refid=&quot;questionExerciseDO_columns&quot;/&gt;</li><li>from question_exercise</li><li>WHERE 1=1</li><li>&lt;if test=&quot;gmtCreate != null&quot;&gt;</li><li>and gmt_create &amp;gt;= #{gmtCreate}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;type != null&quot;&gt;</li><li>and type = #{type}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;team != null&quot;&gt;</li><li>and team = #{team}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;userId != null&quot;&gt;</li><li>and user_id = #{userId}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;status != null&quot;&gt;</li><li>and status = #{status}</li><li>&lt;/if&gt;</li><li>&lt;/select&gt;</li><li>&lt;update id=&quot;updateById&quot;  parameterType=&quot;com.ifp.dal.model.QuestionExerciseDO&quot;&gt;</li><li>update question_exercise</li><li>set gmt_modified = CURRENT_TIMESTAMP(3)</li><li>&lt;if test=&quot;type != null&quot;&gt;</li><li>,type = #{type}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;status != null&quot;&gt;</li><li>,status = #{status}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;userId != null&quot;&gt;</li><li>,user_id = #{userId}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;userNick != null&quot;&gt;</li><li>,user_nick = #{userNick}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;team != null&quot;&gt;</li><li>,team = #{team}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;questionCode != null&quot;&gt;</li><li>,question_code = #{questionCode}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;question != null&quot;&gt;</li><li>,question = #{question}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;answer != null&quot;&gt;</li><li>,answer = #{answer}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;score != null&quot;&gt;</li><li>,score = #{score}</li><li>&lt;/if&gt;</li><li>&lt;if test=&quot;attribute != null&quot;&gt;</li><li>,attribute = #{attribute}</li><li>&lt;/if&gt;</li><li>WHERE id=#{id}</li><li>&lt;/update&gt;</li><li>&lt;delete id=&quot;deleteByIds&quot; parameterType=&quot;java.util.Map&quot;&gt;</li><li>DELETE</li><li>FROM question_exercise</li><li>WHERE id in</li><li>&lt;foreach item=&quot;item&quot; index=&quot;index&quot; collection=&quot;ids&quot; open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;</li><li>#{item}</li><li>&lt;/foreach&gt;</li><li>&lt;/delete&gt;</li><li>&lt;/mapper&gt;</li><li># 要求：</li><li>1. 严格参照上面样例，禁止简化生成的内容。</li><li>2. 生成的文件路径需符合__工程结构文档__中的路径规范，确保代码组织清晰。</li><li>3. 给出文件的名称。</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>业务逻辑层编码</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>接口类名以DomainServiceI为后缀，实现类以DomainServiceImpl为后缀。</li><li>入参超过3个用DO等封装类型，出参优先boolean，避免void。</li><li>异常直接throw且中文语义清晰，对象转换手写、禁止BeanUtils。</li></ul><div class="pit"><ul><li>入参避免使用Map类型。</li><li>出参避免void类型。</li></ul></div></div>
+<p>根据*业务层prompt*及相关代码帮我实现业务逻辑层*服务包管理*领域服务模块</p>
+<ul><li>【目标需求】</li><li>根据__技术方案文档__中“领域功能”章节的*功能描述*和*规则约束*，请实现用户输入的功能模块（**业务逻辑层**）。代码实现需要满足良好的性能、健壮性和可读性要求，同时遵循代码规范和工程结构。</li><li>【任务清单】</li><li>1. 分析功能需求：分析&lt;目标需求&gt;包含哪些功能，每个功能的具体描述和规则约束是什么。</li><li>2. 功能规则约束分析：针对每个功能，分析其实现过程中需要满足的规则约束。</li><li>3. 代码实现：按照以下要求完成&lt;目标需求&gt;的代码实现。</li><li>【具体要求】</li><li>1. 功能定义与规则约束分析</li><li>* 遵照事实：仅从__技术方案文档__提到的内容进行分析，不要编造内容。</li><li>* 列出所有功能：提取&lt;目标需求&gt;的所有功能点，并为每个功能提供清晰详细的描述， 不要输出与&lt;目标需求&gt;无关的功能。</li><li>* 明确规则约束：分析每个功能在实现过程中需要满足的规则约束（如权限控制、业务逻辑、规则条件等）。</li><li>2. 代码实现要求</li><li>* 优先使用已有依赖：在实现过程中，优先复用已有的类或工具方法，避免重复造轮子。</li><li>* 对象转换方法：如果涉及对象之间的转换，请编写专门的转换方法，确保字段映射完整，不要遗漏字段。禁止使用 BeanUtils 或类似工具。</li><li>* 路径规范：参考__工程结构文档__，将代码文件放置到合适的路径下，优先选择已存在的路径，确保模块划分清晰。</li><li>* 注释标准：所有代码文件必须添加符合 JavaDoc 标准的注释，包括类注释、方法注释以及关键逻辑的行内注释。</li><li>* 参数要求：</li><li>* 入参规范：入参超过3个时需要使用封装后的类型作为入参，比如相关实体的DO类型，避免使用Map类型。</li><li>* 出参规范：出参必须要有意义，避免使用void类型（优先使用boolean类型），不需要额外封装。</li><li>3. 编码规范</li><li>* 命名规范：</li><li>* 变量名、方法名和类名应具有语义化，避免使用无意义的缩写，DO、DTO、VO等专有词汇保持大写。</li><li>* 接口类名以 DomainServiceI 作后缀，实现类名以 DomainServiceImpl 作后缀。</li><li>* 代码格式：遵循团队统一的代码格式规范（如缩进、空格、换行等）。</li><li>* 注释清晰：对于复杂的逻辑，务必添加清晰的注释说明其目的和实现方式。</li><li>4. 编码质量</li><li>* 性能与健壮性：</li><li>* 确保代码具有良好的性能，避免不必要的计算或查询。</li><li>* 添加必要的异常处理逻辑，以提升代码的健壮性，异常信息要具有明确的中文语义，直接 throw 即可。</li><li>* 可读性：</li><li>* 确保代码具有良好的易读性、简单性以及快速返回原则。</li><li>【交付物】</li><li>* 符合上文要求的领域服务功能的接口定义和完整代码实现，禁止使用伪代码以及省略代码。</li><li>* 标准的 JavaDoc 中文注释。</li></ul>
+<p>Tips</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>代生成质量建议</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>生成结果与预期相差较大就再试一次，基本2次内满足。</li><li>通过多轮对话提出明确修改要求，并选择主要相关代码文件作上下文。</li><li>及时清理历史会话避免影响输出并节省token，按工程特点微调Prompt Rule。</li></ul></div>
+<p>a.如果生成结果与预期相差较大，请再试一次，基本2次内即可满足期望；</p>
+<p>b.通过多轮次对话，提出明确的修改要求；</p>
+<p>c.明确选择主要相关代码文件作为模型上下文；</p>
+<p>d.及时清理历史会话，避免影响模型下次输出，同时可节省token；</p>
+<p>e.紧贴自己的工程特点微调Prompt Rule。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>工程结构建议</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>工程结构生成请使用Claude-4-Sonnet模型。</li><li>结构不符合预期时，单独为每个模块生成再合并为整体。</li><li>代码放置位置不对时，为目录补充更详细介绍，注意区分相似目录。</li></ul></div>
+<p>a.请使用Claude-4-Sonnet模型；</p>
+<p>b.如果生成的结构不符合预期，请单独为每个模块生成工程结构，然后合并为整体；</p>
+<p>c.如果生成的代码放置的位置不对，请为工程结构目录补充更详细的介绍说明，特别注意区分相似目录。</p>
+<p>实践思考</p>
+<p>怎么让AI更加丝滑的高效产出高质量的需求代码呢？本章节围绕上述实践试着从研发流程及架构设计视角来阐述背后的思考及设计。</p>
+<p>实际应用Gap</p>
+<p>自从AI编码火爆以来，特别是Cursor、Devin的出现，一句话需求、程序员被AI取代等消息如雨后春笋般铺天盖地，一时间让程序员们无所适从，焦虑感油然而生。诚然，AI编码可以很快速的完成原型实现及想法验证，那么实际应用过程中真的如此丝滑吗，又会面临哪些问题呢？</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>AI幻觉问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>大模型天然具有幻觉。</li><li>AI生成的代码质量不可控。</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>确定性要求</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>业务需求需要严格可控。</li><li>系统行为需要确定性保障。</li></ul></div>
+<p>3.生产开发基本是基于已有系统做迭代开发，需要考虑现有系统的兼容性、复用性等；</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>现实复杂性</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>现实世界具有多样性、紧密联系性。</li><li>现实世界更抽象、也更细微。</li></ul></div>
+<p>研发流程说起</p>
+<p>纵观以上研发流程，由下而上，抽象层度越来越高，不确定性也越来越高，沟通协作等软能力要求也越来越高，而这些正是AI不擅长的；另一方面考虑到任务拆解及提效颗粒度问题，太粗AI效果不好，太细提效又不明显，发挥不出AI的威力。</p>
+<p>解决的问题</p>
+<p>基于以上AI编程的能力边界分析，我们需要：</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>提效平衡点</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>需求阶段和架构设计阶段仍需人严格把控，不适合交给AI。</li><li>选择代码设计阶段作为分割点：以上由自然人负责，以下交给AI自由发挥。</li><li>编码阶段对AI控得太细，发挥不出AI的威力。</li></ul></div>
+<p>2.寻找研发提效的最大颗粒度，行级别？代码块级别？类级别 or 项目级别？</p>
+<p>确定平衡点</p>
+<ul><li>需求阶段： 涉及大量 的需求理 解，需要不断的多轮次的沟通才能一步步明确需求流程和需求规则。人类的语言又具有多样性，同样的用词不同的场合、不同的语调意思可能完全不一样，这个阶段在AI当前的发展阶段显然不适合。</li><li>架构设计阶段： 这个阶段需求基本已经明确，更多要考虑的是跟当前系统兼容、复用性、编发规范等非功能需求，还是需要人来严格把控设计。</li><li>代码设计阶段 ： 这个阶段功能性需求与非功能需求均已明确，更多需要做的是提出规范及要求。</li></ul>
+<p>最大提效粒度</p>
+<ul><li>代码设计阶段 ： 至于说一个功能拆几个函数实现，用什么类库之类的可以让AI自由发挥，我们要做的是确保AI产出的代码符合我们的代码设计的规范及要求。</li><li>编码阶段 ： 这个阶段已经到了具体的函数级别，对于AI来讲控的太细了，发挥不了AI威力。</li></ul>
+<p>综上，我们选择将“代码设计阶段”作为分割点，以上工作由自然人来负责，以下可以交给AI自由发挥。</p>
+<p>解决的方案</p>
+<p>试想下，假如我们需要我们的同事配合做一些事情，我们需要做什么？首先要找对人（立人设），其次：1. 交代背景；2.交代目标；3.交代要求；事实上，AI就可以看成我们的同事，与AI对话就像与人对话一样，我们交代的越清楚，它反馈给我们的结果也就越明确，甚至有时候需要反复多轮沟通。</p>
+<p>有了上述分析，我们的方案也显而易见：</p>
+<p>1.通过技术方案模版将业务需求的不确定性转变为实现方案的确定性；</p>
+<p>2.考虑到AI生成的代码与当前工程结构的适配性，我们需要交代当前系统的工程结构；</p>
+<p>3.结合技术方案、工程结构，通过跟AI沟通（Prompt提示词）把我们的实现目标和要求交代清楚。</p>
+<p>接下来我们针对三层架构（符合我们当前团队几乎所有应用的分层架构）进行落地实践的分析设计：</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>技术方案模板</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>模板是人与AI之间的沟通语言协议，约束开发者按规范分析拆解。</li><li>模板把需求不确定性转为实现方案的确定性。</li><li>模板章节：项目资料、需求价值、需求分析、术语解释、业务实体、领域功能、应用服务。</li></ul></div>
+<p>为什么要设计模版，模版的作用是用来约束开发者，按照一定的规范来分析拆解，也可以理解成它是我们跟AI之间沟通的语言协议，保证了文档设计的质量，也就保障了我们输入给AI的背景信息。</p>
+<p>我们通过技术方案模版设计的规范约束，来描述清楚需求的业务功能及架构分层，包括以下章节：</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>项目资料章节</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>项目资料章节用于沉淀项目背景知识。</li><li>方便后来人了解项目。</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>需求价值章节</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>需求价值章节需要灵魂自问。</li><li>对齐团队OKR。</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>需求分析章节</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>需求分析章节记录自己对需求的概要理解。</li><li>为AI编码提供需求背景输入。</li></ul></div>
+
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>术语解释章节</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>术语解释章节用于解释专有名词。</li><li>便于AI理解专业术语。</li></ul></div>
+<p>5.业务实体：对应三层架构的数据层，职责：ORM映射，持久化实体；</p>
+<p>6.领域功能：对应三层架构的业务逻辑层，职责：封装领域内业务逻辑和业务规则，沉淀业务知识，遵守领域内开闭原则；</p>
+<p>7.应用服务：对应三层架构的应用层，职责：对外提供服务接口，组装业务流程，模型转换，必要的参数校验、事务及异常处理。</p>
+      </section>
+
+      <section class="src" id="sec-15">
+        <h2 class="sec"><span class="n">15</span>系统工程结构</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AI可以理解整个代码仓库，帮助生成系统工程结构。</li><li>生成后稍作调整即可，特别是针对相似目录结构。</li></ul></div>
+<p>我们的系统经过一代又一代人的不断努力和迭代，传到我们这代的时候可能早就说不清楚每个目录结构是干什么的了。不过幸运的是AI可以理解整个代码仓库，可以帮助我们生成整个系统的工程结构，然后再稍作调整即可，特别是针对相似的目录结构。</p>
+      </section>
+
+      <section class="src" id="sec-16">
+        <h2 class="sec"><span class="n">16</span>Prompt分层</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Prompt要素：角色、背景、目标、要求，本质像人与人交流。</li><li>Prompt分三层结构化，便于局部调优和扩展。</li><li>把架构设计、编码规范融入Prompt，AI会按规范写代码。</li><li>Prompt可随代码沉淀复用并发布至git仓库。</li></ul></div>
+<p>Prompt设计这里面又大有文章了，有一种职业叫做Prompt工程师。它好比算法工程师的调参，直接关系到AI输出的效果好坏。当前Prompt设计有很多范式，并没有一种设计能适应各个场景，但本质不变：好比人与人之间的交流，需要明确跟谁交流（角色）、背景是什么（背景）、有什么要求（要求）、想要达到怎样的目标（目标）。</p>
+<ul><li>分层结构化扩展 ： 明确了Prompt设计要素（角色、背景、目标、要求），最关键的就是结构化Prompt，类似我们的架构设计，Prompt也分了三层，针对每层的特点又进行结构化，方便进行局部调优和扩展。接口定义的Prompt栗子：</li><li>架构规范融入 ： 另外一个很大的好处，我们可以把我们的设计理念，如架构设计、编码规范、质量规范等放都在Prompt，AI会很听话的能够按照这些规范编写代码，这在以往也是很难做到的。</li><li>沉淀复用 ： 根据工程特性，在这套Prompt提示词基础上经过些许微调，沉淀为整个工程系统的Prompt，这样相关开发人员可直接使用，避免了Prompt的多次开发和调优，可随代码一起发布至git仓库。</li></ul>
+<p>上述方案中，工程结构及Prompt可直接共享并适时加以迭代，研发的工作重点更多的聚焦在了对业务需求逻辑的理解。</p>
+<p>生产案例</p>
+<p>通过类似AI编码方式，目前已上线需求3个，开发中2个，架构重构中1个。采纳行占比由4月份的8.9%提升至6月份的44.7%（官方统计口径），实际会有些虚高。下面列举3个案例简要说明：</p>
+<p>案例1：低起送价转C配</p>
+<p>项目背景：商家设置了起送价，但用户订单金额低于起送价，需要支付一定的配送费，产品上需要新建低起送价运营平台。</p>
+<p>功能说明：</p>
+      </section>
+
+      <section class="src" id="sec-17">
+        <h2 class="sec"><span class="n">17</span>案例1数据层</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>案例1低起送价转C配：数据层新增表5张。</li><li>5个领域服务的增删改查及相关业务逻辑。</li><li>AI代码生成占比保守估计约70%+。</li></ul></div>
+<h3 class="sub">2.5个领域服务的增删改查及相关业务逻辑。</h3>
+<p>AI代码生成占比：保守估约70%+。</p>
+<p>案例2：零售服务包推荐</p>
+<p>项目背景：为商户推荐优质服务包及推荐语，并记录推荐服务调用现场。</p>
+<p>功能说明：</p>
+      </section>
+
+      <section class="src" id="sec-18">
+        <h2 class="sec"><span class="n">18</span>案例2数据层</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>案例2零售服务包推荐：数据层新增表1张。</li><li>1个现有领域服务逻辑修改。</li><li>AI代码生成占比保守估计约50%+。</li></ul></div>
+<h3 class="sub">2.1个现有领域服务逻辑修改。</h3>
+<p>AI代码生成占比：保守估约50%+。</p>
+<p>案例3：淘天逆向催支付</p>
+<p>项目背景：淘天逆向商户存在大量退货已完结订单，但用户未支付物流费用的情况，直接影响了蜂鸟的收入，需要实现针对淘天逆向用户的短信催支付功能。</p>
+<p>功能说明：</p>
+<h3 class="sub">1.1个领域服务逻辑；</h3>
+<p>2.3个外部接口依赖。（需要在已有的技术方案和Prompt基础上增加“外部接口”依赖模块标准）</p>
+<p>AI代码生成占比：保守估约70%+。</p>
+<p>感想展望</p>
+<p>AI First</p>
+<p>在团队布道过程中，听到太多质疑声，特别是讲到AI可以写业务逻辑，大家的第一反应基本都是：这玩意能写业务逻辑？它怎么知道如何写？写错了线上故障算谁的？改它写代码的时间比我自己写的时间还要多！But，这些都存在于未开始时的想象和质疑，大家应该能够多少感受到AI发展之快、热度之高、之持久。时代在快速进步，试问我们还有退路吗，但无论如何，最重要的是开始并参与其中！践行 AI Firsrt！</p>
+<p>程序员发展</p>
+<p>毫无疑问，AI编程对程序员这个职业的冲击很大，任何新兴技术带来一批淘汰是不可避免的，但它也会催生一批新的生产力，我们要做的就是迎着时代的发展，不断提高自身的能力，掌握并用好AI，让它成为我们的有力生产力。从上述的实践案例也可以窥探一二，未来基础的编码工作主要由AI来承担，程序员需要向更高阶的能力发展，如业务理解、架构设计等。不管怎样，Just do it，才不会患上AI焦虑症！</p>
+<p>未来规划</p>
+<p>从研发流程看，可尝试探索更高阶的AI辅助架构设计、技术方案生成、PRD规划等。</p>
+<p>从自动化程度看，未来可整合各个分层任务，合并生成更加连贯更加自动化的长任务。</p>
+<p>从增改场景看，本文的实践主要聚焦于代码新增。修改已有代码风险高、提效有限，但依然有机会沉淀适当Prompt。</p>
+<p>技术方案模板参考</p>
+<p>AI编码配套的三层架构的技术方案模版，一方面控制任务拆分粒度，另一方面帮助理解业务逻辑及系统架构。</p>
+<p>1. 不需要的部分留白即可，文档内容仅模版示例，需要根据自己的需求进行分析改写。</p>
+<p>2. 修改类的小需求，没必要按照此模版来写，可直接在Agent窗口描述业务逻辑及要求。</p>
+<p>3. 同一个需求的不同迭代，可在技术方案名称上加上迭代日期作为版本区分。</p>
+<p>项目资料</p>
+<p>需求prd链接：xxx</p>
+<p>技术方案链接：xxx</p>
+<p>计划发布日期：YYYY-MM-DD</p>
+<p>PD人员：xxx</p>
+<p>开发人员：xxx</p>
+<p>测试人员：xxx</p>
+<p>需求价值</p>
+<p>建设超客服务包运营平台，提高商家管理服务包效率。</p>
+<p>需求分析</p>
+<p>在超客2.0业务模式下，商户可以同时拥有一个超客服务包和一个自配送服务包，超客服务包只允许包含一个地理范围，自配送服务包可以包含多个地理范围。页面需要同时展示超客服务包、自配送服务包以及相应的地理范围。</p>
+<p>术语解释</p>
+<p>业务实体</p>
+<p>对应三层架构的数据层，职责：ORM映射，持久化实体。</p>
+<p>领域功能</p>
+<p>对应三层架构的业务逻辑层，职责：封装领域内业务逻辑和业务规则，沉淀业务知识，遵守领域内开闭原则。</p>
+<p>应用服务</p>
+<p>对应三层架构的应用层，职责：对外提供服务接口，组装业务流程，模型转换，必要的参数校验、事务及异常处理。</p>
+<p>Quick BI 助力企业构建智能商业分析</p>
+<p>针对企业在数据分析过程中面临的取数难、报表效率低和数据割裂等问题，Quick BI 支持通过自然语言完成看板搭建与数据获取，借助 AI 发现异常并归因，真正实现“对话即分析”，显著提升数据使用效率与用户体验，助力企业高效运营、科学决策。</p>
+<p>点击阅读原文查看详情。</p>
+<p>阅读原文</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 13 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Agent vs Chat</h4><p>Agent像自然人有大脑、有手、有脚，可自动完成各种动作；Chat只有大脑，需要手动采纳代码。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>User Rules vs Project Rules</h4><p>User Rules全局生效；Project Rules仅当前工程生效，当前只有Always与Never两种模式。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>AI编码六步流程</h4><p>接口定义→接口文档→建表schema→持久化层→业务逻辑层→接口实现。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>人机分割点</h4><p>选择“代码设计阶段”作为分割点：以上由自然人负责，以下交给AI自由发挥。</p><a class="src-link" href="#sec-09">原文 → 提效平衡点</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>AI代码采纳率提升</h4><p>采纳行占比由4月份的8.9%提升至6月份的44.7%（官方统计口径，实际略虚高）。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>生产案例AI代码占比</h4><p>3个案例AI代码生成占比保守估算：案例1约70%+、案例2约50%+、案例3约70%+。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>应用层接口命名规范</h4><p>入参&gt;3个封装为Request，出参用DTO后缀并用SingleResult等包装，接口以ServiceI为后缀。</p><a class="src-link" href="#sec-01">原文 → 应用层编码</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>持久化代码三件套</h4><p>按建表schema生成含CRUD的DO.java、Mapper.java与mapper.xml。</p><a class="src-link" href="#sec-02">原文 → 数据层编码</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>禁止使用BeanUtils</h4><p>对象转换要手写转换方法、确保字段映射完整，禁止使用BeanUtils或类似工具。</p><a class="src-link" href="#sec-01">原文 → 应用层编码</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>应用层日志规范</h4><p>方法体用trycatch包裹整个代码块，异常日志打印异常对象，catch后不再向外抛。</p><a class="src-link" href="#sec-01">原文 → 应用层编码</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Prompt四要素</h4><p>Prompt设计本质：明确角色、背景、目标、要求，像与人交流一样交代清楚。</p><a class="src-link" href="#sec-16">原文 → Prompt分层</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>建表默认三字段</h4><p>建表时字段id、gmt_create、gmt_modified默认添加。</p><a class="src-link" href="#sec-02">原文 → 数据层编码</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>程序员转型方向</h4><p>未来基础编码主要由AI承担，程序员需向业务理解、架构设计等更高阶能力发展。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把AI当同事：交代清楚背景、目标、要求，并用技术方案模板把需求不确定性转成确定性。</li>
+          <li>以“代码设计阶段”为人机分割点：人负责需求与架构设计，AI负责接口、数据层与业务逻辑编码。</li>
+          <li>把工程结构、编码规范沉淀进Prompt与Rules，可复用、可随git发布，让团队共享。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s/hlZFvFaAjVUGCObfVo6TFA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/hlZFvFaAjVUGCObfVo6TFA</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

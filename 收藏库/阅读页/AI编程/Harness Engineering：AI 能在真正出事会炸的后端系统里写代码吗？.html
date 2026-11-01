@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>AI编程 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Harness Engineering：AI 能在真正出事会炸的后端系统里写代码吗？</h1>
+  <p class="lede">腾讯CDN在百万行级后端系统落地AI Coding的Harness Engineering实践</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>AI编程</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 23 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>引言</a>
+          <a href="#sec-02"><span class="n">02</span>背景与挑战</a>
+          <a href="#sec-03"><span class="n">03</span>Nonstop能力验证</a>
+          <a href="#sec-04"><span class="n">04</span>AI翻车根因</a>
+          <a href="#sec-05"><span class="n">05</span>Harness五层架构</a>
+          <a href="#sec-06"><span class="n">06</span>三大实践抓手</a>
+          <a href="#sec-07"><span class="n">07</span>实践案例</a>
+          <a href="#sec-08"><span class="n">08</span>差异化探索与挑战</a>
+          <a href="#sec-09"><span class="n">09</span>角色演变与团队建设</a>
+          <a href="#sec-10"><span class="n">10</span>结语</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 引言</a>
+          <a href="#sec-02">02 背景与挑战</a>
+          <a href="#sec-03">03 Nonstop能力验证</a>
+          <a href="#sec-04">04 AI翻车根因</a>
+          <a href="#sec-05">05 Harness五层架构</a>
+          <a href="#sec-06">06 三大实践抓手</a>
+          <a href="#sec-07">07 实践案例</a>
+          <a href="#sec-08">08 差异化探索与挑战</a>
+          <a href="#sec-09">09 角色演变与团队建设</a>
+          <a href="#sec-10">10 结语</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：lancelotluo</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>引言</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>前端与客户端AI Coding进展多，高风险后端系统落地被回避。</li><li>LEGO选择“驾驭AI”而非“用AI”，为AI每行代码建立质量屏障。</li></ul></div>
+<p>当 AI Coding 的聚光灯几乎全部打在前端和客户端——生成一个页面、写一个 App......的时候，一个重要的问题却似乎被回避了：AI 能在真正&quot;出事会炸&quot;的后端系统里写代码吗？</p>
+<p>腾讯CDN LEGO项目就是这样一个系统。100万行核心代码、300万行深度改造的第三方库，服务亿级用户，承担流量调度、协议解析、安全防护、缓存加速等关键职责。它面对的不是确定性的输入输出，而是不可控的客户端、不可控的源站、多协议、多配置、公网全量攻击面——这些因素维度的叠加不是简单相加，而是乘积式的复杂度爆炸，理论组合路径高达 13,824 × N 种。在这样的复杂的系统里让 AI 写代码，一行失误就可能是一场全网事故。</p>
+<p>但正因为难，才值得做。 我们系统性地探索了 AI Coding 在高风险后端场景的落地路径：一方面，用 AI 零人工代码实现了一个 Rust 版 Nonstop 代理框架，以此探测 AI 编码的能力边界与行为特性；另一方面，在超大规模 C++ LEGO项目中构建了 Harness Engineering 五层架构和多模型对抗式CR，为 AI 产出的每一行代码建立从生成到上线的完整质量屏障。本文不仅是一份将 AI Coding 引入腾讯CDN核心框架的实战记录，更是一条从&quot;AI 能写&quot;到&quot;AI 写了敢用&quot; 的完整工程路径。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>背景与挑战</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>规模：100万行核心代码、300万行深度改造库、万亿级日请求。</li><li>痛点：不可控客户端与源站、异步编程复杂、容错度低、协议安全要求高。</li><li>维度组合复杂度乘积式爆炸，理论组合路径13824×N种。</li></ul><div class="pit"><ul><li>Lambda生命周期管理易致内存泄漏、悬垂指针、资源竞争</li></ul></div></div>
+<h3 class="sub">1.1 项目规模与复杂性</h3>
+<p>LEGO系统作为腾讯CDN的核心接入层，承载着腾讯几乎所有CDN和EdgeOne业务流量的大型分布式系统，对可靠性、可用性、安全性的要求极高：</p>
+<p>●代码规模：核心代码超过100万行，采用多线程全异步非阻塞架构设计，要求开发人员对异步编程、并发控制、资源管理等技术领域有深入的理解</p>
+<p>●第三方依赖：深度改造第三方库超过300万行（包括OpenSSL、QUIC、LUA、JavaScript等），进一步增加了系统的复杂度</p>
+<p>●服务规模：每天处理的请求量以万亿计，服务于腾讯CDN的亿级用户，任何性能问题、稳定性问题或安全漏洞都可能被迅速放大</p>
+<h3 class="sub">1.2 开发和运营痛点</h3>
+<p>LEGO最大的挑战就是面对不可控的客户端和不可控的源站。</p>
+<p>不可控因素众多：</p>
+<p>●客户端：浏览器、App、爬虫、攻击工具，涵盖数十亿设备和数百种实现</p>
+<p>●源站：客户自建、云存储、第三方API，涉及数百万域名和各种行为</p>
+<p>●协议支持：HTTP/1.1、HTTP/2、HTTP/3/QUIC、WebSocket、TLS等多协议并存</p>
+<p>异步编程复杂：</p>
+<p>●Future/Promise链路长，涉及多个异步操作的串联和组合</p>
+<p>●Lambda生命周期管理容易出错，可能导致内存泄漏、悬垂指针、资源竞争等严重问题</p>
+<p>●多线程并发场景下的状态同步和资源竞争处理困难</p>
+<p>容错度低：</p>
+<p>●第一跳位置，无状态设计，流式处理方式</p>
+<p>●一旦某个请求的处理出现错误，很难有恢复的机会</p>
+<p>●任何错误都可能直接暴露给用户，直接影响用户体验</p>
+<p>协议安全要求高：</p>
+<p>●HTTP RFC协议合规性要求确保LEGO对HTTP协议的实现符合标准</p>
+<p>●缓存安全机制防止恶意用户利用缓存机制发起攻击</p>
+<p>●注入攻击防护需要识别和拦截各种注入攻击，包括SQL注入、XSS攻击等</p>
+<p>维度组合复杂性：</p>
+<table><thead><tr><th>维度</th><th>数量</th><th>说明</th></tr></thead><tbody><tr><td>请求协议</td><td>3种</td><td>HTTP/1.1, HTTP/2, HTTP/3</td></tr><tr><td>回源协议</td><td>2种</td><td>HTTP/1.1, HTTP/2</td></tr><tr><td>TLS版本</td><td>4种</td><td>不同版本的TLS协议</td></tr><tr><td>缓存状态</td><td>4种</td><td>不同的缓存策略</td></tr><tr><td>域名配置</td><td>百万种</td><td>不同客户的域名配置</td></tr><tr><td>脚本逻辑</td><td>4种</td><td>不同的脚本处理逻辑</td></tr><tr><td>安全规则</td><td>4种</td><td>不同的安全策略</td></tr><tr><td>源站行为</td><td>5种</td><td>不同源站的响应行为</td></tr><tr><td>客户端行为</td><td>3种</td><td>不同客户端的请求模式</td></tr></tbody></table>
+<p>用户敏感度高：</p>
+<p>●对延迟极其敏感</p>
+<p>●状态码和网络波动会直接被用户感知</p>
+<p>●服务质量的要求更加严格</p>
+<p>正如文章开头就提及的项目复杂度理论组合路径高达 13,824 × N 种。在这样的系统里用 AI 写代码，一旦放任，风险极高。所以LEGO团队的答案是：不是&quot;用 AI&quot;，而是&quot;驾驭 AI&quot;——这就是 Harness Engineering 的起点。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>Nonstop能力验证</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>nonstop是面向复杂生产环境的现代代理，支持L4/L7、HTTP/3 QUIC、内置WAF、V8 JS Workers。</li><li>实测42052 QPS、5000并发0错误、P50延迟1.1ms、6层纵深防御。</li><li>20天由1人+AI完成，验证AI系统级编程能力，但也暴露翻车疑问。</li></ul></div>
+<h3 class="sub">2.1  AI Coding 的冲击已经到来</h3>
+<p>AI Coding的行业案例正在密集出现，预示着AI 已能参与真实的大规模工程。</p>
+<p>这些行业案例的输出结果虽然亮眼，但适不适合超大规模同时充满不确定性的后端系统，能在多大程度上解决我们生产环境中的实际问题，还是需要我们亲自实践。</p>
+<p>2.2  20 天AI实现Rust零人工代码开发nonstop项目</p>
+<p>所以，我们用20 天实现AI Rust零人工代码开发nonstop代理框架项目，探测 AI 编码的能力边界与行为特性，同时也给我们提供了许多实操经验。</p>
+<p>nonstop项目是一个面向复杂生产环境的现代代理系统，设计目标是提供高性能、高可用、高安全的代理服务。与传统的代理服务不同，nonstop 在设计之初就将 AI Coding 作为核心开发方法，旨在验证 AI 在系统级编程中的能力。</p>
+<p>其核心特性：</p>
+<p>●功能全面：支持L4/L7代理，满足不同场景的代理需求</p>
+<p>●协议先进：支持HTTP/3和QUIC协议，提供更快、更可靠的数据传输体验</p>
+<p>●安全防护：内置WAF（Web应用防火墙）纵深防御机制，识别和拦截各种Web攻击</p>
+<p>●边缘计算：集成V8 JavaScript引擎，支持JS Workers边缘计算能力</p>
+<p>●部署便捷：单二进制部署，支持零停机热加载，运维简单灵活</p>
+<p>nonstop的设计理念是&quot;永不停服&quot;，意味着系统的可用性是第一优先级。通过精心设计的架构和容错机制，nonstop能够在各种异常情况下保持服务可用，不会因为单点故障或配置变更而中断服务。这种设计理念与CDN业务的高可用要求高度契合。</p>
+<p>nonstop 项目成果数据：</p>
+<p>1）在 20 天内由 1 人 + AI 开发团队完成，交付规模：</p>
+<p>2）产品能力： 支持 L4/L7 代理、HTTP/3 QUIC、内置 WAF 纵深防御、V8 JS Workers 边缘计算，单二进制部署，零停机热加载。实测：42,052 QPS / 5000 并发 0 错误 / P50 延迟 1.1ms / 6 层纵深防御。</p>
+<p>完成nonstop项目后，我们有惊喜更有疑问。惊喜的是AI能力确实很强，但同时也发现了很多问题：尤其是LEGO这样百万行级、高可靠的 C++ 系统，能不能&quot;放心用&quot;，会不会翻车？ 也是 Harness Engineering要解决的核心命题。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>AI翻车根因</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>57个案例归纳13类典型问题、5大根因。</li><li>最高风险：不会说“我不知道”，自信输出错误结论降低人的审查意愿。</li><li>根本原因是AI缺乏不确定性意识与全局视野。</li></ul><div class="pit"><ul><li>幻觉：编造函数签名、RFC章节号、百分比数据</li><li>改不全：insert了却没有cleanup，遗忘全局影响</li></ul></div></div>
+<p>尽管nonstop让我们探测出 AI 编码的能力边界与行为特性，但在实际应用AI Coding的过程中，我们也发现了许多问题和挑战。</p>
+<h3 class="sub">3.1 AI Coding的常见问题</h3>
+<h3 class="sub">3.2  AI Coding的问题根因分析</h3>
+<p>在项目实际应用AI Coding的过程中，我们也发现了许多问题。基于57个真实案例，我们深入分析提炼出13类典型问题和5大根因，建立了系统化的问题认知框架，以及相应的预防和应对机制。</p>
+<p>问题清单：这些问题在我们的实际项目中反复出现，建立问题清单有助于我们在使用AI Coding时提前识别和规避这些风险。</p>
+<table><thead><tr><th>序号</th><th>问题类型</th><th>严重程度</th><th>来源</th></tr></thead><tbody><tr><td>1</td><td>异步语义误用（blocking send in tokio）</td><td>Critical</td><td>nonstop</td></tr><tr><td>2</td><td>幻觉（调用/配置不存在的 API）</td><td>High</td><td>两项目</td></tr><tr><td>3</td><td>改不全（insert 无 cleanup）</td><td>High</td><td>两项目</td></tr><tr><td>4</td><td>配置与实现脱节</td><td>High</td><td>nonstop</td></tr><tr><td>5</td><td>安全盲区（时序攻击/SSRF/JWT）</td><td>Critical</td><td>nonstop</td></tr><tr><td>6</td><td>测试 Flaky（平台差异）</td><td>Medium</td><td>nonstop</td></tr><tr><td>7</td><td>内存泄漏（DashMap 只增不减）</td><td>Critical</td><td>nonstop</td></tr><tr><td>8</td><td>协议实现不完整</td><td>Critical</td><td>nonstop</td></tr><tr><td>9</td><td>底层未读就改上层</td><td>High</td><td>LEGO</td></tr><tr><td>10</td><td>源码分析替代实测</td><td>High</td><td>LEGO</td></tr><tr><td>11</td><td>大文件编辑损坏</td><td>Medium</td><td>nonstop</td></tr><tr><td>12</td><td>环境盲区</td><td>Medium</td><td>LEGO</td></tr><tr><td>13</td><td>不会说&quot;我不知道&quot;</td><td>最高</td><td>LEGO</td></tr></tbody></table>
+<p>针对上述分析，AI Coding 在大型项目中的常见问题主要源于：</p>
+<p>●不会说&quot;我不知道&quot;：这是最高风险——AI 会用自信的语气输出错误结论，反而降低人的审查意愿</p>
+<p>●幻觉：编造函数签名、编造 RFC 章节号、编造百分比数据</p>
+<p>●改不全：局部修改，遗忘全局影响（insert 了却没有 cleanup）</p>
+<p>●模式匹配代替验证：代码相似就推断行为相同，跳过实测</p>
+<p>●缺乏环境意识：不区分容器/宿主机，不查配置直接猜</p>
+<p>根本原因：AI 缺乏&quot;不确定性意识&quot;和&quot;全局视野&quot;。所以，接下来我们需要针对性地解决这两个问题。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>Harness五层架构</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>核心理念：把AI尽量harness在单个模块、单文件、单函数内。</li><li>五层架构围绕上下文、约束、反馈三大核心要素形成闭环。</li><li>工程体系才是核心资产，而不是某个模型或prompt。</li></ul></div>
+<p>基于上面的系统性分析研究和项目工程实战，我们已确认LEGO的项目是可以由AI来写，但LEGO项目存在一定复杂度和风险。所以，我们希望不是&quot;用 AI&quot;，而是&quot;驾驭 AI&quot;——这也是我们 Harness Engineering 的实践的起点。</p>
+<h3 class="sub">4.1 Harness Engineering 的核心理念</h3>
+<p>首先我们梳理出一个理念：将 AI 尽量 harness 在单个模块、单个文件、单个函数内实现。</p>
+<p>核心是：上下文、约束和反馈。</p>
+<p>LEGOHarness Engineering 不是简单地&quot;给 AI 加规则&quot;，而是构建一套系统——让 AI在有边界、有约束、有反馈的环境中持续、可靠、高质量地交付代码。</p>
+<p>4.2 LEGO Harness Engineering五层架构设计</p>
+<p>基于这个核心思想，我们设计了LEGO Harness Engineering五层架构。这五层架构围绕&quot;上下文、约束和反馈&quot;三大核心要素构建，形成了一个完整的闭环系统。</p>
+<p>各层职责：</p>
+<p>工程体系才是核心资产，而不是某个模型或 prompt。Skill 每天在更新，大模型在进化，但工程体系的价值持续积累。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>三大实践抓手</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>上下文：Agent.md项目宪法、反例免疫安全纪律、领域模式库、专业Skill四层递进。</li><li>约束：三层约束架构+五条核心约束，用结构化约束替代语言化期望。</li><li>反馈：三条并行反馈通道与踩坑→规则→Skill进化闭环。</li><li>多模型对抗式CR交叉验证，解决知识、注意力、确认偏差三大盲区。</li></ul><div class="pit"><ul><li>AI训练数据中的RFC可能过时、章节号混淆</li><li>大diff下注意力盲区，500+行diff后半部分审查质量下降</li></ul></div></div>
+<h3 class="sub">5.1  LEGO上下文建设---消除 AI 的&quot;记忆偏差&quot;</h3>
+<h3 class="sub">5.1.1让AI“理解”项目和需求</h3>
+<p>LEGO 构建了四层递进的上下文体系，从项目宪法到领域专家知识，覆盖了 AI 在 CDN 和 EO 项目中工作所需的全部知识。</p>
+<p>1. Agent.md（项目宪法）：项目结构即上下文，架构模式即约束，内联反馈注释</p>
+<p>2. 安全纪律：用&quot;反例免疫&quot;替代&quot;正面说教&quot;，每条规则都有错误写法和正确写法，用错误示例教 AI &quot;什么是错的&quot;</p>
+<p>3. 领域知识（可复用模式库）：CR 检查清单来自真实问题且经过 A/B 验证，涵盖 CR 检查模式、编码模式库、并发设计模式</p>
+<p>4. 专业 Skill：覆盖友商实现、协议 RFC、开源代码等领域知识</p>
+<p>AI 训练数据中的 RFC 可能已经过时（如 RFC 7230/7231 已被 9110/9112 取代），引用时还可能混淆章节号。LEGO 的解法：将 38,068 行 RFC 原文固化在本地，AI 通过直接读取而非&quot;回忆&quot;来引用协议标准。</p>
+<h3 class="sub">5.1.2建立多竞品调研和协议安全 Agent团队</h3>
+<p>在AI Coding过程中，上下文信息的质量至关重要。为了让AI做出正确的技术决策，我们需要为它提供充分的上下文信息。为此，我们建立了竞品调研Agent团队，负责为AI提供业界最佳实践和竞品实现的信息。</p>
+<p>技术决策三问：</p>
+<h3 class="sub">1. RFC怎么说？（标准规范）</h3>
+<h3 class="sub">2. 业界怎么做？（最佳实践）</h3>
+<h3 class="sub">3. LEGO有什么差别？（定制化需求）</h3>
+<p>传统做法的局限性：</p>
+<p>人类工程师花1-2天读RFC文档；花1天翻阅Nginx源码；花几天对比竞品实现；然后才能编写技术方案，整个流程耗时且容易遗漏关键信息。</p>
+<p>LEGO的解决方案：组建Agent团队，实现自动化、结构化、并行化调研</p>
+<p>●竞品调研Agent团队架构：</p>
+<p>●协议安全测试Agent团队</p>
+<p>知识工程进化：通过三个维度的持续迭代提升Agent能力</p>
+<table><thead><tr><th>维度</th><th>内容</th><th>作用</th></tr></thead><tbody><tr><td>运营数据</td><td>实际生产环境的问题反馈和经验积累</td><td>了解真实的安全攻击场景和手法</td></tr><tr><td>专家思维</td><td>资深工程师的经验法则和最佳实践</td><td>提供常见的安全漏洞模式和编码规范</td></tr><tr><td>行业规则</td><td>协议安全和网络安全领域的通用规则和标准</td><td>提供权威的安全知识来源</td></tr></tbody></table>
+<p>协议安全测试Agent专注于安全防护的深度验证，确保每个协议实现都符合安全标准和防护要求。</p>
+<p>最终主 Agent 同步分析 LEGO 源码，交叉验证，将原本需要3 人/天的调研压缩至1天。</p>
+<h3 class="sub">5.2 约束</h3>
+<p>核心原则：用结构化约束替代语言化期望，让 AI&quot;不敢&quot;犯错。</p>
+<p>三层约束架构</p>
+<p>●Layer 1：权限安全基座</p>
+<p>●Layer 2：代码规则即编译器</p>
+<p>●Layer 3：流程约束——测试不可跳过（功能实现 → 单元测试 → 代码审查，严格阻塞顺序）</p>
+<ul><li>Task: 功能实现</li><li>└─ blocks: [单元测试]</li><li>← 测试 Task 被功能 Task 阻塞</li><li>Task: 单元测试</li><li>├─ blockedBy: [功能实现]</li><li>│  ← 功能完成后才能写测试</li><li>├─ blocks: [代码审查]</li><li>│  ← 测试完成后才能审查</li><li>Task: 代码审查</li><li>└─ blockedBy: [功能实现, 单元测试]</li><li>← 两个都完成才能审查</li></ul>
+<p>五条核心约束（每条约束都来自真实踩坑）</p>
+<table><thead><tr><th>序号</th><th>约束</th><th>踩坑来源</th></tr></thead><tbody><tr><td>1</td><td>单项目调研：每次只调研一个竞品</td><td>多竞品混合分析时 C 和 C++ 代码模式互相干扰</td></tr><tr><td>2</td><td>严禁网络操作</td><td>AI 联网搜索时返回的竞品信息可能过时或不准确</td></tr><tr><td>3</td><td>本地不存在则跳过</td><td>无源码时 AI 用训练数据编造了&quot;源码分析&quot;</td></tr><tr><td>4</td><td>不修改 lego_server 代码</td><td>职责隔离：调研 Agent 不能有副作用</td></tr><tr><td>5</td><td>严格搜索范围</td><td>防止 Agent 在系统目录或 LEGO 目录中搜索污染分析结果</td></tr></tbody></table>
+<p>明确的约束比模糊的期望更有效</p>
+<table><thead><tr><th>方式</th><th>示例</th><th>效果</th></tr></thead><tbody><tr><td>❌ 期望</td><td>&quot;写高质量的代码&quot;</td><td>AI 理解模糊，输出不稳定</td></tr><tr><td>✅ 约束</td><td>&quot;禁止裸 new，必须 unique_ptr&quot;</td><td>AI 100% 遵循</td></tr><tr><td>❌ 期望</td><td>&quot;注意并发安全&quot;</td><td>AI 可能遗漏</td></tr><tr><td>✅ 约束</td><td>&quot;热路径禁止全局 mutex，用 per-thread 或分片锁&quot;</td><td>AI 生成时自动规避</td></tr><tr><td>❌ 期望</td><td>&quot;记得写测试&quot;</td><td>8 个 Agent 忘了测试</td></tr><tr><td>✅ 约束</td><td>TaskList 中测试 Task 阻塞后续流程</td><td>不可能跳过</td></tr></tbody></table>
+<p>约束还延伸至多模型多 Agent 对抗式 CR，通过 cr_claude cr_codex cr_gemini 三个 Reviewer 并行独立审查，cr_manager 汇总出 cr_report.md，实现交叉验证，解决单模型的知识盲区、注意力盲区和确认偏差三大问题。</p>
+<h3 class="sub">5.3反馈</h3>
+<h3 class="sub">5.3.1从需求到研发测试的全AI自动化流水线</h3>
+<p>核心理念：反馈速度决定进化速度，实时反馈能让输出质量翻 2-3 倍</p>
+<p>一条命令驱动的 9 阶段全自动流水线</p>
+<p>LEGO 建立了三条并行的反馈通道：</p>
+<p>●通道 1：自动采集（Hook）</p>
+<p>●通道 2：踩坑日志（Pitfall Journal）</p>
+<p>●通道 3：CLAUDE.md 内联反馈</p>
+<p>踩坑 → 规则 → Skill 的进化闭环</p>
+<ul><li>真实踩坑 (PIT-001: mmap 检查 nullptr)</li><li>安全规则 (R2: 系统调用返回值)</li><li>CR 检查清单 (review-patterns.md)</li><li>A/B 实验验证效果</li><li>├→ 确认有效 → 保留</li><li>└→ 效果有限 → 标注&quot;通用知识可覆盖&quot;</li></ul>
+<p>实际案例</p>
+<p>●PIT-001 (mmap nullptr→SIGSEGV) → 写入 R2 规则 → AI 自动使用 MAP_FAILED</p>
+<p>●问题 9 (未读底层就改上层) → Pattern #8 → A/B 验证显著 → 保留</p>
+<p>●问题 23 (无源码时编造分析) → 更新 competitor-researcher Skill</p>
+<h3 class="sub">5.3.2多模型多Agent对抗式CR</h3>
+<p>单模型CR的三个盲区：</p>
+<table><thead><tr><th>盲区类型</th><th>表现</th><th>根因</th></tr></thead><tbody><tr><td>知识盲区</td><td>每个模型的训练数据不同，对特定框架/模式的理解有差异</td><td>Claude更懂Seastar异步模式，Codex更懂系统调用约定</td></tr><tr><td>注意力盲区</td><td>大diff下模型会&quot;聚焦&quot;于某些区域而忽略其他</td><td>上下文窗口有限，500+行diff时后半部分审查质量下降</td></tr><tr><td>确认偏差</td><td>单模型发现一个问题后，倾向于沿同一方向继续找</td><td>发现了内存安全问题后，可能忽略配置兼容性问题</td></tr></tbody></table>
+<p>对抗式CR的核心思想：</p>
+<ul><li>模型A独立审查 → 发现问题集{a1, a2, a3}</li><li>模型B独立审查 → 发现问题集{b1, b2, a2}</li><li>模型C独立审查 → 发现问题集{c1, a1, b1}</li></ul>
+<p>交叉验证：</p>
+<p>●a2被A和B同时发现 → 高置信度</p>
+<p>●a1被A和C同时发现 → 高置信度</p>
+<p>●b1被B和C同时发现 → 高置信度</p>
+<p>●a3只有A发现 → 需要在交叉轮中验证</p>
+<p>●c1只有C发现 → 需要在交叉轮中验证</p>
+<p>对抗式CR的架构和流程：</p>
+<p>1. 三个模型（Claude + Codex + Gemini）并行独立审查</p>
+<h3 class="sub">2. 汇总问题并交叉验证</h3>
+<h3 class="sub">3. 对争议问题进行辩论式讨论（同意/反对/维持）</h3>
+<h3 class="sub">4. 全员无新发现时自动收敛</h3>
+<p>对抗式CR与业界对比分析</p>
+<table><thead><tr><th>维度</th><th>GitHub Copilot CR</th><th>OpenAI Codex Review</th><th>LEGO对抗式CR</th></tr></thead><tbody><tr><td>模型数</td><td>1</td><td>1-2</td><td>3（Claude+Codex+Gemini）</td></tr><tr><td>执行方式</td><td>串行单次</td><td>串行两次</td><td>并行+交叉迭代</td></tr><tr><td>交互方式</td><td>静态扫描</td><td>静态扫描</td><td>辩论式（同意/反对/维持）</td></tr><tr><td>收敛机制</td><td>无（一次性）</td><td>固定轮数</td><td>全员无新发现自动收敛</td></tr><tr><td>容错</td><td>失败则无结果</td><td>失败则无结果</td><td>部分模型失败仍可产出</td></tr><tr><td>审查标准</td><td>通用</td><td>通用</td><td>项目定制P0-P3+review-patterns</td></tr></tbody></table>
+<p>LEGO的对抗式CR通过多模型并行审查和交叉验证，能够发现更深层的问题；通过辩论式讨论，能够更深入地理解问题的本质；通过自动收敛机制，能够在保证质量的同时提高效率。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>实践案例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>cpuinfos读写竞争修复：对抗式CR定位根因，AI对比三种方案，开发从5天压至1天。</li><li>综合效率提升20%（纳入Review成本与学习曲线后）。</li><li>局部环节提速可达数倍，但AI结果仍需人工Review。</li></ul><div class="pit"><ul><li>方案未考虑线程初始化问题，暴露非最优解</li></ul></div></div>
+<p>确定了3个抓手之后，我们快速进入整体的工程落地中，这里具体分享具体实践案例。</p>
+<h3 class="sub">6.1 案例：cpuinfos读写竞争修复</h3>
+<p>背景：发现cpuinfos存在多线程读写竞争问题，需要修复以确保系统稳定性</p>
+<p>实践过程：</p>
+<p>●通过对抗式CR快速定位问题根源</p>
+<p>●AI生成修复方案和测试用例</p>
+<p>●自动化验证修复效果</p>
+<p>成果：</p>
+<p>●AI 系统性对比三种方案（ReadWriteLock / atomic&lt;shared_ptr&gt; / 双缓冲+atomic 索引）</p>
+<p>●成功修复了读写竞争问题</p>
+<p>●最终采用零性能开销方案，开发时间从 5 天压缩至 1 天，</p>
+<p>●但暴露出方案未考虑线程初始化的问题，非最优解，需要后续优化</p>
+<h3 class="sub">6.2 阶段性收益~效率提升20%</h3>
+<p>通过Harness Engineering的实践，LEGO项目在初期就获得了显著收益，综合效率提升20%。也稍做解释，虽然在局部环节（比如调研、开发）的提速幅度远不止于此可能达数倍，但 AI 的执行结果仍需人工 Review，同时对研发同学尤其是新人也需要时间成本熟悉学习这套体系——将 Review 成本与学习曲线一并纳入后，最终综合提升约为 20%。</p>
+<table><thead><tr><th>维度</th><th>提升幅度</th></tr></thead><tbody><tr><td>竞品调研</td><td>3 人天 → 1 天（~3x）</td></tr><tr><td>方案设计</td><td>2-3 人天 → 1 天（~2x）</td></tr><tr><td>协议安全测试</td><td>3-5 人天 → 1 天（~4x）</td></tr><tr><td>代码审查</td><td>等待 1-3 天 → 30 分钟</td></tr><tr><td>cpplint 通过率</td><td>&gt;95%</td></tr><tr><td>CVE 防护覆盖</td><td>100%</td></tr></tbody></table>
+<p>知识资产方面：86,422 行代码、31 个 Skill、34 条踩坑规则、4 竞品并行调研，3组A/B实验 持续积累。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>差异化探索与挑战</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>用单变量A/B实验量化规则有效性，建立效果评测体系。</li><li>六项差异化：规则验证、对抗CR、问题归因、跨会话上下文、测试闭环、反馈时效。</li><li>挑战：误报率36%、文档爆炸、AI自信传染、团队能力退化风险。</li></ul><div class="pit"><ul><li>误报率36%：9个代码问题中真实P0仅1个</li><li>文档爆炸：8个需求生成99个文件</li></ul></div></div>
+<p>当前，LEGO已经进入了&quot;落地 + 量化验证 + 持续迭代&quot;的成熟阶段。在这一过程中，我们进行了大量的先行性探索：</p>
+<p>●模型能力边界：深入了解AI在不同场景下的能力局限</p>
+<p>●效果评测：建立量化的效果评估体系</p>
+<p>●最佳实践沉淀：将成功经验固化到流程中</p>
+<p>与业界实践的差异化对比</p>
+<table><thead><tr><th>维度</th><th>业界典型水平</th><th>LEGO实践</th><th>LEGO的差异化</th></tr></thead><tbody><tr><td>规则验证</td><td>改了harness跑benchmark</td><td>单变量A/B实验</td><td>知道哪条规则有用</td></tr><tr><td>多模型对抗CR</td><td>两模型串行review</td><td>三模型并行+交叉迭代+自动收敛</td><td>更深的缺陷发现</td></tr><tr><td>问题归因</td><td>散点经验分享</td><td>34问题×5根因×代码对比</td><td>系统性知识库</td></tr><tr><td>跨会话上下文</td><td>prompt caching/文件记忆</td><td>TAPD目录结构化存储</td><td>多Agent共享上下文</td></tr><tr><td>测试闭环</td><td>生成→运行</td><td>生成→运行→覆盖率→补全→收敛</td><td>完整闭环</td></tr><tr><td>反馈时效</td><td>事后回顾（天/周级）</td><td>实时Hook+当天日志+永久规则</td><td>三时间尺度覆盖</td></tr></tbody></table>
+<p>同时我们也发现一些问题：</p>
+<p>误报率 36%：9 个代码问题中真实 P0 仅 1 个</p>
+<p>文档爆炸：8 个需求生成 99 个文件，人难以全部确认</p>
+<p>AI 的&quot;自信&quot;会传染：格式工整的文档反而降低审查意愿</p>
+<p>团队能力退化风险：AI 用多了，工程师的专业和文档能力可能下滑</p>
+<p>这些都是在 Harness Engineering实践中需要持续应对的真实挑战。</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>角色演变与团队建设</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>角色重定义：初级开发→AI操作员，高级开发→Harness工程师，架构师→人机协作架构。</li><li>能力转型四维度：写代码→写约束、解决问题→防止问题、个人深度→知识表达、全栈→人机协作。</li><li>团队渐进路径：会用（1-2月）→会建（2-4月）→会进化（4-12月）。</li><li>实践态度三重奏：小心、大力、拥抱，永远掌握底层原理。</li></ul></div>
+<p>在AI Coding时代，后台开发工程师的角色正在发生深刻变化：</p>
+<h3 class="sub">8.1 角色的重新定义</h3>
+<p>过去我们熟悉的职能边界正在松动。</p>
+<p>初级开发：不再只是敲代码的执行者，而是进化为能够驾驭AI 写代码的操作员，掌握 Skill 与 Prompt 成为新的基础技能；</p>
+<p>高级开发：升维为Harness 工程师，核心工作是设计 AI 的约束、上下文与规则，让 AI 在可控轨道上高效运转；</p>
+<p>架构师：重心从系统设计转向人机协作架构，真正的判断力体现在&quot;哪些交给 AI、哪些必须人来把控&quot;；</p>
+<p>测试和安全工程师：分别演变为 AI 质量工程师与 AI 安全专家，前者设计测试闭环以验证 AI 输出，后者构建 AI 安全测试 Skill 并纳入计算安全性考量。</p>
+<p>这一切变化背后，有一个不变的核心能力：抽象思维——知道什么该让 AI 做、如何验证 AI 做得对不对。这是工程师在 AI 时代真正的不可替代性所在。</p>
+<h3 class="sub">8.2 能力转型的四个维度</h3>
+<p>角色演变的背后，是工程能力体系的系统性重构：</p>
+<p>1. 写代码 → 写约束：让 AI 遵循正确规则写出正确代码，比自己手写更关键；</p>
+<p>2. 解决问题 → 防止问题：从 Bug 中提炼规则和 Skill，构建验证防护机制，将经验转化为护城河；</p>
+<p>3. 个人深度 → 知识表达：把个人积累的经验转化为 AI 可消费的格式（Skill 规则 RFC），实现知识的乘数效应；</p>
+<p>4. 全栈开发 → 人机协作：核心决策变为——哪些任务交给 AI、哪些人来兜底、结果如何验证。</p>
+<h3 class="sub">8.3  团队建设的渐进路径</h3>
+<p>团队的 AI 能力建设不能一蹴而就，而应遵循会用 → 会建 → 会进化的三段节奏：</p>
+<p>●第 1-2 月（会用）：推动全员掌握 /start 全流程、对抗式 Code Review 和 14 条安全规则，打牢使用基础；</p>
+<p>●第 2-4 月（会建）：骨干成员开始编写团队专属 Skill，通过 A/B 实验验证效果，建立 Skill 共享机制，形成团队智慧沉淀；</p>
+<p>●第 4-12 月（会进化）：迈向 Harness 自动化，推动跨团队知识共享，持续追踪 AI 使用效果，构建自我迭代的 AI 协作飞轮。</p>
+<h3 class="sub">8.4  实践态度的三重奏</h3>
+<p>面对 AI Coding，团队需要在三种态度之间保持清醒的平衡：</p>
+<p>小心——人类必须审核每一行 AI 生成的代码，不能盲目信任；</p>
+<p>大力——主动选择高频场景深度使用，不能浅尝辄止；</p>
+<p>拥抱——积极布道推广，让 AI 能力成为团队文化的一部分。</p>
+<p>而无论工具如何演进，永远要掌握底层原理——这是工程师在人机协作时代保持判断力与掌控感的终极压舱石。</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>工程体系才重要：每个踩坑变规则、规则内化进Skill，可持续进化。</li><li>AI Coding不是让AI替你写代码，而是重新定义人机协作的工程范式。</li></ul></div>
+<p>工程体系才重要。</p>
+<p>AI Coding 不是&quot;让 AI 替你写代码&quot;，而是重新定义人与 AI 协作的工程范式。LEGO Harness Engineering 的价值不在于某次效率提升的数字，而在于：每一个踩坑变成规则，每一条规则内化进 Skill，每一个 Skill 让下一个人少走弯路——这是一套可持续进化的工程体系。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-数据">数据</span><h4>Nonstop实测性能</h4><p>42052 QPS、5000并发0错误、P50延迟1.1ms、6层纵深防御</p><a class="src-link" href="#sec-03">原文 → Nonstop能力验证</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>LEGO项目规模</h4><p>100万行核心代码+300万行深度改造库，万亿级日请求，服务亿级用户</p><a class="src-link" href="#sec-02">原文 → 背景与挑战</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>复杂度乘积式爆炸</h4><p>不可控客户端×源站×协议×配置叠加，理论组合路径13824×N种</p><a class="src-link" href="#sec-02">原文 → 背景与挑战</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>期望 vs 约束</h4><p>“写高质量代码”输出不稳定；“禁止裸new，必须unique_ptr”AI 100%遵循</p><a class="src-link" href="#sec-06">原文 → 三大实践抓手</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>AI最高风险：不会说“我不知道”</h4><p>AI用自信语气输出错误结论，反而降低人的审查意愿</p><a class="src-link" href="#sec-04">原文 → AI翻车根因</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>单模型CR vs 对抗式CR</h4><p>单模型有知识、注意力、确认偏差三盲区；三模型并行交叉验证自动收敛</p><a class="src-link" href="#sec-06">原文 → 三大实践抓手</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>效率提升量化</h4><p>cpuinfos修复5天→1天；综合效率提升20%；竞品调研3人天→1天</p><a class="src-link" href="#sec-07">原文 → 实践案例</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Task阻塞流水线</h4><p>功能实现→单元测试→代码审查，用blocks/blockedBy强制测试不可跳过</p><a class="src-link" href="#sec-06">原文 → 三大实践抓手</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>改不全</h4><p>局部修改遗忘全局影响：insert了却没有cleanup</p><a class="src-link" href="#sec-04">原文 → AI翻车根因</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>知识资产沉淀</h4><p>86422行代码、31个Skill、34条踩坑规则、4竞品并行调研</p><a class="src-link" href="#sec-07">原文 → 实践案例</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>工程体系才是核心资产</h4><p>模型与prompt会进化，可持续迭代的工程体系价值持续积累</p><a class="src-link" href="#sec-10">原文 → 结语</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>幻觉</h4><p>编造函数签名、编造RFC章节号、编造百分比数据</p><a class="src-link" href="#sec-04">原文 → AI翻车根因</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>在高风险后端系统里不是“用AI”而是“驾驭AI”：用上下文、约束、反馈把AI锁在单模块内。</li>
+          <li>结构化约束比模糊期望有效：把规则写成编译器、流程做成阻塞，让AI不敢也不能犯错。</li>
+          <li>工程师的价值从写代码转向写约束与规则，抽象思维是判断“什么交给AI、如何验证”的不可替代能力。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801331&amp;idx=1&amp;sn=7dfd93b1754a4f80c993347c4b57adb1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801331&amp;idx=1&amp;sn=7dfd93b1754a4f80c993347c4b57adb1</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：AI编程 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
