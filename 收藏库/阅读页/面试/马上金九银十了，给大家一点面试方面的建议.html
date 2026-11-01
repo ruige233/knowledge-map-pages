@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>马上金九银十了，给大家一点面试方面的建议 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>面试 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">马上金九银十了，给大家一点面试方面的建议</h1>
+  <p class="lede">金九银十求职季：简历三大重点栏写法与开放式问题应答建议</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>面试</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 6 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>专业技能怎么写</a>
+          <a href="#sec-02"><span class="n">02</span>工作经历怎么写</a>
+          <a href="#sec-03"><span class="n">03</span>项目经历怎么写</a>
+          <a href="#sec-04"><span class="n">04</span>开放式问题怎么答</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 专业技能怎么写</a>
+          <a href="#sec-02">02 工作经历怎么写</a>
+          <a href="#sec-03">03 项目经历怎么写</a>
+          <a href="#sec-04">04 开放式问题怎么答</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>正好马上要金九银十了，相信有不少小伙伴们估计也有跳槽涨薪的想法，那么就从我最近的经历出发，说说我的一些建议。</p>
+<p>简历作为敲门砖，能够给用人单位一个最初的直观印象。这两年互联网的就业环境远比不上前几年，很可能一个岗位一天就会收到几十甚至上百份简历，而HR阅读一份简历可能只花个不到一分钟的时间，能否收到面试邀请就在这一分钟内决定，所以请大家务必用心雕琢简历。</p>
+<p>一份完整的简历，大概可以分为基本信息、教育背景、专业技能，工作经历、项目经验几个部分。基本信息和教育背景部分没什么好说的，保证信息属实就可以，重点在后面三个部分。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>专业技能怎么写</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>列出开发技能清单，可随岗位JD动态调整。</li><li>不堆砌无竞争力技术，突出多线程、I/O、GC、JVM等核心项。</li><li>慎用“了解/掌握/精通”，“精通”会被面试官连环追问。</li><li>技术名词规范大小写，如MySQL、Spring Boot、RocketMQ。</li></ul><div class="pit"><ul><li>写“精通”却答不好，容易被pass掉</li><li>技术名词大小写不规范显得对技术不严谨</li></ul></div></div>
+<p>专业技能方面，主要是列出开发技能清单，也是对面试岗位的技能要求的一个响应，有时候可能还需要根据岗位的招聘要求差异做一下动态的修改。</p>
+<p>首先，不建议堆砌太多没有竞争力的技术，否则不仅看上去没有重点，而且会掩盖核心的技能不利于让面试官发现。举个例子，如果你要表现自己Java功底扎实，那么就可以突出擅长多线程、I/O、GC、JVM等方面，而像类似于集合的使用或者GUI这种过于细节或者不那么重要的内容就可以不写。</p>
+<p>其次，对技术的掌握程度描述一定要慎重，例如“了解”、“掌握”、“熟练掌握”、“精通”所代表的掌握程度就是不一样的，如果你某项技术写了“精通”，碰巧又是面试官擅长的领域，那么后续就可能要面对连环炮的轰炸了，表现的不好就很容易被pass掉。</p>
+<p>最后，对于技术名词的拼写一定要规范大小写，例如MySQL、Spring Boot、RocketMQ等，大小写或空格不规范的情况会让面试官觉得你可能对于技术并不严谨。所以就当是为了给面试官留一个好印象，在写完简历后也要多检查几遍基本的拼写。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>工作经历怎么写</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>按时间倒叙介绍公司、职务、主要工作。</li><li>说明承担的责任，有突出业绩更好。</li></ul></div>
+<p>工作经历方面，建议以时间倒叙的方式来进行介绍，主要介绍一下自己在一段时间内在什么公司、担任什么职务、主要做了什么工作。这一部分可以描述一下你承担了什么责任，如果有什么突出业绩能写上更好。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>项目经历怎么写</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>一般写3到5段，靠项目描述、涉及技术、主要职责展示作用。</li><li>项目描述两行内讲清，关键看主要职责部分。</li><li>不堆技术栈，“用MyBatis-Plus实现数据持久化”属无意义描述。</li><li>挖掘亮点：解决了什么难题、带来什么量化提升。</li></ul><div class="pit"><ul><li>纯粹堆技术栈、罗列技术功能属于无意义描述</li></ul></div></div>
+<p>从我之前面试别人时收到的简历来看，一般都会描述3到5段项目经历。这块内容主要是通过项目描述、涉及技术、主要职责将自己在项目中发挥的作用更好的展示给面试官。</p>
+<p>项目描述不建议太长，一般在两行内将项目的内容、模块简单介绍清楚就可以，涉及的技术就是说一下项目中用到了什么技术，前面这两项一般不会有什么问题，关键看一下主要职责部分。</p>
+<p>最主要的还是，不要纯粹的堆技术栈，我看过很多简历在这一部分说自己用什么技术实现了什么功能，例如：</p>
+<ul><li>使用MyBatis-Plus实现数据持久化操作</li><li>使用Sentinel实现服务的限流与降级</li></ul>
+<p>这些技术功能罗列就属于无意义的描述，涉及的技术栈中只要写上这些技术就可以了，不需要重复介绍它们的功能。针对这一块的优化，建议大家挖掘一下项目中的亮点，例如自己用什么技术解决了什么技术难题、带来了什么突破，例如：</p>
+<ul><li>使用xx解决了xx问题，使接口查询耗时减少了50%</li><li>项目中引入xx优化了xx模块，使系统线上QPS达到1W</li></ul>
+<p>除此之外，个人在项目中的收获或是项目成果如果比较亮眼的话也可以写上，同样不建议太长，简单描述即可。</p>
+<p>事后闲聊的时候，这个哥们告诉我，他们会根据简历先进行第一轮的筛选，把候选人分为正式合同员工或是派遣制合同员工，我们都知道派遣制的弊端，而他们在面试之前就做好了这个判断，所以说简历的重要性还是毋庸置疑的。</p>
+<p>从最近的势头上来看，一上来就直接问八股文的面试官确实已经不多了，他们更多是从你简历的项目中用到了哪些技术作为切入点，有迹可循地查看你对这些知识的掌握程度。</p>
+<p>比如你的项目中写了做过MySQL的调优，那么就很可能接下来就要被问到explain执行计划、存储引擎、索引、B+树的相关知识点，所以凡是大家写在简历上的东西，建议都做一下充分的准备。</p>
+<p>所以，虽然对背八股文这个事你和面试官的心里都有数，但八股文该背还是得背。当然了，背八股文也是讲艺术的，个人非常不建议死记硬背，面试官希望听到的更多的是能够结合实际中的问题的回答。</p>
+<p>如果你能够在解释完相关原理后，顺带说明一下自己在实践中应用它解决了什么具体问题，不仅能够证明自己的基础扎实，也能体现自己解决实际问题的能力，这样就非常的nice~</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>开放式问题怎么答</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>考察全面思考：从问题分析、解决方法到方案落地的系统流程。</li><li>设计系统从业务拆解、数据/架构设计、技术选型、非功能设计展开。</li><li>封装组件讲缓存一致性、二级缓存、过期策略、集群一致性与穿透击穿雪崩。</li><li>综合能力靠平时沉淀：界定问题、给方法、条理清晰，别只做CRUD。</li></ul><div class="pit"><ul><li>日常只做CRUD，综合能力缺乏沉淀</li></ul></div></div>
+<p>设计思路</p>
+<p>如果你在简历中写了设计过xx系统、或封装过xx组件，那么面试官就很有可能会问你设计这个系统、组件的思路是什么。通常这是一个考察个人全面思考能力的问题，是从考虑问题、到解决问题的方法、再到方案的落地的一个系统的流程。</p>
+<p>如果你设计过某个业务系统，那么就可以从下面展开：</p>
+<ul><li>如何确定业务需求，根据业务功能拆解，进行子系统的划分</li><li>如何做好数据模型设计、业务架构模型设计，通常可以从较小规模架构开始设计，后续根据业务量级进行扩展</li><li>如何做好技术选型，选择适合业务的技术栈</li><li>如何做好非功能方面的设计，例如安全设计、容灾能力等等</li></ul>
+<p>同理，封装某个组件的思路也可以详细的讲一讲，假如你在简历中写了自己封装过一个缓存组件，那么如果让你阐述设计思路，就应该尽量全面的描述，例如：</p>
+<ul><li>如何保证的缓存和数据库的一致性</li><li>何时只使用远程缓存，何时使用本地加远程的二级缓存</li><li>本地缓存是非常宝贵的资源，如何设计本地缓存的过期策略</li><li>集群环境如何保证本地缓存的一致性及正确性</li><li>如何应对缓存穿透、击穿、雪崩</li></ul>
+<p>综合能力</p>
+<p>因为现在的面试不只是技术面，有可能还会有hr面、总经理面等环节，有时候会考验到个人的综合能力。</p>
+<p>例如面试官可能会给你一个完全不熟悉的领域情景，让你考虑如何做好一个系统从设计到落地的工作，由于并不是你实际做过的项目，更考验的是你过往的沉淀和随机应变能力。</p>
+<p>在这种场景下，你要做的就是发现并界定问题，然后给出解决问题的方法。总的来说这个环节面试官不会太为难你，即使没有说出实际的落地方案，如果能够条理清晰的说明白自己的设计思路也是可以的。这方面的能力更多的还是依靠个人平日里能力的沉淀，这就要求我们在平常的日常工作里，在业务和技术架构方面都多多锻炼一下自己，而不是终日做一个CRUD Boy。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>简历是敲门砖</h4><p>HR阅读简历可能不到一分钟，能否收到面试邀请就决定在这一分钟内，务必用心雕琢简历。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>项目经历段数</h4><p>简历一般描述3到5段项目经历，项目描述建议两行内讲清项目内容与模块。</p><a class="src-link" href="#sec-03">原文 → 项目经历怎么写</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>堆技术栈无意义</h4><p>写“使用MyBatis-Plus实现数据持久化”属无意义描述，技术栈列出技术即可，不必重复介绍功能。</p><a class="src-link" href="#sec-03">原文 → 项目经历怎么写</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>量化亮点写法</h4><p>用xx解决xx问题使接口查询耗时减少50%；引入xx优化模块使系统线上QPS达到1W。</p><a class="src-link" href="#sec-03">原文 → 项目经历怎么写</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>了解/掌握/精通</h4><p>“精通”代表最高掌握程度，若恰逢面试官擅长领域，会面临连环追问，答不好易被pass。</p><a class="src-link" href="#sec-01">原文 → 专业技能怎么写</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>名词大小写不规范</h4><p>MySQL、Spring Boot、RocketMQ等大小写或空格不规范，会让面试官觉得对技术不严谨。</p><a class="src-link" href="#sec-01">原文 → 专业技能怎么写</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>八股文要结合实际</h4><p>八股文该背还得背，但不建议死记硬背，解释原理后结合实践说明解决了什么具体问题。</p><a class="src-link" href="#sec-03">原文 → 项目经历怎么写</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>简历内容都要准备</h4><p>简历写做过MySQL调优，可能被追问explain执行计划、存储引擎、索引、B+树，凡写上简历的都要充分准备。</p><a class="src-link" href="#sec-03">原文 → 项目经历怎么写</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>本地与远程缓存</h4><p>封装缓存组件需说明：何时只用远程缓存、何时用本地加远程二级缓存，以及本地缓存过期策略。</p><a class="src-link" href="#sec-04">原文 → 开放式问题怎么答</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>简历三大核心栏：专业技能突出核心、工作经历倒叙写业绩、项目经历写量化亮点。</li>
+          <li>写在简历上的每项技术都要准备被追问，八股文要结合实际讲，不要死记硬背。</li>
+          <li>开放式问题按“业务拆解→架构→选型→非功能”讲设计思路，综合能力靠平时沉淀。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;mid=2650880358&amp;idx=2&amp;sn=e8ac412268cf1e0ba5773e906edb3147" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;mid=2650880358&amp;idx=2&amp;sn=e8ac412268cf1e0ba5773e906edb3147</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：面试 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
