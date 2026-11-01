@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>其他 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">工作</h1>
+  <p class="lede">把个人时间当有限生产资料，三条路径提价值、做复利、借势成长。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>其他</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 4 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>打工人路线</a>
+          <a href="#sec-02"><span class="n">02</span>超级个体路线</a>
+          <a href="#sec-03"><span class="n">03</span>操盘手/门徒路线</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 打工人路线</a>
+          <a href="#sec-02">02 超级个体路线</a>
+          <a href="#sec-03">03 操盘手/门徒路线</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>“不要轻易的，直接出售你自己的生产资料。”</p>
+<p>这里的生产资料指的是你的时间、体力、脑力。这些东西都是有限、不可复制、不可再生的，你消耗掉就没有了。</p>
+<p>因此要想办法去提升你生产资料的价值，如果你的时间都用在了重复枯燥的流水线上，那么当你体力、脑力、精力开始下降时，被淘汰也是必然。</p>
+<p>打工的价格，注定天花板是有限的，普通人做到顶了，年薪也就几十万上百万，想再往上走，难如登天。</p>
+<p>年轻人初入社会，孑然一身，靠打工努力，提升自己能力，把生产资料卖个不错的价格，或许是一条必经之路，但脑子一定要清楚，要未雨绸缪，居安思危。 多去看看你公司的、行业的年龄层结构，30岁的有多少，在什么岗位，能力怎么样，要达到需要付出什么。</p>
+<p>如果上升空间还不错，机会还比较多的话，该拜师拜师，该付费付费，该学习学习，抓住一切的资源往上爬。 如果上升空间有限的话，就多问问自己，我这一生的终极价值和最终目标，是要出售什么？如何提升我们的智慧，让时间变得更有价值？</p>
+<p>原本我们的生产资料，只能在单位时间内卖给一个老板，所以收益的是固定的，那我们要思考能不能想办法复制它，卖给更多的人。 比如做自媒体，出书，拍视频，做图文等等，想办法让你的生产资料被1000个人，10000个人，甚至几十万个人看到。</p>
+<p>用有限的时间，去创造专属于你的智慧结晶，搭建你的收入管道，它会在你坐车时，看书时，睡觉时不断为你创造价值。 简而言之，这条很猛的搞钱偏方就是， 放下自尊，大胆“卖自己”！</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>打工人路线</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>适合没有攻击性、风险承受能力低的人，守好护城河并扩大优势</li><li>职场三要素是能力、资源、背景，围绕这三个点持续提升</li><li>缺能力就找项目历练复盘；缺资源就从客户和业务中发掘规律</li><li>缺背景就考高级证书，并找靠谱引路人等待机会</li></ul></div>
+<p>如果你自身没有攻击性和风险承受能力，那你是不适合去创业，去各种折腾的，最简单的办法，就是守好自己的护城河，并且想办法扩大优势。</p>
+<p>混迹职场，什么最最重要？</p>
+<p>能力、资源、背景。</p>
+<p>你没有解决问题的能力？</p>
+<p>你能不能给企业带来更大收益？</p>
+<p>你的资历、证书、引路人是否够硬？</p>
+<p>围绕这三个点，不断的去提升优势。</p>
+<p>缺乏解决问题的能力，就多去找有能力的人聊天学习，去主动找项目入局历练，在实践中学习，复盘，优化自己。</p>
+<p>缺乏资源优势，想办法从自己所做的事情中，接触的客户中，身边的资源中去发掘规律，比如提高销售转化率，客户二传率，客户好评率等等。</p>
+<p>缺乏背景，就去考这个行业的相关证书，越高级的越好，同时要学会主动吃屎，找一个靠谱的引路人，满足他的情绪和物质价值，等到机会降临。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>超级个体路线</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>互联网和自媒体崛起让普通人有机会展示才华、快速改变命运</li><li>写作博主、小红书图文、跨平台信息差带货都是可行方式</li><li>超级个体即一人活成一家公司，企业核心围绕个人开展</li></ul></div>
+<p>倒退20年，中国的年轻人除了第一条路，是没有什么快速改变命运的机会的，耳熟能详的名人，背后都是资本运作的结果。</p>
+<p>随着互联网的爆发，自媒体平台的崛起，让王兴、曾一鸣、黄峥这类大佬有了一展拳脚的机会。</p>
+<p>在之后，基于这些平台的优质生态，无数形态各异的普通人得以发挥自己的优势，在大浪里展示才华。</p>
+<p>如果你有一颗愿意折腾的心，可以像掌柜一样，做一个在自媒体平台上持续发声的写作博主，只要有人看了，你也就有了赚钱的机会。</p>
+<p>当然，你也可以去其他平台，用其他方式去寻早机会，比如在小红书上做图文博主，传播价值；又比如利用不同平台之间的信息差，去做营销，去带货赚差价。</p>
+<p>所谓超级个体，就是一个人活成一个公司，刚开始一个人什么都要会，闯出名堂之后，慢慢的变成2个人，10个人，100个人。</p>
+<p>但这个企业的核心，都是围绕着这个个体去开展的。</p>
+<p>只要超级个体不死，赚钱的机会就一直会有。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>操盘手/门徒路线</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>资源执行力一般时，到好项目、好平台、超级个体身边辅助落地</li><li>大厂留给90后00后的多是35岁被裁的便宜岗位，难独当一面</li><li>超级个体为自身过得更好会持续折腾，跟随能获得成长养分</li><li>三条路随认知提升交叉融合，核心是有能力自己干、没能力靠借势</li></ul><div class="pit"><ul><li>所谓一夜暴富，大多都是陷阱，警惕暴富神话</li></ul></div></div>
+<p>如果说，你的资源和执行力都比较一般，暂时没有什么出彩的本领，那么这条路，是更适合你走的。</p>
+<p>想办法去一些好项目、好平台、超级个体身边去辅助他们前行，帮他们打理一些落地一些项目。</p>
+<p>不要总想着去大厂当精英，说实话，大厂里面基本没有90后乃至00后的位置了，放出来的，基本就是35岁被裁员的便宜岗位。</p>
+<p>也就是说，你去了，大概率是只能当一个粘贴复制，做生产线工作的牛马，想要学习成长到独当一面，概率极低。</p>
+<p>而超级个体身边，因为他首先是为了自己过得更好，所以会一直折腾，他的事业是处于上升期的。</p>
+<p>这期间你会接触到很多有趣的事情，处理这些事儿的过程，都会变成你未来蜕变的养分。</p>
+<p>当然，这里我并不是说把咱们的人生路径限定死了，事实上随着认知和能力的提升，这三条路都会逐渐交叉融合。</p>
+<p>核心都是，有能力就自己干，没能力就靠借势，成长是一个长期主义显化的过程，是无数次小成功的叠加。</p>
+<p>所谓一夜暴富，大多都是陷阱。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 6 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>三条职业路径对比</h4><p>打工人守职场护城河；超级个体复制生产资料卖给更多人；操盘手/门徒借势超级个体成长，三条路最终交叉融合。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>职场三要素</h4><p>混迹职场最重要的是能力、资源、背景：能解决问题、能给企业带来更大收益、资历证书引路人够硬。</p><a class="src-link" href="#sec-01">原文 → 打工人路线</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>打工年薪天花板</h4><p>普通人打工做到顶，年薪也就几十万到上百万，再往上难如登天，注定有天花板。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>超级个体的规模路径</h4><p>超级个体从一人活成一家公司：先一个人什么都要会，闯出名堂后变成2人、10人、100人。</p><a class="src-link" href="#sec-02">原文 → 超级个体路线</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>迷信大厂当精英</h4><p>大厂基本没有90后、00后的位置，放出来的多是35岁被裁的便宜岗位，进去容易做复制粘贴的牛马。</p><a class="src-link" href="#sec-03">原文 → 操盘手/门徒路线</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>一夜暴富陷阱</h4><p>所谓一夜暴富大多都是陷阱，别把改变命运寄托在暴富神话上。</p><a class="src-link" href="#sec-03">原文 → 操盘手/门徒路线</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把时间、体力、脑力当有限生产资料，先提升价值，再想办法复制给更多人。</li>
+          <li>选路看自身条件：能折腾就做超级个体，资源和执行力一般就做操盘手或门徒借势。</li>
+          <li>成长是长期主义与无数次小成功的叠加，警惕一夜暴富陷阱。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="" target="_blank" rel="noopener"></a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：其他 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
