@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>其他 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">5 个技巧教你用 SOLO 做复杂数据分析</h1>
+  <p class="lede">你负责想、Agent 负责做：5 个技巧把复杂数据分析交给 SOLO。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>其他</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 16 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>想清楚重要问题</a>
+          <a href="#sec-02"><span class="n">02</span>想清楚验证对错</a>
+          <a href="#sec-03"><span class="n">03</span>让 AI 做得更好</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 想清楚重要问题</a>
+          <a href="#sec-02">02 想清楚验证对错</a>
+          <a href="#sec-03">03 让 AI 做得更好</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>本文作者：安果，TRAE 战略分析师</p>
+<p>上一期你学会了指挥 AI 做分析，这一期你学会放手。</p>
+<p>回顾：不止是写代码｜如何用 TRAE 进行复杂数据分析</p>
+<p>上一期我们聊了用 TRAE 做数据分析的基础流程：把数据丢进去，告诉它“帮我清洗一下”、“按月份画个趋势图”、“算一下同比增长”，一步步指挥，一步步出结果。</p>
+<p>如果你已经用起来了，可能会发现一个问题：简单分析很爽，但任务一复杂就累了。</p>
+<p>比如：数据不是现成的，需要先从某个平台获取；需要同时分析好几份数据做对比；分析做完了不确定结论有没有问题；下个月同样的分析又得重新来一遍……</p>
+<p>每次都手把手指挥每一步，链路一长就觉得：“我好像在给 AI 当保姆”。</p>
+<p>这一期，我们升级玩法。核心理念就一句话：你负责想，AI 负责做。</p>
+<p>上一期的模式是“你说一步，AI 做一步”：你既是思考者，也是指挥者。</p>
+<p>这一期的升级是：你只负责定方向、定标准、做判断，剩下的规划路径、获取数据、拆分任务、检查质量、沉淀复用：全部交给 AI。</p>
+<p>SOLO 里的 Agent 之所以能承接“做”的部分，是因为它具备三个关键特性：</p>
+<ul><li>自主决策能力 ：它每执行一步都会看到结果，然后根据结果决定下一步做什么：不是死板地执行脚本，而是“感知→判断→行动”的循环</li><li>完整的执行环境 ：能写代码、跑代码、装依赖、读写文件，不需要你帮它搭环境</li><li>持久化的工作空间 ：所有中间过程（代码、数据、图表）都保存在工作空间里，方便回溯、审查和复用</li></ul>
+<p>接下来 5 个进阶技巧，就是教你怎么把“做”的部分彻底交出去。</p>
+<p>本文所有内容都用 SOLO MTC 模式演示。</p>
+<p>技巧一：数据采集+分析一体化 - 没有数据？让 AI 自己去拿</p>
+<p>很多时候你想做一个分析，第一个卡点不是&quot;不会分析&quot;，而是“数据还没拿到手”。</p>
+<ul><li>传统流程是 ：先去某个平台后台选日期 → 勾筛选条件 → 点导出 → 等半天 → 下载 CSV → 再丢给 AI 分析。光是&quot;拿到数据&quot;这一步就花了你 15 分钟。</li><li>进阶做法：连“找数据”这一步也让 Agent 操心 。</li></ul>
+<p>比如你想看几只股票最近的走势对比，你手上没有数据。直接跟 Agent 说：</p>
+<ul><li>帮我获取贵州茅台、宁德时代、比亚迪最近半年的股价数据，做趋势对比分析，计算各自的波动率和最大回撤，告诉我哪只最稳、哪只波动最大，并画出走势对比图。</li></ul>
+<p>你没有给它任何数据文件，但 Agent 会自己搞定全流程：</p>
+<ul><li>判断用什么工具获取数据（这次它选择了 yfinance 库 + A 股 ticker）</li><li>自动安装依赖（`pip install yfinance`）</li><li>自己查文档，了解 A 股的 ticker 格式（600519.SS / 300750.SZ）</li><li>写代码调用 API，获取半年日线数据</li><li>做指数化处理（起点=100），方便不同价位的股票直接对比</li><li>计算年化波动率和最大回撤</li><li>画对比走势图</li><li>给出明确结论：贵州茅台最稳（波动率 23.27%），宁德时代波动最大（33.44%）</li></ul>
+<p>全程你只说了一句话，Agent 自己操心了所有中间环节。</p>
+<p>▼ 图：一句话 Prompt → Agent 自主完成全链路（自动装库、查文档、调 API、出图）</p>
+<p>这件事的前提是 SOLO 的执行环境：Agent 能自己装库、自己写代码、自己跑。遇到 API 报错，它还会自动调试重试。你不需要懂任何编程或 API 的知识。</p>
+<p>更强的是，Agent 不只是“会调 API”，它还会自己去查怎么调。比如这个 Case 里，你没告诉它 A 股在 yfinance 里的 ticker 格式是什么，它自己查了文档搞清楚了&quot;贵州茅台=600519.SS&quot;&quot;宁德时代=300750.SZ&quot;。你不需要提前帮它找好文档或告诉它接口长什么样。</p>
+<p>▼图：最终产出 — 三只 A 股近半年走势对比（指数化，起点=100），一眼看出谁稳谁波动</p>
+<p>延伸一下：</p>
+<p>传统做法是你手动去后台导出，但完全可以让 Agent 直接调接口获取：省掉了&quot;登录后台→选条件→等导出→下载&quot;的繁琐步骤。</p>
+<p>采集 → 清洗 → 分析 → 可视化，以前是四个割裂的步骤，现在是一个对话里的无缝衔接。</p>
+<p>技巧二：多 Agent 协作 - 一个人忙不过来，派个团队</p>
+<p>前面的技巧里，你跟一个 Agent 打交道就够了。但当分析任务变大：数据量上千条、需要逐条做语义理解：单个 Agent 串行处理就慢了。</p>
+<p>这时候你需要的不是一个更强的 Agent，而是一个团队。</p>
+<p>为什么数据分析特别适合多 Agent 协作？</p>
+<p>因为数据分析的子任务之间天然耦合度低：第 1-100 条评价的情感分析和第 101-200 条互不依赖，A 区域和 B 区域的销售分析互不依赖。这种“天然可并行”的特性，让多 Agent 的收益特别明显。相比之下，写代码往往前后强依赖（数据模型没定就写不了接口），并行空间有限。</p>
+<p>而 SOLO 之所以能支持这种协作，是因为它的工作空间是共享的：所有 Agent 都能读写同一组文件。一个 Agent 产出的中间结果，另一个 Agent 可以直接接着用。</p>
+<p>实战演示：400 条餐厅评价并行打标</p>
+<p>我们有 6 家门店共 400 条真实用户评价，需要对每条做情感分析（正面/负面/中性）+ 五维度打标（口味、服务、环境、等待时间、性价比），然后按门店汇总出诊断报告。</p>
+<p>如果串行处理，400 条评价逐条做语义分析会很慢。这里直接告诉 Agent 用并行方式：</p>
+<p>这是我们 6 个门店共 400 条用户评价数据（来自真实点评平台）。我需要你完成以下分析：</p>
+<ul><li>对每条评价做情感分析（正面/负面/中性）和多维度打标（口味、服务、环境、等待时间、性价比），需要理解评价文本的语义来判断</li><li>按门店汇总各维度的好评率，找出每个门店最需要改进的方面</li><li>输出一份门店诊断报告，包含各门店的优劣势对比和改进建议</li></ul>
+<p>注意：400 条评价逐条做语义分析比较耗时。请将数据分成多个批次，用多个子任务并行处理（每个子任务负责一批评价的情感分析和维度打标），完成后再汇总所有结果，按门店维度做统计和对比分析。</p>
+<p>Agent 拿到任务后自动拆分为 4 个批次（每批 100 条），启动 4 个 SubAgent 同时处理，最后汇总结果、按门店统计、生成诊断报告。总耗时 18 分 42 秒：如果串行处理估计得翻倍。</p>
+<p>▼ 图：一条 Prompt，Agent 自动拆成 4 批并行处理（总耗时 18m42s）</p>
+<p>▼ 图：4 个 SubAgent 各自处理 100 条评价，互不干扰同时执行</p>
+<p>▼ 图：最终产出 — 6 家门店诊断报告（含情感分布、五维度好评率热力图、改进建议）</p>
+<p>除了 SubAgent 并发，还有两种协作模式值得了解：</p>
+<ul><li>独立多 Agent ：你手上有几份完全独立的数据，各自需要完整分析。直接开多个 Agent 会话并行处理，互不干扰。比如线上数据和线下数据各开一个 Agent，同时跑各自的分析</li><li>Plan  →  Execute ：复杂项目先让一个 Agent 出分析方案（保存为文档），你审核确认后，再开新 Agent 按方案执行。规划和执行分离，避免做到一半发现方向不对</li></ul>
+<p>什么时候需要多 Agent？</p>
+<p>简单分析用单 Agent 就够了。当你感觉&quot;这个任务数据量大、子任务之间没有依赖关系&quot;，就是用多 Agent 的信号。</p>
+<p>技巧三：目标驱动 - 说你要什么，不说怎么做</p>
+<p>用基础玩法做分析时，你可能习惯了这样跟 Agent 对话：</p>
+<ul><li>“先帮我看一下各品类的平均售价和销量 ”</li><li>“再算一下每个品类的利润率”</li><li>“试试美妆品类提价 10% 利润会怎么变”</li><li>“再试试降价 5% 呢”</li><li>“把所有品类的最优价格都算一遍”</li></ul>
+<p>一步一步喂指令，本质上是你在思考策略，AI 只是帮你按计算器。</p>
+<p>进阶的做法是：把目标直接丢给它，让它自己去想办法。</p>
+<p>比如同样是定价分析，你可以这样说：</p>
+<p>这是我们店铺过去一年多的定价和销量数据，帮我分析下怎么定价能最大化利润。试试两种方法对比，要靠谱点。数据里没给进货成本，你按电商行业常识给各品类加个合理毛利率就行。</p>
+<p>最终给我一份 Excel 详细报告，再画一套图，要清晰好看、适合做 PPT/发朋友圈那种（配色清爽、字大、一眼能看懂）：</p>
+<ul><li>整体提升对比</li><li>几个重点品类的价格-利润图</li><li>最后再来个一目了然的汇总</li></ul>
+<p>一句话说完，Agent 自己展开了一整套动作：读取数据 → 按行业常识给 9 个品类设定合理毛利率 → 用两种方法（价格弹性回归 + 机器学习模型）分别建模 → 找到各品类利润最大化的定价区间 → 交叉验证两种方法的结果 → 产出 Excel 报告和可视化图表。全程 7 分 40 秒，你只说了一句话。</p>
+<p>▼ 图：一句话目标式 Prompt → Agent 自主完成全流程（耗时 7m40s，自动选择两种分析方法）</p>
+<p>为什么 Agent 能做到？</p>
+<p>因为它不是按固定脚本执行的：它每跑一步代码都能看到结果，然后根据结果自主决定下一步做什么。比如这个 Case 里，Agent 发现数据中没有成本字段，就自己按行业常识补上了毛利率假设；发现某些品类样本量不足以支撑复杂模型，就自动降级为更稳健的方法。</p>
+<p>这就是 Agent 的核心能力：感知→判断→行动→再感知的循环：不是执行你写好的剧本，而是根据实际情况自主规划路径。</p>
+<p>▼ 图：Agent 产出的分析看板 — 两种方法对比，利润预期提升 193.7%</p>
+<p>▼ 图：重点品类的价格-利润曲线 — 方法1（弹性回归）vs 方法2（机器学习），直观看到最优定价区间</p>
+<p>怎么用好目标驱动？</p>
+<ul><li>描述终态 ，而不是描述步骤：“找到利润最大化的定价策略” 比 “先算A再算B再对比” 更能释放 Agent 的自主性</li><li>加约束条件 ：给 Agent 自由度的同时划好边界：“至少对比两种方法” “要靠谱点” “数据没成本你自己加合理假设”</li><li>建议尝试方向 ：你不必规定每一步，但可以提示 Agent 值得探索的方法或参数组合：比如&quot;可以试试价格弹性分析和机器学习对比&quot;。这样既给了自主权，又降低了 Agent 走弯路的概率</li><li>你仍然是审核者 ：Agent 操心“怎么做”，你把控“做得对不对”：看它的推理过程和结论是否合理</li></ul>
+<p>技巧四：AI 校准 - 出报告前，让 AI 自己查一遍</p>
+<p>分析做完了，结论出来了，图表也画好了。你准备把报告发给老板：但心里总有点不踏实：数据有没有算错？前后引用的数字是不是一致的？结论有没有逻辑漏洞？</p>
+<p>传统做法是你自己逐行检查，或者找同事帮你 review 一遍。但如果分析链路比较长（清洗→建模→多方法对比→可视化→结论），人工逐步核对既费时又容易漏。</p>
+<p>进阶做法：让 Agent 自己审查自己的工作。</p>
+<p>还是拿技巧三的定价分析来举例。分析报告做完了，明天要发给老板，你加一句：</p>
+<ul><li>这份定价分析做得不错，但明天要发给老板，帮我把把关：1. 数据一致性：检查当前利润、两种方法的建议利润和提升幅度的计算逻辑有没有前后矛盾；2. 样本量风险：看哪些品类的样本量偏少，会不会导致结论不稳；3. 方法合理性：毛利率假设合不合理？模型拟合效果够不够？4. 可落地性：给的建议区间会不会太激进？有没有超出历史价格范围太多？把风险点都列出来，标红严重的，给我一个简单的审核报告。</li></ul>
+<p>Agent 花了 15 分钟，回去翻了之前所有的代码、数据文件和产出的 Excel，逐项做了实打实的核对，结果还真揪出了问题：</p>
+<ul><li>数据一致性 ：发现“利润提升%”有 14 行数据的计算结果和看板 KPI 口径不一致（看板用的是模型复原口径，明细表用的是实际销量口径）</li><li>样本量风险 ：家具装饰只有 48 条记录，结论更容易受偶然波动影响，建议先小流量验证</li><li>模型拟合风险 ：4 个品类的 MAPE 偏高（&gt;1.0），结论应视为方向性参考而非精确建议</li><li>可落地性 ：25 条商品的建议价超出历史范围 ≥25%，标为“严重”：建议这些先小范围试价，不要一次性全量改价</li></ul>
+<p>▼ 图：一句话让 Agent 审查分析报告（耗时 15m28s）— 按严重程度标红输出</p>
+<p>▼ 图：审核摘要 — 5 个维度逐项检查（数据一致性/样本量/模型拟合/假设口径/可落地性）</p>
+<p>▼ 图：激进建议清单 — 逐条列出&quot;建议价超出历史范围&quot;的商品，红色=严重，需先小范围试价</p>
+<p>为什么 SOLO 特别适合做这件事？</p>
+<p>因为 SOLO 会保留完整的执行过程：每一步用了什么数据、代码逻辑怎么写的、中间产出了什么文件，全部在工作空间里可追溯。Agent 不是凭记忆审查，而是可以回去翻代码和数据文件做实打实的核对：所以才能发现“看板口径和明细表口径不一致”这种细节问题。</p>
+<p>核心 takeaway：</p>
+<ul><li>这不是替代你的判断：而是帮你做第一轮筛查，把明显的问题先揪出来</li><li>分析链路越长，这一步越有价值（步骤越多，累积出错的概率越大）</li><li>养成习惯：每次分析完、出报告前，都加一句&quot;帮我把把关&quot;：成本极低，但能避免低级错误被老板发现</li></ul>
+<p>技巧五：Skill 沉淀 - 做一次好活，永远不用重复</p>
+<p>你花了 8 分钟跟 Agent 对话，从数据清洗到趋势分析到区域下钻到生成完整报告，终于得到了一份满意的 2022 年度销售分析。</p>
+<p>然后 2023 年的数据来了。你发现：得重新来一遍？</p>
+<p>如果每次都从头开始，那 AI 只是帮你&quot;加速了一次&quot;，并没有帮你&quot;解决重复劳动&quot;。</p>
+<p>进阶做法：把成功的分析流程沉淀下来，下次一键复跑。</p>
+<p>实战演示：年度销售分析的 Skill 沉淀与复用</p>
+<p>我们用的是一份超市销售数据（含区域、品类、子类别、销售额、利润、折扣等 20 个字段），按年拆成了 2022 / 2023 / 2024 三份。</p>
+<p>第一步：首次完整分析（2022年数据）</p>
+<ul><li>这是我们公司 2022 年的销售数据。帮我做一份完整的年度销售分析报告：1）数据概览和清洗；2）月度趋势图；3）各区域销售额和利润对比；4）各品类表现分析；5）找出表现异常的区域或品类并分析原因；6）生成一份包含关键发现和建议的分析报告。</li></ul>
+<p>Agent 花了 8 分 29 秒，完成了完整分析链路：月度趋势分析 → 区域销售利润对比 → 品类利润率排名 → 子类别 Top / Bottom 排名 → 区域×月份利润热力图 → 生成 Word 格式报告 + 5 张可视化图。</p>
+<p>▼ 图：首次分析的对话（耗时 8m29s，一句话出完整报告）</p>
+<p>▼ 图：2022年度分析报告产出 — 月度趋势 + 区域对比 + 品类排名</p>
+<p>第二步：沉淀为 Skill</p>
+<p>分析结果满意后，告诉 Agent：</p>
+<ul><li>帮我把刚才的分析流程沉淀成一个可复用的 Skill，以后每年新数据来了可以直接调用。</li></ul>
+<p>Agent 会把整个分析过程中的脚本（数据清洗逻辑、指标计算代码、图表生成代码、报告模板）打包成一个结构化的 Skill。</p>
+<p>▼ 图：Skill 沉淀 — Agent 把分析脚本、图表逻辑、报告模板打包为可复用资产</p>
+<p>第三步：新数据来了，一键复跑</p>
+<p>2023 年数据到了，你不需要重新描述分析需求，直接调用 Skill：</p>
+<ul><li>用刚沉淀的年度销售分析 Skill，对 2023 年数据跑一遍。</li></ul>
+<p>Agent 按照之前沉淀的“说明书”自动走完全流程：同样的清洗逻辑、同样的分析维度、同样的图表风格、同样的报告格式。耗时从首次的 8m29s 降到 1m28s，你只说了一句话。</p>
+<p>▼ 图：Skill 一键复跑（耗时仅 1m28s）— 同样的分析质量，十分之一的时间</p>
+<p>▼ 图：2023年度报告自动产出 — 格式、维度、图表风格与 2022 完全一致</p>
+<p>这里的“沉淀”远不只是保存一条 Prompt。</p>
+<p>数据分析过程中产生的东西很丰富：数据清洗脚本、指标计算逻辑、可视化代码、报告生成模板、甚至分析方法论本身。这些中间产物全部保存在 SOLO 的工作空间里，可以整体沉淀为一套完整的分析资产。</p>
+<p>本质上，你沉淀的不是一条指令，而是一整套分析方法论的编码化表达：数据怎么清洗、指标怎么算、图表怎么画、报告怎么写，全部包含在内。Agent 下次执行时，是在按照这整套&quot;说明书&quot;工作，而不是重新猜你想要什么。</p>
+<p>Skill 的延伸价值：</p>
+<ul><li>团队共享 ：你沉淀的 Skill 可以分享给同事：新人无需培训，拿到 Skill 直接用，产出的分析质量和你一样</li><li>跨场景复用 ：年度销售分析的 Skill，稍微调整一下维度字段，就能用于季度运营分析</li><li>持续迭代 ：每次复跑后如果发现新问题或新需求，更新 Skill 即可，下次自动包含改进</li><li>和审校组合 ：Skill 里可以内置&quot;最后一步做审校&quot;的逻辑，每次复跑自动带质量检查</li></ul>
+<p>总结：你负责想什么，AI 负责做什么</p>
+<p>当 AI 能把&quot;做&quot;的部分越做越好，你的精力该花在哪里？</p>
+<p>我认为&quot;想&quot;的部分有三件事变得比以往更重要：</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>想清楚重要问题</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AI 能算任何你想算的，但“该算什么”只有你能决定。</li><li>提问能力是最大杠杆，多花时间想“什么问题值得回答”。</li></ul></div>
+<p>AI 能帮你算任何你想算的东西：但&quot;该算什么&quot;这件事，只有你能决定。同样一份销售数据，问&quot;帮我做个描述统计&quot;和问&quot;哪个区域在流失高价值客户？流失原因是什么？&quot;：得到的价值完全不同。</p>
+<p>当执行不再是瓶颈，提问能力就是你最大的杠杆。花时间想清楚&quot;什么问题值得回答&quot;，比花时间折腾&quot;怎么算&quot;重要得多。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>想清楚验证对错</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>AI 做得快不等于做得对：查数据源、筛选条件、样本量、逻辑漏洞。</li><li>审校是必选项；AI 做第一轮检查，最终判断力仍需你把关。</li></ul></div>
+<p>AI 做得快，但不代表做得对。数据源是否可靠？筛选条件是否正确？样本量够不够？结论有没有逻辑漏洞？</p>
+<p>这就是为什么&quot;审校&quot;那一步不是可选项，而是必选项。你可以让 AI 帮你做第一轮检查，但最终的判断力：&quot;这个结论说得通吗？&quot;：永远需要你来把关。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>让 AI 做得更好</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>新项目管理能力：管理对象从人变成 Agent。</li><li>知道何时拆多 Agent 并行、先出方案再执行、沉淀可复用流程。</li><li>SOLO 的设计天然匹配“你负责想、AI 负责做”的分工。</li></ul></div>
+<p>这不只是&quot;会写 Prompt&quot;的问题。当任务变复杂，你需要知道什么时候拆成多个 Agent 并行、什么时候先出方案再执行、什么时候该沉淀为可复用的流程。这是一种新的&quot;项目管理&quot;能力：管理的对象从人变成了 Agent。</p>
+<p>为什么 SOLO 是做这些事情更好的工具？</p>
+<p>因为它的设计天然匹配&quot;你负责想，AI 负责做&quot;的分工：</p>
+<ul><li>你负责想问题  → Agent 有自主决策能力去规划路径和执行</li><li>你负责想对错  → 所有中间过程（代码、数据、逻辑）持久化保存，完全可追溯可审查</li><li>你负责想协作  → 共享工作空间支持多 Agent 协同，Skill 支持流程沉淀和复用</li></ul>
+<p>一句话：SOLO 让&quot;想&quot;和&quot;做&quot;彻底分开：你专注前者，Agent 搞定后者。</p>
+<p>TRAE.ai</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>你负责想，AI 负责做</h4><p>上一期是“你说一步 AI 做一步”，这期升级为：你只定方向、定标准、做判断，其余交给 Agent。</p></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>指挥 vs 放手</h4><p>基础玩法：一步步喂指令，你在思考策略、AI 只按计算器；进阶：描述终态，AI 自主规划路径。</p></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>yfinance 取 A 股数据</h4><p>Agent 自动 pip install yfinance，自查文档用 600519.SS/300750.SZ 格式，再写代码调 API 取半年日线。</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>一句话取数出图</h4><p>只给一句话，Agent 自选 yfinance 库、装依赖、查文档、调 API；结论：茅台最稳（波动率 23.27%）、宁德时代最大（33.44%）。</p></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>串行 vs 多 Agent 并行</h4><p>数据分析子任务天然耦合度低、可并行；写代码前后强依赖，并行空间有限。</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>400 条评价并行打标</h4><p>拆 4 批、每批 100 条，4 个 SubAgent 并行，总耗时 18 分 42 秒；串行估计翻倍。</p></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Plan → Execute</h4><p>复杂项目先让一个 Agent 出方案存为文档，你审核确认后，再开新 Agent 按方案执行，避免方向错。</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>目标驱动 7 分 40 秒</h4><p>一句话目标式 Prompt，Agent 用价格弹性回归+机器学习建模，产出 Excel 与图表，利润预期提升 193.7%。</p></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>出报告前先让 AI 自查</h4><p>Agent 自查发现：14 行利润提升口径不一致、48 条样本量少、4 品类 MAPE&gt;1.0、25 条建议价超历史范围≥25%。</p></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Skill 复跑：8m29s → 1m28s</h4><p>首次完整分析耗时 8 分 29 秒，沉淀 Skill 后复跑仅 1 分 28 秒，格式、维度、图表风格一致。</p></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>沉淀的是方法论</h4><p>Skill 打包清洗脚本、指标逻辑、图表代码、报告模板，是一整套分析方法论的编码化表达。</p></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>想的三件事</h4><p>当执行不再是瓶颈：想清楚重要问题、怎么验证对错、怎么让 AI 做得更好。</p></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把目标、标准和判断留给自己，把取数、拆分、检查、复用交给 Agent。</li>
+          <li>分析完出报告前，加一句“帮我把把关”，让 Agent 做第一轮自查。</li>
+          <li>把满意的分析流程沉淀为 Skill，下次复跑从 8 分 29 秒降到 1 分 28 秒。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkxMTY4NTAyNQ==&amp;mid=2247512338&amp;idx=1&amp;sn=c66e63d957be58973cdf9d41bff5e156" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkxMTY4NTAyNQ==&amp;mid=2247512338&amp;idx=1&amp;sn=c66e63d957be58973cdf9d41bff5e156</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：其他 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

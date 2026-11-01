@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>其他 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">让自己变好的建议有哪些？ - 知乎</h1>
+  <p class="lede">关于习惯、成长、赚钱与感恩的自我提升建议清单</p>
+  <div class="meta">
+    <span>来源 <b>知乎</b></span>
+    <span>分类 <b>其他</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 10 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>多关心父母</a>
+          <a href="#sec-02"><span class="n">02</span>别用喜欢的东西当提醒</a>
+          <a href="#sec-03"><span class="n">03</span>学会顺势夸奖</a>
+          <a href="#sec-04"><span class="n">04</span>保持感恩</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 多关心父母</a>
+          <a href="#sec-02">02 别用喜欢的东西当提醒</a>
+          <a href="#sec-03">03 学会顺势夸奖</a>
+          <a href="#sec-04">04 保持感恩</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<ul><li>如果你和我一样，出身普通人家，请一定克制自己的消费欲望，学会延迟满足，不要提前享受你现阶段无法承受的东西。</li><li>少刷社交软件，无聊时就出门走走，感受人间烟火。看看广场上欢快歌舞的大妈，路边热气腾腾的包子，去超市里为自己挑选新鲜的蔬果。</li><li>永远不要停止努力。因为这世界上比你优秀的人多了去了，但是他们仍然不敢松懈。</li></ul>
+<p>4.不要做“讨好型”，要学会拒绝别人。不然的话别人会认为你为他们做事是理所应当。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>多关心父母</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>关心父母要日常化，平时多联系，而不是只在缺钱时才想起他们。</li><li>从小习惯入手：物品归位、提前准备第二天，做事从容也锻炼自律。</li><li>少刷短视频和娱乐直播，碎片化内容会阻断思考，多阅读、多听音频。</li><li>成长靠日拱一卒、复盘、多问为什么，向牛人与有结果的人学习。</li></ul><div class="pit"><ul><li>只看表面容易假懂，阅读要多问一个为什么。</li><li>学太浅、被嚼碎喂的内容没营养，降低难度和维度的东西营养不足。</li></ul></div></div>
+<p>6.东西从哪里拿的就放回哪里去，整理的时候可以少花些时间。平时该做的事都按时做好，不用怕突击检查。</p>
+<p>7.认真的时候工作，糊涂的时候读书，独处的时候思考，难过的时候睡觉。学会独处，和自己和解。</p>
+<p>8.提前做好第二天的准备。物件上，把钥匙、纸巾、证件提前放包里;工作上，对昨天复盘，写好明天工作安排。这样，每天起床都很从容，有更好的状态去迎接新的一天。</p>
+<p>10.坚持高质量的输入输出，每天多花点时间看书学习，掌握新知识提升内在。</p>
+<p>15.坚持把一件自己感兴趣的事情做下去，例如画画，跳舞，写作等等，它们既会成为你生活中的陪伴，也会成为你之后的副业，成为你的底气。</p>
+<p>16.学会自我调节，工作学习生活中，我们总会遇到一些压力和不开心的事，这个时候我们就要学会自我安慰，告诉自己这些事没什么大不了，一定会过去的。</p>
+<p>20.和昨天的自己比，别和今天的别人比。每个人都有一条适合自己的路，每个人的经历不一样，走出来的路肯定也不同。今天的你比昨天更好也是一种进步。</p>
+<p>21.妥善处理人际关系，有用的人多结交，对自己好的人多报答，讨厌的人也不去招惹。</p>
+<p>22.自律，自律要从生活点滴做起。从生活、学习，甚至以后的工作.上，都要严格自律。</p>
+<p>23.低质量的合群不如高质量的独处。并环是说让你不合群，只是让你少打游戏，少追剧。有时间多去参加实习，去学学技术，多看看书。</p>
+<p>25.不要有拖延症，也不要懒惰。一件事情，如果今天懒得去做，明天的你也不会做，久而久之，你会忘记了这件事。</p>
+<p>1、首先你要做的就是少刷短视频，特别是疯狂消耗你时间的娱乐视频与直播，多看点文章，听点音频。为什么呢？你要记住像短视频那些东西，太过于碎片化的内容，会阻断你的思考。当我们屏蔽了视觉，只是在听在看的时候，才是真正在思考的状态。</p>
+<p>2、这个世界上，永远只有20%的人在思考，80%的人戴着脚镣。作为普通人，很多时候比身边人努力一点点，就会越来越好。因为大多数身边人，都不在真正的努力。哪怕你现在只是个大学生。</p>
+<p>4、不论你是什么学历，出了社会就得要学会赚钱，而能不能赚钱，主要看的是能不能搞定市场。人生后半场靠自己，这个学校教不了。</p>
+<p>5、不要以为大公司会养你一辈子，真正养你一辈子的，恰巧是你离了大公司也能生存的本事。没事就学一学离钱近的东西，比如说写作、营销、推广。不为别的，这是后路。</p>
+<p>6、一个人不断升值的秘诀：就是干那一件你长期都热爱的事情。任何短期的好，都不足够。只有长期的，哪怕一开始很烂，后期都会甩别人一条街，也具备无限的价值。</p>
+<p>7、思考问题，尽量以十年为单位去思考。比如说年轻的时候，选择对象总是关注对方的颜值、身材，却很少去考虑对方的性格。其实不用个几年就会后悔，因为三四十岁以后，身材容貌不会是一个人的核心竞争力，但是年轻的时候，你又没有考虑这些问题。</p>
+<p>10、这个社会当你越敢有所要求，你就会得到的越多，你觉得自己配不上，不能拥有，也会如你所愿。小心思想上的奴役，精神上的阉割，远离那些试图偷走你梦想，让你沦为廉价劳动力的人。</p>
+<p>11、复盘。我每天都会坚持做复盘，每年也会做复盘。好好梳理自己过去的得与失，走向更美好的一天。为啥复盘很重要呢？想象一下：如果你只吃饭，不消化，是怎样的一种体验？复盘，其实就是在帮你消化。</p>
+<p>12、学习不要只学表面，有时候直接给出答案，也叫不叫答案了。比如说阅读的时候，试试多问一个为什么，而不是仅限于“看了就觉得懂”的假懂状态，你会发现新大陆。</p>
+<p>13、道往上求，术往下索。这是我的人生手册。很多年轻人有个大问题，就是在学太浅的东西，别人嚼碎喂的东西，又能有多大的进步？降低了难度和维度的东西，也就没什么营养。记住，温室里的花朵，长不大。</p>
+<p>14、日拱一卒。不论是创业还是工作，想有不错的结果。对于大多数人来说，日拱一卒的方式会更加直接有效。与其总幻想着自己书写成传奇故事，不如收获稳稳的幸福来的踏实。</p>
+<p>16、多见牛人，弯的下腰提问。这是成长路上最快的方式，没有之一。很多人认为学习就是看书听课，其实这只是获取经验的一种渠道。向牛人请教，又何尝不是一个更高效的方式呢？</p>
+<p>19、不论如何，都要选择变强。因为人们嘴上说着同情弱者，转身只会向强者买单。所以要不断的尝试，不断的总结，但不贪婪做更多，聚焦一件事，让自己变的值钱，而不是被别人定价。</p>
+<p>20、拥有我一定要赚多少钱的执念，并且，要一直宣传自己的业务，让大家知道你的价值和业务。但是要记住。不在别人的场合抢生意，只在自己的场合谈价值。</p>
+<p>21、坚持卖自己，坚持卖产品，坚持卖你的购买理由，坚持到有人为你所提供的价值买单。如果你的方式得体的话，你不需要担心别人取消关注你，也不用担心别人删了你。不认可你的人，发什么都会取消关注你。</p>
+<p>22、每天坚持分享一次，分享的形式有很多种，公众号、朋友圈、短视频，总之，自己喜欢就好。如果可能的话，最好有个自己的社群，持续的分享，持续的利他。</p>
+<p>23、坚持学习，向你认可的人学习，向有结果的人学习。没有结果的人看到的都是问题，而有结果的人，想到的都是解决方法。</p>
+<p>24、如果你懂了前面三个的重要性，那么请记住：不论再迷茫，不论再艰难，也要坚持前面三个建议。</p>
+<p>25、坚持学营销。不论你现在是什么状态，坚持学营销总是好的。如果你现在有一定 成就，营销可以帮助你取得更大成就。如果你很迷茫，也可以多提升营销思维，来指导自己的人生。道理很简单啊，营销就是发现需求和满足需求。如果你多研究市场需要什么，迷茫的问题也就不存在了。</p>
+<p>26、不断向上生长。为什么？因为思考很重要，战略也很重要。比如说为什么老板会越来越好，越来越赚钱，而员工只能朝九晚五的领着死工资。老板和员工之间有个最大的区别：老板有时间去思考战略，思考问题，然后安排员工去执行。而员工呢？几乎很少有思考的时间。</p>
+<p>30、留有独处时间。人与人的差距，往往取决于有没有独处的时间，独处的时间可以让人快速成长。所以啊，不论每天有多忙，一定要给自己预留两个小时的时间。你可以散步，你可以看书，也可以写作，总之啊，一定要耐得住寂寞。</p>
+<p>31、记住：常怀感恩之心。每一个人都喜欢会感恩的人，对你有帮助的人，活着就要感谢，你的运气会越来越好。我当年的领导给了我机会，七年时间过去了，我每年依然还会给他寄一些礼物。</p>
+<p>如果说以上书籍，是为了不让你做一个“乌合之众”，那么这本书籍，是为了帮助你成为专家，每个人都适用，属于经典必读系列。我对经历告诉你：商业天才并不是天生的，其实也可以通过刻意练习习来。</p>
+<p>我把正版书的链接放这里了，方便感兴趣的你直接点击购买。如果有在其它平台买书的习惯，请认准版本就好。</p>
+<p>1、如果你家境普通，家里没矿，最好的办法就是努力读书，进入985、211；如果你所读的大学是普通院校，觉得有必要，可以通过考研进入985、211，相信我，你会少吃很多苦。</p>
+<p>毕业多年，一个很深的感悟是，学历太重要了。学历不代表能力，可是很多名企的大门，只给高学历的人开放。看看脉脉上网友的留言，你就知道现实有多残酷。</p>
+<p>2、每天早上写下三件「重要」的事情，做完一件就划掉一项，除了能提升工作效率，还能提升成就感、幸福感。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>别用喜欢的东西当提醒</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>不要用喜欢的照片做壁纸、喜欢的歌做闹铃，高频接触会消磨好感。</li><li>强烈快感的事尽量不做，否则快感阈值升高，失去思考的耐心。</li><li>保持早睡、提升自控力、多读书，是普通人最高效的成长方式。</li><li>越是痛苦的事越让人成长，遇到困难别逃避，攻克它积累经验。</li></ul><div class="pit"><ul><li>熬夜会秃头脱发、皮肤油腻苍老并降低智商，不要预支未来。</li></ul></div></div>
+<p>5、如果一件事会让你产生强烈快感，尽量不做，比如在床上打机，熬夜看片，沉迷爽文等等。这些事会让你对快感的阈值越来越高，时间久了，你就没耐心去做那些需要思考的事。</p>
+<p>8、保持早睡，能够提升至少40%的颜值。长期熬夜，不仅会秃头脱发，皮肤油腻苍老，还会降低智商。不要为了一时爽而提前预支未来。</p>
+<p>9、意志力越来越成为一种稀缺的资源，因为90%的人都沉迷于短视频、肥皂剧、网络爽文里。因此，提升自己的自控力，你就能干掉多数人。</p>
+<p>11、没事多读书，这个世界正在惩罚不读书的人。对普通人来说，最高效的成长方式就是大量阅读，别人在颓废的时候，你在偷偷成长。你的知识储备、思维认知、思考能力都会有质的提升。</p>
+<p>14、向优秀的人学习，始终是最快的成长方式。找到你所在领域的牛人，多花点时间研究他是怎么从青铜到王者的，然后模仿他的套路。因为他的方法已经被验证是有效的，你可以直接「套模板」。</p>
+<p>16、人一定要时常审视自己，看看过去一段时间，自己做了哪些蠢事，假如你没有意识到，不是你变聪明了，而是说明你几乎没有成长。一个人的成长，就是不断发现自己傻逼的过程。</p>
+<p>18、越是让你痛苦的事情，越是让你飞速成长。一个人的优秀，就是不断打怪升级，突破极限的过程。如果你的人生一直很平滑，没有任何阻碍，那你一定是在不断走下坡路。所以遇到困难，别想着逃避。下定决心攻克它，你会积累一大波经验。</p>
+<p>19、无论关系多好，朋友帮你忙时，一定要事后感谢他，而且不要停留在口头上。朋友之间也是需要维护成本的，不要一味消耗，否则总有一天你的朋友会越来少。</p>
+<p>20、25岁以后，要把主要精力放在赚钱上。当你在社会上磨砺几年，见过形形色色的人，经历各种悲欢离合，你会发现，还是赚钱最有安全感。即使人生遭遇再大的困境，也能坦然面对。</p>
+<p>25、进入社会，真的要处处留心眼。人无伤虎意，虎有害人心。你永远不知道，你的后背有多少人在窥视。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>学会顺势夸奖</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>努力进入高质量圈子，环境会倒逼你学习和思考。</li><li>微信消息没时间回复就标为未读，避免遗漏重要消息。</li><li>掌握一技之长，降低可替代性，才有和老板谈工资的筹码。</li><li>想做什么尽管去做，你其实没那么多观众。</li></ul><div class="pit"><ul><li>文章不要一键收藏永远尘封，建议每月清空一次并记录感悟。</li></ul></div></div>
+<p>28、努力进入高质量的圈子。不要忽视环境的力量，和优秀的人在一起，你会感觉到巨大的压力，也会倒逼你去学习、思考。当我们起点还很低的时候，一定要找到这样的人，驱动你成长。</p>
+<p>29、微信上收到一条信息，如果没有时间回复，一定要标为未读。否则你可能会遗漏一些重要的消息，给自己带来不必要的麻烦。</p>
+<p>30、持续的自我优化。人就像手机一样，需要不断的提升硬件、升级系统，否则就会成为社会的淘汰品。</p>
+<p>如果你仔细观察，就会明白，那些没有一技之长的人，流动性非常大。因为他们的替代性太高，今天走了，第二天就有人顶替，所以他们的工资始终维持在低水平。</p>
+<p>年轻的时候，一定要掌握一技之长，让别人不那么容易替代你，才有足够的筹码和老板谈工资。如果你觉得自己没有一技之长，给你分享一份职场技能礼包，包含python+ps+excel+ppt+pr。这些是我自己当初花钱买的，可以提升你的核心竞争力，让你变得越来越值钱。</p>
+<p>31、控制你想说话的欲望，不要谁来问你两句，你就把什么事都给他说了，你想拿来交朋友的秘密，也许是他拿去交换别的朋友的八卦。</p>
+<p>33、微信、知乎的文章不要随便收藏。建议一个月清空一次，千万不要一键收藏、永远尘封。很多文章你再看一遍，又会有不一样的感悟。对了，记得把你的感悟记下来，这些感悟就是提升你认知的重要内容，也是你成长的标志。</p>
+<p>34、你其实没那么多观众。想做什么尽管去做，不要害怕出丑、不要害怕别人注视，你其实没那么多观众。更多的是你的心理作用，即便发生尴尬的事情，别人也会很快忘记。最简单的例子，你朋友最近比较尴尬的一幕是什么？我猜你已经不记得了。</p>
+<p>36、每次打电话，父母都问你最近怎么样，工作忙不忙，嘘寒问暖都是这么几句，好像没多少话讲，每次都是短短的几分钟。实际上，他们只是怕耽误你时间。所以，有时间多给父母打几次电话，哪怕什么都不说，他们也会很开心。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>保持感恩</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>懂得感恩的人，一般身心愉悦健康。</li><li>感恩要落到行动上，对帮助过自己的人持续回报。</li></ul></div>
+
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 13 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>低质量合群不如高质量独处</h4><p>少打游戏追剧，把时间用于参加实习、学技术、看书，高质量的独处更有价值。</p><a class="src-link" href="#sec-01">原文 → 多关心父母</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>老板与员工的差距在思考</h4><p>老板有时间思考战略再安排执行，员工几乎没时间思考，只能朝九晚五领死工资。</p><a class="src-link" href="#sec-01">原文 → 多关心父母</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>别停在假懂状态</h4><p>阅读时只求看了觉得懂是假懂，多问一个为什么，才会发现新大陆。</p><a class="src-link" href="#sec-01">原文 → 多关心父母</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>别学太浅的东西</h4><p>别人嚼碎喂的低维度内容没营养，道往上求、术往下索，温室里的花朵长不大。</p><a class="src-link" href="#sec-01">原文 → 多关心父母</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>日拱一卒</h4><p>对多数人而言，日拱一卒比幻想传奇故事更直接有效，能收获稳稳的幸福。</p><a class="src-link" href="#sec-01">原文 → 多关心父母</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>大公司不会养你一辈子</h4><p>真正养你一辈子的是离了大公司也能生存的本事；学写作、营销、推广是后路。</p><a class="src-link" href="#sec-01">原文 → 多关心父母</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>20%的人在思考</h4><p>世界上只有20%的人在思考，80%的人戴着脚镣；比身边人努力一点点就会越来越好。</p><a class="src-link" href="#sec-01">原文 → 多关心父母</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>早睡提升40%颜值</h4><p>保持早睡至少提升40%颜值；长期熬夜会秃头脱发、皮肤油腻苍老，还降低智商。</p><a class="src-link" href="#sec-02">原文 → 别用喜欢的东西当提醒</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>90%的人沉迷即时娱乐</h4><p>意志力成为稀缺资源，90%的人沉迷短视频、肥皂剧、网络爽文，自控力强就能超过多数人。</p><a class="src-link" href="#sec-02">原文 → 别用喜欢的东西当提醒</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>向优秀的人套模板</h4><p>找到领域牛人，研究他从青铜到王者的路径，直接模仿已被验证有效的方法。</p><a class="src-link" href="#sec-02">原文 → 别用喜欢的东西当提醒</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>一键收藏永远尘封</h4><p>微信、知乎文章不要随手收藏，建议每月清空一次、重读并记录感悟，收藏才有意义。</p><a class="src-link" href="#sec-03">原文 → 学会顺势夸奖</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>你其实没那么多观众</h4><p>想做什么尽管去做，不要害怕出丑；尴尬的事别人很快忘记，别被想象中的注视困住。</p><a class="src-link" href="#sec-03">原文 → 学会顺势夸奖</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>感恩带来好运与健康</h4><p>常怀感恩之心，运气会越来越好；懂得感恩的人一般身心愉悦健康。</p><a class="src-link" href="#sec-04">原文 → 保持感恩</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>少刷短视频多读书：碎片化内容会阻断思考，阅读和独处才是真正在思考。</li>
+          <li>把赚钱的本事长在自己身上：学写作、营销、推广，别指望大公司养你一辈子。</li>
+          <li>日拱一卒加复盘，向有结果的人学习，持续深耕一件长期热爱的事。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://www.zhihu.com/question/437758396/answer/1685678882?utm_id=0#showWechatShareTip" target="_blank" rel="noopener">https://www.zhihu.com/question/437758396/answer/1685678882?utm_id=0#showWechatShareTip</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：其他 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

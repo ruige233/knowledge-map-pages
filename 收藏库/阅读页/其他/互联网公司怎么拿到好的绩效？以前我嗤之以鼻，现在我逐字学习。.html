@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>其他 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">互联网公司怎么拿到好的绩效？以前我嗤之以鼻，现在我逐字学习。</h1>
+  <p class="lede">用 Min-Max 思维与超预期设计，在互联网公司拿到好绩效</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>其他</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 9 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>全文</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>你好呀，我是歪歪。</p>
+<p>在知乎冲浪的时候看到一篇帖子，叫做：互联网公司怎么拿到好的绩效。</p>
+<p>以前嗤之以鼻，现在我逐字学习。</p>
+<p>以下是正文，其中的“我”均指知乎原文作者“九老师”。</p>
+<p>原文链接：https://zhuanlan.zhihu.com/p/1925116921226982990</p>
+<p>原文作者：九老师</p>
+<p>这个话题有些敏感，但是应该人人关心。</p>
+<p>我工作 10 年了，从没有拿到过“平凡”绩效，这件事情我有一点点发言权。</p>
+<p>这并不容易，一般刚毕业的同学不容易拿到好的绩效，他需要时间去证明自己和建立信任。</p>
+<p>跳槽后呢，也是类似的，熟悉陌生的环境和与他人建立信任都需要时间。</p>
+<p>除此之外，一般晋升之后，也会有一次“平凡”绩效反馈。</p>
+<p>我不太聪明，也没啥大的成就，所以要么是运气好，要么是还是有值得借鉴的方法。</p>
+<p>要讲的第一点，我称之为 Min-Max 思维，而他的反面是 Sum 思维。</p>
+<p>Sum 的思维就是面面俱到，你的成绩是你每一件事情的总和，所以做更多的事情，每一件都要做好，也因而畏难，趋向于做简单的事情。</p>
+<p>Min-Max 思维是，你负责的事情，最差的要及格，最好的要足够的亮眼，你的成绩是你 Max 的那件事决定的。</p>
+<p>刚毕业的同学很容易出现 Sum 思维。</p>
+<p>优秀的毕业生，都是十几年一路通关了各种考试，而考试的思维模式就是 Sum，也非常容易把思维惯性带到工作里。</p>
+<p>做的事情贪多，担心方方面面的评价，希望面面俱到，也因此并不敢孤注一掷，把所有的精力放到一点上奋力一搏，不敢冒险，安于做简单的事情。</p>
+<p>这很自然，就像你高考的时候，不会把所有的时间都花在解决那一道最难的题目，你要先把容易的搞定，以求总分更高。</p>
+<p>但工作里的绩效评价，看的就是你最好的事情有多亮眼，能解决难题，充分证明不可替代性，这就是求 Max 足够的大。</p>
+<p>有一次我发现我们一个毕业生的产出有些缓慢，跟 mentor 讲要深入地帮他看看。</p>
+<p>后来 mentor 安排了一大堆的小活，比如调调参数这一类，理由是更容易拿到结果。</p>
+<p>对于毕业生来讲，第一个级别是一道坎，你可能觉得我讲的夸张，2-1/P6 不应该是 so easy 的事情么？</p>
+<p>但据我观察，那些游刃有余地突破了这个级别的，他的潜力远高于这个级别，后面就进入了快车道。</p>
+<p>跨不过去的也有，就转行了，或者换个小公司，游离到大公司的“级别游戏”之外。</p>
+<p>就算勉强跨过去，可能就多年焊死在这个级别上。</p>
+<p>所以刚毕业，就不能把自己当新手，需要突破，需要一些孤注一掷。</p>
+<p>我在阿里实习的时候，除了第一周 mentor 让我熟悉系统和治理离线的慢 SQL，剩下的时间我都用来死磕排序模型的 AUC。</p>
+<p>15 年的时候，我经验是 0，业界经验也不多，怎么做好一个排序模型，并没有什么好的实践可以参考。</p>
+<p>我面临的问题，当时团队跟另一个搜索的团队做业务 PK，各拉了一部分流量 AB 赛马。</p>
+<p>我们效果被摁得死死的，我的师兄们尝试过优化，没有拿到结果。</p>
+<p>接下来我两个多月的时间，只在做着一件事情，就是样本和特征工程，死磕 AUC，到转正的前一周，模型才部署到线上，指标大幅度提升，直接赢了 PK，并且在我一年之后重新入职，还是比对方高 15%。</p>
+<p>那如果结果不行，我面临的风险就是实习 0 产出，那就是要在 Sum 和 Max 之间做一个抉择。</p>
+<p>那一年阿里缩招，大面积毁约，即便我做几个简单任务，也无济于事。</p>
+<p>Min-Max 思维，就意味着你要放弃很多小的结果，要冒险去拿大的结果。</p>
+<p>而互联网行业，确实也值得你冒险。刚毕业拿到月薪 15k（15年的行情），年薪是 24w，4 年升 2 级，绩效拉满在阿里有 6 次股票增发和涨薪，四年后的总包是 160w，60w现金和100w股票。</p>
+<p>但是平凡绩效，晋升一次，月薪到 25k，年薪也就是 40w，足足差了 4 倍。</p>
+<p>拿好绩效的关键就是超预期。</p>
+<p>有人会讲，这不是废话么，好绩效的那个定义不就是超预期么。</p>
+<p>那谜底就在谜面上，你都知道这个定义了，那么你就做到超预期就好了。</p>
+<p>扪心自问，你为了拿到好绩效的努力，有多少百分比是围绕着超预期的目标在前进。</p>
+<p>超预期是需要设计的，你做的项目应该有个蓝图，在你 Leader 那里超预期的那个临界点在哪。</p>
+<p>以终为始，如果你的蓝图不够清晰，或者是很难超预期，你一开始启动就错了。</p>
+<p>怎么定义超预期，做好向上管理？</p>
+<p>问清楚什么是符合预期，什么是超预期？</p>
+<p>第一，如果是运营这样的确定性目标，超预期可以被清晰定义，但是研发/算法是没有这种确定性的，你开这样的口，你的 TL 也害怕你轻易达到，会定义一个很难够到的目标。</p>
+<p>第二，能被定义出来的“超预期”，可能又变成了预期中了。</p>
+<p>绩效永远是团队横向对比来的，非要定一个绝对的线，是愚蠢的。</p>
+<p>这么讲太抽象了，给一个例子。</p>
+<p>我刚毕业入职后，第一件事情是 mentor 让我配报警，离线计算的库里有 200 多张数据表，没有配置数据校验，比如数值为空，主键重复。</p>
+<p>这是个大家常常讲的脏活累活，就是你付出了很多努力，百分百完成了，但是也不会有什么好的结果。</p>
+<p>我当时是怎么做的，在 mentor 的那个思维框架里，就是要花几天的时间，检查数据和在质量平台上配置报警，你做的多好都是符合预期的。</p>
+<p>我要超出预期，思考下，这 200 张表为什么没有配置报警？</p>
+<p>是因为配置报警太费劲了，hive 是不带数据校验的，要依靠额外开发的质量平台，相当于你用 SQL 创建一个数据表，要跑到另一个平台上搜索这个表完成配置，这太过繁琐了。</p>
+<p>怎么降低单个表的配置成本，我的方案是在创建语句里加注解，如 comment “@Primary(key1,key2)”。</p>
+<p>为了让它自动化的生效，我打听到质量平台有一套python 的 API。</p>
+<p>那么事情就简单了，我在机器上部署了一个定时任务，它定期扫面每一张表，收集和解析我预定义的注解，通过 API 完成监控配置。</p>
+<p>我解决了未来配置的成本问题，发现了有自动化 API ，存量的 200 张表也可以用脚本一天时间搞完。</p>
+<p>符合预期，就是按你 TL 的安排，他预期的手段拿到结果。</p>
+<p>超预期，你再深挖一层，定义出深层次的问题，用它没想到的方法，解决眼前的问题，也解决未来的问题。</p>
+<p>很多人抱怨自己拿到脏活累活，其实只要这个任务有存在的价值，它就有超预期的可能。</p>
+<p>接下来要讲的一点，是个更加具体可执行的方法，针对研发同学。</p>
+<p>它就像武侠小说里的易筋经/九阳神功，练了之后其他的武学驾轻就熟。</p>
+<p>这件事做的扎实，能助你高效完成任务，拿到好的绩效。</p>
+<p>这件事我是从一个大佬那里学到的。</p>
+<p>淘宝技术部的玄难，当时已经是 P10 了，讲他来淘宝落地，mentor 安排他整理淘宝底层的数据库表，100 多张表，他拿着 Excel 一张一张理解，串联他们的关系。</p>
+<p>他说，他做完了这件事情，他对淘宝的整个架构都理解清楚了。</p>
+<p>他没说的是，我觉得整个业务他都理解清楚了。</p>
+<p>后来他领导了一系列的淘宝的系统重构。</p>
+<p>数据结构决定算法，你清楚了数据结构，围绕着他运行的逻辑你就清楚了大半。</p>
+<p>我是怎么应用的？</p>
+<p>对于推荐算法工程师，很大的一部分时间要写 SQL，要跟大量的 Hive 表打交道。</p>
+<p>它的数量远远超过了传统数据库的表的数量。</p>
+<p>为了理清楚数据，你要知道数据的源头在哪里，表可以分成几类，实体信息表，一般来自于服务端的数据库。</p>
+<p>比如商品信息，就来自于他们的 bin log 同步和聚合。</p>
+<p>行为表，一般来自于前端埋点（曝光/点击）和后端 event（下单/支付），你知道了源头，数据正确性就有了保障，再看错综复杂的中间表，就有了正确的标准，一切都可溯源校验。</p>
+<p>理解清楚了底层数据，以及数据在你系统中的流动，那么理解算法和理解业务也就是自然而然的了。</p>
+<p>这件事，我分享给了很多人，但是真的能做到的人寥寥无几。</p>
+<p>最后要讲的，并不是一个方法，而是很多事情做好之后的结果，单于这件事不可求。</p>
+<p>你的 OKR 是你 Leader 的 OKR，你的绩效能支撑你 Leader 的绩效。</p>
+<p>任务分配很大程度上决定了绩效，而你有没有分配的权利，只能感叹分配不公，骂一句“嫡系”。</p>
+<p>但是实际上，只要 Leader 不愚蠢，嫡系实际上就是他过去立过战功，建立了信任的同事。</p>
+<p>如果“嫡系”不好用，还要把重要的事情分给他，那么 Leader 非蠢即坏。</p>
+<p>成为“嫡系”，可能也就是一两次能力的证明，和 Leader 建立信任就好了。</p>
+<p>建立信任这件事，除了业务成果外，还有很多的机会。</p>
+<p>举个例子，当时团队组织变动，合并之后来了一个新的大 Leader，组织我们做技术分享，内容是当年的顶会 paper，我和我的虚线 TL，接到了 Recsys（这会质量一般）。</p>
+<p>但我们花了一周的努力，把 2 年的 paper 做了泛读和归类，解读出技术发展趋势，一人挑选了 2-3 篇 paper 做精读分享。</p>
+<p>我看到那些只分享了一篇 paper 还没讲明白的，就想笑，你认为搞这个技术分享是为了提升大家技术水平么？</p>
+<p>TL 刚来，这个团队什么水平他不知道。</p>
+<p>这个分享就是为了摸清楚每个人的能力。</p>
+<p>不久，我的虚线 TL 就转实线了，他才来公司刚过试用期，而其他几个更有实力的，却错失了机会。</p>
+<p>日常汇报，比如周报这件事。</p>
+<p>我们说七分做，三分讲。</p>
+<p>你讲的好不好，很重要。</p>
+<p>这件事情怎么提升，你的 Leader 如果也需要写周报，你看看他的周报，你的哪些内容进入了他的周报，哪些是做了改动，哪些是原封不动贴上去的。</p>
+<p>你的周报就是要写到，足以被原封不动贴上去，还需要做修改，说明你一定讲的有欠缺，做到一致背后是和 TL 做到了思维同频。</p>
+<p>日常如果已经是这样了，那么你的绩效支撑了 TL 的绩效就是大概率事件，你的绩效一定不会差。</p>
+<p>··············  END  ··············</p>
+<p>你好呀，我是歪歪。我没进过一线大厂，没创过业，也没写过书，更不是技术专家，所以也没有什么亮眼的title。</p>
+<p>当年高考，随缘调剂到了某二本院校计算机专业。纯属误打误撞，进入程序员的行列，之后开始了运气爆棚的程序员之路。</p>
+<p>why技术</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 8 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Min-Max 思维 vs Sum 思维</h4><p>Sum 面面俱到、每件都做好、畏难求稳；Min-Max 最差及格、最好亮眼，成绩由 Max 那件事决定。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>好绩效与平凡绩效的差距</h4><p>15 年月薪 15k、年薪 24w；4 年升 2 级且绩效拉满总包 160w（现金 60w+股票 100w）；平凡绩效晋升一次约 40w，差 4 倍。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>好绩效的关键就是超预期</h4><p>拿好绩效的关键就是超预期；超预期需要设计，以终为始，先明确 Leader 眼中超预期的临界点。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>注解 + Python API 自动化配置报警</h4><p>建表语句加注解 comment &quot;@Primary(key1,key2)&quot;，定时任务扫描解析注解，经质量平台 Python API 自动完成监控配置。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>符合预期与超预期的定义</h4><p>符合预期＝按 TL 安排的手段拿到结果；超预期＝深挖一层定义深层问题，用他没想到的方法，同时解决眼前与未来问题。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>绩效是横向对比</h4><p>绩效永远是团队横向对比来的，非要定一条绝对的线是愚蠢的。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>考试式 Sum 思维陷阱</h4><p>刚毕业最容易把考试式 Sum 思维带进职场：贪多、怕评价、不敢孤注一掷，安于做简单的事。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>嫡系与信任的本质</h4><p>任务分配决定绩效；Leader 不蠢时，&quot;嫡系&quot;＝曾立过战功、建立信任的同事，一两次能力证明即可建立信任。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把精力押注到一件能证明不可替代性的事上，最差及格、最好亮眼，成绩由峰值决定。</li>
+          <li>主动问清 Leader 眼中&quot;符合预期 vs 超预期&quot;的临界点，再决定项目怎么启动。</li>
+          <li>深挖一层根因并用自动化解决未来问题，同时把周报写到能被 Leader 原样粘贴。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247572073&amp;idx=1&amp;sn=a6ae88beb0954738ba59634febfcebdc" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3NjU3NTkwMQ==&amp;mid=2247572073&amp;idx=1&amp;sn=a6ae88beb0954738ba59634febfcebdc</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：其他 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
