@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阿里的同事，写的代码真 TMD 优雅！ · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>后端开发 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">阿里的同事，写的代码真 TMD 优雅！</h1>
+  <p class="lede">《代码整洁之道》总结：从命名、类、函数、测试四章写出整洁代码</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>后端开发</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 20 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>整洁的意义</a>
+          <a href="#sec-02"><span class="n">02</span>命名</a>
+          <a href="#sec-03"><span class="n">03</span>类</a>
+          <a href="#sec-04"><span class="n">04</span>函数</a>
+          <a href="#sec-05"><span class="n">05</span>测试</a>
+          <a href="#sec-06"><span class="n">06</span>结束语</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 整洁的意义</a>
+          <a href="#sec-02">02 命名</a>
+          <a href="#sec-03">03 类</a>
+          <a href="#sec-04">04 函数</a>
+          <a href="#sec-05">05 测试</a>
+          <a href="#sec-06">06 结束语</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>later equal never 想是不是这个道理,你有多少以后再说、以后再改的东西都抛诸脑后了 如果是一定要做的事情,那就趁早做! 如何写出整洁的代码? 可读性要高: 代码要像散文一样优雅易读,见码知意 拒绝重复代码 满足设计模式原则 单一职责 ：系统应该由许多短小的类而不是少量巨大的类组成,每个小类封装一个权责 开闭原则 ：只有一个修改的原因,并与少数其他类一起协同达成期望的系统行为 里氏替换 ：子类对象（object of subtype/derived class）能够替换程序（program）中父类对象（object of base/parent class）出现的任何地方，并且保证原来程序的逻辑行为（behavior）不变及正确性不被破坏。子类可以扩展父类的功能，但不能改变父类原有的功能 依赖反转：高层模块不应该依赖低层模块，二者都应该依赖其抽象；抽象不应该依赖细节，细节应该依赖抽象。 接口隔离 ：调用方不应该依赖它不需要的接口；一个类对另一个类的依赖应该建立在最小的接口上。接口隔离原则提供了一种判断接口的职责是否单一的标准：通过调用者如何使用接口来间接地判定。如果调用者只使用部分接口或接口的部分功能，那接口的设计就不够职责单一。 迪米特法则： 一个对象应该对其他对象保持最少的了解 合成复用法则： 尽量使用合成/聚合的方式，而不是使用继承。 单一职责原则告诉我们实现类要职责单一；里氏替换原则告诉我们不要破坏继承体系；依赖倒置原则告诉我们要面向接口编程；接口隔离原则告诉我们在设计接口的时候要精简单一；迪米特法则告诉我们要降低耦合。而开闭原则是总纲，告诉我们要对扩展开放，对修改关闭。 方法操作的变量越多,就越粘聚到类上. 如果一个类中的每个变量都被每个方法所使用, 则该类具有最大的内聚性。我们应该将类的内聚性保持在较高的位置. 内聚性高意味着方法和变量互相依赖, 互相结合成一个逻辑整体. 系统应该由许多短小的类而不是少量巨大的类组成,每个小类封装一个权责,只有一个修改的原因,并与少数其他类一起协同达成期望的系统行为 参数越少，越容易理解，参数超过三个可以将参数进行封装，要按参数的语义进行封装，不一定封装成一个大而全的参数，可以封装为多个，原则是按语义补充; TDD是测试驱动开发（Test-Driven Development），是敏捷开发中的一项核心实践和技术，也是一种设计方法论 在开发代码前先写测试； 只可编写刚好无法通过的单元测试，不能编译也算不通过； 开发代码不可超过测试； 关于2的解释: 单测与生产代码同步进行，写到一个不可编译的单测就开始写生产代码，如此反复循环，单测就能包含到所有生产代码。 FIRST 原则就是一个指导编写单元测试的原则 fast 快速 单测执行应该快速的完成 independent 独立 单测之间相互独立 repeatable 可重复 单测不依赖于环境，随处可运行 self validating 程序可通过输出的Boolean自我验证，而不需要通过人工的方式验证（看日志输出、对比两个文件不同等） timely 及时 单测在生产代码之前编写 单元测试是代码测试中的基础测试，FIRST是写好单元测试的重要原则，它要求我们的单元测试快速，独立，可重复，自我校验，及时/完整。 测试代码模式 开发测试代码可以使用given-when-then模式 given 制造模拟数据 when 执行测试代码 then 验证测试结果 编写整洁的代码可以让我们提高代码的可读性,使代码变得更易扩展,提高我们的开发效率,减少加班,提高我们的level. 每个开发人员都应该去看看&lt;&lt;代码整洁之道&gt;&gt;,使我们的编码能力以及编程思想都得到提升. 再重复一次,我们应该及时的写出整洁的代码,而不是想着事后采取补救</th></tr></thead><tbody></tbody></table>
+<p>本篇文章是&lt;&lt;代码整洁之道&gt;&gt;的学习总结, 通过这篇文章你将了解到整洁的代码对项目、公司和你的重要性,以及如何书写整洁的代码.</p>
+<p>通过命名、类、函数、测试这四个章节,使我们的代码变得整洁.</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>整洁的意义</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>不整洁代码随时间和规模增加而降低生产力，导致扩展困难、崩溃、加班、成本上升甚至倒闭。</li><li>从一开始就保持整洁，不要&quot;以后再改&quot;（later equal never）。</li><li>整洁代码标准：可读性高如散文、拒绝重复代码、满足设计模式原则。</li></ul><div class="pit"><ul><li>抱有&quot;以后再改、以后再说&quot;的想法（later equal never）</li></ul></div></div>
+<p>不整洁的代码随着时间的增加而增加时,生产力会随之降低.</p>
+<p>导致的结果就是:</p>
+<ul><li>代码不易扩展或扩展容易引发其他问题</li><li>程序崩溃</li><li>增加公司成本(加人)</li><li>甚至可能造成公司倒闭</li></ul>
+<p>一图胜千言</p>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,UklGRjw4AABXRUJQVlA4IDA4AACQ6wCdASosA1sBPpVEnkwloyKiIfHrMLASiWlu/BucMw4NbjR7xWt4YXL0xuF4/I/9P/Hv3e+F36b+5fkF6V/jnz/+V/uv7dewrin+M/rvMr6vPu/8Z+6X+A+Yv9B/3P9J4q/H//Z/x/sF/m/9Z/0/3DfFZ+P2fms/730C/ZL7R/1v8X6of0f/a/zHqV9mPYB/nP99/4vrH/zv/J42v3P/gf+L/UfAJ/Q/7t/6P8V7N+h/9p/337X/Af+cXY69Hck4d3qi8QN4ZlKMW74t3xbvi3fFu+Ld7yL0UFpSXykvlG4avIcr9KC6UXAy5fcUCR6X8pq7+OyUGCD5xbAkel/Kau/jsfb1EM0snTdxQJHpgEn8838dj7eohmlk6buKDhqTrm/jtZb6I8O4IVTHZ0P6K+yIS3LU+JBUmEwvAZUKMI5/Q8JqrucnDuGXoRs0ARF3785K9DjUGtIwm5ZJ9MiQyDwwRw/l4TqDKYy7Irx4WwZrfx81varKEQc6kJAE2z86PEvtvvs+/WLORqsiUl8pL5R0mVcZB9iFD7y/7ba8RZbIB4PJa24sLx6/WBzzNb/QMx6+ni2s88llOUPTKfHd6ovEB7uhVcy/pyWNDflvVtnTAQJ3UY6A2gfcQFUSAhCYCGdnQgZwwTPlzQBoLUrm9/3iF/OssuhHeOfGYk60Kmrv47HYgBiQJP7YQjmwziDOkdgUxPKPz541PzsDSkvlJX0rVtwsN4PtQWDDzJpAo5EcS8xINjrv7BLvazn5U0kir1N+fLdIHptDqMGY9HEyyxSs7xTnIPMftReQkRJFRbXdLXFDo1QuIMjZyr2dnq+BvXvwMnpatNT3d6ovEDeLLrJxq0+PTDV04Vxt0+PvnPElgjkklLuwOOyGf1/WGOu08FDvCVwxSASPNu31mUv1gkEvlGvIEqdj0u4SW4SEriAQdF3H58lmgkAWc1m3NK8CJZjq3BZ+HCxsQD+JQScL3ca2Df4ua29e2PBtsu9p34zMckfIQcQ471Agb2CtpaEfkBYQ8h37emO2qS64JT5xCpO40yVSuQXQPMCf/gLJv5LQkIlDRXSeX528QN4c+KaBlPd1fOAse5VRZ8EQJP/ZYZlMs7fuv1iPjAk7w1jDwArOlp3oD6U+gjT3spLJLCAW0zXwAlgiMX0C9/Q2jwnvpSXsQMTgf52r+YKxH1x0UG1r5UsLz6xyYfNfrce4Ecs6JKQOaLrv10Z0EKlzf1wFKImuTvhoEEmcjHRHh27ABdoZ5zlpoOE3xEBP3PCpO5mhXn9/EOUT66ScmNc+v2ZvAZXHZRvtEE2/QqhHmkNt9Dm/lNCC8FChEDVy4pUXo7lxCIHE7biJBA5YFkPHUniMWYPBQPeRfsyLQpAIGpiJafQXDBET1IVnUFLH+n3u6fiM1mom2meMy3itdZzDasrIaeIG8QH8slHU7IUNdl23rCR1VqjlCyod+nEbbymvJh0wYn8GHcm13tpjmQfDi1+DhJPQQCDYCQ58QIryzMyqS+Ul8pMElu5mc2qL8stHp0BBwITB2/NRnjLTahaOuLGL2Km6qG7vfXuUcB0GCFRTpkwkO4IdwQm0IoK/lva3obJ4Sgkp9P7gOKf2ABNquzjf7sPTuYVpehJ2bj1oJEpRvex6c+Fw/RE7CVBTP/XiKyDDAQbnWoI7JkTVgoGCuK4VHkOcXxP8JFViXP73D81Gui+GR056B9bv+mNcjkYO3I7boOTlqYKjCsLoThSfmy36EctHrLKY/i+rlY5yxjDbodgCN6rkSkvlJewRoPS1Y47OepHBDuRP5R1+x2qVonFtoIy3qJUVgKTFl9nk6xpI2PqNbgVv46XSc1JTovhRUrtiCvLGV9/rgn/Ru7vVF4gbuo7fuysxuyMT3XFgHbPMp/G15bU3XUhOflLY6f4+1gJR6GZRx/VZW5iCDnLXCHw1leVdCIyUQ2Ny1ffRFlx9JYibylo7jHrdrix+U1d/MeB0okO4IdwQrw/JUMu9NoZnHmZnJG4LXHIO1r5UaTzfr6zi8xQ9ms70uBwIUsWTaz+oEN3qTE0+m7zRAtzVdEl2aS/8/n2NDHeK9393EWLgC7newVsMkoFxN9/v6m53WnfvjJhfkHXXOESKqKc/Bh0q2vS4JBL5SXykvn5JZkvlIPRHhNSpZrCjAfgYtC8ffl4/e81ReIH0sReNI93ovEDeIG8QN4gbxA3iBvEBk+BMOKFgoe0EGW+EQNg2kPRIeiQ9EN4hVF4gbxA3iBvEDeIGxCZLFhZvUuqQrO0HuxRtt3x2ew/R/NaRF4AEkeDXv97tcjJr1+qLxA3iBvEDeIG8QN4gbxA3hz00biAoeljvnwWpAgl3b2pOcOSgKJt7BvDrfLigR/gcA8nfAKEl9yTIyf6X8/K7xYFmCTBAXpwNV2+ks63CQAG3tV1Xp8lWLoO/JrBfedEIRn4G8QN4gbxA3iBvEDeIG8QN4gQm9GHXE1rDtMZUcecWhxq/nj4+Qent97UyBZKBGEyCQS+Ul8pL5SXyjQAA/v62B+Bf8RM7fz7CXBD6ujViAqQRjB5U7J7QwGLhbT6LptiaFnoHPPpTAV20OaSS0DrYf5aPA5i6aAqKMU/svDE1+ZqavgzGy7xu58B2s7zg511+xhNo2YxNL5WDKItqhP16xsohCMLLyusTi925nv1n85C0AgSWiP6enWhvAJBozR3fhgVlAjf/+vmJWoKsATx+SBY1G3G6OtRUAVGuBTiJ+BTwc1Jx+zEXU/2QzCNCTKasV+ym6A9V9WMPK4dA20DUqA5e6GNpIYL4fFtDLlGe6bs4UBc1EtJ2Yt0lgrcA1QQuBBJpEbPqswsNhzUw9yqaN8uNaEG4v+G5C+x2LVWThEmZu5RfCUPbnostYrsAG2BcCniK3YD1xtkDBcCndHKrhOQqOCCIoBnihVFXBXMYb1PPsmt0kiuCuYxarJuMblXP9QgElgiRC2u6CZ+ukiK1HuWUOn1x0V2o7IrClAkblVAfVdqO/XYjXrtEgw3/vpmpfcfhU+EsdwrRB2qSp/nMxtYFEq00ztrsAFaEDBZ6s2mvEVvr6Xw0J2Zj7u9y7VGaRRsvl3we1A720bVqbvcJ4ltXRJRqbwmgtIyM4rYWWxwgYzTW6qIL8IURj2muudKLZf6RLbCzKnYD6Si7B5LmyaiNwfU6SGoF3x7QEFhwk+i/3yfA664K5QR3D8yWZexspHj0YRb0aPxu3EjTYjcvBPj3t56cpDDKIRjHNr95yX/vBGCAju3pD/9q5H2Db3DbleOjvIAHFa7vttV0LnsR5D5K+xRovIYeDooOdr0cL07fjiX+lje46tgWZL74t7HbaLk5oHMPPkxhn1qChxLwIBCGvuaBH0hyZg+tgSbCIYXxEymRCFWC8uzirIFWkOe/P16FUS1Wxylcbc3uVOAM4UFLRqL0aZBw4bD+wGW6P5CG8BUxAGhj1DOZVTGAxXdJtyQpqmCS16wmuhchy3ac590sVlzEzuXVwudkBWwvIb8EC84ER4pNw94jZAsmN4jkVGp/8bQPvOhyC2KniuVdVutVjrH52gQx0f1WMqYNY4PKq80/5CV+JGfbgvpA3fVEH3qkZFnF3fE4pE7Bym8SlCfoYrxxcsXeXMwB61aXGA1yGiMqXMt4xEhZHe/gGZJRyoBBM5DocCabx/jUv7KRawFxXR9OpIILgU7vjuukRZeGARpJvavE0ZvQYyX21rkl6SsMVD2zXO3UAEIhlIlzw+OnMQgWNccOdwYPRUmCghaMMZ3Mt/xL7IPRmcBv1oPOooYJgp2V8UUOJC58ZzmlDYLGlizl8dzZTpsncmHAJilrPRUPIWBX44P+N8QCOecgbuv7Jzcj59xAxCH1EmLWAkkfqZOAoTRtUFArTVSYGjwxulFSJ+F/d6ksi70LnjvytZlDRAHsyC/JAiLJOeF78/izpvgJyCBFEHwPDaNj+ok82JxuKlXJjr0OcCw4wYUNx2KQ1374PGFiT/LXi66jn98zvk+qG+lZFRKTYa7HH9VozMCI3EWVk/Jd+RJ0WPmu0zxBFiE5rEHbCRcDUQiaLUiFUalxILCmiI/+JX6q+o34/LjO10XGSdzkDK0QijaDyvfC73+HjLfVh/tODKu8ercrDlYCaioFHHGokDqQt98kELF/OYNT3tUhnp9HwVCbrl99Qbb+JcroPcGDaLDamNVknBMlwm5hDf8e9YMSrRNfdbJAxUv8N13ft+fxvjpiULvdefGSn8Oh+hD4+BKlf+Y30GaLk7zfxmFvefmIrIsvUvMiGWAQ+8ipdKF6KqwdP7nMoC5x2SCRkwicNtZvkHxcgvnNWreehavgRXN6XC4IPjhT4zbdcY5V0BP5kju3nqVi4De1BnsOYs5jgqOF9c/fdtQf+1sbt4u5Hb284Wsy7iyGSmQ8sGvX6jwdjv4Y3RkQq/0h7jr6R3HS5wsH5xdUlcncjI4KVBue5PrS29cfKCAerMsiQ0ormnjNt/bpwaCTE9klMCn+AYAG18iyfo8ZuItA4FCgdYmky8vQ5F04Aa9qBgzRHM+gCWI0X//S9+7e9nL3X4ppY/DBVgtd1PmsuYAWpNlJ5egqhg0xfMg1TSpeBCUPj7MssV974NeSQtMaEOIHhdTbPF//uxjd7IWuYtXF4bsurrK4W88N0gbqugqZUBwo9yWqXaQsgfi//n/hMvsZQpwAy0bLaLx+b1CzWVck2k+VH9rinN1iZyh9xnhRN0GTqBNbtmoZkpHwp5VvBcurf5rzJ5bDf6bdgsWXt1sislTz4EsWzFtCrjR/OtKSjcQdbXw9d51AVTNwfud9V92+r3xPS4Kdv3C/tnDSuOoVsrHz2v0qH9floz+r9LOZP7efvzbx7mvooyABRbQOBGAKV0Lp7SnE1zHtLUDzeotdgeyfGfXY/uMyHPHef3LFGVyu/0OSiDrENSoaZYa1jT1c505nOIIR9tWxBSHZrm479sKPl4Hz6RkTpQZ+V7vrNR2TXx+Y4ypVP/3CkG15nw3tNaeUZTwpZNwJJwuRbJ+Kd1VNp9L5rrkqUTdetgYXS8VcsxvxPAc5bWREGP22AN1mswXO/D1Rhswd0y2G53h/gN0qRYjKIrFDrhBR53Ppgq9nDv08ImbqY2F5rHuEOYeiXR7HdI1IQoqEIyZx6nfteQMXnlyTbxQG8j1ftmWW6A96slLC2yNXXDojn9djsn4B9ZjWj1CWwkOdmO5+a71arlqpo99s7LmkvEd7TgBfrg+Fh5xS67dww7eo0/Ne/7sE8ioEzX7JaBq3kO6mBYgm1+amH6bjfP3ZUbXhNnFK/TBPwp+RFLdRU0EqF7yrq7UvYHMYMiFn71LSoHzy4E/k22fvNuRJ1v/o0uHRG8JoRubdioAQdy8OQz55LxVulht5b82ETa3Yv4IyQxOLh4lfcXBwZ9JBPCv55CqWtWowhehom1FljUORb89Q5Uxoep5UoNl0i0AqrNNKIAa1dAwm4NZpaE18I3FAm2E26XimDre2PE5eg+86k/lL/FqQhs4h5CGQbsYWfQ213ueCDdz+1bhUZr0Ec0DMTEyCWfUrJqEvMtL1DFd6OiTaysujuq5tFUK29Yayxv3pezdi+yw8vzd0q688B/9u3gWsrfmjudE9bMvFWgcdnN6viBBs3O4JAa3fTiA4lyczFwdn0+1vgn3Ox1iIumk6g9qDmHmxuCJDAEDKbLo63Ny+ma9qRoH6tLsh0+JdacQvUYQgKXfIzvlkefRcRFGsJFIZ4qFDFPEzG1BkilQwVkYge6xJI/swnkwytdDPRcVJE7+h7mESTEzCSgPolmBZB2fYC7Ea4lXNipQp2gtPg7ywTkpUv98TXMwzsRfMBaocO6je0xC8x5/vk5/JGqQ88IBl44dVgBT2RKRZhUaFhH93b9AFwz1cMAXCVHlT7XVbIpoaYeoKHdwugoMbFkVcbusQko4gvwRz9TlKlE7DrPuaE1TyoT4rorOltmnpJ2DA8+6AtYopWqLoz84TJiQyFm4771bWVs2n68uZv+mPmIz4aG7h6fjXK1y6aFf0IxM3P3jpeAeDXkapyBlQnFAwBs25wLegjEiXxZ0QgZMz15lE248SVolTFQYCT5uJSEqiTEApKORjHdhTgK/YC1cYn0crUMCtiK4ptqaY5oNx8/80BNAdJF8Ws7NKCr1JpGVrPOi0RQbrX/JY76vIFxKDKT7AgwYCr/0UCnAqqa+La413TIVIK/jaFR25ibINPnK6oQNjZen3g3DQGl3YeVl95O3JQDBC/mYxHj11rhO2Db9yRTKvs9f5IZrZw2MLgrNhwmDgpyikFUXCQzhj/6BsTAZ4KiPUoTg+SD0BD551ZRA1zJB58VTwosw3seatNka6IhnNt+fGK7J5CWDLCXPDEcoijQcq24JHZyJUINI2r2SGc1rpMyo+24btpGrPj7iQqd+1gdGD2TrHdROQ/0+8nhHsADTa35apKs93M6Vge8COxpYjoWyrmMEKCCvtxC+BPAojtFyBlAJHXl4ednEpFfCTukwanZ2aCycNz4+c2P3NgqBzV5ASUsviKRIPqwCAJEtkD9pLY5SDpKaFcsEayLeMufWJLPlhdFsLWGSvK4FTqNXdtYRTWEoemhbgig5NJs6B3AVy7RC5AlrxgHr9SOD213ubzBoEXZqp5Yzt1wV6I7iUwk8hURxVRODedsAChmyaLnCp7IBHPW1dieZThoeSX20/wAVv2YVYQL+Dz/0vO67O/GyS2LNYxYq8CP3KVzn0YlXYPyI/SDdROyn5xNe7OtaHSKud+m6EwJ51wH7U6KkPKhh2aajVV7Na1O5S8O2c85dxYKh+iIU6D7pqlXxadqClos3nggCOVcam3iD3/hurjUR2KlNHaU3Nmkk15WUVFZJQZD67+eOwftg8eHR4aKCPUakBs8zA5rnRHdaqZ5E7QPOzAblduGIX2QBl0BkxKtEoWxSUZpQyEvLdLc4vD+3JO236L4cUJoj0y4SB1v75u3wREvR8L86hxyoyLDUY7UtCaJ4XQcAqbuRN4kQSt1L4KNYmPQzxJM3DEXJQEKgncap1oiBSNE/UW9+4gZLHYAAeFWozx+y11nmFNUwcxutBnIDH080mvNllvmKXnOvYW2Z+1vH84Lxz5k1pO2CXyIfOdx+WjZv5MIn4iK4Lk6yxL10Vkz07IcB0f4KVEQJKLloblOHETvNCuvfPdTScW0IGtwwPiAAxjuNYHF7damhFqoIF0KfJVTIWvkJrTFa6CFZGw8xRe27EBeOEL83VUvHMGU+xdUpf1n2qkpvTlqWcWllZLNlZHuoZW2Wqe2GctP7qDG/d8515xceUZyyLGNg6X7KPLJUYpAj3FNrMKc85t5uk7I/bP0BMqXOTfbBdq8sciKseRPs99JTGl6P/gSIUsKMIdr0fo9rcgY7MnpVvD5mMfK/PaCDbjm5gCT6ceGz+IQEjKFwlr+GhhF00ges4XMNNtkEAbTCEQoigq2bxMSVaFeM5t55K551OsI3QRWdXAwCsgmKb9IymEEnQB6d0RhGMmD2NhuoX+KMpWzim1gvEl5s6OYkyvZOdflXkJVZEaQ2jeYBiiGk9DvHoE93ePZAAaP4cnaAgS1zf2FHJyVxruXaW5WpTaRCn3OYuBI4elvwIL98FH5ugVBm0lZkBrFu1T4nFZPXosk1QzTp1C4fRuQCJkBapdMW+TTWYr6H6dNOXxbUHAqexO0hkdXbHUhJzyiW8SL2hhbiFejAiq8fURTELLuk9CxkML3BwH3UkEZhsFp7NPRo/y9EotWDuDat1StWlJo7gXBnPq2AZwZrulM85seZM7TPqNpMfb4x34rklGpnHOGeDLjgbk59e2fTl9vx6SGLPJtsDs4w83IhyK9vEYTOk81wZMWm3jb7Hm5mlfP0eNhqnSOgN54eoQimcYhfPnVpTZBS06ApffX0yOhE9tCdUSdSIlHXFmQHOPHhffOZlw85vrA5yev44CFOeJ9W8csF/4NpZor16Kcs4+4jk6yUjpNXJx83dFvYV65E3K8htGZfkAAENbT4AB4J5vzl4j9J4Dor7X38pb6kCSPipGRjB9VOY7YsKZOyq2Cq2Ktc8CBl5jiA7DzS/jYGRdqbEktEFPcv3yBpfWIJncfb9pe2F/uRk6Niu0Ff/xe3q03YQM1ALEeO92wm9SOp9pylk54K6pT+oVDX/bb6C+zr72cZ/MQLFgv7alDPZsHuL0TgNndWVfQHi2IfrYW83iFUkLriBMSz3oP1m72g981Lfw49sALBxLb1ifgu6wq+zi1SZNZRFo0Ef+V4vW2dl//+EmqSSR7C8YxydiKufJr26hHm1xGuhZx+W8E/sTrNTBG8w1iDY/dSwEuVtAmHEfzrV9R4R2tx+kTckLm+r7mnhNWyo/oDFlHd9hpCJ69B4IRwYGh1QMN3u79y53xUaOuOTnc2Rnips+P9+0mu7ZWZJu+JwJjqulP9GlPRJGdnvxvVHXHeAWHtKPb9ltWEgr/2AE/2D7qdrXMSwKtkriotrPo1wXHODcsm3WolIlaw7lOZXIfvGjzmoWPd2D8/yINraEEBiTFNmEV3kWh/pbDCQ2mDjADeFaHvf6ZZTKh1Z9tE5P2txYanRLfGWcRPuOIz9gnE+PsL+736+JznbWNCUKkg+LiVHx4vkta8SEYCgmmjcaNOU4J0Mjijn/7WUGMCWZIr2EJsXjbgbam2MaXJjvN5ZNqBwpw1UP4KIgLdfoonnr/BBmkOPs6BgMBKIPH0KuQFr/OhTa+JYG4nmr0BwyyNRP53u+n1owFi8EsBi8IlPuozs16kHzSAmm8ZxHKhN2aMYubaduE8fXxM4X1V0nzAUaTVLZTtZxlh66y4V/7lWYq6+G45Bnj1BSQMgrsP8DBFyFHvjj7WYVsYmCp6p2HtqWLYBe72c7x71pZbjULabP0M7hQdr0F0NGXcHAUUKuoLZDgvEj7cxhSiIVYg/b+iUzczfYvasYtQU6HNX2eWD2KHNXjOq1Zbl2MyST7OrpmgM83fS5uFNu3GUswbhV8bOJipeRKbSjJGPWApn7lmtHKruFxrJpUZ2MY3GvS5UVUMJadtgUOXri0CfIAohdF6SjQCyFFvrwkKlPtsvc60/yUyAtchjllcsFivFs3oSeTZIiYxW1fcW8YubKuGs/CY0aQLgh63xjXMa1rLi54rWCEVCBAg+dXiP2aD91KpMOJbAok5gUU3IYJOUSSkpZKrVEFFvC4fOIWcSWKT00xBhHglUG6+PSRcCs+v9zGakM7rZ2DF82U5nKS5yAh1hHDNw7Q5u/TIXCuqiCjMsYZw5/V3TdpB/cWfhHtWHtVsEV92+tE+2JCm07QetdGJNaELA8myMdsIIJTCUbS+aInp4OYGK734EA87tCMXj/q8yuy8wzvf8xiKr4FR7BfbMccXe52qzbuHgJdGr8jU3izN9U4uP/ES5UsZZxMZAG1mGc05cpi7WZDsOBW5ds5jzJMIc04OBv6elxen/Ks9HhwZ0y/Xgbmtf/NNDSJYmuYIhasV+HjfjAFh3ywHVlA8I7nvZvsfC4x9p1c3DM4IBTChenG5MBdiKUtcdBf7YLtQpUiseZsnKlwS5xov73mn6YdLdpq9cdAjPKZTcjZq1X2VvYA6Vt4PAvaFQwuIDqyg0pOc62Ql0WYPk7z99BpW4ynth7NaSKqafI0xEaQTA11hA968BaKec0M6HZchReHvbm8b85eAhfyfu4yZ0nRGoT2m6VdH1EWOmc6OoIXDOGkhKUWbweOYh1kmrCM+KN8B944XT4NzIt7N0W0kk6+XvAxRGggN8gpGR43ElHzUzRdiDbIvLgJTpkZg7om5iLxJekxJAKmIX0aMpe3uPfW9fR+wrrZJowiGp7JrFwyI1ad/C0hbqgoCvLMxTirsRt1FcbBu2JadzIO0qEC1xv00jWvSmn3P1+SQJFk/8+1twwYT9iN5AakjqMpp7c0lCBPWtmu63EHA3LEErTsTWvBNwirOz154fz+ow3fDuop7gv48PvmbmGRU4D1NPoFG8bjUzx/xofQ9wJdduRPeOywke0+X47U5TNv3H/t7Xn5zgmsbsIZDfH6mSL5Los00Bw6nJ+FqMPrDqgQsXZ9HRJYNw5Nz46Jj0iwP5Nxzq+TbsQT3eF0YNhroaekVAuz8Nx/PkUPVi8s+n+yh7SyJwXK3MoMYwXyzME64PLYw0ei9Lm9NmnD2OJ9mW/xqOxb+oAIWNwQKZvlg17c2QUemdaSP/abXE+Ap85aIoHtiohv4FrFxLPt+NVigbxId3xu6BqkbFLSZZvthLO2pO+Fdwlv52chK999+HlcUmH7HeijhsHlm6tOvv8CE/Q51W1gB66vtmplUFbEf6JY4DVMSC4xnQg5Dxbmj6qzb36s4HoQOvnx9k6ENawoeKzVxGV9Iml00L7oW6ICKo3dhLCLJ/xu8xDOyELA00PEbEM7sCbVNbbViNmpOAr5FugEcaDXU6Ugi7ef9NOpaCCUhfyn+BKFY7KhC2DQ4wfCnTYG2htGwZ6G5FacZSCMfTKxgAX9ul/VsAM5yI8C5AqqhocnWis082vA6GleLxaRH4kaoYemWR9hMu+py+iaiq8IEmzjt/OICeZN1kxGY9uPtX5z98Eg1xQtwoYKeRkUyincLcxX4HlaKw96Br5vnwMdscldPG5dEhRZuTG2yhYvgKPRanNyg1bNY7gbjGvNCZNx9zNT5uNoY/G3/+wMeEVM3cSKvsUvSvpKSLXHGi8NEkAYKjCCpwBXvXyg/Xh4j1tcXz4inJnQJEvE8F0y8FTEEL2IhZKRwibPKOgipgv1nWahtGZn2BxTdeudYTA5AE/HLGA4EvSM5a86IQMhKp+1nmO2cAHPtVzccf1WP3SHgdXkbHohCtHp3cEZvB2trImsNlWX/x0kwLpfDbwfVN1KAu3TKf6ZDahEfUrQhqNRMfxzQifoipxhxt+Fdd4nKIRoyZSmy0kjrluK5cXBvVtvC/pLB5vPtnXtrPbdIa8mn7LWA1FnkKfGnDp2uRcL/GmloplVWXLYufO7RhJSPNDrrmyw3wFMlopdlXm9lSWW6HS7c9b6bgazFz0Wv9Pw+eGlCSiHuaHrs2/xRK5NpxJc9wmqK1DJHpmrj6n+GmQoTPR0bTO3IIgjSMAPJij863rmqFLJXGiHtZddMEJ7ZrKj8AtwtFGOS3ubMha8wu46invGFAXE2p1hFALkgxKosr8xBXigEmMbmgRhdP50RLSdWDHD4KLncqTr5gio3ebmRUDS0e0SKVLNa62SucWrV8PQIiXtKl/srgTf+bYUrcyDzRqDw3WjwT1yS0Pw5zR9kre+EEDFXNV0gj7gUwiJ1g8gIi5d5OG9HpYQLtOSK/NOc4FsdoR/Q4bJjZFgCnwDsTOu2EM1Vs6DZNeB6zWIwHTM0zKm52DBlP7XLGWnLnBl+RefFo+Re14k74MlQBsTa3ADvZdqsQtZy3euj6XAy9k+H5JmTKgLllFZ5s1dypxu1+l4/NFS6be8ozhnlp6rnZh2zujLUhP9FU6Ei+8Jz8AyMbT9M8njPrRE8WW/NZul9/A+fep+d3iq1L4H04KQSIPj05JGpDuoT5kUuM6mkcVQX7+xk2tVz92mvSKvCFXTaqUV2Q1WumC5/ZY+C70Oqbry7Ro6K8XEIUBDk+UvlKzbktkj9q89wnwYY3qOeS5CMbg3eW735SoxWzR/mgsvWV4O/pmmjKj+DjIX6+jkn12cDtEp+ZAc4QED+RkSyk6BE1gySAHHLbhfKHwCsNghD1g0KDOgVGmkEEUywMoc6K+0I0lm5BwPgbirp8sq3KwF+5YGdJkMwN6BP5qGmnCD+ACMRu10VP5w4Euj09vIVZvcy2F4Cow+aeG4lKhd3NXQCW6K5FLdjhJ+LwxOrXB/XYnxrAjepMNgDp+B/42xbROEYrnoWwJ/hSnL9Fs1D6JZhlX4wVqUKqQhiq2+gQmWiVWsNVsDNPqEcvmW7v3A+86MJz1b5XhWBB4VQRwQsG+ljVUiXU2Xr4uQvL1ih8HQiPCbkwRClnppKrW2a+fE8ZszJctU9VFftk5MIvHyC23YC75oEqr/yTl2l/ezAKQ8GafCL1yNFYb8pfinK3zelOLqJ80n002OdHmWxCFv+wQU1y5VzLxzeg/V6nkjqpEZXXQapKjKWLSY3TpsrH4d4ykDSzGKB1kJJU2xdGTHVUQruEysGNbvMBMyk9Sm444YKTbi+faAxB2kB0Agdj5Z1utcw/g8cI4yuc1NZiSdVFvN8dvn69HkoOyEf+CbJGlketiOvWd/jWqFEu24i3z7XHb2ql+LB+mVOAGCanoid512Th6IK+PjLv1cn8LZ4byQSWGltIJvNGKpHsTTBa6jpDaUWYXGMP2RY2eCoRTzioOCtz7WZSHqg/WTPlhTa0INN/iJ7lYt0vinMfGrYcTe6QpboX1wMbaP0rICh3/xwAT8xZDqJvE2WweKb89ZORsyEHTqrfX3TX5cdR6zLRCT9EzWU/90xwZ3axGr/KF2Izg97CLhQJbjCgPsHoU6ToR/TDXLOmDtR+raxaxGnEJ4XgUkUtcuggA/BIRlgtFZQwUCE+j0QPrCwX+52keERk8PjYMEhCvdpK8iyLj3C3ZI9QEgC5EhOf46gouQIVimLcWA8QR09/mDgKb91lGCiRp+TWbxzTwKrJpLOY07+PWlhLPEPXVdF59CCSulwDEnhYu0HnVVCbX9WJLh88cwCxL+f/FejX0th+FDthz6v8jDiHmByvGCPQAho2haGNpRm8C+1cZ4BtFiFpwVeRonP1sPg87W8+szsW5qMx/oZF6Y7B2Lu8+WrZoc34G3JXyd7BXAH5p8vjh0kptkkWIBhDipSY0ieCNdVWuzs9OYGffZseLjSyydD5xDZKmcHLANxu356WHybI9AKHhIiZ4I0AFcJQK2HTSsXzA3L521wO0D3Uaja0V/LSFh0w4ZufpIYMPkHpyaxXu4dYnaaS2Cfj08QYfG4OTgpYuOY/E+NqN5O7FgFnNztc/rpP1Wi3URylF4TN84zyMkLRUOOKlHhiY3gwQtYThutVE06ShlTWJ/x5EVgObyNVGXaqTsQ2lDCqB6SCmcwG2cwW0KVyz5cT0ccvUDzNiE72PZHeqTs5r7lItclMHjLoP5gdLvS9cgujlNk7940ugtZ5bZI13C8cxrp1CF0gyhrLqk094qjvvB/pWsW+dvxf/RebaohUQPMJvcqLDUWGDsXffLO2YeQPfZ2mOyKgfaFW3973YShRcXODVsP33WStEPPsz14uQVLD0wVxe/mECKLm+gQ6Wweir4+Qg7kz683vPJVCtQn1gStRBMhFFcJHJASVRU3wvRt3Hqn/df1x4kzOowX9lSQPNXfqns1ZCxTh96tDq8Xi6iNSPOl1sO36AMTLnoTVCePrcXUWl/kdh3smTwMorYN/5Wfm2MPqvghAfUxi3hml79tjA1jDNxcWPmtdqtazvTmwUx2E3Ehz+cu+/8cSgogqPE+dXgvHzZf1nx6aMkrrYqp0jpTPfs6t00d67bvE1jwtgTHbs/b+7G2L22iQhaUWB4kBIQ46yUguZd/oy37NoLkpVjZsTy2YwLfleqzvwNiBW6ARtIN5gBmByMAtS68iT11NXvOsD6W+rfncmJ07pQlggI8fPxpg3JXFi9D9Z/ST1syXgqhNDZaBrkLd6aRXPx11x8iBvX/RpfaR2CcaNkzTNWXwcCTA81lBWe+K3zWVDx0nRGdtnJiMWjsNpDNSXKoWZ46XFDg1bkDcVHLinClMY5IXzm532DfxJjFGsheOCFeKLieRNXmVSmzEqWI/TaTKTXb4OdZr9cQ4MR9Fe/uFg0LPAqNPDI7ZMUsloFMMGCCdgCQKD/x6m4jtNn8xkXn8sPVuMKb1wZq3wDzb8tUFLQJLosfth7rVZDg/oiCr7rWVAt4E7TG+yJ+yXqzCr2dpAVyp47BO1P+YSmHhv+03tIehYJ8zer1GmhIiEY468xshZM1+Fj2owHDdGF82tHVj5pSay6+rfrsLZ8V3M6BA0xkp/IFvzyZnDy6QSvYI25G2bsOywI4u3Zh0YCl+KSicxBnY/PE4D9hk+cfZn0ctpTpiKCfGoVGUTWB/WNCeMJ19IvwTqLIY3Bg7cwaIk6xWZP4ZyRQc9TbvET9BCBFmukJZjSfNctdPbI2z8LT73ydjSnxJVWlCziDoxTOD5HO7Vq4nTAlUPIEWtQ23IK46V3tBMQPS2s+79oTPf17W/3B83uv8EDNmu0xGQOsmnPRrwHwk0gMivFANgMUmWXWVIjonY8NMi0TFUhxKSiVzItHkBi8oEtpdHND3TNcoo6qUzYXIUAEyIt/y4EZPreXEg5sUJFYSjO5ZUoy1DBRW4HnweR0+N8MBzpn9XIVfYPoAznQ5KnvpOB6O1bfOmhZ+A297GCEidOmv4ulJuHZ01csDOloDFzYcF5jy5xW92I06rbl42f5fLTnbc5dqLWjMzYt59Lt/ce0u5JyaTtKIbgzC/IAdaqKhHSEyjUQlLgzcozjFXGS2LJFFwEd7oZzKf32JAq72rzT6sLia8DmnG2TW8gn/ZYAVi0xXpTSDzjQQk1TLvYYqUrexOK3D95AW/1r3TcIYuHxaVGH1vmlL4lsrwhz8ekNkKlkD8LTZPtmvPIAKpkY6bBcxBylU14oXJludZuz95z9fBrSjRU0qD5urqXSGjoiyEE2kgAp1kDAB2hy+MorKwGcjlW9Nd/aohciJ8eVdP3CrMXLXHrsx2YN9miUNCDz4gb/hb4tLJX5gtDBVQCtWtIy2MUTglb6SFRJw8f4mnk/v5WgvrnrnAPz7EExDA6JZgPZ+wwkGMmV8EaPhKReWbznVbYuDGaRc7w2IELDhEiyUMZ/4jV/oZj/pAZhictiuRcyYtIO72VbudxcSNlREDCy03yMfVsOFrr9HoOPATuY+KqmcGtkQGCqjjxnI9/Gh1Vm0XisZV6VxSCQly/P/Vb6AEhjWMLWinYknkKub+MCBPks8M+0M+aXzcNOB2eMzgncKtDguvwHp3ty4yFj0qSJpL2s0nV9I30b5ZeKCWEHMAY3qKsSjjfGKlC71GXC1jJobhyQFhuiHBmUKBTfuo86sIVHsKRYfEdp82hnu265RwEQ2FvSFM7i6kgbSIfvqCmpUZ0WpAmUdcs1iebRGCpjfX+ws8wPZV14SUxeWIzfB+nvq0nceKVvgLYWNQ+zuqyqVcQ7MSotGqONHhXW4HrYRCYVYqnpr/uTI9HR6Tn0aMSNYaUAD0ggkD4T3fb7GgVKtbJtY+w0pvtjjug6t7LdSpxcB1a1i+BNEN3c+wIjWcPtbEbIml1NfnsBkBlxBTHZxvE5SGaG1aNVnh7KuEzOzMmKeVh8t8/vMxTxs0s3V2loq6FLB9UTMFz2aAsZ3b4FPhugH4D2DBwz7mHMfQgqEMfIbpUrSUc/5sGBV2YCnplr6k2PUqU99NqVtX2Nxgj+8STbjIaq/It69JeIjN/JTqpVQuocimRC5IkdYDwm/AeNhAZ2o8hMAZgJl5XOW5QDvWp/KVm3PkVgzIPgabbCJ0Ee+XGiXSUmhcobR31U5ljBVXKQ73pP8wOuLxrRVqQg/FtM1qOW6s7QXcpu7UMUMx1Thl+p+7btHiw0qawAlZx9fCAYjMqtY9TPupjP6Mq+1srymRs72CtYZ6rVfaDZov5cg/OzYlCxiMZiiefmWhJD+kG4+5Q/FczDNNRGG0UNCorCiDyFsyUBqN/EnJiCwnbqaG11sIXaqRONPLmEb9VG2/WJDNxPhHhhbOx5sqdswf5OytnZA6BK3A7tPIiORpkVQ6+z7BiMjlRT76x/5N+c2vXys9SNj1WKhamKtRmpOVRFoU6lqgm4UKLswgfK7Ervh2Bzag76ngodBmg7LufrP+soKJJLnUHdJc7M/RLWSkpse8AQARx4RRtiH0hSYo/sOp8mbzdNxSNNwyFLvAdzeEpK76kQq2RptYAGimpNUr8dqX6nOXq7x5H03s3tQLgZo4Iw14xRNQo2zzTnfsaXekeJGG1mtF6PhOgdSiKnt41Xq8EqNRiECnE9818J57wbCEYhaSKrE1cB1dmsXG0wUcTocqcbq/xZiVc1iVTWMIchF6F3eK4w5lSR5ABh6wKf0AIf0H7iexaXlB+3BMo4DumpSLK4VJRikUMLEZZagHSZ2PdlbdSNWZtHzNH0vBDCxcRFguqQVEe/oir0g7EUtZFKXxRLa3Ylo+KCfYn1eARNwoAhR91evXF4ITFgR5x7YrYAbgVpWFSqkZfsFmyJx4FD5B08fzVb34ws3luqV5/fK6k9/BLl9S7kwDNgKYXQz3nqRNhOmECwDcTigTP9P91nb2ThqUEq4NdfHiPkIgmyYRiB5fAYFbE+d88TPD3nW3r4LUd7h7a7D6lJoMnRngsTm1oiWNP5YtiFYY6RH/wACygG4ykHPE0cdrh55IXiM8HyyWgazVaF+pQvqdaXIb0N+69jI6Qja4z8hgzF0fSRft/IGzciAmZoQW+TnQa/EcvKzzMy2U8TJeiMfgiFHc4/lGdwRoCMBUHaJV8O1Kc8Q/GJKELcG32Mj7/c3xz2b/xk4e0H2mLjz5TFU6Ul6OyaFqfzN3m1BVIW1YnMh1ZALh7+3lzYghYFDLS+5p3mR5rKIPVQUN1Rs0ehIHzIPd1kilEPhSSvFFoEP8PWawkhS+lkTBOIiEtd3myxEjsMexWHxnmWChbOO/6B0S8PAswCWbfnbWAwR4szJPyyp2Uk1ekqFSxd4/iGKJmeWYCqdCuVjq7sRBXCIcxfHjFLhiNzXbsbMhtZAFVQsHrb0/ujUK8SQletm+B9wgwSmIgTzsk038R5/bYha0xt29Gtu1SmgtWo77buQGMrMUTCv/iB7YLl5tgjII6zPsYC/PyYtgJJwAXU3xwB+5JUMS0eIB+H/EDcQVhhqg5s1YlWB+aVZfLW2lk0dAmrCcHVuVMQJqGKAopqIiJsWaLApcHWvCagZwPfzYz+aOx82Pld8TK75B7h/S4Bbbld33qRAppPv/Dbfujy3O0aOp29K96twwIwJw/2N8eQlu0aMYKIopyPYeu8BVxk49IHdFkU8PV919TIePqMwC8T+4us/v/GxAqjNzGyM7GffL8K5mb8Dy60FYXpxzMNwHjjmEsBOQ9we3tB9XKMObHhpTOZbyQCo0gTJSprbNVloFBOxo8/kdTx5+WJbzuQJLLrvwryWfgR91s8relD2QLrgKBWqQi6EHbwEEPH5owMUr/8UHhkr5KPT1/NOhTXgu3REEfr1tgTWXRjJlYdbEre7YUfLub1fT1XLcZmSOdEiGXqZFBUdR+7EUIuuRhQ8HIA46vp6WnBTRpc7npvp5nZhjaJzWuuEvyCHNAUghC/VYlJuQ6P+W/FsWcQMucUWWNxcv1AjL+fGrncb//exbVFQniyFM7WSTNlKq2CJ61Q8L/uav0wU/MCVdupp7HKwPB5W5KWguoRR8ep/Zp1F4fyOHi94pCIedHs/LQ9ApXpqqlquvW0tBdz7z6bXiXk0JZ0Rzwvb8as6qZnM6P3u/LQ5eiDAA8sKBjKxFlcO6e6z4l89sKC38yVgLYWn6oRh3bE1k0nj0+FyzGGw52rFrtyCwm5ZfXyu1IAu6ql3zwAIEfs1FoNaP6/rQBMAF2UzL0P+nDjudQBz+XHkl5uU/sE6G6yR+5ZkhbIPjk102S/klaWjh5O3Oo77r4mWTlsTGaecNm6BSx5R3l0H+b+wNRtFB+8FRfQcDLLbaXEst5BiSfYbb4fp+f57NMbZ31P4Voj62QnF9bYYWjO4uvhTG56FIxPvuaJoGCI381OGUnUy4J/2+BnYqwcHg8JXb38bLDSSrw9oyq057+ubnBBlZjKM+aFTzoNR1kJz/30y8g/J1uIfCWYTt8+cVuVedtWOgW7WcAzcR7L/Cfrl4ettNUyXeDhpKoHl1KzLJX8hs2q5p8oTP84qVuQSw+fSYhnv4Gvcm89nfEEKo+DnmaXbGhOEfIXwIpYJ5ZdYXBHOIOeX6MI9A2RgP8+wPwroibbBp46PB1nOek3mX3Z1Ujsr3e6oaVGRCBBH3IYpQ4vbHBPTlP+rQwRjWjLjr5Fkruiq7tssVT2JtV5MSJwQCzMRu/icPWeK8j33kiJS/Bq7HdYZcFLg5SqKtS9kQqQyAVl8lAx1EiUOoYxk5c8fGKDxAn/td8zUsje87Lr424mP8f62tFbyGbj/rhfbAO9GP//arl0HRxaw0ydgkvOYvLCcmJSpowO82rmnfVX0z01oaxL6cjD3QaqUTfHmI1jSScaZ65VLJgf2/s7/cDOU2DbVpk/5JqgEY1G6zpoOzWTRZ1Vv03j23tfhhGQ7LJt1sGPk0Z3YUEykRZXIoMuWxjhsw2+SiLO22TU3Z2MlZPkN+7mQd6p0DaffdUEzTyU29eYPGB2k+NabC4gBChrwKDs2XiKy46jOvdxDnSAcWXbnwwlxpbXFs2bCToi+mkYh2xrLdD8ptlG0NOv9Bc8OtIYxmcwA5iapkSuuMFG2X7JToTSAcAAjUvTPbcuZJKCzov+n4thDXtB/n112r5oHgQ8cCVErry2kqd25mrih4vUFdx7Mt2YOXhQudIIDZ4rHPACDFLnmVshW1db01e3a5PxEaL5zGW/1NdfkE+5fRvjn0Dz+Ic9DPmRYNO0ipYK9Wvoi16g+F1PetoNBm0Jvtd0M8ELJc1j7QOBC863f07U+Q0awgk3R0PeaP2wCkki4b/pb9XfJLvrPP2Tjyu6W3ZaPAP+SN8aetOk9Tp9X56wvPsticDoqMTLXUyV/L0WLS2JMU0pyuyjH+amqIU2v+VVfgyi7Tb4uE7u1MeoZ3qXo+5/96DGzsq7xio/kxjY8P25Wy6d3rIUrA0vQm09vbqJqWBk3OgCz49O7QX6o+rgRHr97CYcDMde+LbWRwOfZxhkw3qKjTyj3OHmU8TZdbPverno8q4/KJb8wRBuRnFzL9ozJxK4WX9iRZVziowNH4c/cuR+rnEMc3d1ZIGW6DxsgFnkORaTL8GTS4UAsFs1DeEf6bHKev6w8vcpYhVWmSRLVdr7SJUZEmj0j8XSezt7OtrKUh7a9IUtOoR94MeNG7syW4aNMuDKugGCDqlkomAlPw5sVb/QnRMXXbrZ/FeLsNHgKUL+T4oqUTNdYWAAAAA==" alt="图 01" width="812" height="347" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 01</figcaption></figure>
+<h3 class="sub">1.1、所以从一开始就要保持整洁</h3>
+<p>所以在一开始就要写整洁的代码,如果有不整洁的代码就要及时的整改. 绝对不要有以后再改,以后再说的想法， 因为！</p>
+<ul><li>later equal never</li></ul>
+<p>想想是不是这个道理,你有多少以后再说、以后再改的东西都抛诸脑后了.</p>
+<p>如果是一定要做的事情,那就趁早做!</p>
+<h3 class="sub">1.2、如何写出整洁的代码?</h3>
+<p>那么现在的问题就是,怎样的代码才算是整洁的代码呢:</p>
+<ul><li>可读性要高: 代码要像散文一样优雅易读,见码知意</li><li>拒绝重复代码</li><li>满足设计模式原则</li><li>单一职责</li><li>开闭原则</li><li>里氏替换原则</li><li>依赖倒转原则</li><li>接口隔离原则</li><li>迪米特法则</li><li>合成复用法则</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>命名</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>命名要见码知意，例如用 cry() 代替 abc()。</li><li>同一行为命名要前后一致，如 find/query 混用会让人混淆。</li><li>命名避免冗余词（Variable、Table 等），并提前约定 get/list 前缀规范。</li></ul><div class="pit"><ul><li>用 abc() 等无意义命名</li><li>同一行为 query/find 混用不一致</li><li>命名添加 Variable、Table 等冗余词</li></ul></div></div>
+<p>好的命名可提高代码的可读性,让人见码知意, 降低理解成本,提高效率, 减少加班。</p>
+<h3 class="sub">2.1、不好的命名方式</h3>
+<h3 class="sub">1、没有任何意义的命名方式；</h3>
+<ul><li>public interface Animal {</li><li>void abc();</li></ul>
+<p>现在我们有一个动物的接口, 里面有一个方法abc(),看了让人一头雾水, 调用这个方法的人也完全不知道这个方法是干什么的,因为他的命名毫无意义</p>
+<p>有意义的命名方式:</p>
+<ul><li>public interface Animal {</li><li>void cry();</li></ul>
+<p>我们将方法名命名为cry(喊叫,呼喊),调用的人就知道这个方法的作用是什么了.</p>
+<p>所以命名一定要有意义且让人见码知意.</p>
+<h3 class="sub">1、命名前后不一致；</h3>
+<p>这种情况体现在明明是同一行为,但是却有不同的命名,前后不一致,让人造成混淆.</p>
+<ul><li>public interface StudentRepository extends JpaRepository&lt;AlertAll, String&gt; {</li><li>Student findOneById(</li><li>@Param(&quot;id&quot;) String id</li><li>List&lt;Student&gt; queryAllStudent(</li></ul>
+<p>上面两个方法都是查询xxx, 但是命名一会叫query一会叫find,这种情况应该加以规范,保持一致, 修改后:</p>
+<ul><li>public interface StudentRepository extends JpaRepository&lt;AlertAll, String&gt; {</li><li>Student findOneById(</li><li>@Param(&quot;id&quot;) String id</li><li>List&lt;Student&gt; findAll(</li></ul>
+<h3 class="sub">1、命名冗余；</h3>
+<p>体现在命名有很多没必要的成分在里面, 并且这些&quot;废话&quot;并不能帮助区分它们的区别, 例如在变量命名中添加了Variable这个词, 在表名中添加了Table这个词.</p>
+<p>所以命名中不要出现冗余的单词, 并且提前约定好命名的规范.</p>
+<ul><li>// 获取单个对象的方法用get做前缀</li><li>getXxx();</li><li>//获取多个对象用list做前缀</li><li>listXxxx();</li></ul>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>类</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>类应短小、单一职责：只有一条修改理由，可维护性更高、变更风险更低。</li><li>开闭原则：对修改关闭、对扩展开放，新增逻辑不改原代码。</li><li>保持高内聚：变量被越多方法使用越粘聚，内聚低就拆分。</li></ul><div class="pit"><ul><li>把多个职责塞进一个巨大类（如 Sql 既 insert 又 countInsert）</li></ul></div></div>
+<p>整洁的类应满足一下内容:</p>
+<ul><li>单一职责</li><li>开闭原则</li><li>高内聚性</li></ul>
+<h3 class="sub">3.1、单一职责</h3>
+<p>类应该短小,类或模块应有且只有一条加以修改的理由, 如果一个类过于庞大的话,那么说明它承担的职责过多了。</p>
+<p>优点:</p>
+<ul><li>降低类的复杂度</li><li>提高类的可读性</li><li>提高系统的可维护性</li><li>降低变更引起的风险</li></ul>
+<p>如何判定类是否足够短小?</p>
+<p>通过计算类的职责来判断是否够短小,类的名称描述其全责, 如果无法为某个类命以准确的名称, 这个类大概就太长了, 类名越含糊,可能拥有越多的职责.</p>
+<p>职责过多的例子,可以看到以下类有两个职责:</p>
+<ul><li>public abstract class Sql {</li><li>// 操作SQL的职责</li><li>public abstract void insert();</li><li>// 统计SQL操作的职责</li><li>public abstract void countInsert();</li></ul>
+<p>将统计的职责抽取到另一个类</p>
+<ul><li>public abstract class CountSql {</li><li>public abstract void countInsert();</li></ul>
+<h3 class="sub">3.2、开闭原则</h3>
+<p>开闭原则: 面向修改关闭, 面向扩展开放.</p>
+<p>面向修改关闭意味着增加新的逻辑不会修改原有的代码,降低了出错的可能性.</p>
+<p>面向扩展开放则是提高了代码的可扩展性,可很容易的增加新的代码逻辑.</p>
+<p>不满足开闭原则的例子:</p>
+<ul><li>public abstract class Sql {</li><li>public abstract void insert();</li><li>public abstract void update();</li><li>public abstract void delete();</li></ul>
+<p>如果我们现在要新增查询的操作,就需要修改Sql这个类,没有做到面向修改关闭</p>
+<p>重构后:</p>
+<ul><li>public abstract class Sql {</li><li>public abstract void generate();</li><li>public class CreateSql extends Sql {</li><li>@java.lang.Override</li><li>public void generate() {</li><li>// 省略实现</li><li>public class UpdateSql extends Sql {</li><li>@Override</li><li>public void generate() {</li><li>// 省略实现</li></ul>
+<p>当我们要增加删除方法时可以很容易的扩展.</p>
+<p>使用大量的短小的类看似比使用少量庞大的类增加了工作量(增加了更多的类),但是真的是这样吗? 这里有一个很好的类比:</p>
+<p>你是想把工具归置到有许多抽屉、每个抽屉中装有定义和标记良好的组件的工具箱呢, 还是想要少数几个能随便吧所有东西扔进去的抽屉?</p>
+<p>最终的结论:</p>
+<ul><li>系统应该由许多短小的类而不是少量巨大的类组成,每个小类封装一个权责,只有一个修改的原因,并与少数其他类一起协同达成期望的系统行为.</li></ul>
+<h3 class="sub">3.3、内聚</h3>
+<p>方法操作的变量越多,就越粘聚到类上. 如果一个类中的每个变量都被每个方法所使用, 则该类具有最大的内聚性.</p>
+<p>我们应该将类的内聚性保持在较高的位置. 内聚性高意味着方法和变量互相依赖, 互相结合成一个逻辑整体.</p>
+<p>为什么要保持高内聚?</p>
+<p>保持内聚性就会得到许多短小的类,就越满足单一职责.</p>
+<p>内聚性低怎么办?</p>
+<p>如果类的内聚性就不够高,就将原有的类拆分为新的类和方法.</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>函数</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>函数要短小、只做一件事，长函数拆成多个具名小步骤。</li><li>命名要体现意图与副作用，无副作用函数更安全。</li><li>参数越少越好（超三个按语义封装），不用标识参数和输出参数。</li><li>用异常替代错误码，并分离指令与讯问。</li></ul><div class="pit"><ul><li>addCharacter 这类看不出操作位置的命名</li><li>校验密码时静默初始化 session 的副作用</li><li>Boolean 标识参数承载两套逻辑</li><li>输出参数增加理解成本</li></ul></div></div>
+<p>要想让函数变得整洁,应保证:</p>
+<ul><li>只做一件事</li><li>好的命名</li><li>整洁的参数</li><li>注意返回内容</li></ul>
+<h3 class="sub">4.1、只做一件事</h3>
+<p>what?</p>
+<p>函数的第一规则是短小 第二规则是更短小 短小到只做一件事情. (没错和类的原则很像)</p>
+<p>why?</p>
+<p>函数越短小,越能满足单一职责.</p>
+<p>how?</p>
+<p>以下是重构前的代码, 这个方法有三个职责,并且该方法很长达到了80+50+5 = 135行</p>
+<ul><li>public class PicService {</li><li>public String upload(){</li><li>// 校验图片的方法 伪代码80行</li><li>// 压缩图片的方法 伪代码50行</li><li>// 返回成功或失败标识 0,1 伪代码5行</li><li>return &quot;0&quot;;</li></ul>
+<p>原有的upload方法做了很多的事情, 重构后只做了一件事情: 把大一些的概念(换言之,函数的名称)拆分为另一抽象层上的一系列步骤:</p>
+<ul><li>public String upload(){</li><li>// 校验图片的方法</li><li>check();</li><li>// 压缩图片的方法</li><li>compress();</li><li>// 返回成功或失败标识 0,1</li><li>return &quot;0&quot;;</li></ul>
+<p>而里面的每个方法,也都有着自己各自的职责(校验图片 、压缩图片 、返回结果)。</p>
+<h3 class="sub">4.2、函数命名</h3>
+<h3 class="sub">1、函数名应见名知意；</h3>
+<p>函数拥有描述性的名称，不要害怕长名称.</p>
+<p>不好的命名方式:</p>
+<ul><li>public String addCharacter(String originString, char ch);</li></ul>
+<p>这个函数，一咋看，还不错，从函数字面意思看是给某个字符串添加一个字符。但是到底是在原有字符串首部添加，还是在原有字符串末尾追加呢？亦或是在某个固定位置插入呢？从函数名字完全看不出来这个函数的真正意图，只能继续往下读这个函数的具体实现才知道。</p>
+<p>而下面这几个名字就比上面要好得多：</p>
+<ul><li>// 追加到末尾</li><li>public String appendCharacter(String originString, char ch);</li><li>// 插入指定位置</li><li>public String insertCharacter(String originString, char ch, int insertPosition);</li></ul>
+<h3 class="sub">1、函数应该无副作用；</h3>
+<p>函数应该无副作用， 意思就是函数应该只做一件事，但是做这件事的时候做了另一件有副作用的事情.</p>
+<p>例如:校验密码时会初始化session，导致会话丢失。如果无法移除这种副作用，应该在方法名中展示出来，避免用户误用 checkPasswordasswordAndInitializeSession, 从命名上就要体现副作用.</p>
+<h3 class="sub">4.3、参数</h3>
+<h3 class="sub">1、参数越少越好；</h3>
+<p>参数越少，越容易理解，参数超过三个可以将参数进行封装，要按参数的语义进行封装，不一定封装成一个大而全的参数，可以封装为多个，原则是按语义补充;</p>
+<p>示例:</p>
+<ul><li>public List&lt;Student&gt; findStudent(int age, String name, String country, int gender);</li><li>//封装参数</li><li>public List&lt;Student&gt; findStudent(Student student);</li></ul>
+<h3 class="sub">1、不要使用标识参数；</h3>
+<p>标识参数是参数为Boolean 类型, 用户传递true or false . 不要使用标识参数因为这意味着你的函数违背了单一职责(true false 两套逻辑).</p>
+<p>正确的做法是拆分为两个方法:</p>
+<ul><li>//标识参数方法</li><li>render(Boolean isSuite);</li><li>//重构为两个方法</li><li>reanderForSuite();</li><li>renderForSingleTest();</li></ul>
+<h3 class="sub">1、不要使用输出参数；</h3>
+<p>什么是输出参数?</p>
+<p>将变量作为参数传入方法,并且将变量输出, 这就是输出参数</p>
+<ul><li>public void findStudent(){</li><li>Student student = new Student();</li><li>doSomething(student);</li><li>return student;</li><li>int doSomething(Student student){</li><li>// 省略一些student逻辑</li><li>return student;</li></ul>
+<p>为什么不应该有输出参数?</p>
+<p>因为增加了理解成本在里面,我们需要查看doSomething到底对student 做了什么. student是输入还是输出参数? 都不明确.</p>
+<p>重构:</p>
+<ul><li>// 将doSomething()方法内聚到student对象本身</li><li>student.doSomething();</li></ul>
+<h3 class="sub">4.4、返回值</h3>
+<h3 class="sub">1、分离指令与讯问；</h3>
+<p>示例代码:</p>
+<ul><li>Pulic Boolean addElement(Element element)</li></ul>
+<p>指令为增加某个元素,询问是否成功,</p>
+<p>这样做的坏处是职责不单一，所以应该拆分为两个方法</p>
+<ul><li>public void addElement(Element element);</li><li>public Boolean isAdd(Element element);</li></ul>
+<h3 class="sub">1、使用异常替代返回错误码；</h3>
+<p>直接抛出异常,而不是返回错误码进行判断, 可以使代码更简洁. 因为使用错误码有可能会进行多层嵌套片段</p>
+<p>代码示例:</p>
+<ul><li>// 使用错误码导致多层嵌套...</li><li>public class DeviceController{</li><li>public void sendShutDown(){</li><li>DeviceHandle handle=getHandle(DEV1);</li><li>//Check the state of the device</li><li>if (handle != DeviceHandle.INVALID){</li><li>// Save the device status to the record field</li><li>retrieveDeviceRecord(handle);</li><li>// If nat suspended,shut down</li><li>if (record.getStatus()!=DEVICE_SUSPENDED){</li><li>pauseDevice(handle);</li><li>clearDeviceWorkQueue(handle);</li><li>closeDevice(handle);</li><li>}else{</li><li>logger.log(&quot;Device suspended. Unable to shut down&quot;);</li><li>}else{</li><li>logger.log(&quot;Invalid handle for: &quot; +DEV1.tostring());</li></ul>
+<p>重构后:</p>
+<ul><li>//  将代码拆分为一小段一小段, 降低复杂度,更加清晰</li><li>public class DeviceController{</li><li>public void sendShutDowm(){</li><li>try{</li><li>tryToShutDown();</li><li>} catch (DeviceShutDownError e){</li><li>logger.log(e);</li><li>private void tryToShutDown() throws DeviceShutDownError{</li><li>DeviceHandle handle =getHandle(DEV1);</li><li>retrieveDeviceRecord(handle);</li><li>pauseDevice(handle);</li><li>clearDeviceWorkQueue(handle);</li><li>closeDevice(handle);</li><li>private DeviceHandle getHandle(DeviceID id){</li><li>// 省略业务逻辑</li><li>throw new DeviceShutDownError(&quot;Invalid handle for:&quot;+id.tostring());</li></ul>
+<h3 class="sub">4.5、怎样写出这样的函数?</h3>
+<p>没人能一开始就写出完美的代码, 先写出满足功能的代码,之后紧接着进行重构</p>
+<p>为什么是紧接着?</p>
+<p>因为later equal never!</p>
+<h3 class="sub">4.6、代码质量扫描工具</h3>
+<p>使用SonarLint可以帮助我们发现代码的问题,并且还提供了相应的解决方案.</p>
+<p>对于每一个问题，SonarLint都给出了示例，还有相应的解决方案，教我们怎么修改，极大的方便了我们的开发</p>
+<p>比如，对于日期类型尽量用LocalDate、LocalTime、LocalDateTime，还有重复代码、潜在的空指针异常、循环嵌套等等问题</p>
+<p>有了代码规范与质量检测工具以后，很多东西就可以量化了，比如bug率、代码重复率等。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>测试</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>TDD：先写测试、只写刚好无法通过的测试、开发代码不超测试。</li><li>FIRST 原则：单测要快速、独立、可重复、自我校验、及时编写。</li><li>测试代码用 given-when-then 模式，提高可读性。</li><li>Squaretest（收费）与 TestMe（免费）可自动生成单测。</li></ul><div class="pit"><ul><li>仅靠人工看日志、对比文件验证结果，未用 Boolean 自校验</li></ul></div></div>
+<p>测试很重要,可以帮助我们验证写的代码是否没问题,同样的测试代码也应该保持整洁.</p>
+<h3 class="sub">5.1、TDD</h3>
+<p>TDD是测试驱动开发（Test-Driven Development），是敏捷开发中的一项核心实践和技术，也是一种设计方法论</p>
+<p>优点：在任意一个开发节点都可以拿出一个可以使用，含少量bug并具一定功能和能够发布的产品。</p>
+<p>缺点：增加代码量。测试代码是系统代码的两倍或更多，但是同时节省了调试程序及挑错时间。</p>
+<p>how?</p>
+<h3 class="sub">1、在开发代码前先写测试；</h3>
+<h3 class="sub">2、只可编写刚好无法通过的单元测试，不能编译也算不通过；</h3>
+<h3 class="sub">3、开发代码不可超过测试；</h3>
+<p>关于2的解释: 单测与生产代码同步进行，写到一个不可编译的单测就开始写生产代码，如此反复循环，单测就能包含到所有生产代码。</p>
+<h3 class="sub">5.2、FIRST原则</h3>
+<p>FIRST 原则就是一个指导编写单元测试的原则</p>
+<p>fast 快速 单测执行应该快速的完成</p>
+<p>independent 独立 单测之间相互独立</p>
+<p>repeatable 可重复 单测不依赖于环境，随处可运行</p>
+<p>self validating 程序可通过输出的Boolean自我验证，而不需要通过人工的方式验证（看日志输出、对比两个文件不同等）</p>
+<p>timely 及时 单测在生产代码之前编写</p>
+<p>单元测试是代码测试中的基础测试，FIRST是写好单元测试的重要原则，它要求我们的单元测试快速，独立，可重复，自我校验，及时/完整。</p>
+<h3 class="sub">5.3、测试代码模式</h3>
+<p>开发测试代码可以使用given-when-then模式</p>
+<p>given 制造模拟数据</p>
+<p>when 执行测试代码</p>
+<p>then 验证测试结果</p>
+<p>代码示例</p>
+<ul><li>/**</li><li>* If an item is loaded from the repository, the name of that item should</li><li>* be transformed into uppercase.</li><li>@Test</li><li>public void shouldReturnItemNameInUpperCase() {</li><li>// Given</li><li>Item mockedItem = new Item(&quot;it1&quot;, &quot;Item 1&quot;, &quot;This is item 1&quot;, 2000, true);</li><li>when(itemRepository.findById(&quot;it1&quot;)).thenReturn(mockedItem);</li><li>// When</li><li>String result = itemService.getItemNameUpperCase(&quot;it1&quot;);</li><li>// Then</li><li>verify(itemRepository, times(1)).findById(&quot;it1&quot;);</li><li>assertThat(result, is(&quot;ITEM 1&quot;));</li></ul>
+<p>使用give-when-then 模式可提高测试代码的可读性.</p>
+<h3 class="sub">5.4、自动生成单测</h3>
+<p>介绍两款IDEA自动生成单测的插件</p>
+<ul><li>Squaretest插件（收费）</li><li>TestMe插件(免费)</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>结束语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>整洁代码提高可读性、易扩展、开发效率，减少加班。</li><li>推荐阅读《代码整洁之道》提升编码与编程思想。</li><li>再次强调及时写整洁代码，不事后补救。</li></ul><div class="pit"><ul><li>想着事后补救而不是及时写整洁代码</li></ul></div></div>
+<p>编写整洁的代码可以让我们提高代码的可读性,使代码变得更易扩展,提高我们的开发效率,减少加班,提高我们的level.</p>
+<p>每个开发人员都应该去看看&lt;&lt;代码整洁之道&gt;&gt;,使我们的编码能力以及编程思想都得到提升.</p>
+<p>再重复一次,我们应该及时的写出整洁的代码,而不是想着事后采取补救</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>整洁 vs 不整洁代码的代价</h4><p>不整洁代码随时间增加降低生产力，引发扩展困难、崩溃、加班、成本上升甚至倒闭；整洁代码则提高可读性、易扩展、提效减加班。</p><a class="src-link" href="#sec-01">原文 → 整洁的意义</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>later equal never</h4><p>以后再改、以后再说的事往往被抛诸脑后；一定要做的事就趁早做，及时写出整洁代码而非事后补救。</p><a class="src-link" href="#sec-01">原文 → 整洁的意义</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>无意义 vs 有意义的命名</h4><p>Animal 接口的方法命名 abc() 让人一头雾水，改为 cry() 后调用方一眼可知其作用，命名要见码知意。</p><a class="src-link" href="#sec-02">原文 → 命名</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>类职责过多</h4><p>Sql 类同时承担 insert 操作与 countInsert 统计两个职责；应把统计职责抽到 CountSql，保持类短小。</p><a class="src-link" href="#sec-03">原文 → 类</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>工具箱类比：短小类 vs 巨大类</h4><p>选有多个抽屉、每个抽屉标记清晰的工具箱，而不是几个把所有东西都扔进去的大抽屉；系统应由许多短小类协作组成。</p><a class="src-link" href="#sec-03">原文 → 类</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>开闭原则重构</h4><p>Sql 的 insert/update/delete 新增查询需改原类；改为 generate() 抽象方法后，新增操作只需扩展子类，做到对修改关闭、对扩展开放。</p><a class="src-link" href="#sec-03">原文 → 类</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>upload() 长函数拆分</h4><p>upload() 校验80行+压缩50行+返回5行共135行；重构为 check()、compress() 与返回结果三个小方法，每个方法只做一件事。</p><a class="src-link" href="#sec-04">原文 → 函数</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>标识参数违背单一职责</h4><p>render(Boolean isSuite) 用 true/false 承载两套逻辑，应拆成 reanderForSuite() 与 renderForSingleTest() 两个方法。</p><a class="src-link" href="#sec-04">原文 → 函数</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>输出参数增加理解成本</h4><p>doSomething(student) 把变量既作输入又作输出，意图不明；应内聚到对象自身，改为 student.doSomething()。</p><a class="src-link" href="#sec-04">原文 → 函数</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>错误码 vs 异常</h4><p>返回错误码易造成多层 if/else 嵌套；改为抛出异常并把逻辑拆成 tryToShutDown() 等小段，代码更清晰简洁。</p><a class="src-link" href="#sec-04">原文 → 函数</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>TDD 代码量代价</h4><p>TDD 使测试代码约为系统代码两倍或更多，但节省调试与挑错时间，任意节点都能拿出可用的产品。</p><a class="src-link" href="#sec-05">原文 → 测试</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>FIRST 原则</h4><p>单测应快速、独立、可重复、自我校验（Boolean 自验证而非人工看日志）、及时（在生产代码前编写）。</p><a class="src-link" href="#sec-05">原文 → 测试</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>整洁不是事后补救，而是从第一行就写对——later equal never，该做的事趁早做。</li>
+          <li>类短小、函数只做一件事、命名见码知意，是代码可读与易扩展的底层功夫。</li>
+          <li>用 TDD + FIRST + given-when-then 把测试写好，配合 SonarLint 与单测插件让质量可量化。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIwNjg4MzY4NA==&amp;mid=2247525884&amp;idx=1&amp;sn=16a510a47685c621d2bbccb5e7f3d5c3" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIwNjg4MzY4NA==&amp;mid=2247525884&amp;idx=1&amp;sn=16a510a47685c621d2bbccb5e7f3d5c3</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：后端开发 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
