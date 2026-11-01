@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">Hermes Agent 保姆级教程</h1>
+  <p class="lede">Hermes Agent 从安装、进阶配置到变现的保姆级教程</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 10 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>新手入门</a>
+          <a href="#sec-02"><span class="n">02</span>进阶配置</a>
+          <a href="#sec-03"><span class="n">03</span>高级玩法</a>
+          <a href="#sec-04"><span class="n">04</span>社区资源</a>
+          <a href="#sec-05"><span class="n">05</span>变现</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 新手入门</a>
+          <a href="#sec-02">02 进阶配置</a>
+          <a href="#sec-03">03 高级玩法</a>
+          <a href="#sec-04">04 社区资源</a>
+          <a href="#sec-05">05 变现</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>以下文章来源于程序员库森，作者库森</p>
+<p>程序员库森.</p>
+<p>阿里程序员，专注分享编程学习、校招求职和大厂面试</p>
+<p>大家好，我是苏三。</p>
+<p>最近想快速提升项目实战能力（包含多个AI项目），或者最近找工作，或者想学习AI的小伙伴，可以看看下面👇🏻的这个链接（或许真的能够帮到你）:</p>
+<p>推荐一个牛逼的RAG系统!</p>
+<p>推荐12个牛逼的SpringBoot项目</p>
+<p>Hermes Agent 最近火得不行，GitHub 已经快 9 万 Star 了。它其实就是一个更高级的 OpenClaw，更稳定、更省钱，而且会自己进化，越用越聪明。</p>
+<p>之前有不少人靠帮别人装 OpenClaw 赚到了钱，现在Hermes刚刚起步，咸鱼已经有人开始做了，早就是优势。</p>
+<p>Hermes 的中文教程目前还不多，所以我把从安装到实战再到变现的全流程整理了一份。不管你是自己用还是拿去接单，这一篇都够了。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>新手入门</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>macOS/Linux/WSL2 用一行 curl 命令安装，Windows 需先装 WSL2。</li><li>安装会自动处理 Python、Node.js、Git 依赖并创建 ~/.hermes/ 配置目录。</li><li>新手选 Quick Setup，模型可用 DeepSeek、Kimi 或 OpenRouter 免费模型。</li><li>常用命令：hermes、hermes model/tools/gateway/setup/doctor、hermes migrate openclaw。</li></ul></div>
+<p>目标很简单，把 Hermes 跑起来，完成第一次对话。</p>
+<p>macOS / Linux / WSL2 一行命令搞定。</p>
+<ul><li>curl-fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh |bash</li></ul>
+<p>Windows 用户需要先装 WSL2，然后在 WSL2 终端里执行上面的命令。</p>
+<p>安装过程会自动处理 Python、Node.js、Git 这些依赖，还会创建 ~/.hermes/ 配置目录。装完跑两个命令确认一下。</p>
+<p>hermes version</p>
+<p>hermes doctor</p>
+<p>模型配置</p>
+<p>系统会自动进入配置向导，选 Quick Setup 就行。模型供应商推荐新手先选 DeepSeek 或者 Kimi，或者直接使用 OpenRouter 里面的免费模型，免费额度高，等熟了再换高阶模型。</p>
+<ul><li>hermes model</li></ul>
+<p>配好之后测试一下。</p>
+<ul><li>hermes chat -q&quot;Hello! What tools do you have available?&quot;</li></ul>
+<p>回复正常就说明装好了。</p>
+<p>常用命令</p>
+<p>后面会反复用到，先混个眼熟。</p>
+<table><thead><tr><th>命令</th><th>用途</th></tr></thead><tbody><tr><td>hermes</td><td>开启对话</td></tr><tr><td>hermes model</td><td>选择模型</td></tr><tr><td>hermes tools</td><td>配置工具</td></tr><tr><td>hermes gateway</td><td>启动消息网关</td></tr><tr><td>hermes setup</td><td>重新配置</td></tr><tr><td>hermes doctor</td><td>诊断问题</td></tr><tr><td>hermes migrate openclaw</td><td>从 OpenClaw 迁移</td></tr></tbody></table>
+<p>到这里你的 Hermes 就能正常跑了。接下来才是拉开差距的地方。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>进阶配置</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>任务拆成 8 个模块可单独配模型，核心模块用强模型、杂活用免费模型。</li><li>作者调完 token 费用省了六七成，效果基本没打折扣。</li><li>SOUL.md 定义人格，可手写或让 Hermes 根据对话自动生成。</li><li>接入飞书/Telegram 走 hermes gateway setup 或改 config.yaml。</li></ul></div>
+<p>目标是让 Hermes 从&quot;能用&quot;变成&quot;好用&quot;。这个阶段做完，体验会和新手阶段完全不一样。</p>
+<p>模型分模块配置</p>
+<p>这是很多人忽略的地方，也是 Hermes 设计得最聪明的地方。</p>
+<p>它把任务拆成了 8 个模块，每个模块可以单独配模型。做过后端的同学应该秒懂，不同模块对&quot;智力&quot;的要求不一样，没必要全挂最贵的。</p>
+<p>记忆总结、技能创建这些核心模块，配 Claude Opus 或者 GPT-4o。网页搜索、简单文本处理这些脏活累活，用 OpenRouter 免费模型就行。OpenRouter 里面免费模型一大堆，我自己调完之后 token 费用省了六七成，效果基本没打折扣。</p>
+<p>SOUL.md</p>
+<p>SOUL.md 是 Hermes 的人格文件，位置在 ~/.hermes/SOUL.md。你是谁、说话风格、做事偏好、遇到问题先干啥，全定义在这里。不写这个文件，Hermes 就是个通用 Agent，写好了才是真正懂你的 Agent。差别是质的。</p>
+<p>两种写法。</p>
+<p>手动写，直接编辑 ~/.hermes/SOUL.md，把你的身份、工作习惯、沟通偏好写进去。比如你喜欢先看数据再做决定，比如你习惯用中文交流，比如你是做后端开发的，这些都可以写。</p>
+<p>让它自己学，先跟 Hermes 正常聊一段时间，聊完之后说一句&quot;根据我们的对话调整 SOUL.md&quot;。它会自动总结你的偏好写进去。因为你一直在纠正它，它反而比你自己更清楚你要什么。</p>
+<p>写好之后可以 cat ~/.hermes/SOUL.md 看看它总结了什么，不满意就继续调。</p>
+<p>记忆系统</p>
+<p>记忆系统由 5 个文件组成，搞明白各自分工就够了。</p>
+<ul><li>SOUL.md ，人格定义，你自己写</li><li>user.md ，它对你的长期观察，自动写入</li><li>memory.md ，事件记忆，每次对话注入上下文</li><li>skills/ ，固化的可复用流程，越用越丰富</li><li>state.db ，聊天记录底层存储</li></ul>
+<p>只有 SOUL.md 需要你操心，其他四个它自己处理。</p>
+<p>验证记忆是否正常也简单。告诉它你的名字和偏好，退出对话，重新 hermes chat，问它&quot;你知道我是谁吗？&quot;。能记住就说明记忆系统跑通了。</p>
+<p>接入通讯平台</p>
+<p>Hermes 支持 15+ 通讯平台，接好之后它就是一个 24 小时在线的助理。</p>
+<p>以飞书为例，国内使用方便</p>
+<p>最方便的方式是跑交互式配置向导。</p>
+<ul><li>hermes gateway setup</li></ul>
+<p>选择飞书，按指引填入 App ID 和 App Secret。需要先去飞书开放平台（open.feishu.cn）创建一个企业自建应用，开启机器人能力，拿到这两个凭证。</p>
+<p>也可以手动编辑 ~/.hermes/config.yaml。</p>
+<ul><li>gateway:</li><li>adapters:</li><li>feishu:</li><li>enabled:true</li><li>require_mention:false</li><li>default_group_policy: open</li></ul>
+<p>配好之后启动网关。</p>
+<ul><li>hermes gateway</li></ul>
+<p>在飞书里给机器人发条消息，能回复就说明接通了。</p>
+<p>Telegram配置</p>
+<p>在 Telegram 搜 @BotFather，发 /newbot 创建机器人拿到 Token，然后配置。</p>
+<ul><li>hermes config set TELEGRAM_BOT_TOKEN your-bot-token</li><li>gateway:</li><li>adapters:</li><li>telegram:</li><li>enabled:true</li></ul>
+<p>同样 hermes gateway 启动就行。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>高级玩法</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Skill 系统是 Hermes 与 OpenClaw 最本质的区别，完成任务自动沉淀经验。</li><li>触发建技能：完成多步骤任务后、主动说创建技能、跨会话重复工作模式。</li><li>定时任务编辑 ~/.hermes/cron/tasks.yaml，用 Cron 调度并推送到平台。</li><li>hermes doctor 定位问题，hermes migrate openclaw 一键迁移。</li></ul><div class="pit"><ul><li>hermes: command not found 时执行 source ~/.bashrc。</li><li>模型不响应先检查 API Key 额度。</li></ul></div></div>
+<p>目标是让 Hermes 自己进化，跑自动化任务。</p>
+<p>Skill 系统</p>
+<p>这是 Hermes 跟 OpenClaw 最本质的区别。</p>
+<p>当 Hermes 完成一个复杂任务后，它会自动把经验沉淀成可复用的 Skill。下次遇到类似的事，它不是从零开始，而是直接调用之前的经验。你用得越多，它积累的 Skill 就越丰富，干活也越高效。</p>
+<p>触发 Skill 创建的时机，完成多步骤任务后、你主动说&quot;创建技能&quot;、或者跨会话重复某种工作模式。</p>
+<ul><li>ls ~/.hermes/skills/</li></ul>
+<p>可以试试让它干个复杂活感受一下。</p>
+<ul><li>hermes chat</li><li>&gt; 请帮我抓取 Hacker News 首页的AI新闻，并总结成中文摘要</li></ul>
+<p>观察它完成后是不是会提示创建新技能。</p>
+<p>定时任务</p>
+<p>内置 Cron 调度，编辑 ~/.hermes/cron/tasks.yaml 就能配。</p>
+<ul><li>tasks:</li><li>-name: daily_news</li><li>schedule:&quot;0 9 * * *&quot;</li><li>command:&quot;总结今日AI新闻&quot;</li><li>platform: telegram</li><li>chat_id:&quot;your-chat-id&quot;</li></ul>
+<p>配好之后它每天早上 9 点自动执行，结果发到你的通讯平台。不用一直盯着，后台自己跑。</p>
+<p>排错和迁移</p>
+<p>跑一遍 hermes doctor，配置错误、模型连接、权限问题，基本都能定位。</p>
+<p>从 OpenClaw 搬家也简单，一条命令。</p>
+<ul><li>hermes migrate openclaw</li></ul>
+<p>技能、记忆、配置一次性带走，全选 Yes，两三分钟搞定。</p>
+<p>常见问题速查。</p>
+<table><thead><tr><th>问题</th><th>解决</th></tr></thead><tbody><tr><td>hermes: command not found</td><td>执行 source ~/.bashrc</td></tr><tr><td>API 密钥未设置</td><td>运行 hermes model 配置</td></tr><tr><td>模型不响应</td><td>检查 API Key 额度</td></tr><tr><td>机器人无响应</td><td>检查网关 hermes gateway</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>社区资源</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>hermes-web-ui 不用改配置即可用，支持 CLI/Telegram/微信切换。</li><li>技能商店现成技能直接安装，地址为 hermes-agent.nousresearch.com/docs/skills。</li><li>中英文文档齐备，入门看中文文档即可。</li></ul></div>
+<p>Hermes 虽然年轻，但社区活跃度很高。我把最实用的整理出来了。</p>
+<p>Web UI（推荐 hermes-web-ui）</p>
+<ul><li>npminstall-g hermes-web-ui</li><li>hermes-web-ui start</li></ul>
+<p>不用改配置就能跑，支持 CLI / Telegram / 微信对话切换，还有定时任务、实时换模型这些功能。另外还有 hermes-ui 和 hermes-webui 两个选择，功能各有侧重。</p>
+<p>主题皮肤 hermes-skins</p>
+<p>桌面客户端 hermes-desktop</p>
+<p>官方技能商店</p>
+<p>现成的技能直接安装，不用从零写。地址是 hermes-agent.nousresearch.com/docs/skills</p>
+<ul><li>英文文档，hermes-agent.nousresearch.com/docs/</li><li>中文文档，hermes-doc.aigc.green/</li><li>中文 PDF 下载，hermes-doc.aigc.green/downloads/hermes-agent-zh-docs.pdf</li></ul>
+<p>中文文档翻译得挺用心，入门看它就够了。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>变现</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>四种变现：代安装、垂直行业定制、卖 Skill 包、让 Agent 跑自动化业务。</li><li>行业定制客单价高于代安装；Skill 是 Markdown 文件，交付成本低。</li><li>核心竞争力是对 Hermes 的理解深度，先玩透先吃红利。</li></ul></div>
+<p>这块我觉得值得聊聊。之前 OpenClaw 火的时候，有不少人靠帮别人安装配置在闲鱼上赚到了钱。Hermes 现在中文教程还不多，机会窗口还在。</p>
+<p>代安装服务，在闲鱼、小红书上挂安装配置服务。很多人不会折腾命令行，愿意花钱买省心。你看完这篇教程，基本就能接单了。</p>
+<p>垂直行业定制，针对具体行业配好 Skill 和工作流。比如帮电商团队配一个自动写商品描述的 Agent，帮自媒体团队配一个自动追热点写稿的 Agent。这个客单价比代安装高得多。</p>
+<p>卖 Skill 技能包，把调好的 Skill 打包卖。比如&quot;小红书运营 Skill 包&quot;、&quot;客服自动回复 Skill 包&quot;。Skill 文件本身就是 Markdown，交付成本很低。</p>
+<p>让 Agent 跑自动化业务，配好定时任务，让它自动采集信息、生成内容、发布到平台。调试成本不低，但跑通了就是被动收入。</p>
+<p>说个现实的问题，这些变现方式门槛都不算高，核心竞争力是你对 Hermes 的理解深度。闷声发大财这事，谁先玩透谁先吃到红利。</p>
+<p>最近想快速提升项目实战能力（包含多个AI项目），或者最近找工作，或者想学习AI的小伙伴，可以看看下面👇🏻的这个链接（或许真的能够帮到你）:</p>
+<p>推荐一个牛逼的RAG系统!</p>
+<p>推荐12个牛逼的SpringBoot项目</p>
+<p>苏三说技术</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Hermes vs OpenClaw</h4><p>Hermes 是更高级的 OpenClaw：更稳定、更省钱、会自己进化；Skill 系统是两者最本质的区别。</p><a class="src-link" href="#sec-03">原文 → 高级玩法</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>分模块配模型省 token</h4><p>任务拆成 8 个模块分别配模型，作者调完 token 费用省了六七成，效果基本没打折扣。</p><a class="src-link" href="#sec-02">原文 → 进阶配置</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>一行命令安装</h4><p>curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash</p><a class="src-link" href="#sec-01">原文 → 新手入门</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>飞书网关配置</h4><p>hermes gateway setup 选飞书填 App ID/App Secret；或编辑 ~/.hermes/config.yaml 启用 feishu adapter。</p><a class="src-link" href="#sec-02">原文 → 进阶配置</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Cron 定时任务</h4><p>编辑 ~/.hermes/cron/tasks.yaml，配 tasks、schedule、command、platform、chat_id，每天 9 点自动执行。</p><a class="src-link" href="#sec-03">原文 → 高级玩法</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>常见问题速查</h4><p>command not found 执行 source ~/.bashrc；模型不响应检查 API Key 额度；机器人无响应检查网关。</p><a class="src-link" href="#sec-03">原文 → 高级玩法</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>有无 SOUL.md 的差别</h4><p>不写 SOUL.md，Hermes 只是通用 Agent；写好后才是真正懂你的 Agent，差别是质的。</p><a class="src-link" href="#sec-02">原文 → 进阶配置</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>GitHub 热度</h4><p>Hermes Agent 在 GitHub 已快 9 万 Star，中文教程还不多，属于早期机会窗口。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>变现核心</h4><p>变现方式门槛都不高，核心竞争力是对 Hermes 的理解深度，谁先玩透谁先吃到红利。</p><a class="src-link" href="#sec-05">原文 → 变现</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先跑通新手阶段：一行命令安装、doctor/chat 验证、配免费模型，再谈进阶。</li>
+          <li>省钱关键在分模块配模型，核心模块用强模型、杂活挂 OpenRouter 免费模型。</li>
+          <li>想接单变现，先吃透 SOUL.md、Skill 系统和 gateway，理解深度才是护城河。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkwNjMwMTgzMQ==&amp;mid=2247538222&amp;idx=1&amp;sn=a03c843ce985ef460055ca1e308f28c5" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkwNjMwMTgzMQ==&amp;mid=2247538222&amp;idx=1&amp;sn=a03c843ce985ef460055ca1e308f28c5</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

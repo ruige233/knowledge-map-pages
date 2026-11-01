@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">工作流的 Skill 怎么写？从 7 个顶级 Skill 中提炼的模式与最佳实践</h1>
+  <p class="lede">从 7 个顶级 Skill 提炼 5+1 种设计模式与 frontmatter、写作最佳实践</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 22 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>Skill 本质</a>
+          <a href="#sec-02"><span class="n">02</span>Frontmatter 门面</a>
+          <a href="#sec-03"><span class="n">03</span>五种核心模式</a>
+          <a href="#sec-04"><span class="n">04</span>通用写作技巧</a>
+          <a href="#sec-05"><span class="n">05</span>模式选择决策树</a>
+          <a href="#sec-06"><span class="n">06</span>快速上手模板</a>
+          <a href="#sec-07"><span class="n">07</span>参考资源</a>
+          <a href="#sec-08"><span class="n">08</span>7 个 Skill 速查表</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 Skill 本质</a>
+          <a href="#sec-02">02 Frontmatter 门面</a>
+          <a href="#sec-03">03 五种核心模式</a>
+          <a href="#sec-04">04 通用写作技巧</a>
+          <a href="#sec-05">05 模式选择决策树</a>
+          <a href="#sec-06">06 快速上手模板</a>
+          <a href="#sec-07">07 参考资源</a>
+          <a href="#sec-08">08 7 个 Skill 速查表</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>Skill 本质</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Skill 是文件夹，核心是 SKILL.md（YAML frontmatter + Markdown 正文）</li><li>scripts/references/resources/examples 为可选目录</li><li>本质是知识注入：指令文本进上下文，LLM 用 bash/read/edit 等已有工具执行</li></ul></div>
+<p>Skill 是一个文件夹，核心是 SKILL.md 文件，使用 YAML frontmatter + Markdown 正文 的格式。当 LLM 判断需要某个 Skill 时，会调用 skill 工具加载它，SKILL.md 的全部内容会作为 tool-result 注入到对话上下文中，LLM 读到后自主决定怎么执行。</p>
+<ul><li>my-skill/</li><li>├── SKILL.md              # 主文件（必须）</li><li>├── scripts/              # 可执行脚本（可选）</li><li>├── references/           # 详细参考文档（可选，按需加载）</li><li>├── resources/            # 模板、清单等资源（可选）</li><li>└── examples/             # 示例（可选）</li></ul>
+<p>关键机制：Skill 本质是&quot;知识注入&quot;——它不会动态生成新工具，而是把指令文本注入到 LLM 的上下文中，LLM 用已有的工具（bash、read、edit 等）来执行这些指令。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>Frontmatter 门面</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>name 用小写连字符唯一标识；description 最关键，决定是否加载</li><li>好的 description 列举触发短语、定义时序位置、包含产品关键词</li><li>扩展字段如 references、allowed-tools、type、estimated_time 可选用</li></ul><div class="pit"><ul><li>description 太模糊（如 Helps with deployment stuff）会拉低加载率</li></ul></div></div>
+<p>决定 Skill 是否被加载的&quot;门面&quot;</p>
+<h3 class="sub">2.1 必填字段</h3>
+<table><thead><tr><th>字段</th><th>作用</th><th>示例</th></tr></thead><tbody><tr><td>name</td><td>唯一标识符，小写连字符</td><td>test-driven-development</td></tr><tr><td>description</td><td>最关键——LLM 通过它决定是否加载</td><td>见下方对比</td></tr></tbody></table>
+<h3 class="sub">2.2 Description 的写法决定加载率</h3>
+<ul><li># ✅ 好的 description — 包含触发短语和关键词</li><li>description: Deploy applications and websites to Vercel. Use when the user</li><li>requests deployment actions like &quot;deploy my app&quot;, &quot;push this live&quot;,</li><li>or &quot;create a preview deployment&quot;.</li><li># ✅ 好的 description — 定义时序位置</li><li>description: Use when implementing any feature or bugfix, before writing</li><li>implementation code</li><li># ❌ 差的 description — 太模糊</li><li>description: Helps with deployment stuff</li></ul>
+<p>核心原则：</p>
+<ul><li>列举触发短语 ： 把用户可能说的话写进去（&quot;deploy my app&quot;、&quot;push this live&quot;）</li><li>定义时序位置 ： 说明&quot;在什么之前/之后&quot;使用（&quot;before writing implementation code&quot;）</li><li>包含产品关键词 ： 如果覆盖大平台，把所有产品名列出来</li></ul>
+<h3 class="sub">2.3 可选扩展字段</h3>
+<p>从 7 个 Skill 中观察到的扩展字段：</p>
+<table><thead><tr><th>字段</th><th>来源</th><th>作用</th></tr></thead><tbody><tr><td>references</td><td>OpenCode cloudflare</td><td>声明最重要的参考文档</td></tr><tr><td>allowed-tools</td><td>Google Labs stitch-loop</td><td>声明需要的工具权限</td></tr><tr><td>type</td><td>Dean Peters discovery-process</td><td>声明 Skill 类型（workflow/component）</td></tr><tr><td>best_for</td><td>Dean Peters discovery-process</td><td>最适合的场景列表</td></tr><tr><td>scenarios</td><td>Dean Peters discovery-process</td><td>具体的触发场景示例</td></tr><tr><td>estimated_time</td><td>Dean Peters discovery-process</td><td>预估执行时间</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>五种核心模式</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>线性流程：明确步骤操作，含 Prerequisites、Quick Start、Fallback、Troubleshooting</li><li>决策树+按需加载：大平台选型，主文件精简、references 渐进式披露</li><li>循环迭代：TDD 铁律+Red-Green-Refactor+借口反驳表+验证清单</li><li>接力棒循环：文件即状态，next-prompt.md 跨 session 持久化</li><li>多阶段+检查点：统一阶段模板+Go/No-Go 决策+子 Skill 编排</li><li>思维框架：控制思维质量，用量化阈值与非目标约束防幻觉</li></ul><div class="pit"><ul><li>LLM 倾向灵活变通，需强硬语气（Delete it. Start over.）提高遵从率</li><li>忘了写下一个接力棒（Step 6 Critical）循环就断了</li></ul></div></div>
+<p>模式 1：线性流程</p>
+<p>适用场景：部署、安装、迁移等有明确步骤的操作。</p>
+<p>代表：openai/skills — vercel-deploy（77 行）</p>
+<p>结构：</p>
+<ul><li># 标题</li><li>## Prerequisites（前置条件）</li><li>## Quick Start（主流程：Step 1 → 2 → 3）</li><li>## Fallback（降级方案）</li><li>## Troubleshooting（故障排除）</li></ul>
+<p>关键技巧：</p>
+<table><thead><tr><th>技巧</th><th>示例</th><th>为什么有效</th></tr></thead><tbody><tr><td>安全默认值</td><td>&quot;Always deploy as preview, not production&quot;</td><td>防止 LLM 做出危险操作</td></tr><tr><td>具体命令</td><td>每步给出可直接执行的 bash 命令</td><td>LLM 不需要猜测</td></tr><tr><td>超时提示</td><td>&quot;Use a 10 minute (600000ms) timeout&quot;</td><td>防止 LLM 因超时中断</td></tr><tr><td>降级方案</td><td>CLI 失败有 Fallback 脚本</td><td>提供 B 计划</td></tr><tr><td>负面指令</td><td>&quot;Do not curl the deployed URL to verify&quot;</td><td>明确禁止不该做的事</td></tr></tbody></table>
+<p>适用判断：如果你的 Skill 可以用&quot;先做 A，再做 B，最后做 C&quot;描述，就用线性模式。</p>
+<p>模式 2：决策树 + 按需加载</p>
+<p>适用场景：大型平台选型、产品导航、问题诊断。</p>
+<p>代表：openai/skills — cloudflare-deploy（224 行）</p>
+<p>结构：</p>
+<ul><li># 标题</li><li>## Authentication（认证前置）</li><li>## Quick Decision Trees（决策树）</li><li>### &quot;I need to run code&quot;（按用户意图分类）</li><li>### &quot;I need to store data&quot;</li><li>### &quot;I need AI/ML&quot;</li><li>## Product Index（产品索引表）</li></ul>
+<p>关键技巧：</p>
+<table><thead><tr><th>技巧</th><th>示例</th><th>为什么有效</th></tr></thead><tbody><tr><td>用户意图分类</td><td>&quot;I need to run code&quot; 而非 &quot;Compute products&quot;</td><td>用用户语言而非技术术语</td></tr><tr><td>树形导航</td><td>├─ 边缘无服务器函数 → workers/</td><td>LLM 快速定位正确产品</td></tr><tr><td>渐进式披露</td><td>主文件 7KB，references/ 按需展开到几十万字</td><td>不浪费上下文窗口</td></tr><tr><td>产品索引表</td><td>Product → Reference 的映射表</td><td>结构化的快速查找</td></tr></tbody></table>
+<p>适用判断：如果你的 Skill 覆盖的知识域有 10+ 个分支，且每个分支都有大量详细文档，就用决策树模式。</p>
+<p>进阶：同一个知识域可以拆成两个 Skill——</p>
+<ul><li>导航型 （cloudflare）：只做选型，不涉及操作</li><li>操作型 （cloudflare-deploy）：包含认证、命令、故障排除</li></ul>
+<p>模式 3：循环迭代</p>
+<p>适用场景：TDD、代码审查、设计评审等需要反复执行的流程。</p>
+<p>代表：obra/superpowers — test-driven-development（371 行）</p>
+<p>结构：</p>
+<ul><li># 标题</li><li>## The Iron Law（铁律——不可违反的核心原则）</li><li>## Red-Green-Refactor（循环体）</li><li>### RED — 写失败的测试</li><li>### Verify RED — 验证确实失败</li><li>### GREEN — 写最少的代码</li><li>### Verify GREEN — 验证确实通过</li><li>### REFACTOR — 清理</li><li>### Repeat（回到 RED）</li><li>## Common Rationalizations（借口反驳表）</li><li>## Verification Checklist（退出条件）</li></ul>
+<p>关键技巧：</p>
+<table><thead><tr><th>技巧</th><th>示例</th><th>为什么有效</th></tr></thead><tbody><tr><td>强硬语气</td><td>&quot;Delete it. Start over.&quot;</td><td>LLM 倾向于&quot;灵活变通&quot;，强硬语气提高遵从率</td></tr><tr><td>Good/Bad 对比</td><td>用 &lt;Good&gt; 和 &lt;Bad&gt; 标签包裹代码示例</td><td>对比教学效果最好</td></tr><tr><td>借口反驳表</td><td>预判 LLM 可能的 12 种偷懒借口并逐一反驳</td><td>堵死所有逃避路径</td></tr><tr><td>验证清单</td><td>8 项 checklist 作为循环退出条件</td><td>确保质量达标才能结束</td></tr><tr><td>人类兜底</td><td>&quot;ask your human partner&quot;</td><td>不确定时交给人</td></tr></tbody></table>
+<p>适用判断：如果你的 Skill 需要 LLM 反复执行&quot;做→验证→改进&quot;的循环，就用迭代模式。</p>
+<p>模式 4：接力棒循环（跨 Session 持久化）</p>
+<p>适用场景：多次迭代的长期项目，需要跨多个 session 持续工作。</p>
+<p>代表：google-labs-code/stitch-skills — stitch-loop（203 行）</p>
+<p>https://github.com/google-labs-code/stitch-skills/tree/main/skills/stitch-loop</p>
+<p>结构：</p>
+<ul><li># 标题</li><li>## Overview（接力棒模式概述）</li><li>## The Baton System（接力棒文件规范）</li><li>## Execution Protocol（6 步执行协议）</li><li>### Step 1: Read the Baton（读接力棒）</li><li>### Step 2: Consult Context Files（查阅上下文）</li><li>### Step 3: Generate（执行任务）</li><li>### Step 4: Integrate（集成结果）</li><li>### Step 5: Update Documentation（更新文档）</li><li>### Step 6: Prepare the Next Baton ⚠️（写下一个接力棒——关键！）</li><li>## File Structure Reference（文件协议）</li><li>## Orchestration Options（编排方式）</li></ul>
+<p>关键技巧：</p>
+<table><thead><tr><th>技巧</th><th>示例</th><th>为什么有效</th></tr></thead><tbody><tr><td>文件即状态</td><td>next-prompt.md 作为接力棒</td><td>LLM 不需要记住&quot;上次做到哪了&quot;</td></tr><tr><td>续命机制</td><td>Step 6 标记为 Critical + MUST</td><td>忘了写接力棒循环就断了</td></tr><tr><td>文件协议</td><td>每个文件有明确职责</td><td>LLM 只需按协议读写文件</td></tr><tr><td>编排无关</td><td>CI/CD、人在回路、Agent 链都能驱动</td><td>同一个 Skill 适配多种自动化环境</td></tr></tbody></table>
+<p>适用判断：如果你的 Skill 需要跨多个 session 持续工作，或者需要多个 Agent 协作，就用接力棒模式。</p>
+<p>与模式 3 的区别：</p>
+<table><thead><tr><th>维度</th><th>循环迭代（TDD）</th><th>接力棒循环（Stitch Loop）</th></tr></thead><tbody><tr><td>状态存储</td><td>LLM 对话上下文</td><td>外部文件系统</td></tr><tr><td>跨 session</td><td>❌</td><td>✅</td></tr><tr><td>循环退出</td><td>Checklist 全部打勾</td><td>路线图清空</td></tr><tr><td>适用时长</td><td>单次会话（分钟~小时）</td><td>长期项目（天~周）</td></tr></tbody></table>
+<p>模式 5：多阶段 + 检查点 + Skill 编排</p>
+<p>适用场景：复杂的多周流程，需要在关键节点做 Go/No-Go 决策。</p>
+<p>代表：deanpeters/Product-Manager-Skills — discovery-process（502 行）</p>
+<p>结构：</p>
+<ul><li># 标题</li><li>## Key Concepts（核心概念 + 反模式）</li><li>## Phase 1: Frame the Problem（阶段 1）</li><li>### Activities（调用哪些子 Skill）</li><li>### Outputs（阶段产出）</li><li>### Decision Point 1（检查点：YES/NO + 时间影响）</li><li>## Phase 2-6...（重复相同结构）</li><li>## Complete Workflow（端到端时间线）</li><li>## Common Pitfalls（常见陷阱）</li><li>## References（引用的子 Skill 列表）</li></ul>
+<p>关键技巧：</p>
+<table><thead><tr><th>技巧</th><th>示例</th><th>为什么有效</th></tr></thead><tbody><tr><td>统一阶段模板</td><td>每个 Phase 都有 Activities → Outputs → Decision Point</td><td>LLM 快速理解结构</td></tr><tr><td>决策检查点</td><td>&quot;达到饱和了吗？YES → 下一阶段，NO → +1 周&quot;</td><td>防止盲目推进</td></tr><tr><td>Skill 编排</td><td>调度 10+ 个子 Skill 完成各阶段</td><td>编排器模式，大 Skill 调度小 Skill</td></tr><tr><td>时间影响</td><td>每个 NO 路径标注&quot;+2-3 days&quot;、&quot;+1 week&quot;</td><td>让用户了解延迟成本</td></tr><tr><td>交互协议分离</td><td>引用 workshop-facilitation 定义交互方式</td><td>关注点分离</td></tr></tbody></table>
+<p>适用判断：如果你的 Skill 跨越多天/多周，有明确的阶段划分和 Go/No-Go 决策点，就用多阶段模式。</p>
+<p>特殊模式：思维框架（控制 LLM &quot;怎么想&quot;）</p>
+<p>适用场景：安全审计、代码审查、架构分析等需要深度思考的场景。</p>
+<p>代表：trailofbits/skills — audit-context-building（302 行）</p>
+<p>结构：</p>
+<ul><li># 标题</li><li>## Purpose（定位：控制思维方式，不是控制行为）</li><li>## When to Use / When NOT to Use</li><li>## Rationalizations（借口反驳表）</li><li>## Phase 1: Initial Orientation（定向扫描）</li><li>## Phase 2: Ultra-Granular Function Analysis（逐行分析——核心）</li><li>### Per-Function Checklist（函数微分析清单）</li><li>### Cross-Function Flow Analysis（跨函数追踪）</li><li>### Output Requirements（输出格式 + 量化阈值）</li><li>### Completeness Checklist（完整性检查）</li><li>## Phase 3: Global System Understanding（全局理解）</li><li>## Stability Rules（反幻觉规则）</li><li>## Non-Goals（明确禁止做的事）</li></ul>
+<p>关键技巧：</p>
+<table><thead><tr><th>技巧</th><th>示例</th><th>为什么有效</th></tr></thead><tbody><tr><td>思维工具</td><td>第一性原理、5 Why、5 How</td><td>给 LLM 分析框架而非具体命令</td></tr><tr><td>量化阈值</td><td>&quot;每个函数最少 3 个不变量、5 个假设&quot;</td><td>强制 LLM 达到足够的分析深度</td></tr><tr><td>非目标约束</td><td>&quot;不要识别漏洞、不要提出修复&quot;</td><td>克制 LLM 最想做的事，先理解再判断</td></tr><tr><td>反幻觉规则</td><td>&quot;Never reshape evidence to fit earlier assumptions&quot;</td><td>防止 LLM 自我欺骗</td></tr><tr><td>子 Agent 指导</td><td>何时以及如何使用 function-analyzer Agent</td><td>分而治之</td></tr></tbody></table>
+<p>适用判断：如果你的 Skill 需要 LLM 进行深度分析而非快速执行，需要控制的是&quot;思维质量&quot;而非&quot;操作步骤&quot;，就用思维框架模式。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>通用写作技巧</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>防偷懒四武器：强硬语气、借口反驳表、量化阈值、负面指令</li><li>教学三方式：Good/Bad 对比、具体命令、完整示例</li><li>安全三原则：安全默认值、权限最小化、人类兜底</li><li>三层知识组织：frontmatter ~100 tokens、主文件 2K-5K、references 按需加载</li></ul></div>
+<h3 class="sub">4.1 防止 LLM 偷懒的 4 种武器</h3>
+<table><thead><tr><th>武器</th><th>原理</th><th>示例来源</th></tr></thead><tbody><tr><td>强硬语气</td><td>LLM 对命令式语气的遵从率更高</td><td>TDD：&quot;Delete it. Start over.&quot;</td></tr><tr><td>借口反驳表</td><td>预判 LLM 的自我合理化路径并堵死</td><td>TDD：12 种借口 + 反驳；审计：6 种借口</td></tr><tr><td>量化阈值</td><td>给出硬性的最低标准</td><td>审计：&quot;最少 3 个不变量、5 个假设&quot;</td></tr><tr><td>负面指令</td><td>明确说&quot;不要做 X&quot;</td><td>vercel-deploy：&quot;Do not curl the URL&quot;</td></tr></tbody></table>
+<h3 class="sub">4.2 教学的 3 种有效方式</h3>
+<table><thead><tr><th>方式</th><th>原理</th><th>示例来源</th></tr></thead><tbody><tr><td>Good/Bad 对比</td><td>对比学习效果最好</td><td>TDD：&lt;Good&gt; vs &lt;Bad&gt; 代码示例</td></tr><tr><td>具体命令</td><td>LLM 擅长执行具体指令</td><td>vercel-deploy：每步都有 bash 命令</td></tr><tr><td>完整示例</td><td>展示期望的输出格式</td><td>审计：引用 FUNCTION_MICRO_ANALYSIS_EXAMPLE.md</td></tr></tbody></table>
+<h3 class="sub">4.3 安全与边界的 3 条原则</h3>
+<table><thead><tr><th>原则</th><th>做法</th><th>示例来源</th></tr></thead><tbody><tr><td>安全默认值</td><td>默认选择最安全的选项</td><td>vercel-deploy：&quot;Always deploy as preview&quot;</td></tr><tr><td>权限最小化</td><td>只在必要时提升权限</td><td>vercel-deploy：&quot;Do not escalate the installation check&quot;</td></tr><tr><td>人类兜底</td><td>不确定时交给人</td><td>TDD：&quot;ask your human partner&quot;</td></tr></tbody></table>
+<h3 class="sub">4.4 知识组织的 3 层架构</h3>
+<ul><li>第 1 层：Frontmatter（~100 tokens）</li><li>→ LLM 扫描所有 Skill 的 description，决定是否加载</li><li>第 2 层：SKILL.md 正文（&lt;5K tokens）</li><li>→ 核心指令、决策树、流程步骤</li><li>第 3 层：references/ 和 resources/（按需加载）</li><li>→ 详细文档、示例、清单，LLM 用 read 工具按需读取</li></ul>
+<p>Token 预算参考：</p>
+<table><thead><tr><th>层级</th><th>Token 预算</th><th>内容</th></tr></thead><tbody><tr><td>Frontmatter</td><td>~100 tokens</td><td>name + description</td></tr><tr><td>主文件</td><td>2K-5K tokens</td><td>核心指令</td></tr><tr><td>参考文档（单个）</td><td>1K-3K tokens</td><td>按需加载</td></tr><tr><td>总上下文占用</td><td>&lt;10K tokens</td><td>主文件 + 1-2 个参考文档</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>模式选择决策树</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>按六个问题分支：明确步骤→线性；大量选项→决策树；单会话循环→迭代</li><li>跨 session 长项目→接力棒；多天多周 Go/No-Go→多阶段</li><li>深度分析→思维框架</li></ul></div>
+<ul><li>你的 Skill 需要做什么？</li><li>├─ 执行一个有明确步骤的操作</li><li>│  └─ → 模式 1：线性流程</li><li>├─ 在大量选项中帮用户选择正确的方向</li><li>│  └─ → 模式 2：决策树 + 按需加载</li><li>├─ 在单次会话中反复执行&quot;做→验证→改进&quot;</li><li>│  └─ → 模式 3：循环迭代</li><li>├─ 跨多个 session 持续推进一个长期项目</li><li>│  └─ → 模式 4：接力棒循环</li><li>├─ 跨越多天/多周，有阶段划分和 Go/No-Go 决策</li><li>│  └─ → 模式 5：多阶段 + 检查点</li><li>└─ 需要 LLM 进行深度分析而非快速执行</li><li>└─ → 特殊模式：思维框架</li></ul>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>快速上手模板</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>线性模板：frontmatter + Prerequisites + Steps + Troubleshooting</li><li>循环迭代模板：Core Principle + The Loop + Rationalizations + Completion Checklist</li></ul></div>
+<p>最小可用 Skill（线性模式）</p>
+<ul><li>---</li><li>name: my-skill</li><li>description: [一句话描述做什么 + 什么时候触发]</li><li>---</li><li># Skill 名称</li><li>[一句话核心原则 + 安全默认值]</li><li>## Prerequisites</li><li>- [前置条件 1]</li><li>- [前置条件 2]</li><li>## Steps</li><li>### Step 1: [动作]</li><li>\`\`\`bash</li><li>[具体命令]</li><li>\`\`\`</li><li>### Step 2: [动作]</li><li>[具体指令]</li><li>### Step 3: [动作]</li><li>[具体指令]</li><li>## Troubleshooting</li><li>| Issue | Solution |</li><li>|-------|----------|</li><li>| [问题 1] | [解决方案] |</li></ul>
+<p>循环迭代 Skill 模板</p>
+<ul><li>---</li><li>name: my-loop-skill</li><li>description: [描述 + 触发时机]</li><li>---</li><li># Skill 名称</li><li>## Core Principle</li><li>[不可违反的铁律]</li><li>## The Loop</li><li>### Phase A — [动作]</li><li>[具体指令]</li><li>### Verify A</li><li>[验证命令]</li><li>### Phase B — [动作]</li><li>[具体指令]</li><li>### Verify B</li><li>[验证命令]</li><li>### Repeat</li><li>回到 Phase A。</li><li>## Rationalizations</li><li>| Excuse | Reality |</li><li>|--------|---------|</li><li>| &quot;[借口 1]&quot; | [反驳] |</li><li>## Completion Checklist</li><li>- [ ] [条件 1]</li><li>- [ ] [条件 2]</li></ul>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>参考资源</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>官方规范：agentskills.io 与 anthropics/skills 的 template、spec</li><li>精选仓库：openai/skills、obra/superpowers、stitch-skills 等</li><li>精选列表：awesome-agent-skills 500+ 索引、awesome-claude-skills 含 Skill vs MCP 对比</li></ul></div>
+<p>官方规范</p>
+<h3 class="sub">1. Agent Skills 开放标准</h3>
+<p>https://agentskills.io/</p>
+<h3 class="sub">2. anthropics/skills — 官方模板</h3>
+<p>https://github.com/anthropics/skills/tree/main/template</p>
+<h3 class="sub">3. anthropics/skills — 规范文档</h3>
+<p>https://github.com/anthropics/skills/tree/main/spec</p>
+<p>精选仓库</p>
+<p>1. openai/skills — OpenAI Codex 官方 Skill 目录</p>
+<p>https://github.com/openai/skills</p>
+<p>2. obra/superpowers — 14 个工作流型 Skill</p>
+<p>https://github.com/obra/superpowers</p>
+<p>3. google-labs-code/stitch-skills — 设计到代码的 Skill</p>
+<p>https://github.com/google-labs-code/stitch-skills</p>
+<p>4. deanpeters/Product-Manager-Skills — 40+ 产品管理 Skill</p>
+<p>https://github.com/deanpeters/Product-Manager-Skills</p>
+<p>5. trailofbits/skills — 安全审计 Skill</p>
+<p>https://github.com/trailofbits/skills</p>
+<p>6. openclaw/clawhub — Skill 注册中心</p>
+<p>https://github.com/openclaw/clawhub</p>
+<p>精选列表</p>
+<p>1. VoltAgent/awesome-agent-skills — 500+ Skill 索引</p>
+<p>https://github.com/VoltAgent/awesome-agent-skills</p>
+<p>2. travisvn/awesome-claude-skills — 精选列表 + Skill vs MCP 对比</p>
+<p>https://github.com/travisvn/awesome-claude-skills</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>7 个 Skill 速查表</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>7 个 Skill 覆盖线性到思维框架，行数 77–502 不等</li><li>vercel-deploy 是最小完整模板，discovery-process 编排 10+ 子 Skill</li></ul></div>
+<table><thead><tr><th>#</th><th>Skill</th><th>来源</th><th>模式</th><th>行数</th><th>一句话精髓</th></tr></thead><tbody><tr><td>1</td><td>vercel-deploy</td><td>OpenAI</td><td>线性</td><td>77</td><td>最小但完整的 Skill 模板</td></tr><tr><td>2</td><td>cloudflare-deploy</td><td>OpenAI</td><td>线性+决策树</td><td>224</td><td>大平台的渐进式披露</td></tr><tr><td>3</td><td>cloudflare</td><td>OpenCode</td><td>纯决策树</td><td>211</td><td>导航型 vs 操作型的区别</td></tr><tr><td>4</td><td>test-driven-development</td><td>obra</td><td>循环迭代</td><td>371</td><td>堵死 LLM 偷懒的所有退路</td></tr><tr><td>5</td><td>stitch-loop</td><td>Google Labs</td><td>接力棒循环</td><td>203</td><td>文件即状态，跨 session 持久化</td></tr><tr><td>6</td><td>discovery-process</td><td>Dean Peters</td><td>多阶段+检查点</td><td>502</td><td>编排器模式，调度 10+ 子 Skill</td></tr><tr><td>7</td><td>audit-context-building</td><td>Trail of Bits</td><td>思维框架</td><td>302</td><td>控制 LLM &quot;怎么想&quot;而非&quot;做什么&quot;</td></tr></tbody></table>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>循环迭代 vs 接力棒循环</h4><p>状态存对话上下文 vs 外部文件系统；循环迭代不可跨 session，接力棒可跨天/周持续。</p><a class="src-link" href="#sec-03">原文 → 五种核心模式</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Skill 是知识注入</h4><p>Skill 不动态生成新工具，而是把指令文本注入上下文，LLM 用既有工具执行。</p><a class="src-link" href="#sec-01">原文 → Skill 本质</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>token 预算</h4><p>frontmatter ~100 tokens，主文件 2K-5K，单参考文档 1K-3K，总占用 &lt;10K。</p><a class="src-link" href="#sec-04">原文 → 通用写作技巧</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>description 太模糊</h4><p>Helps with deployment stuff 会拉低加载率，应写触发短语与产品关键词。</p><a class="src-link" href="#sec-02">原文 → Frontmatter 门面</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>导航型与操作型分离</h4><p>同一知识域可拆成导航型 cloudflare（只选型）与操作型 cloudflare-deploy（含命令与排障）。</p><a class="src-link" href="#sec-03">原文 → 五种核心模式</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>LLM 会灵活变通</h4><p>TDD 用 Delete it. Start over. 等强硬语气，堵死 12 种偷懒借口。</p><a class="src-link" href="#sec-03">原文 → 五种核心模式</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>忘了写下一个接力棒</h4><p>Step 6 写 next-prompt.md 标记 Critical + MUST，漏掉循环就断。</p><a class="src-link" href="#sec-03">原文 → 五种核心模式</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>7 个 Skill 速查</h4><p>vercel-deploy 77 行最小模板，discovery-process 502 行编排 10+ 子 Skill。</p><a class="src-link" href="#sec-08">原文 → 7 个 Skill 速查表</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>最小可用 Skill</h4><p>frontmatter 只有 name+description；正文=核心原则+Prerequisites+Steps+Troubleshooting。</p><a class="src-link" href="#sec-06">原文 → 快速上手模板</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>防偷懒四武器</h4><p>强硬语气、借口反驳表、量化阈值、负面指令共同提高 LLM 遵从率。</p><a class="src-link" href="#sec-04">原文 → 通用写作技巧</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>反幻觉 vs 非目标约束</h4><p>Never reshape evidence 防自我欺骗；不要识别漏洞、不要提修复，先理解再判断。</p><a class="src-link" href="#sec-03">原文 → 五种核心模式</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>按决策树选模式：线性/决策树/迭代/接力棒/多阶段/思维框架</li>
+          <li>三层知识组织控 token：frontmatter 精简、主文件 2K-5K、参考按需加载</li>
+          <li>写 Skill 要用强硬语气、借口反驳表与负面指令防 LLM 偷懒</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559690&amp;idx=1&amp;sn=fed34d2ade198ea8fb75ad5b768c9229" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559690&amp;idx=1&amp;sn=fed34d2ade198ea8fb75ad5b768c9229</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

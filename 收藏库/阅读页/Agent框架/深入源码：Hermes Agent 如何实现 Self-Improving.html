@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">深入源码：Hermes Agent 如何实现 Self-Improving</h1>
+  <p class="lede">Memory+Skill+Nudge：Hermes 自进化闭环三子系统</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 34 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>背景</a>
+          <a href="#sec-02"><span class="n">02</span>三子系统总览</a>
+          <a href="#sec-03"><span class="n">03</span>Memory 系统</a>
+          <a href="#sec-04"><span class="n">04</span>Skill 系统</a>
+          <a href="#sec-05"><span class="n">05</span>Nudge Engine</a>
+          <a href="#sec-06"><span class="n">06</span>三次会话案例</a>
+          <a href="#sec-07"><span class="n">07</span>安全机制</a>
+          <a href="#sec-08"><span class="n">08</span>设计取舍</a>
+          <a href="#sec-09"><span class="n">09</span>进化方向</a>
+          <a href="#sec-10"><span class="n">10</span>RDSHermes 落地</a>
+          <a href="#sec-11"><span class="n">11</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 背景</a>
+          <a href="#sec-02">02 三子系统总览</a>
+          <a href="#sec-03">03 Memory 系统</a>
+          <a href="#sec-04">04 Skill 系统</a>
+          <a href="#sec-05">05 Nudge Engine</a>
+          <a href="#sec-06">06 三次会话案例</a>
+          <a href="#sec-07">07 安全机制</a>
+          <a href="#sec-08">08 设计取舍</a>
+          <a href="#sec-09">09 进化方向</a>
+          <a href="#sec-10">10 RDSHermes 落地</a>
+          <a href="#sec-11">11 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>背景</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Hermes 增速 +204%，GitHub 106k+ Star</li><li>核心差异：Agent 自动提炼 Skill，OpenClaw 靠人喂</li></ul></div>
+<p>OpenRouter 排行榜上正在发生一场换代：Hermes Agent 增速 +204%，Top Coding Agents 排第一，Top Productivity 排第二。上线不到半年，GitHub 从 0 到 106k+ Star。开发者在用数据说话——选的不是&quot;另一个 OpenClaw&quot;，是一种完全不同的东西。</p>
+<p>区别在哪？OpenClaw 的 Skill 是手写的 Markdown 文件——你写多少它会多少，你不写它就不会。Hermes 做了一件 OpenClaw 架构上做不了的事：Agent 干完活之后，会自动把踩坑经验提炼成可复用的 Skill，下次遇到同类问题直接调用。用得越久，能力越强。这不是功能差异，是设计哲学的分野——一个靠人喂，一个自己长。</p>
+<p>这篇文章拆开 Hermes 的源码，看看这个 Self-Improving 闭环到底怎么跑的。文末也会聊聊 RDSHermes 怎么把这套能力搬给不写代码的人用。</p>
+<p>仓库地址：</p>
+<p>github.com/NousResearch/hermes-agent</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>三子系统总览</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Memory 记事实、Skill 记步骤、Nudge Engine 定时提醒复盘</li><li>三个子系统构成学习闭环</li></ul></div>
+<p>大多数 Agent 每次会话结束后就&quot;失忆&quot;了。Hermes 在内部搭了一套学习闭环，由三个子系统撑起来：</p>
+<p>打个比方：Memory 是助理随身带的小本子，记着&quot;老板喜欢喝美式&quot;这些事实；Skill 是助理积累的操作手册——&quot;部署 K8s 第 2 步一定要先推镜像&quot;；Nudge Engine 是定时响的闹钟，提醒助理回头想想有没有什么值得记的。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>Memory 系统</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MEMORY.md/USER.md 限 2200/1375 字符，倒逼压缩</li><li>超限时 add 失败并返回条目，让模型主动删改</li><li>冻结快照共享前缀缓存，会话内不变</li><li>写声明式事实而非命令式指令</li></ul><div class="pit"><ul><li>OpenClaw MEMORY.md 纯追加会膨胀成几万行</li></ul></div></div>
+<p>两个文件，就是 Agent 对你的全部认知</p>
+<p>Memory 系统设计得很克制——两个纯文本文件，用§分隔条目：</p>
+<ul><li>~/.hermes/memories/</li><li>├── MEMORY.md    # Agent 的个人笔记（环境事实、项目约定、工具怪癖）</li><li>└── USER.md      # Agent 对用户的认知（偏好、沟通风格、工作习惯）</li></ul>
+<p>字符上限故意设得很紧：MEMORY 限 2200 chars，USER 限 1375 chars。容量有限就迫使 Agent 挑重要的记，不重要的自然被挤掉。对比 OpenClaw——它的 MEMORY.md 是纯追加模式，用几个月就膨胀成几万行的怪兽文件，找几个月前的一句话只能笨拙地通读全文。Hermes 的做法反过来：容量有限就倒逼 Agent 做信息压缩，过时的自然被挤掉，留下的都是高密度事实。</p>
+<p>具体实现上，MemoryStore 维护两组平行状态——实时可写的条目列表，和会话开始时冻结的快照：</p>
+<ul><li># tools/memory_tool.py:116-122</li><li>class MemoryStore:</li><li>def __init__(self, memory_char_limit=2200, user_char_limit=1375):</li><li>self.memory_entries: List[str] = [ ]</li><li>self.user_entries: List[str] = [ ]</li><li>self.memory_char_limit = memory_char_limit</li><li>self.user_char_limit = user_char_limit</li><li>self._system_prompt_snapshot: Dict[str, str] = {&quot;memory&quot;: &quot;&quot;, &quot;user&quot;: &quot;&quot;}</li></ul>
+<p>但&quot;设了上限&quot;只是第一步，关键是超限之后怎么处理。Hermes 不会静默丢弃旧条目，也不会自动压缩——它选择让add直接失败，然后把当前所有条目返回给模型：</p>
+<ul><li># tools/memory_tool.py:248-259</li><li>if new_total &gt; limit:</li><li>current = self._char_count(target)</li><li>return {</li><li>&quot;success&quot;: False,</li><li>&quot;error&quot;: (</li><li>f&quot;Memory at {current:,}/{limit:,} chars. &quot;</li><li>f&quot;Adding this entry ({len(content)} chars) would exceed the limit. &quot;</li><li>f&quot;Replace or remove existing entries first.&quot;</li><li>&quot;current_entries&quot;: entries,</li><li>&quot;usage&quot;: f&quot;{current:,}/{limit:,}&quot;,</li></ul>
+<p>错误信息里一句 &quot;Replace or remove existing entries first&quot; 就把模型引导到了replace和remove操作上。同时返回current_entries，让模型能看到现有的所有条目，自己决定哪些过时了该删、哪些可以合并压缩。模型不是被动地执行淘汰规则，而是主动做信息整理——这本身就是一次&quot;自我反思&quot;。</p>
+<p>冻结快照机制</p>
+<p>每次会话启动时，Memory 加载后立刻捕获一份快照，之后系统提示词里用的都是这份快照：</p>
+<ul><li># tools/memory_tool.py:124-140</li><li>def load_from_disk(self):</li><li>mem_dir = get_memory_dir()</li><li>self.memory_entries = self._read_file(mem_dir / &quot;MEMORY.md&quot;)</li><li>self.user_entries = self._read_file(mem_dir / &quot;USER.md&quot;)</li><li># 会话开始时冻结快照，之后不再变动</li><li>self._system_prompt_snapshot = {</li><li>&quot;memory&quot;: self._render_block(&quot;memory&quot;, self.memory_entries),</li><li>&quot;user&quot;: self._render_block(&quot;user&quot;, self.user_entries),</li></ul>
+<p>快照注入系统提示词后，Agent 还没看到用户消息就已经知道你的环境和偏好了。为什么&quot;冻结&quot;而不是实时更新？因为系统提示词会话内不变就能共享前缀缓存（Prefix Cache），省掉重复计费。新写入的内容只改磁盘，下一个会话才刷新进来。</p>
+<p>提示词引导：什么该记、什么不该记</p>
+<p>Agent 怎么知道什么时候该往 Memory 里写东西？靠 Prompt 引导。系统提示词中的 MEMORY_GUIDANCE：</p>
+<ul><li># agent/prompt_builder.py:144-162</li><li>MEMORY_GUIDANCE = (</li><li>&quot;You have persistent memory across sessions. Save durable facts using the memory &quot;</li><li>&quot;tool: user preferences, environment details, tool quirks, and stable conventions.\n&quot;</li><li>&quot;Prioritize what reduces future user steering — the most valuable memory is one &quot;</li><li>&quot;that prevents the user from having to correct or remind you again.\n&quot;</li><li>&quot;Write memories as declarative facts, not instructions to yourself. &quot;</li><li>&quot;&#x27;User prefers concise responses&#x27; ✓ — &#x27;Always respond concisely&#x27; ✗. &quot;</li><li>&quot;&#x27;Project uses pytest with xdist&#x27; ✓ — &#x27;Run tests with pytest -n 4&#x27; ✗.&quot;</li></ul>
+<p>注意这里的区别：Memory 要求写成声明式事实（&quot;User prefers concise responses&quot;），而不是命令式指令（&quot;Always respond concisely&quot;）。前者是偏好，可以被当前上下文覆盖；后者是死命令，会限制 Agent 的灵活性。</p>
+<p>Tool Schema 里还有一句关键的边界规则：&quot;If you&#x27;ve discovered a new way to do something, save it as a skill.&quot; —— Memory 不存操作步骤，操作步骤归 Skill 管。这一句话把两个系统的分工画清了。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>Skill 系统</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>SKILL.md 是核心，含 Steps/Pitfalls</li><li>创建门槛：5+ 次调用、踩坑修复、用户纠正</li><li>patch 局部修补 + 安全扫描回滚</li><li>先看目录再按需 skill_view 加载</li></ul><div class="pit"><ul><li>OpenClaw 手写 Skill 成本高，Agent 学不到经验</li></ul></div></div>
+<p>Skill 长什么样</p>
+<p>Memory 是&quot;我知道什么&quot;，Skill 是&quot;我会做什么&quot;。每个 Skill 是一个目录，核心是 SKILL.md 文件：</p>
+<ul><li>~/.hermes/skills/</li><li>├── devops/</li><li>│   └── flask-k8s-deploy/</li><li>│       ├── SKILL.md          # 主指令</li><li>│       ├── references/       # 参考文档</li><li>│       └── templates/        # 模板文件</li><li>└── software-development/</li><li>└── fix-pytest-fixtures/</li><li>└── SKILL.md</li></ul>
+<p>一个典型的 SKILL.md：</p>
+<ul><li>---</li><li>name: flask-k8s-deploy</li><li>description: Deploy a Flask app to Kubernetes with health checks</li><li>version: 1.0.0</li><li>---</li><li># Flask K8s Deployment</li><li>## When to use</li><li>- User wants to deploy a Flask/Python app to Kubernetes</li><li>- User mentions K8s, kubectl, or container deployment</li><li>## Steps</li><li>1. Create Dockerfile with gunicorn (not dev server)</li><li>2. Build and push image to registry BEFORE creating deployment</li><li>3. Write deployment.yaml with livenessProbe pointing to /health</li><li>4. Write service.yaml with correct port mapping</li><li>5. kubectl apply both files</li><li>6. Verify with kubectl get pods and kubectl logs</li><li>## Pitfalls</li><li>- MUST push image to registry before kubectl apply, otherwise ImagePullBackOff</li><li>- Flask 默认没有 /health 端点，需要手动添加</li><li>- Django 需要额外设置 ALLOWED_HOSTS 环境变量</li><li>- livenessProbe path 必须返回 200，不能用需要认证的路径</li></ul>
+<p>Pitfalls 这一节不是预先写好的，而是 Agent 踩坑后追加的——这就是 Skill 层面的&quot;self-improving&quot;。</p>
+<p>什么时候创建 Skill</p>
+<p>Agent 不需要用户说&quot;帮我创建一个 Skill&quot;。驱动力来自skill_manage工具的 schema：</p>
+<ul><li># tools/skill_manager_tool.py:681-701</li><li>SKILL_MANAGE_SCHEMA = {</li><li>&quot;name&quot;: &quot;skill_manage&quot;,</li><li>&quot;description&quot;: (</li><li>&quot;Manage skills (create, update, delete). Skills are your procedural &quot;</li><li>&quot;memory — reusable approaches for recurring task types.\n\n&quot;</li><li>&quot;Create when: complex task succeeded (5+ calls), errors overcome, &quot;</li><li>&quot;user-corrected approach worked, non-trivial workflow discovered, &quot;</li><li>&quot;or user asks you to remember a procedure.\n&quot;</li><li>&quot;Update when: instructions stale/wrong, OS-specific failures, &quot;</li><li>&quot;missing steps or pitfalls found during use. &quot;</li><li>&quot;If you used a skill and hit issues not covered by it, &quot;</li><li>&quot;patch it immediately with skill_manage(action=&#x27;patch&#x27;) &quot;</li><li>&quot;— don&#x27;t wait to be asked.\n\n&quot;</li><li>&quot;After difficult/iterative tasks, offer to save as a skill. &quot;</li><li>&quot;Skip for simple one-offs.&quot;</li></ul>
+<p>创建的门槛设得比较清楚：工具调用超过 5 次才值得创建（简单任务不记）、踩过坑再修复的经验才有价值、用户纠正过的做法要铭记。</p>
+<p>OpenClaw 也有 Skill 系统，也是 SKILL.md + YAML frontmatter，但 Skill 要么是你手写的，要么是从社区装的。手写的成本高，懒得维护；社区装的不是针对你的环境。关键问题是：Agent 本身不会从工作中学到任何东西——干了一百次部署，第一百零一次犯的错跟第一次一模一样。HN 上有个帖子叫&quot;Data Is the Final Moat&quot;——当模型智能被商品化、Agent 框架被开源，真正的护城河是 Agent 在工作中积累的领域知识。OpenClaw 的 Skill 是手写的配置文件，用了一年还是那份手写的配置文件；Hermes 的 Skill 是越用越厚的经验资产——每一次踩坑都在加固护城河。这不是 OpenClaw 团队不想做，而是它的架构没有为&quot;Agent 自主学习&quot;预留通路——没有创建触发、没有 patch 机制、没有 review agent。要补这一课，是要重写核心架构。</p>
+<p>Hermes 这边，Agent 踩了坑、修了 bug、用了 12 次工具调用才搞定一个部署——这些经验被自动提炼成 Skill，下次再遇到同类任务就是 6 次调用零错误。</p>
+<p>系统提示词里还有一句&quot;Skills that aren&#x27;t maintained become liabilities&quot;——通过提示词给 Agent 灌输责任感，防止它只管创建不管维护。</p>
+<p>Skill 的自我修补</p>
+<p>当 Agent 按照已有 Skill 执行，但中途发现步骤有遗漏或者踩了新坑时，它会在完成任务后回头修补 Skill。不是全量重写，而是做精确的局部 patch：</p>
+<ul><li># tools/skill_manager_tool.py:397-485</li><li>def _patch_skill(name, old_string, new_string, file_path=None, replace_all=False):</li><li>&quot;&quot;&quot;Targeted find-and-replace within a skill file.&quot;&quot;&quot;</li><li>from tools.fuzzy_match import fuzzy_find_and_replace</li><li>new_content, match_count, _strategy, match_error = fuzzy_find_and_replace(</li><li>content, old_string, new_string, replace_all</li><li>if match_error:</li><li>return {&quot;success&quot;: False, &quot;error&quot;: match_error, &quot;file_preview&quot;: content[:500]}</li><li># ...（省略 _validate_content_size、_validate_frontmatter 等校验）</li><li># 修改前备份原内容</li><li>original_content = content</li><li>_atomic_write_text(target, new_content)</li><li># 修改后重新做安全扫描</li><li>scan_error = _security_scan_skill(skill_dir)</li><li>if scan_error:</li><li>_atomic_write_text(target, original_content)  # 不通过就回滚</li><li>return {&quot;success&quot;: False, &quot;error&quot;: scan_error}</li></ul>
+<p>这里用了 fuzzy_find_and_replace 做模糊匹配——Agent 给出的 old_string 可能跟原文有格式差异，模糊匹配能容忍这些差异。每次修改后还要跑一遍_security_scan_skill()，不通过就自动回滚。Agent 在踩完坑的当场就把 Pitfalls 补上了，下次同事遇到同样的场景，直接绕过去。</p>
+<p>Skill 的渐进式加载</p>
+<p>Skill 多了以后不能全塞进系统提示词——这也是 OpenClaw 的一个痛点：它采用&quot;重型背包&quot;模式，每次会话把 SOUL.md、IDENTITY.md 和各种设定一股脑塞进上下文，设定越多背包越沉，Token 浪费严重，模型注意力也被稀释。Hermes 更像一座&quot;动态图书馆&quot;，默认上下文极其轻量，只放一个轻量索引——每个 Skill 的名字和一句话描述：</p>
+<ul><li>Available skills:</li><li>devops:</li><li>- flask-k8s-deploy: Deploy a Flask app to Kubernetes with health checks</li><li>- nginx-reverse-proxy: Configure Nginx reverse proxy with SSL</li><li>software-development:</li><li>- fix-pytest-fixtures: Debug and fix pytest fixture scope issues</li></ul>
+<p>Agent 判断某个 Skill 跟当前任务相关时，才通过skill_view加载完整内容。&quot;先看目录再翻全文&quot;，按需加载。</p>
+<p>开源版的 Skill 需要 Agent 从零积累。RDSHermes 的 Skill Hub 则提供了另一条路：预装智能巡检、慢 SQL 诊断、索引优化等数据库专业技能——Agent 上线第一天就具备领域能力，不用等它踩完所有坑。换句话说，Skill Hub 解决冷启动，自进化解决越用越强——两条腿走路。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>Nudge Engine</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Memory 按回合、Skill 按迭代，双计数器默认 10</li><li>后台 fork 审查 Agent，输出静默不打扰</li><li>禁用审查实例自身 nudge，避免无限递归</li></ul><div class="pit"><ul><li>Review prompt 要求 Nothing to save 就停，防硬塞</li></ul></div></div>
+<p>Memory 和 Skill 都是存储系统，写入需要有人触发。Nudge Engine 就是这个触发器——运行时维护两个计数器，定时提醒 Agent 该停下来想想了。</p>
+<p>两个计数器，两种粒度</p>
+<ul><li># run_agent.py:1328-1331 — Memory 计数器</li><li>self._memory_nudge_interval = 10    # 每 10 个用户回合触发一次</li><li>self._turns_since_memory = 0</li><li># run_agent.py:1428-1431 — Skill 计数器（从配置读取，默认 10）</li><li>self._skill_nudge_interval = int(skills_config.get(&quot;creation_nudge_interval&quot;, 10))</li><li>self._iters_since_skill = 0</li></ul>
+<p>粒度不同是有道理的：Memory 的信息来自用户输入，按回合计；Skill 的经验来自工具使用过程，按迭代计。计数器到阈值就触发审查，Agent 主动调用了memory或skill_manage则重置——已经在做了就不用催。</p>
+<p>后台 fork Agent：不打扰用户的静默审查</p>
+<p>Nudge 触发后怎么处理？它不会在主对话中插一条&quot;让我想想有没有什么该记的&quot;——那样太打扰用户了。而是在后台 fork 一个独立的 Agent 实例，拿着主对话的快照去做审查：</p>
+<ul><li># run_agent.py:2665-2711</li><li>def _spawn_background_review(self, messages_snapshot, review_memory=False, review_skills=False):</li><li>def _run_review():</li><li>with open(os.devnull, &quot;w&quot;) as _devnull, \</li><li>contextlib.redirect_stdout(_devnull), \</li><li>contextlib.redirect_stderr(_devnull):</li><li>review_agent = AIAgent(</li><li>model=self.model,</li><li>max_iterations=8,</li><li>quiet_mode=True,</li><li>review_agent._memory_store = self._memory_store</li><li>review_agent._memory_enabled = self._memory_enabled</li><li>review_agent._user_profile_enabled = self._user_profile_enabled</li><li># 禁用 review agent 自身的 nudge，否则会无限递归</li><li>review_agent._memory_nudge_interval = 0</li><li>review_agent._skill_nudge_interval = 0</li><li>review_agent.run_conversation(</li><li>user_message=prompt,</li><li>conversation_history=messages_snapshot,</li><li>thread = threading.Thread(target=_run_review, daemon=True)</li><li>thread.start()</li></ul>
+<p>几个细节：输出重定向到/dev/null，用户完全无感知；最多 8 次工具调用，不会无限消耗 API；review agent 自身的 nudge 被禁用，避免无限递归；和主 agent 共享同一份 Memory，写入直接生效。&quot;干活&quot;和&quot;反思&quot;拆成两个实例，互不干扰。</p>
+<p>Review Agent 靠两套审查提示词决定做什么：Memory Review 关注用户偏好和个人信息，Skill Review 关注非平凡的解题过程。每个 prompt 都以 &quot;If nothing is worth saving, just say &#x27;Nothing to save.&#x27; and stop.&quot; 收尾——防止 review agent 每次都往里塞东西来&quot;交差&quot;。审查在响应发送给用户之后才触发，用户收到回复后该干嘛干嘛，Agent 在后台默默复盘。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>三次会话案例</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>第 1 次 12 次调用踩两坑后创建 Skill</li><li>第 2 次复用降到 9 次并 patch ALLOWED_HOSTS</li><li>第 3 次 6 次调用零错误</li></ul></div>
+<p>用一个 K8s 部署场景串一下三个子系统的协同。</p>
+<p>第 1 次会话：冷启动</p>
+<ul><li>用户: 帮我把这个 Flask 应用部署到 K8s 集群</li></ul>
+<p>Memory 和 Skills 都是空的，Agent 靠基座知识摸索，12 次工具调用，踩了两个坑：</p>
+<ul><li>iter 1:  terminal(&quot;kubectl version&quot;)             → 确认集群版本</li><li>iter 2:  read_file(&quot;app.py&quot;)                     → 读取应用代码</li><li>iter 3:  write_file(&quot;Dockerfile&quot;)                → 创建 Dockerfile</li><li>iter 4:  terminal(&quot;docker build -t myapp .&quot;)     → 构建镜像</li><li>iter 5:  write_file(&quot;deployment.yaml&quot;)           → 编写 K8s 部署文件</li><li>iter 6:  terminal(&quot;kubectl apply -f deployment.yaml&quot;)</li><li>→ 💥 ImagePullBackOff！忘记推镜像到 registry</li><li>iter 7:  terminal(&quot;docker push myregistry.azurecr.io/myapp&quot;)</li><li>iter 8:  terminal(&quot;kubectl apply -f deployment.yaml&quot;)  → 重新部署</li><li>iter 9:  write_file(&quot;service.yaml&quot;)              → 编写 Service</li><li>iter 10: terminal(&quot;kubectl apply -f service.yaml&quot;)</li><li>iter 11: terminal(&quot;kubectl get pods&quot;)</li><li>→ 💥 CrashLoopBackOff！livenessProbe 路径不对</li><li>iter 12: 修改 deployment.yaml → 重新部署          → ✅ 成功</li></ul>
+<p>12 次迭代触发 Skill Review，Review Agent 看到两次报错和修复过程，创建了一个 Skill：</p>
+<ul><li>Review Agent 执行:</li><li>→ skill_manage(action=&quot;create&quot;, name=&quot;flask-k8s-deploy&quot;, category=&quot;devops&quot;,</li><li>content=&quot;&quot;&quot;</li><li>---</li><li>name: flask-k8s-deploy</li><li>description: Deploy a Flask app to Kubernetes with health checks</li><li>---</li><li>## Steps</li><li>1. Create Dockerfile with gunicorn</li><li>2. Build and push image to registry BEFORE kubectl apply</li><li>3. Write deployment.yaml with livenessProbe → /health</li><li>## Pitfalls</li><li>- MUST push image to registry first, otherwise ImagePullBackOff</li><li>- Flask 默认没有 /health 端点，需手动添加</li><li>- livenessProbe path 必须返回 200</li><li>&quot;&quot;&quot;)</li></ul>
+<p>安全扫描通过后写入磁盘，用户对这一切毫不知情。</p>
+<p>第 2 次会话：Skill 复用 + 自我修补</p>
+<ul><li>用户: 帮我再部署一个 Django 应用到 K8s</li></ul>
+<p>系统提示词里多了 Skills 索引，Agent 加载flask-k8s-deploy后照着步骤做：</p>
+<ul><li>iter 1:  skill_view(&quot;flask-k8s-deploy&quot;)   → 加载完整 Skill</li><li>iter 2:  read_file(&quot;manage.py&quot;)           → 确认 Django 项目结构</li><li>iter 3:  write_file(&quot;Dockerfile&quot;)         → 用 gunicorn（Skill 指示）</li><li>iter 4:  添加 /health 端点（Skill Pitfalls 提醒）</li><li>iter 5:  terminal(&quot;docker build &amp;&amp; docker push&quot;)</li><li>→ 先 push 再 apply（Skill Steps 第 2 步）</li><li>iter 6:  write_file(&quot;deployment.yaml&quot;)    → livenessProbe → /health</li><li>iter 7:  terminal(&quot;kubectl apply&quot;)</li><li>→ 💥 DisallowedHost 错误！Django 特有的问题，Skill 没覆盖</li><li>iter 8:  修改 deployment.yaml 添加 ALLOWED_HOSTS env</li><li>iter 9:  terminal(&quot;kubectl apply&quot;)        → ✅ 成功</li></ul>
+<p>从 12 次调用降到 9 次，已知坑被绕过，但遇到 Django 特有的新坑。Review Agent 一口气做了三件事：写入用户画像、记住 registry 地址、patch Skill 补上 ALLOWED_HOSTS 坑。</p>
+<p>第 3 次会话：零错误，一次搞定</p>
+<ul><li>用户: 帮我部署一个新的 FastAPI 微服务</li><li>Agent 已经知道你是谁、registry 在哪、集群在哪，Skill 里也包含了 ALLOWED_HOSTS 的坑——6 次调用，零错误。</li></ul>
+<p>三次对比：</p>
+<table><thead><tr><th>维度</th><th>会话 1 (冷启动)</th><th>会话 2 (Skill 复用)</th><th>会话 3 (全协同)</th></tr></thead><tbody><tr><td>工具调用</td><td>12 次</td><td>9 次</td><td>6 次</td></tr><tr><td>错误数</td><td>2</td><td>1</td><td>0</td></tr><tr><td>Memory</td><td>无</td><td>触发写入</td><td>系统提示词注入</td></tr><tr><td>Skill</td><td>触发创建</td><td>复用 + 自我修补</td><td>复用已修补版本</td></tr></tbody></table>
+<p>在开源 Hermes 中，这些经验积累在单个用户的~/.hermes/目录下。RDSHermes 把 Skill 存储从本地磁盘搬到了云端——一个 DBA 踩过的坑，团队里所有人的 Agent 都能绕过。自我进化不再是单点的，而是组织级的。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>安全机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Memory 威胁模式扫描防注入与外泄</li><li>Skill 安全扫描不通过即回滚</li><li>团队落地需凭证加密托管，密钥不落盘</li></ul><div class="pit"><ul><li>API Key/数据库密码明文配置暴露在终端权限攻击面</li></ul></div></div>
+<p>Agent 能往自己&quot;脑子&quot;里写东西，也就意味着攻击面。Hermes 做了两层防护。</p>
+<p>第一层，Memory 内容扫描：</p>
+<ul><li># tools/memory_tool.py:65-81</li><li>_MEMORY_THREAT_PATTERNS = [</li><li>(r&#x27;ignore\s+(previous|all|above|prior)\s+instructions&#x27;, &quot;prompt_injection&quot;),</li><li>(r&#x27;do\s+not\s+tell\s+the\s+user&#x27;, &quot;deception_hide&quot;),</li><li>(r&#x27;system\s+prompt\s+override&#x27;, &quot;sys_prompt_override&quot;),</li><li>(r&#x27;curl\s+[^\n]*\$\{?\w*(KEY|TOKEN|SECRET|PASSWORD)&#x27;, &quot;exfil_curl&quot;),</li></ul>
+<p>因为 Memory 最终会注入系统提示词，如果被诱导记住 &quot;ignore all previous instructions&quot;，下次会话就等于被劫持了。</p>
+<p>第二层，Skill 安全扫描：</p>
+<ul><li># tools/skill_manager_tool.py:56-74</li><li>def _security_scan_skill(skill_dir):</li><li>result = scan_skill(skill_dir, source=&quot;agent-created&quot;)</li><li>allowed, reason = should_allow_install(result)</li><li>if allowed is False:</li><li>report = format_scan_report(result)</li><li>return f&quot;Security scan blocked this skill ({reason}):\n{report}&quot;</li></ul>
+<p>自创的和从 Hub 安装的 Skill 走同一套扫描，不通过就回滚。</p>
+<p>开源 Hermes 的安全扫描解决了单机场景的问题。但在团队落地时，还有一个开源版管不到的风险：密钥安全。API Key 写在环境变量里、数据库密码明文存配置文件——一旦 Agent 有了终端权限，这些凭证就暴露在攻击面上。RDSHermes 用加密托管解决了这个问题：AK/SK 由网关代理鉴权，密钥不落盘，不暴露给 Agent 也不暴露给用户。Agent 自我进化的自由度越大，凭证隔离就越不可少。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>设计取舍</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>字符上限、冻结快照、后台审查等均有成本考量</li><li>Memory/Skill 进系统提示词，是一等安全边界</li></ul></div>
+<p>源码中的设计取舍：</p>
+<table><thead><tr><th>设计决策</th><th>表面效果</th><th>背后的考量</th></tr></thead><tbody><tr><td>Memory 限 2200 chars</td><td>迫使 Agent 挑重要的记</td><td>低质量 Memory 注入系统提示词 = 每次 API 调用都带噪声</td></tr><tr><td>声明式事实 vs 操作步骤分离</td><td>Memory 存事实，Skill 存步骤</td><td>两者的更新频率、触发条件、安全风险完全不同</td></tr><tr><td>冻结快照模式</td><td>系统提示词会话内不变</td><td>保护前缀缓存，避免每轮 API 调用重新计费</td></tr><tr><td>后台 fork 审查</td><td>用户感知不到 review 过程</td><td>自省不应占用用户任务的 attention budget</td></tr><tr><td>Nudge 计数器可配置</td><td>默认 10</td><td>太频繁浪费 API 成本，太稀疏错过学习机会</td></tr><tr><td>patch 优先于全量重写</td><td>局部修复 Skill</td><td>保留已验证的稳定部分，只改需要改的</td></tr><tr><td>安全扫描 + 自动回滚</td><td>拒绝恶意写入</td><td>Memory/Skill 最终进入系统提示词，是一等安全边界</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>进化方向</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>frontmatter 加使用统计做生命周期管理</li><li>识别常组合 Skill 合成工作流</li><li>创建后通知用户审核，团队治理可追溯</li></ul></div>
+<p>&quot;自动创建&quot;和&quot;自我修补&quot;已经跑通了，接下来几个方向值得做：</p>
+<p>生命周期管理：目前 YAML frontmatter 只有name、description、version。加上last_used、use_count、success_rate就能实现自动降权、归档和过时检测。</p>
+<p>技能组合：现在 Skill 是孤立的。如果能自动识别经常一起用的 Skill 合成工作流（如flask-k8s-deploy+nginx-reverse-proxy→full-stack-deploy），就不只是&quot;记住&quot;，而是&quot;思考&quot;了。</p>
+<p>创建透明度：Skill 创建是静默的，用户没有参与感。创建后给个简短通知，用户就能审核和纠正。</p>
+<p>团队治理：一个人用还好，团队落地需要知道&quot;谁让 Agent 做了什么&quot;。RDSHermes 的做法是写操作需二次确认才执行，每一次会话可追溯、可审计——Agent 能自我进化，但每一步操作都在审计链路上。</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>RDSHermes 落地</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>把自进化能力包装成开箱即用服务</li><li>补齐数据库安全纳管、凭证托管、审计监控</li><li>DBA 巡检从 40 分钟缩短到 2 分钟</li></ul></div>
+<p>从&quot;开发者工具&quot;到&quot;团队都能用&quot;</p>
+<p>前面讲的 Self-Improving 是 Hermes 的核心竞争力，但说实话，开源版 Hermes 仍然是一个偏开发者的工具——你得会写config.yaml，得懂怎么配 API Key 和 Gateway，出了问题要看日志排查。对于不写代码的团队成员来说，这个门槛还是太高了。</p>
+<p>RDSHermes 解决的就是这个问题：把 Hermes 的自进化能力包装成开箱即用的服务。</p>
+<p>对比开源 Hermes 的使用门槛：</p>
+<table><thead><tr><th></th><th>开源 Hermes Agent</th><th>RDSHermes</th></tr></thead><tbody><tr><td>开始使用</td><td>命令行安装，手写 config.yaml</td><td>控制台一键开通，零配置</td></tr><tr><td>对话界面</td><td>终端 CLI</td><td>内置 WebUI，打开浏览器就能对话</td></tr><tr><td>接入 IM</td><td>内置 Gateway，config.yaml 配凭证后命令行启动</td><td>控制台里填个 App ID 就完成</td></tr><tr><td>数据库连接</td><td>手动配连接串，密码明文写配置</td><td>一键接入 RDS 实例，密码自动加密</td></tr><tr><td>云凭证管理</td><td>AK/SK 写进环境变量或配置文件</td><td>加密托管，网关代理鉴权，密钥不落盘</td></tr><tr><td>技能管理</td><td>Agent 自动创建，磁盘文件</td><td>Skill Hub 预装专业技能</td></tr></tbody></table>
+<p>简单说：开源 Hermes 是给开发者的引擎，RDSHermes 是给整个团队的成品车。</p>
+<p>它在 Hermes 的 Self-Improving 能力之上，补齐了四件事：</p>
+<ul><li>数据库安全纳管 ： MySQL、PostgreSQL、SQL Server、MariaDB 多引擎一键接入，密码提交瞬间加密。可以设只读模式——Agent 能查但不能改，生产环境安全有底线。</li><li>身份认证托管 ： AK/SK 加密托管，Agent 调用云 API 时由网关代理鉴权，密钥不暴露给 Agent 也不暴露给用户。</li><li>内置数据库专业技能 ： Skill Hub 预装智能巡检、慢 SQL 诊断、索引优化等技能。DBA 说一句&quot;帮我巡检一下 prod-mysql&quot;，Agent 连着你的库做真实分析。</li><li>全链路监控审计 ： 写操作需确认才执行，会话可追溯，Token 消耗可监控，安全事件有告警。</li></ul>
+<p>效果是什么？市场部的同事打开 WebUI 用一句话查渠道数据，不需要装任何东西；开发者排查线上问题不用等 DBA 排期；DBA 在飞书群里 @一下就能做晨间巡检，从 40 分钟缩短到 2 分钟。不是所有人都会写config.yaml，但所有人都会打字。</p>
+<p>RDSHermes 现已上线阿里云 RDS AI 应用市场，支持免费试用。如果你已经在用 OpenClaw/RDSClaw，hermes claw migrate一条命令就能导入全部配置和记忆数据，平滑切换。</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>三件事配合：Memory 记你是谁、Skill 记怎么做、Nudge 保循环</li><li>v0.6.0 补多实例、MCP、迁移工具，切换门槛降低</li></ul></div>
+<p>Hermes Agent 的 Self-Improving 就是三件事的配合：Memory 记住你是谁，Skill 记住怎么做事，Nudge Engine 保证这个循环不停转。用得越久，Agent 帮你干活就越快、踩坑就越少。</p>
+<p>OpenClaw 在 AI Agent 普及上立下了汗马功劳。但一个需要&quot;调教指南&quot;的工具、一个升级就崩溃的系统、一个越用记忆文件越大越慢的架构——它正在完成自己的历史使命。</p>
+<p>开发者正在用数据说话。不是因为 Hermes 的功能更多，而是因为 Hermes 做了一件 OpenClaw 架构上做不了的事：用得越久，越好用。v0.6.0 之前，Hermes 还有&quot;只能跑单 Agent&quot;的硬伤；现在 Profiles 补上了多实例、MCP Server Mode 打通了 IDE 生态、迁移工具覆盖了 sessions/cron/memory——OpenClaw 用户的切换门槛已经被系统性地拆掉了。再加上 RDSHermes 把数据库和云资源的安全访问也管起来了，Agent 能触达的边界远不止写代码。</p>
+<p>如果你现在还在手写 Skill、手动维护 MEMORY.md、每次升级前先做好心理建设——不妨想想：你的时间应该花在给 Agent 做运维上，还是让 Agent 自己学会做事上？</p>
+<p>欢迎点击阅读原文详细了解RDS AI 应用～</p>
+<p>阅读原文</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 11 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Memory vs Skill</h4><p>Memory 存声明式事实（我知道什么），Skill 存操作步骤（我会做什么），分工不同。</p><a class="src-link" href="#sec-03">原文 → Memory 系统</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>OpenClaw vs Hermes</h4><p>OpenClaw 手写 Skill 越用越僵，Hermes 自动创建加 patch，经验越用越厚。</p><a class="src-link" href="#sec-04">原文 → Skill 系统</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>12→9→6 次调用</h4><p>三次 K8s 部署：工具调用 12→9→6 次，错误 2→1→0，第三轮零错误。</p><a class="src-link" href="#sec-06">原文 → 三次会话案例</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>Data Is the Final Moat</h4><p>模型智能商品化后，真正护城河是 Agent 工作中积累的领域知识。</p><a class="src-link" href="#sec-04">原文 → Skill 系统</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>超限不静默丢弃</h4><p>Memory 超限时 add 直接失败并返回现有条目，让模型主动删改压缩。</p><a class="src-link" href="#sec-03">原文 → Memory 系统</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>冻结快照</h4><p>load_from_disk 后冻结 _system_prompt_snapshot，会话内不变以共享前缀缓存。</p><a class="src-link" href="#sec-03">原文 → Memory 系统</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>patch+回滚</h4><p>fuzzy_find_and_replace 局部修补，改后跑 _security_scan_skill，不通过即原子回滚。</p><a class="src-link" href="#sec-04">原文 → Skill 系统</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>审查递归</h4><p>后台审查实例须禁用自身 nudge 计数器，否则无限递归。</p><a class="src-link" href="#sec-05">原文 → Nudge Engine</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>重型背包 vs 动态图书馆</h4><p>OpenClaw 全量塞上下文，Hermes 只放名字加一句话索引，按需 skill_view。</p><a class="src-link" href="#sec-04">原文 → Skill 系统</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>进化需要约束</h4><p>Memory/Skill 会注入系统提示词，安全扫描加回滚是一等安全边界。</p><a class="src-link" href="#sec-07">原文 → 安全机制</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>巡检提速</h4><p>DBA 在飞书群里晨间巡检，从 40 分钟缩短到 2 分钟。</p><a class="src-link" href="#sec-10">原文 → RDSHermes 落地</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>Agent 干完活把踩坑经验提炼成 Skill，下次同类任务直接调用，越用越强。</li>
+          <li>Memory 存事实、Skill 存步骤、Nudge 定时复盘，三者闭环是自进化最小组合。</li>
+          <li>自进化必须配安全约束：威胁扫描、安全扫描与回滚，否则记忆可被劫持。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559661&amp;idx=1&amp;sn=ca9426f948819f172ec44f671127aa29" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559661&amp;idx=1&amp;sn=ca9426f948819f172ec44f671127aa29</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">500 行代码从零撸一个 Agent 框架为什么值得做,怎么做</h1>
+  <p class="lede">后端工程师选型前，先手写一个500行最小Agent框架，再回头读框架源码</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 24 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>先造小轮子再选框架</a>
+          <a href="#sec-02"><span class="n">02</span>为什么自己写一遍</a>
+          <a href="#sec-03"><span class="n">03</span>500行的骨架分层</a>
+          <a href="#sec-04"><span class="n">04</span>三种过度设计</a>
+          <a href="#sec-05"><span class="n">05</span>回看 LangChain</a>
+          <a href="#sec-06"><span class="n">06</span>下一篇预告</a>
+          <a href="#sec-07"><span class="n">07</span>参考与致谢</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 先造小轮子再选框架</a>
+          <a href="#sec-02">02 为什么自己写一遍</a>
+          <a href="#sec-03">03 500行的骨架分层</a>
+          <a href="#sec-04">04 三种过度设计</a>
+          <a href="#sec-05">05 回看 LangChain</a>
+          <a href="#sec-06">06 下一篇预告</a>
+          <a href="#sec-07">07 参考与致谢</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>本篇是《Agent 工程实践》系列 · 第 03 期</p>
+<p>前两篇讲了站队、讲了范式。这一篇不讲&quot;选什么框架&quot;,讲**&quot;你为什么要自己写一个&quot;**。</p>
+<p>主要参考素材:Datawhale 开源教程 Hello-Agents 第 7 章《构建你的智能体框架》(CC BY-NC-SA 4.0),这一章手把手带你把一个 500 行左右的最小 Agent 框架搓出来——恰好是我这一篇的主要论据。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>先造小轮子再选框架</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>后端群里常见&quot;选哪个框架&quot;之争，作者认为这个问题问早了</li><li>值得先花两三个周末手写500行最小框架，为回头读主流框架打底</li></ul></div>
+<p>先说个我在几个后端群里反复看到的场景。</p>
+<p>有人问:&quot;我要做 XX 场景的 Agent,LangChain / LangGraph / AutoGen / CrewAI / MetaGPT / AgentScope 选哪个?&quot; 底下必然是一屏又一屏的推荐,各有拥趸,吵到最后也没个结论。</p>
+<p>我的观点很粗暴:这个问题问早了。</p>
+<p>对刚从后端切进 Agent 的工程师来说,在你选任何一个主流框架之前,值得先花两三个周末,自己撸一个 500 行左右的最小 Agent 框架——不是为了替代 LangChain,是为了当你回头再选 LangChain / LangGraph 时,你能看见每一层抽象在解决什么问题、又付出了什么代价。</p>
+<p>这一篇讲三件事:</p>
+<ul><li>1.  为什么值得造这个轮子 ——不是复读&quot;深入理解&quot;,给你 4 个具体到能面试用的收益</li><li>2.  500 行里到底该有什么 ——最小骨架的分层,以及每一层为什么长这样</li><li>3.  动手时避免的三种&quot;过度设计&quot; ——这也是我读别人手写框架时最常见的坑</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>为什么自己写一遍</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>原书三条收益偏虚，作者换成四个面试可讲的硬收益</li><li>能跑的Agent核心就是 while 循环加 tool_registry.execute()</li><li>框架里真正的业务逻辑很多藏在 Prompt 里</li><li>生产打点位置、trace_id、token 统计都要在写框架时想清</li></ul></div>
+<p>Hello-Agents 第 7 章一上来就问了这个问题,给的答案我很同意,但对后端工程师,我想再翻译一层。原书是这样写的:</p>
+<p>构建自己的 Agent 框架,实际上是一个从&quot;使用者&quot;向&quot;构建者&quot;转变的过程。这种转变带来的价值是长远的。</p>
+<ul><li>•  深度理解 Agent 工作原理 :通过亲手实现每个组件,开发者能够真正理解 Agent 的思考过程、工具调用机制、以及各种设计模式的好坏与区别。</li><li>•  获得完全的控制权 :自建框架意味着对每一行代码都有完全的掌控,可以根据具体需求进行精确调优,而不受第三方框架设计理念的束缚。</li><li>•  培养系统设计能力 :框架构建过程涉及模块化设计、接口抽象、错误处理等软件工程核心技能……</li></ul>
+<p>—— 引自《Hello-Agents》第 7.1.1 节</p>
+<p>上面这段话没错。但对已经写了几年后端的人来说,&quot;培养系统设计能力&quot;这种收益太虚。我想换成四个更硬、更能拿去面试讲的收益:</p>
+<p>收益一:你能看见&quot;抽象的成本&quot;</p>
+<p>LangChain 有几十个概念:Chain、Runnable、Agent、AgentExecutor、Tool、Toolkit、Memory、Retriever、OutputParser……每一个概念都在解决问题,但也每一个都在加抽象层。</p>
+<p>如果你没自己写过,你会本能地以为这些抽象是&quot;必须的&quot;。而当你写过一遍之后你会发现:一个能跑的 Agent,核心逻辑就是一个 while 循环加一个 tool_registry.execute()——就是我们上一篇里 ReAct 那 20 行代码。</p>
+<p>所有额外的抽象,都是在解决&quot;如何让这 20 行代码支持更多花样&quot;。理解这一点之后,你选框架的判断依据就变了:不是选&quot;最强大的&quot;,是选&quot;抽象层刚好覆盖你的场景、不多不少的&quot;。这是一个后端工程师面对框架时该有的姿态。</p>
+<p>收益二:你能看见&quot;Prompt 和代码的边界在哪&quot;</p>
+<p>写完一遍你会发现一个反直觉的事实:Agent 框架里,真正的&quot;业务逻辑&quot;很多藏在 Prompt 里,而不是代码里。</p>
+<p>比如 Hello-Agents 里 Reflection 那份 Prompt——&quot;你是一位极其严格的代码评审专家,对代码的性能有极致的要求&quot;——这句话不是文档,它是代码的一部分,它决定了整个反思循环能不能给出有价值的批评。</p>
+<p>对后端工程师,这是一个心智模型的重塑:过去你写 if-else 决定行为,现在你写 Prompt 决定行为。这两种&quot;控制流&quot;要放在哪一层、如何版本管理、如何测试、如何 diff——你亲手写一遍框架,才能对这几个问题有肌肉记忆。</p>
+<p>收益三:你能看见&quot;生产级 Agent 应该在哪打点&quot;</p>
+<p>Hello-Agents 那 500 行代码,里面到处是 print(&quot;🤖 xxx 开始处理:&quot;)、print(&quot;🔧 检测到 N 个工具调用&quot;)、print(&quot;--- 第 N 步 ---&quot;)。这些不是给读者看的调试输出——这就是生产环境应该埋的观测点。</p>
+<p>亲手写一遍,你就知道 span 应该埋在哪一层、trace_id 应该在哪一层生成、每一轮的 token 消耗要怎么统计。等到用 LangGraph 时,你能一眼看出它的 LangSmith 是在拦截什么——不是黑盒,而是&quot;我知道它在哪一步截的胎&quot;。</p>
+<p>收益四:面试时你有硬东西可讲</p>
+<p>这是最俗、但也是 2026 年最实用的一条。</p>
+<p>我看过太多 Agent 相关简历,写的都是&quot;熟悉 LangChain / LangGraph / Dify,能快速搭建 Agent 应用&quot;。这类描述在面试官看来是中性偏负面的——没法区分你和另外 100 个投同样岗位的人。</p>
+<p>但如果简历上写&quot;从零实现了一个 500 行的最小 Agent 框架,支持 ReAct / Plan-and-Solve / Reflection 三种范式,内置工具注册和链式调用&quot;,面试官会立刻追问,而你已经想过每一个答案:</p>
+<ul><li>•  &quot;你的 tool_registry 是怎么设计的?&quot;  — 一个  Dict[str, Tool]  打底,name 做主键;支持&quot;注册 Tool 对象&quot;和&quot;直接注册函数&quot;两种入口(后者自动包一层适配);对外三个方法: register / get / format_for_prompt ——最后这个是给 Prompt 用的工具描述拼接</li><li>•  &quot;ReAct 循环里 max_steps 兜底逻辑放哪一层?&quot;  — 放在 Agent 的  run  主循环里,而不是工具层;触发之后不要直接抛异常或  return None ,而是把已有 history 塞给 LLM 让它做一次&quot;最后一搏&quot;回答(见上一篇 02 里那段)</li><li>•  &quot;为什么选择用字符串匹配来做 Finish 判断?&quot;  — 因为它简单、可 diff、可 grep、可测试;OpenAI 原生 function calling 是更&quot;正规&quot;的做法,但它把控制流藏进了 API 响应结构里,失去可读性——教学场景优先字符串协议,生产场景视对模型的信任度选择</li></ul>
+<p>这些追问,每一个都是你已经想过、能对答如流的。这就是&quot;造过一次轮子&quot;和&quot;用过 10 个框架&quot;在面试上的差距。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>500行的骨架分层</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>LLM层别发明新抽象，统一在OpenAI协议上，多供应商在其下做兼容</li><li>Agent基类只保留一个 run(input)-&gt;str 抽象方法，历史管理放基类</li><li>Tool层用注册表加&quot;万物皆工具&quot;，字符串协议与function calling二选一</li></ul><div class="pit"><ul><li>OpenAI协议兼容转换有损：Claude/Gemini字段与function calling差异</li><li>万物皆工具带来状态管理、类型安全、调度粒度三方面代价</li></ul></div></div>
+<p>好,决定要写了。写什么?</p>
+<p>Hello-Agents 第 7 章给了一个非常克制的目录结构,我拿过来作为讨论的锚点:</p>
+<ul><li>hello-agents/</li><li>├── hello_agents/</li><li>│   ├── core/                     # 核心框架层</li><li>│   │   ├── agent.py              # Agent 基类</li><li>│   │   ├── llm.py                # HelloAgentsLLM 统一接口</li><li>│   │   ├── message.py            # 消息系统</li><li>│   │   ├── config.py             # 配置管理</li><li>│   │   └── exceptions.py         # 异常体系</li><li>│   ├── agents/                   # Agent 实现层</li><li>│   │   ├── simple_agent.py       # SimpleAgent 实现</li><li>│   │   ├── react_agent.py        # ReActAgent 实现</li><li>│   │   ├── reflection_agent.py   # ReflectionAgent 实现</li><li>│   │   └── plan_solve_agent.py   # PlanAndSolveAgent 实现</li><li>│   ├── tools/                    # 工具系统层</li><li>│   │   ├── base.py               # 工具基类</li><li>│   │   ├── registry.py           # 工具注册机制</li><li>│   │   ├── chain.py              # 工具链管理系统</li><li>│   │   ├── async_executor.py     # 异步工具执行器</li><li>│   │   └── builtin/              # 内置工具集</li><li>│   │       ├── calculator.py     # 计算工具</li><li>│   │       └── search.py         # 搜索工具</li><li>└──</li></ul>
+<p>这个目录里,我认为最有代表性的三层是:LLM 客户端 / Agent 基类 / Tool 注册表。写好这三层,你就理解了 90% 主流框架在干什么。下面逐层拆。</p>
+<h3 class="sub">2.1 LLM 层:统一在&quot;OpenAI 协议&quot;上</h3>
+<p>Hello-Agents 的第一个选择,我觉得是整章最重要的一个:不发明新接口,直接站在 OpenAI 协议上。原书讲得很直接:</p>
+<p>OpenAI 的 API 已经成为了行业标准,几乎所有主流的 LLM 提供商都在努力兼容这套接口。HelloAgents 选择在这个标准之上构建,而不是重新发明一套抽象接口……当你掌握了 HelloAgents 的使用方法后,迁移到其他框架或将其集成到现有项目中时,底层的 API 调用逻辑是完全一致的。</p>
+<p>—— 引自《Hello-Agents》第 7.1.2 节</p>
+<p>对后端工程师来说,这个决定的含金量在于:你在给自己造一个可移植的抽象,而不是又发明一个 vendor lock-in。</p>
+<p>对比一下:如果你自作聪明地定义了 MyLLM.ask() / MyLLM.chat() / MyLLM.generate_with_tools()——恭喜你,你写完这个框架的那一刻就已经和 LangChain 一样&quot;过度抽象&quot;了。第二天你想接一个新模型,就得重写 adapter。</p>
+<p>第一条工程判断——不要发明新的 LLM 抽象,你的 HelloAgentsLLM.think(messages) 参数结构应该就是 OpenAI Chat Completions 的 messages 数组。所有的多供应商适配、本地模型(vLLM / Ollama)接入,都在&quot;这个协议之下&quot;做兼容,不在&quot;这个协议之上&quot;再叠一层。</p>
+<p>Hello-Agents 后面 7.2.3 节的自动检测机制(优先级依次是&quot;特定服务商环境变量 → base_url 域名/端口 → API 密钥格式&quot;)也值得抄——它把&quot;选哪家供应商&quot;从代码问题降级为环境变量问题,这对生产环境的多环境部署非常重要:同一份代码,在开发机上用本地 Ollama,在预发上用 ModelScope,在生产上用 OpenAI,你的应用层代码一行都不用改。</p>
+<p>不过要诚实说一下这个决定的代价——它是有 tradeoff 的,不能装作没有:</p>
+<ul><li>•  Anthropic Claude 的原生 API  里  system  是独立字段,不是 messages 数组里 role=system 的元素;硬统一到 OpenAI 协议, system  会被塞进 messages 里,某些边界行为(比如 system 长度限制)会和原生 API 不完全一致</li><li>•  Gemini 的原生格式  用  contents  数组而不是  messages ,字段名是  parts  而不是  content ——落到 HelloAgents 这层是走了&quot;OpenAI 兼容端点&quot;,而不是 Gemini 原生端点,某些多模态特性(如  inlineData )可能会丢</li><li>•  Function calling 的字段  各家协议略有差异,比如 Anthropic 用  tool_use  /  tool_result ,OpenAI 用  tool_calls  /  tool  role;统一在 OpenAI 协议上意味着 要靠各家自己的兼容端点做转换 ——转换有损、有 bug 可能性</li></ul>
+<p>结论:教学场景选 OpenAI 协议一统是对的,不然学习成本会爆炸;但生产上如果你的场景重度依赖 Anthropic 或 Gemini 的独有特性(比如 Anthropic 的 prompt caching、Gemini 的原生多模态),就该老老实实用原生 SDK,别指望&quot;兼容层&quot;能给你一切。</p>
+<h3 class="sub">2.2 Agent 基类:一个抽象方法就够</h3>
+<p>Agent 基类要多复杂?看 Hello-Agents 的答案:</p>
+<ul><li>class Agent(ABC):</li><li>def__init__(self, name, llm, system_prompt=None, config=None):</li><li>self.name = name</li><li>self.llm = llm</li><li>self.system_prompt = system_prompt</li><li>self.config = config or Config()</li><li>self._history: list[Message] = []</li><li>@abstractmethod</li><li>defrun(self, input_text: str, **kwargs) -&gt; str:</li><li>pass</li><li>defadd_message(self, message): self._history.append(message)</li><li>defclear_history(self): self._history.clear()</li><li>defget_history(self): returnself._history.copy()</li></ul>
+<p>—— 节选自《Hello-Agents》第 7.3.3 节</p>
+<p>就这么点东西。唯一一个抽象方法就是 run(input_text) -&gt; str。</p>
+<p>这一层的取舍,是整个框架的性格所在。我给三个观点:</p>
+<p>观点一:抽象方法只应该有一个。 你可以看到,ReAct 有 while 循环,Plan-and-Solve 有 plan+execute 两阶段,Reflection 有 execute-reflect-refine 三段。这三种范式内部形状差别很大,但对外都可以被 run(input) -&gt; str 抹平。Agent 基类不需要预判&quot;未来会有什么范式&quot;,只需要保证&quot;任何范式都能塞进 run 里&quot;。</p>
+<p>观点二:历史管理放在基类里就够了。_history 是一个 list of Message,加、清、拷贝三个方法。别搞什么 ConversationBufferMemory / ConversationSummaryMemory 的多态——那些是后期长在这一层之上的可选组件,不是骨架。</p>
+<p>观点三:异步暂时别做。 你会看到 Hello-Agents 里也没在 base Agent 里做 async run。同步 run 能覆盖 95% 的使用场景,而异步会让整个调用链的写法完全变形。等你真的需要并发(比如同时处理多用户请求)时,在服务层做异步,而不是在 Agent 内部做异步。这是后端工程师老生常谈的原则:异步的边界越往外推越好。</p>
+<h3 class="sub">2.3 Tool 层:注册表 + &quot;万物皆工具&quot;</h3>
+<p>Hello-Agents 在这一层做了一个大胆但极其正确的简化,原书叫&quot;万物皆为工具&quot;:</p>
+<p>为了彻底贯彻轻量级与教学友好的理念,HelloAgents 在架构上做出了一个关键的简化:除了核心的 Agent 类,一切皆为 Tools。在许多其他框架中需要独立学习的 Memory(记忆)、RAG(检索增强生成)、RL(强化学习)、MCP(协议)等模块,在 HelloAgents 中都被统一抽象为一种&quot;工具&quot;。</p>
+<p>—— 引自《Hello-Agents》第 7.1.2 节</p>
+<p>这一条我要重点标出来——&quot;万物皆工具&quot;这个决定,决定了你的框架 500 行能收得住。</p>
+<p>想想 LangChain 有多少个平级概念:Tool、Retriever、Memory、Callback、OutputParser、Runnable……每一个都是一等公民,每一个都有自己的基类、生命周期、抽象方法。这就是为什么它的代码量以 10 万行计。</p>
+<p>而 Hello-Agents 说:记忆是工具,RAG 是工具,MCP 客户端也是工具。它们的入口都是 tool.run(parameters: dict) -&gt; str。这在设计上很暴力,但对 500 行框架完全够用。</p>
+<p>Tool 基类——两个抽象方法(run + get_parameters)加一个 name / description。就这么多。</p>
+<p>ToolRegistry——一个 dict,加、查、执行、format 描述给 Prompt 用。就这么多。</p>
+<p>我把 Hello-Agents 里工具调用的 Prompt 格式约定摘一下,这是整个 Tool 层的&quot;总线协议&quot;:</p>
+<p>当需要使用工具时,请使用以下格式:</p>
+<p>[TOOL_CALL:{tool_name}:{parameters}]</p>
+<p>例如:[TOOL_CALL:search:Python编程] 或 [TOOL_CALL:memory:recall=用户信息]</p>
+<p>—— 引自《Hello-Agents》第 7.4.1 节</p>
+<p>你可以用这套字符串协议,也可以用 OpenAI 原生的 function calling(Hello-Agents 在 7.4.5 节的 FunctionCallAgent 里给了做法)。两种选一种,不要两种都做——这一层的复杂度是 500 行框架的头号敌人。</p>
+<p>不过&quot;万物皆工具&quot;这个决定,同样有它的代价——不写清楚,读者上生产会翻车:</p>
+<ul><li>•  状态问题 :工具语义上是&quot;无状态的请求-响应&quot;,但记忆(Memory)天生是 有状态 的——它需要持久化、需要读写并发控制、需要 TTL 管理。把 Memory 硬做成 tool,意味着这些状态管理要么放在 tool 内部(每个 tool 自己实现一份,重复)、要么就得在 registry 层再叠一个 lifecycle hook(把这层复杂度拱回来了)</li><li>•  类型安全丢失 :全部字符串协议意味着 参数类型全部靠 JSON schema 或 Prompt 描述来兜 ;RAG 检索的 top_k 是整数、Memory 的 timestamp 是时间戳、工具执行的 timeout 是浮点数——这些原本可以靠 Python 类型系统兜住的东西,现在全靠 LLM 输出乖一点</li><li>•  调度粒度粗 :每次 tool 调用都要过一遍 LLM 的决策(该不该调、传什么参数),这在 Memory / RAG 这种&quot;应该由框架直接决定何时调用&quot;的场景里是 浪费的 ——生产级框架里通常会把 Memory 和 RAG 从 tool 里&quot;提出来&quot;,做成 pipeline 的固定环节</li></ul>
+<p>所以&quot;万物皆工具&quot;是教学阶段的极简策略,不是生产架构。等你的框架长到需要 Memory / RAG 稳定接入时,就该考虑给记忆和检索单独开一层——但那已经是第二次迭代的事了,不影响你先把 500 行搭起来。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>三种过度设计</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>造轮子阶段一切追求&quot;看得见&quot;，同步单线程阻塞即可</li><li>多Agent、记忆、上下文工程都是单Agent骨架之后的可选组件</li><li>&quot;够用的抽象&quot;优于&quot;正确的抽象&quot;</li></ul><div class="pit"><ul><li>坑一：在500行里做流式+异步+分布式</li><li>坑二：提前抽象多Agent协作</li><li>坑三：过早追求正确的抽象</li></ul></div></div>
+<p>前面讲怎么写。这一节讲别怎么写——这些是我自己写第一版时踩过、以及我读别人写的手写框架时最常见的坑。</p>
+<p>坑一:在 500 行里做&quot;流式 + 异步 + 分布式&quot;</p>
+<pre><code>我看过一个朋友的第一版手写 Agent 框架,一上来就是 async def run,里面还嵌套了一个 AsyncGenerator 做流式返回,再外面套了个 Celery 任务分发。</code></pre>
+<p>我劝他:这三件事(流式、异步、分布式)在造轮子阶段一件都别做。</p>
+<p>理由很简单:这三件事都是在&quot;能跑起来&quot;之后的优化。你现在的目标是搞懂 Agent 循环,不是搞一个高可用系统。同步、单线程、阻塞的 500 行代码,才能让你把每一轮里发生了什么看得清清楚楚。等你真需要流式,再在 LLM 客户端加一个 stream_think;等你真需要异步,再在服务层裹一层 FastAPI 的 BackgroundTasks。</p>
+<p>造轮子阶段的第一原则:一切追求&quot;看得见&quot;。看得见每一次 LLM 调用、看得见每一次工具执行、看得见每一次状态转移。async 和流式都是&quot;让人看不见&quot;的技术,和造轮子的目的相反。</p>
+<p>坑二:提前抽象&quot;多 Agent 协作&quot;</p>
+<p>第二个常见坑:一上来就想做多 Agent(A2A、MCP、CrewAI 那套)。</p>
+<p>我理解这个冲动——&quot;AI 未来一定是多 Agent 协作嘛&quot;。但在 500 行的框架里塞多 Agent,会导致你把大部分脑力花在&quot;Agent 之间怎么通信&quot;上,而真正核心的&quot;单 Agent 循环&quot;反而写得潦草。</p>
+<p>Hello-Agents 的做法值得学:第 7 章就是单 Agent,多 Agent 通信协议(MCP、A2A、ANP)全部放到第 10 章——先把单体的骨架搭结实,后面加通信协议是水到渠成的事情。</p>
+<p>同样的道理:记忆系统(第 8 章)、上下文工程(第 9 章)也都是在单 Agent 骨架长好之后再加的可选组件。你的 500 行框架里,记忆就是那个 self._history: list[Message]。够了。</p>
+<p>坑三:过早追求&quot;正确的抽象&quot;</p>
+<p>最后一个坑,是很多有洁癖的后端工程师会掉的:过早追求&quot;正确的抽象&quot;。</p>
+<p>具体表现是:写到一半开始纠结&quot;Tool 和 Function 是不是应该有共同基类&quot;、&quot;Message 是不是应该分 Turn 和 Event 两种&quot;、&quot;ToolRegistry 是不是应该继承一个通用的 Registry 泛型&quot;……</p>
+<p>停。这些纠结在 500 行里都是负价值。</p>
+<p>一个我常用的自我提醒:造轮子阶段,&quot;够用的抽象&quot;永远优于&quot;正确的抽象&quot;。因为你根本还没有足够的用例,来判断哪种抽象是&quot;正确&quot;的——正确的抽象只可能从大量的实际使用中长出来,不可能在动笔前想出来。</p>
+<p>Hello-Agents 在这方面的克制值得学:它的 Message 类就四个字段(content / role / timestamp / metadata);它的 Config 也就那么几个默认值加一个 from_env;它的 ToolRegistry 甚至同时支持&quot;注册 Tool 对象&quot;和&quot;直接注册函数&quot;两种方式——看起来不够优雅,但恰好够用。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>回看 LangChain</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>回看LangChain：Runnable、AgentExecutor等对应手写代码</li><li>AgentExecutor的复杂参数是手写时踩过的坑的名字</li><li>从使用者变成建造者，不再仰视框架</li></ul></div>
+<p>假设你按上面的路线走完了 500 行的最小框架——现在有意思的事情发生了。</p>
+<p>回过头去看 LangChain 的源码,你会开始有&quot;翻译&quot;能力:</p>
+<ul><li>• 看到  Runnable ,你知道那是把  run(x) -&gt; y  泛化成了&quot;任何可组合的函数&quot;</li><li>• 看到  RunnableParallel ,你知道那是造了一个&quot;并发执行多个工具&quot;的容器——就是 Hello-Agents 里 AsyncToolExecutor 的那一层</li><li>• 看到  AgentExecutor ,你知道那是把 ReActAgent 的 while 循环封装成了可配置的 driver</li><li>• 看到  OutputParser ,你知道那是把上一篇 ReAct 里那个  _parse_output  独立出来的一个可注册组件</li><li>• 看到  CallbackHandler ,你知道那是把 Hello-Agents 里那些  print  语句抽象成了事件监听器</li></ul>
+<p>每一个 LangChain 的复杂抽象,你都能对应回你手写的那 500 行里的某一段。</p>
+<p>一个具体的&quot;顿悟时刻&quot;</p>
+<p>让我给你举一个我在读源码时印象最深的例子——LangChain 的 AgentExecutor 到底为什么长得那么复杂。</p>
+<p>如果你只用 LangChain,你大概只会写:</p>
+<ul><li>executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True)</li><li>result = executor.invoke({&quot;input&quot;: &quot;...&quot;})</li></ul>
+<p>看起来轻飘飘一行。但你打开 AgentExecutor 的源码,会发现光是主循环就有几百行,里面到处是各种 handle_parsing_errors、max_iterations、early_stopping_method、return_intermediate_steps、trim_intermediate_steps、intermediate_steps 到底存在哪儿……</p>
+<p>没写过 500 行的时候,这些参数看起来是&quot;高级功能&quot;、&quot;最佳实践&quot;、&quot;专业选项&quot;,让人一边使用一边心虚。</p>
+<p>写过 500 行之后再看,每一个参数你都秒懂:</p>
+<ul><li>•  handle_parsing_errors  — 就是我们上一篇里那个&quot;LLM 输出格式错了,把错误塞回去当 Observation&quot;的开关</li><li>•  max_iterations  — 就是  while current_step &lt; self.max_steps</li><li>•  early_stopping_method  — 就是达到 max_steps 之后&quot;直接 return / force finish 一次&quot;的策略选择</li><li>•  return_intermediate_steps  — 就是&quot;要不要把 history 一起返回给调用方&quot;</li><li>•  trim_intermediate_steps  — 就是&quot;history 太长的时候怎么截&quot;</li></ul>
+<p>每一个参数对应你写 500 行时踩过的一个坑。这一刻你会有一种奇怪的复合情绪:一半是&quot;原来他们和我踩过一样的坑&quot;,另一半是&quot;原来我踩的这些坑都是有名字的&quot;。这就是&quot;从使用者变成建造者&quot;的心理转变——你不再仰视框架,你把它看成&quot;另一个自己写的东西,只是他们比我早了几年&quot;。</p>
+<p>这种转变的价值,比会用任何一个框架都大得多。</p>
+<p>这也是 Hello-Agents 第 7 章为什么值得给后端工程师推荐——它不是要你放弃 LangChain,而是要你带着&quot;读得懂 LangChain&quot;的能力,去用 LangChain。这一步,靠读文档不行,靠看视频不行,只能靠自己在 IDE 里把那 500 行一行一行敲出来。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>下一篇预告</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>下一篇讲记忆：短期、长期、RAG检索、分层记忆架构</li><li>上下文如何流动是从 Demo 到可用的最大分水岭</li></ul></div>
+<p>这一篇讲了框架的骨架。下一篇讲记忆——短期记忆、长期记忆、RAG 检索、分层记忆架构。为什么记忆值得单独一篇?因为&quot;上下文如何在 Agent 里流动&quot;,几乎是从 Demo 到能用的最大分水岭。上一篇讲了三种范式的思考方式,下一篇讲思考的&quot;底料&quot;是怎么组织的。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>参考与致谢</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>素材引自 Datawhale Hello-Agents 第7章，遵循 CC BY-NC-SA 4.0</li><li>项目地址 github.com/datawhalechina/hello-agents</li></ul></div>
+<p>本文的部分素材(HelloAgents 目录结构、Agent 基类代码、&quot;万物皆为工具&quot;设计理念段落、LLM 层设计原则段落、工具调用 Prompt 格式约定)引自 Datawhale 开源教程 Hello-Agents:从零开始构建智能体,遵循 CC BY-NC-SA 4.0 协议。</p>
+<ul><li>• 项目地址:github.com/datawhalechina/hello-agents</li><li>• 在线阅读:datawhalechina.github.io/hello-agents/</li><li>• 本文对应章节:第 7 章《构建你的智能体框架》</li><li>• 完整可运行的框架代码: code/chapter7/  目录 +  pip install &quot;hello-agents==0.1.1&quot;</li></ul>
+<p>强烈推荐先读第 7 章原文,再动手把这 500 行敲出来——这一章是全书里工程实践含量最高的一章,也是本系列后面所有内容(记忆、评估、协议、项目)的技术底座。</p>
+<p>本文同样以 CC BY-NC-SA 4.0 协议开放。转载请附本文链接及以上来源信息。</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>核心逻辑只有20行</h4><p>能跑的Agent核心就是 while 循环加 tool_registry.execute()，其余抽象都为支持更多花样。</p><a class="src-link" href="#sec-02">原文 → 为什么自己写一遍</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>if-else vs Prompt控制流</h4><p>过去写if-else决定行为，现在写Prompt决定行为；两种控制流都要想分层、版本、测试、diff。</p><a class="src-link" href="#sec-02">原文 → 为什么自己写一遍</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>500行 vs 10万行</h4><p>Hello-Agents约500行收得住，LangChain代码量以10万行计，差别来自平级概念的多少。</p><a class="src-link" href="#sec-03">原文 → 500行的骨架分层</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Agent基类只留一个抽象方法</h4><p>run(input_text)-&gt;str 一个抽象方法，外加 name/llm/system_prompt/config/_history 与增清拷贝。</p><a class="src-link" href="#sec-03">原文 → 500行的骨架分层</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>HelloAgentsLLM.think(messages)</h4><p>不发明新接口，参数结构就是OpenAI Chat Completions的messages数组，供应商差异在其下兼容。</p><a class="src-link" href="#sec-03">原文 → 500行的骨架分层</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>工具调用字符串协议</h4><p>[TOOL_CALL:{tool_name}:{parameters}] 字符串协议与 function calling 二选一</p><a class="src-link" href="#sec-03">原文 → 500行的骨架分层</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>万物皆工具 vs 一等公民</h4><p>Hello-Agents把Memory/RAG/MCP都抽象为工具；LangChain让Tool/Retriever/Memory各自成为一等公民。</p><a class="src-link" href="#sec-03">原文 → 500行的骨架分层</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>OpenAI协议一统的代价</h4><p>Claude的system独立字段、Gemini的contents/parts、各家function calling字段差异，兼容转换有损。</p><a class="src-link" href="#sec-03">原文 → 500行的骨架分层</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>别做流式+异步+分布式</h4><p>造轮子阶段同步、单线程、阻塞即可；async和流式让人&quot;看不见&quot;，与造轮子目的相反。</p><a class="src-link" href="#sec-04">原文 → 三种过度设计</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>过早追求正确的抽象</h4><p>纠结Tool与Function是否共基类都是负价值；够用的抽象永远优于正确的抽象。</p><a class="src-link" href="#sec-04">原文 → 三种过度设计</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>AgentExecutor参数秒懂</h4><p>handle_parsing_errors、max_iterations、early_stopping_method都是手写500行时踩过的坑的名字。</p><a class="src-link" href="#sec-05">原文 → 回看 LangChain</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>使用者 vs 建造者</h4><p>没写过时看参数像高级功能，写过之后每个抽象都能翻译回自己的500行，不再仰视框架。</p><a class="src-link" href="#sec-05">原文 → 回看 LangChain</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先动手把500行敲出来，再回头看LangChain每个抽象都有对应，这步读文档替代不了。</li>
+          <li>最小骨架只三层：LLM层站在OpenAI协议上、Agent基类一个run、Tool层万物皆工具。</li>
+          <li>造轮子阶段一切追求&quot;看得见&quot;：同步阻塞、单Agent、够用抽象，别碰流式异步分布式。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzkwMjE4Mzk3MQ==&amp;mid=2247483997&amp;idx=1&amp;sn=6c12cbb7f8e084fc49bc8422b9363389" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkwMjE4Mzk3MQ==&amp;mid=2247483997&amp;idx=1&amp;sn=6c12cbb7f8e084fc49bc8422b9363389</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">从 ReAct 到 Agent Teams：一个工程师视角的 Agent 协作机制思考</h1>
+  <p class="lede">从 ReAct 三环节出发，提出七机制 Agent Team 协作设计</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 30 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>Agent 本质即 ReAct 循环</a>
+          <a href="#sec-02"><span class="n">02</span>思考、行动、观察三环节</a>
+          <a href="#sec-03"><span class="n">03</span>无状态与上下文即记忆</a>
+          <a href="#sec-04"><span class="n">04</span>多 Agent 是必然进化方向</a>
+          <a href="#sec-05"><span class="n">05</span>Leader-Worker 架构的不足</a>
+          <a href="#sec-06"><span class="n">06</span>业界五阶段探索链</a>
+          <a href="#sec-07"><span class="n">07</span>七机制 Agent Team 设计</a>
+          <a href="#sec-08"><span class="n">08</span>与现有框架对比</a>
+          <a href="#sec-09"><span class="n">09</span>部落到生态的演化类比</a>
+          <a href="#sec-10"><span class="n">10</span>Agent 自主性五级分级</a>
+          <a href="#sec-11"><span class="n">11</span>结语</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 Agent 本质即 ReAct 循环</a>
+          <a href="#sec-02">02 思考、行动、观察三环节</a>
+          <a href="#sec-03">03 无状态与上下文即记忆</a>
+          <a href="#sec-04">04 多 Agent 是必然进化方向</a>
+          <a href="#sec-05">05 Leader-Worker 架构的不足</a>
+          <a href="#sec-06">06 业界五阶段探索链</a>
+          <a href="#sec-07">07 七机制 Agent Team 设计</a>
+          <a href="#sec-08">08 与现有框架对比</a>
+          <a href="#sec-09">09 部落到生态的演化类比</a>
+          <a href="#sec-10">10 Agent 自主性五级分级</a>
+          <a href="#sec-11">11 结语</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>阿里妹导读</p>
+<p>两个月的 Agent 开发实践沉淀，从第一性原理出发，探讨 Agent 的本质、当前多 Agent 协作架构的不足，以及如何借鉴人类组织经验设计真正的 Agent Team 机制。（文章内容基于作者个人技术实践与独立思考，旨在分享经验，仅代表个人观点。）</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>Agent 本质即 ReAct 循环</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>ReAct 核心循环是 Thought→Action→Observation，推理、行动、根据结果调整。</li><li>Observation 是外部反馈（API 返回、命令输出、文件内容），让推理锚定事实、抑制幻觉。</li><li>pi-agent 的 agent-loop.ts 约 600 行即完成完整循环，记忆压缩等只是上下文优化。</li></ul></div>
+<p>ReAct 模式即人类智能的工程化抽象</p>
+<p>做了两个月的 Agent 开发，我越来越确信：当前 Agent 能真正完成任务，很大程度取决于 ReAct（Reasoning + Acting）模式的出现。ReAct 来自 Yao 等人 2022 年的论文，核心循环是「Thought → Action → Observation」——思考下一步该做什么，执行动作，观察环境返回的信息，再进入下一轮思考。这就是人完成任务时的智能表现：推理、行动、根据结果调整，如此往复。</p>
+<p>这里的 Observation 指 Agent 执行动作后从外部获取的信息——API 返回结果、命令输出、文件内容。它本质上承担了&quot;反馈&quot;功能，让推理始终锚定在事实上，而非模型自己编造。ReAct 相比纯 Chain-of-Thought 的核心优势就在这里：有了外部观察的&quot;接地&quot;，幻觉和错误累积被大幅抑制。</p>
+<p>Agent 本质上就是这个循环的实现，而且可以非常简单。pi-agent[1]（7.6 万 star）的核心 agent-loop.ts 约 600 行代码就完成了完整的 Agent 循环。把这个循环构建好就能完成任务，后续的记忆压缩、Skill 加载都是「上下文管理」层面的优化，不改变基本工作原理。</p>
+<p>所以 Agent 可以用任何语言实现。Blade AI 使用 LangGraph 也只是借用了它的状态机编排功能——当需要多个 ReAct Agent 有序串联时，启动一个子 Agent 就是启动一个新的 ReAct 循环。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>思考、行动、观察三环节</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>思考由模型基座决定，是 Agent 智商上限，换更强模型任务表现直接提升。</li><li>行动由工具集决定，ALFWorld 中动作空间让成功率比纯推理高 34 个百分点。</li><li>观察须真实结构化，工具返回详细错误与修复建议远比一个错误码有用。</li><li>工程着力点是行动与观察：提供更好工具、返回更结构化结果。</li></ul><div class="pit"><ul><li>反馈只说“出错了”不给原因，Agent 只能瞎猜。</li></ul></div></div>
+<p>既然所有 Agent 都是 ReAct 模式加通用大模型，那构建的 Agent 就是通用智能体——理论上可以在任何领域做任何事，区别只在于工具和上下文。沿 ReAct 三环节做分析：</p>
+<p>思考（Reasoning）：大模型基座决定，是 Agent 的「智商」。 模型的推理能力直接决定 Agent 上限——能不能理解复杂指令、做多步推理、在信息不完整时合理假设。底层模型能力越强，后续可扩展的事就越多，这是不可违背的约束。ReAct 原始实验也印证了这点：同框架换更强模型，所有任务表现直接提升。</p>
+<p>行动（Acting）：工具集决定，是 Agent 的「手脚」。 同一个模型配不同工具就能做不同的事——给自行车只能短距，给汽车就能远行。ReAct 论文在 ALFWorld 中展示：有了动作空间后成功率比纯推理高出 34 个百分点。光有思考没有行动，智能无法体现。</p>
+<p>观察（Observation）：环境返回的信息，是 Agent 的「感知系统」。 必须给大模型真实、结构化的观察信息。如果反馈只说&quot;出错了&quot;但不说为什么，Agent 就像得到模糊评价的人一样陷入混乱——只能瞎猜。工具返回详细的错误描述加修复建议，远比一个错误码有用。</p>
+<p>工程团队的着力点： 我们无法解决模型的「思考」问题，那是算法团队的事。但可以积极解决「行动」和「观察」——提供更好的工具、返回更结构化的执行结果。这能极大减少幻觉和弯路，不是因为模型变聪明了，而是因为它做决策的依据更充分了。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>无状态与上下文即记忆</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>大模型每次调用独立前向计算、无状态，所谓记忆是把历史塞回 context。</li><li>人脑学习物理改写突触，模型参数不变，经验必须外部持久化再喂回。</li><li>持续学习未解决灾难性遗忘，上下文即记忆是唯一可靠工程路径。</li></ul><div class="pit"><ul><li>以为 Agent 会自动变强，而不为它建外部记忆。</li></ul></div></div>
+<p>大模型是无状态的。每次调用都是一次独立的前向计算，模型参数不会因为这次调用发生任何改变。它之所以表现得「像知道上次说过什么」，是因为你把历史又塞回 context 里重新告诉了它——这不是记忆，是每次现讲一遍。给不一样的 context 就得到不一样的输出，仅此而已。</p>
+<p>这里有一个人脑和大模型的根本区别：人今天学会了 Java，晚上突触就长出来了，明天照样会写——学习这件事物理性地改写了大脑本身。大模型完全相反：它跑完一件事、&quot;解决&quot;了一个问题，参数权重一个字节都不会变，下次启动还是那个出厂模型；如果我们不把这次的经验、结论、教训持久化到外部存储、下次通过 context 再喂回去，等于什么都没发生过。所以 Agent 不会&quot;自动变强&quot;——它只在你为它建了外部记忆的那部分变强。</p>
+<p>这也是为什么 Agent 工程绕不开 RAG、记忆压缩、Skill 注入、知识库这一整套东西——它们本质都是在替大模型做那件它自己做不到的事：把经验存起来、需要时精准塞回有限的 context window。学术界的持续学习方向（2026 综述 arXiv 2603.12658）在持续预训练、持续微调（LoRA 变体）、持续对齐上都有进展，但核心难题「灾难性遗忘」——学了新东西旧的就忘——远未根本解决。在这个问题被彻底解决之前，&quot;上下文即记忆&quot;是唯一可靠的工程路径。</p>
+<p>即使有一天持续学习成熟、模型能像人一样在使用中自我进化，「行动」和「观察」仍是工程团队不可替代的战场——模型再聪明，没有好工具就做不了事。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>多 Agent 是必然进化方向</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>单 Agent 是完善一个“人”，未来必出现 Agent 间协作问题。</li><li>ReAct 成功来自对个体智能的正确抽象，协作可借鉴人类组织经验。</li><li>Agent 无情绪、即时响应，沟通成本低是优势；劣势是 context 有限、缺常识、幻觉。</li></ul></div>
+<p>必然的进化方向</p>
+<p>当前行业聚焦在单 Agent 的构建——完善一个「人」。但未来一定会大规模出现 Agent 间的协作问题，就像人类社会从个体生存到部落、城邦、国家的演化。</p>
+<p>ReAct 的成功来自对「个体智能」的正确抽象。Agent 间的协作同样可以借鉴人类组织经验——几千年试错演化出的管理规则不一定最优，但经过了充分实践验证。2025 年 6 月的 Meta-Team 论文明确引用了组织心理学的「团队反思性」理论来指导 Agent 系统设计，从学术角度验证了这条路。</p>
+<p>Agent 管理比人简单：没有情绪、即时响应、无沟通摩擦。人类管理中最难的部分（情绪、利益博弈、信息不对称）在 Agent Teams 中天然消解。上班人觉得 AI 提效不了的地方——沟通开会、等回复——恰恰是 Agent 最容易解决的部分。当然 Agent 也有劣势：context window 有限、缺乏常识和隐性知识、幻觉可能导致系统性偏离。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>Leader-Worker 架构的不足</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>主流框架 manager 本质是调度器，无方案讨论、共识达成、动态重规划。</li><li>核心缺陷是 Worker 完全隔离、缺 peer-to-peer 横向信息流。</li><li>AgentTeams 解决了通信基础设施，但协作语义仍缺失。</li></ul><div class="pit"><ul><li>只把 Agent 拉进同一个群，没有协作语义。</li></ul></div></div>
+<p>主流多 Agent 框架（CrewAI、AutoGen、MetaGPT）大多采用 Leader-Worker 架构。以 CrewAI 为例，其 manager agent 的职责是&quot;coordinates the workflow, delegates tasks, and validates outcomes&quot;——协调、委派、验证。有基于 capability 的分配和结果验证，但本质仍是调度器，没有方案讨论、共识达成、动态重规划的交互。</p>
+<p>对比现实技术团队，差距明显：</p>
+<table><thead><tr><th>维度</th><th>现实团队</th><th>当前 Agent Teams</th></tr></thead><tbody><tr><td>Leader 角色</td><td>资深专家 + 管理者，能兜底</td><td>任务分发器 + 结果验收器</td></tr><tr><td>任务下达</td><td>先有方案 → 与 Worker 讨论 → 共识后执行</td><td>直接拆分 → Worker 埋头干</td></tr><tr><td>Worker 间交流</td><td>自由沟通、互相求助</td><td>完全隔离</td></tr><tr><td>进度管理</td><td>OKR / 里程碑 / 风险预警</td><td>几乎无机制</td></tr><tr><td>方案变更</td><td>Leader 审查合理性</td><td>无审查，出错才返工</td></tr></tbody></table>
+<p>核心缺陷：Worker 之间完全隔离，缺少 peer-to-peer 的横向信息流。2025 年通信拓扑综述（arXiv 2502.14321）识别了五种架构（Flat / Hierarchical / Team / Society / Hybrid），指出需要灵活交互时 Flat（P2P）结构表现更优。工业界 A2A 和 ANP 协议已提供 Agent 间直接 P2P 通信的基础设施，但上层协作设计还缺失。</p>
+<p>案例：AgentTeams——工业界最完整的 Manager-Workers 实现</p>
+<p>阿里 AgentScope 团队开源的 AgentTeams[2] 是当前工业界 Manager-Workers 架构工程完成度最高的项目之一，把「多 Agent 协作平台」当作一个云原生系统来做：Kubernetes 控制面（agentteams-controller）通过 CRD 声明式管理 Worker/Team/Manager，Higress AI Gateway 统一托管模型密钥与 MCP（Worker 只拿消费令牌，从架构上根除凭据外泄），Matrix 协议（Tuwunel）作为 Agent 与人共用的通信总线，MinIO 提供跨 Worker 的共享文件系统降低 token 消耗，Skills 通过 skills.sh 按需拉取。OpenClaw / QwenPaw / Hermes 多种运行时可以在同一个 Matrix Room 里共存，人类通过 Element Web 或任意 Matrix 客户端旁听、介入，一切通信「可见、可干预、无隐藏调用」。</p>
+<p>这套设计把 Leader-Worker 的工程侧问题解决得相当彻底：凭据安全、通信基础设施、共享存储、可观测性、人在环、多运行时兼容。但结构上它仍然是 Manager-Workers——Manager 负责编排和心跳汇报，Worker 通过 Matrix 的 m.mentions 互相点名，本质上是「把每个 Agent 拉进同一个群」。通信通道有了，但协作语义没有：没有方案共同讨论、没有 OKR 协商、没有分歧仲裁、没有任务完成后的集体复盘、没有基于历史的团队演化。Skills 是角色内部的记忆而非团队资产。</p>
+<p>这个案例反过来印证了本文的判断：Agent Teams 现阶段的瓶颈不在基础设施（Matrix / A2A / ANP / 共享文件系统都已成熟），而在协作机制——如何让一群 Agent 像一支真实团队那样讨论、对齐、跟进、复盘。基础设施解决了&quot;能不能说话&quot;，还没解决&quot;该说什么、怎么达成共识、说完之后如何沉淀&quot;。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>业界五阶段探索链</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>五阶段链：分类→分工→目标→经验→演化，环环相扣。</li><li>分类：五种组织形态无普适结构，灵活交互场景 Flat/P2P 更优。</li><li>分工：MetaGPT 用 SOP 约束防跑偏，Agent-Oriented Planning 动态重规划求准，但都自上而下。</li><li>OKR-Agent 单 Agent 递归、Co-Learning 只积累个体经验，Meta-Team 与 EvoChamber 证明价值来自协作机制。</li></ul><div class="pit"><ul><li>多 Agent 缺好协作机制时，9 个测试里 6 个反而不如单 Agent。</li></ul></div></div>
+<p>这几年多 Agent 协作的研究成果，如果一篇篇孤立地看，很像一堆互不相干的技巧：有人在做任务分解，有人在搬 OKR，有人在做失败复盘。但只要把它们串到同一个问题上——「如何把一群各干各的 Agent，组织成一支真正的团队」——它们会立刻落到一条清晰的生命周期链上：先要知道有哪些组织形态可选（分类），选定形态后要把活分下去（角色与流程），分好工要让大家对齐目标（目标管理），干完一轮要把经验沉淀下来（经验积累），长期还要让团队组织本身不断进化（团队演化）。这五个阶段不是硬凑的分类，而是一环扣一环——每一环都是在回答上一环留下的问题。下面就沿这条链走一遍，每一站我都会标出它解决了什么、又留下了什么缺口；而这些缺口叠加起来，恰好就是第七节要补的东西。</p>
+<p>阶段① 分类与框架：先搞清有哪些组织形态可选（6.1 协作类型学，arXiv 2501.06322）</p>
+<p>要组织一支团队，第一步得知道「团队」可以长成什么样。这篇 2025 年初的综述做的就是这件事：它从协作类型（合作／竞争／竞合）、协调策略（规则／角色／模型驱动）、通信结构（中心化／去中心化／层级）、动态性（静态／运行时可变）四个维度，把已有的多 Agent 系统归纳成五种基本组织形态——全连接的 Flat/P2P、指挥链清晰的 Hierarchical、群组内合作对外统一的 Team、大规模去中心的 Society，以及把前几种拼起来的 Hybrid。它最有价值的是一句「反银弹」的结论：没有哪一种结构能普适所有场景，越是需要灵活交互、频繁互相求助的场景，全连接的 Flat 结构反而比层级结构更合适。这张地图告诉了我们「有哪些形态」，却没回答「选定一种形态后，Agent 该怎么在里面真正协作起来」——于是问题自然滑向下一站：定了形态，活怎么分？</p>
+<p>阶段② 角色与流程：定了形态，活怎么分下去（6.2 MetaGPT / 6.3 Agent-Oriented Planning）</p>
+<p>分工有两种截然不同的思路，MetaGPT 和 Agent-Oriented Planning 正好站在两端——一个把流程写死求稳，一个让分解可变求准。</p>
+<p>MetaGPT（ICLR 2024）把人类软件团队的标准作业流程（SOP）直接编码进多 Agent 系统：产品经理写需求文档、架构师出设计、项目经理拆任务、工程师写代码、QA 验收，Agent 之间传递的是结构化文档而不是自由聊天。它的洞察朴素却关键——在容易层层跑偏的多 Agent 场景里，用标准化流程约束交互，比让 Agent 自由对话更能抑制错误传播。代价是这套 SOP 是手工设计、基本写死的，角色之间单向传递文档，缺少回头协商、动态调整的空间。</p>
+<p>Agent-Oriented Planning（ICLR 2025, arXiv 2410.02189）恰好补上这份「死板」：它不预设固定 SOP，而是让一个 Meta-Agent 充当「系统大脑」，按可解性、完备性、无冗余三条原则动态拆解任务，再由一个 Reward Model 给分配质量打分、不合格就触发重规划，同时为每个 Agent 维护一份「代表作品」记录用于后续匹配。它最要紧的一步，是把「初始分解」当成可以推翻重来的中间结果，而不是一锤定音的终稿。两篇合起来看，分工这一环的答案已经比较完整：既要有流程约束保证不跑偏（MetaGPT），又要能动态纠偏保证分得准（Agent-Oriented Planning）。但它们有个共同盲点——分解始终是自上而下、从 Leader 或 Meta-Agent 视角切下去的，真正干活的 Worker 并不参与目标的制定。这就把问题推到了第三站：分好了工，目标怎么对齐？</p>
+<p>阶段③ 目标管理：分好了工，怎么对齐目标（6.4 OKR-Agent，arXiv 2311.16542）</p>
+<p>对齐目标这件事，人类组织早有一套成熟工具——OKR，而 OKR-Agent 是目前唯一直接把它搬进 Agent 世界的论文。它的做法是层级递归：把顶层 Objective 拆成子 Objective 和一组可量化的 Key Result，再把每个 KR 分配给专门的 Agent，并用多级评估反复精炼方案。它证明了一件重要的事——OKR 这套目标管理机制放到 Agent 上是可行的。但局限也恰恰在这里：整个过程是单个 Agent 的递归分解，是「一个大脑自己把目标切碎再分下去」，并没有多个 Agent 之间就 OKR 展开协商。换句话说，Worker 依然只是目标的接收者，没法在制定阶段说一句「这个 KR 我做不到，因为……」。目标定完、活也干了，下一个问题随之而来：干过的事，怎么变成下次的能力？</p>
+<p>阶段④ 经验积累：干完一轮，怎么把经验变成下次的能力（6.5 Experiential Co-Learning，ACL 2024）</p>
+<p>Experiential Co-Learning 给出的答案是让 Agent 从历史任务里长记性：记录每次任务的执行轨迹，从中提取「捷径经验」——那些能跳过已知步骤的高效路径——存进经验库，新任务来时用 RAG 检索命中的历史经验直接复用，任务质量从基线的 0.43 提升到 0.73，效果很实在。但它积累的是「角色内部」的经验——某个 Agent 把自己那类活干得更熟了，学到的是「我怎么把某类任务做得更好」，而不是「我们这个团队怎么配合得更好」。经验还停留在个体层面，没有上升成团队资产。个体会自我进化了，那最后一个、也是最难的问题就浮出来了：团队作为一个整体，怎么越来越强？</p>
+<p>阶段⑤ 团队演化：个体会了，怎么让团队组织整体进化（6.6 Meta-Team / 6.7 EvoChamber）</p>
+<p>这是整条链最前沿、也最接近「真正的团队」的一站，两篇 2025 年的工作从两个角度给出了答案。</p>
+<p>Meta-Team（arXiv 2605.29790）的核心主张是：MAS 不应只作为团队执行任务，还应作为团队不断进化自己。 它设计了三层协作演化——Agent 层审视自身执行、主动向队友索取跨角色反馈（「你的输出到底怎么影响了我的决策」）；交互层回顾协作历史、更新对彼此能力的理解、优化沟通方式；团队层则集体讨论团队组成是否合理，可以引入或退休某个角色、修订共享规则。结果是平均比不进化的 MAS 高出 6.6%。但更值得警醒的是它的另一个发现：初始手工设计的 MAS 在 9 个测试里有 6 个反而不如单个 Agent——没有好的协作机制，多 Agent 不是加法而是减法。</p>
+<p>EvoChamber（arXiv 2605.11136）从群体共进化的角度进一步坐实了这个判断。 它的 CoDream 机制在团队失败时触发 Reflect → Contrast → Imagine → Debate → Crystallize 五阶段循环，并采用非对称的知识转移——强 Agent 生产知识、弱 Agent 消费知识，强化专业化而不是把大家拉平稀释。它的消融实验给出了整节最刺眼的一个数字：去掉协作进化机制后，20 个 Agent 的团队和 1 个 Agent 表现完全没有差别。两篇工作殊途同归，指向同一句结论——多 Agent 的价值 100% 来自协作机制本身，堆 Agent 数量本身不产生任何价值。</p>
+<p>把这五站连起来看，一个判断就浮现出来了：分类、分工、目标、经验、演化——每一环都被人单独攻克过，却没有任何一项工作把它们串成一支能持续运转的团队；更关键的是，有三样东西在几乎所有工作里都缺席——Worker 之间的横向通信、激发式而非命令式的管理、以及 Mission 层面的方向锚定（只有 Meta-Team 部分触及了演化这一环）。这三块空白，正是下一节要动手去补的地方。</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>七机制 Agent Team 设计</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Leader 四特征：深度参与方案、先讨论后执行、兜底能力、方案变更审查。</li><li>启发式管理：鼓励式引导激活正向对齐分布，命令式只激发 60% 能力。</li><li>启动三步走（Proposal→Feedback→Consensus）与 Worker 三种横向通信（广播/查询/求助）。</li><li>OKR 须 Worker 参与制定，岗位与 Mission 锚定方向，复盘沉淀团队资产。</li></ul><div class="pit"><ul><li>命令式、否定式沟通让 Agent 保守、只做最低要求。</li></ul></div></div>
+<p>下图是本节要展开的七个机制的整体关系。Leader 与 Worker 之间通过讨论共识建立协作、Worker 之间通过横向通信共享信息、进度用 OKR 度量、上层由 Mission 与宗旨锚定方向、下层由集体复盘沉淀经验，形成一个可自主运转的闭环。</p>
+<h3 class="sub">7.1 重新定义 Leader：</h3>
+<p>从分发器到资深专家兼管理者</p>
+<p>现有框架中的 Leader 更像一个调度器——把大任务切成小任务、扔给 Worker、收结果。但一个真正能带队的 Leader 不是这样。对小组长的定义有三条：业务交付、技术竞争力构建、团队建设。三条落到 Agent 世界里同样成立：业务交付是保证 Team 输出满足需求；技术竞争力构建是让 Team 的产出方案不 low、有一定水准；团队建设是让 Team 本身随时间越来越强（沉淀经验、优化协作）。</p>
+<p>具体到 Agent 侧，Leader 要具备四个特征：第一，深度参与方案制定——收到任务时脑子里已经有一个大致的解决路径，不管细节，但知道&quot;这事大方向该往哪走&quot;，而不是黑盒切分丢给 Worker。第二，与 Worker 讨论后再执行——方案不是单方灌输，Leader 提大方向，Worker 补执行侧的约束，双方达成共识后再动手。第三，具备兜底能力——Worker 做不了、卡住了，Leader 能亲自接手完成。这一点决定了 Leader 不能是能力弱化版的 Worker，反而应该是能力更强、context 更广、往往用更强模型的那个角色。第四，负责方案变更审查——执行中 Worker 想改方案，得经过 Leader 判断是否合理，避免局部最优毁掉全局。</p>
+<p>工程实现上，这意味着 Leader Agent 与 Worker Agent 应当有能力差（更强的模型、更长的 context、更全局的历史访问权），而不是同质化的几个 Agent 换个 prompt 就当 Leader。</p>
+<h3 class="sub">7.2 启发式管理：</h3>
+<p>Leader 是激发者，不是命令者</p>
+<p>这是我在工程实践里意外发现的一点，也是 Agent Team 相比传统 Leader-Worker 架构最容易被忽视的差异。同样一个 Agent，给它简短的、命令式的、甚至带一点负面暗示的描述——&quot;你负责 X，别把这里搞砸了&quot;——它的产出会保守、机械、只做最低要求；换成鼓励式、探索式的引导——&quot;这一块我看好你，你在 X 上有独特的视角，可以放开尝试几种思路，遇到不确定的地方我们一起讨论&quot;——同一个模型同一个任务，产出的深度和创造性会有肉眼可见的提升。</p>
+<p>这不是&quot;prompt 玄学&quot;，背后有明确的机理。当代主流大模型都经过 RLHF/DPO 对齐训练，训练分布里&quot;合作、鼓励、探索、开放&quot;这类语境对应的是高质量、有创造性的高质量回复；而&quot;命令、否定、防御&quot;语境对应的是保守、免责、低风险的回复。你给 Agent 什么样的沟通风格，就在训练分布里激活什么样的行为模式。这跟人类心理机制其实同源——人被否定时会退回舒适区、被鼓励时会尝试探索——只不过在 Agent 这里，这种效应因为直接映射到 token 概率而更明显、更可复现。</p>
+<p>这直接影响 Leader 的行为设计：任务下发不是&quot;你去做 X&quot;，而是&quot;这个方向你的视角比我更细，先说说你会怎么切入？&quot;；遇到中间失败不是&quot;你错了、重做&quot;，而是&quot;这个思路可能还差点意思，X 因素你考虑过吗？我们换个角度想想&quot;；验收环节不是只挑毛病，还要明确指出做得好的地方，为下次的高水平输出建立锚点。 这些做法在人类团队里叫&quot;心理安全感&quot;，在 Agent Team 里叫&quot;激活正向对齐分布&quot;——机理不同，但效果一致：Agent 会主动想问题、提替代方案、给出超过 minimum viable 的产出。</p>
+<p>反过来说，Leader-Worker 架构里若 Leader 只做冷冰冰的任务派发和结果验收，等于永远在用 Agent 的 60% 能力。团队建设这三个字在 Agent 世界里的第一层含义，就是用什么样的语气跟 Worker 说话。</p>
+<h3 class="sub">7.3 讨论 → 共识 → 执行：任务启动的三步走</h3>
+<p>当前多数框架的启动流程是「任务到达 → Leader 拆分 → Worker 开工」，中间没有&quot;对齐&quot;这一环。但人类团队最有价值的部分恰恰在这一步：Leader 说清楚目标和大致方向，Worker 反馈&quot;这里我做不了、那里需要额外资源、这个方案在实现层会遇到 X 问题&quot;，双方交换信息、修正方案、达成共识后再动工。这不是官僚流程，而是把执行层的约束前置到规划阶段，避免做到一半才发现方向错了大规模返工。</p>
+<p>Agent Team 应当把这个过程做成显式协议：Phase 1（Leader Proposal） Leader 基于任务和团队能力生成初版方案，包括目标、大致拆分、每个 Worker 的角色；Phase 2（Worker Feedback） 每个 Worker 从自己的领域视角审视方案，指出可行性问题、资源约束、更好的替代路径；Phase 3（Consensus） Leader 整合反馈修订方案，形成 OKR，各方 acknowledge 后进入执行。</p>
+<p>好消息是，人类团队最大的成本——沟通开会、等回复、情绪博弈——在 Agent Team 里几乎不存在。三 phase 可以异步并行，秒级完成。这也是&quot;上班族觉得 AI 提效不了的地方（沟通开会）恰恰是 Agent 最容易解决的部分&quot;的具体落点。</p>
+<h3 class="sub">7.4 Worker 间横向通信：</h3>
+<p>打破&quot;埋头干&quot;的信息孤岛</p>
+<p>当前架构最反人类团队直觉的一点：Worker 拿到任务后互相隔离，各干各的，只跟 Leader 有通道。但在真实团队里，Worker 之间是自由沟通的——A 遇到问题问 B、B 发现的坑同步给 C、大家共享中间产出。分工不同不等于不能说话，这才是团队的常态。</p>
+<p>Agent Team 需要显式建立 Worker 之间的横向通信，我看至少有三种模式：主动广播（Worker 有阶段性成果或发现共同风险时，主动 push 给相关方）、被动查询（Worker 需要另一个 Worker 的中间结果或专业判断时，pull 式请求）、求助升级（Worker 卡住时先横向找同伴，同伴也解决不了再向 Leader 升级）。前两种是异步、非阻塞的；第三种承接了人类团队&quot;先找同事再找领导&quot;的自然协作路径。</p>
+<p>工程基础已经具备：Google 的 A2A 协议、ANP 协议、以及第五节讲的 AgentTeams 用的 Matrix，都提供了 Agent-to-Agent 的通信底座。但只有通道不够，还得设计通信策略——全连接在 Worker 数量增加时会指数级爆炸 context，必须引入&quot;熟人网络&quot;（历史合作过的 Worker 之间更容易触发通信）、&quot;技能索引&quot;（按能力域路由请求）、&quot;通信预算&quot;（每个 Worker 每次任务的通信 budget 上限）等约束。这个方向在学术上还比较空白，是工程可以先行探索的空间。</p>
+<h3 class="sub">7.5 基于 OKR 的目标与进度管理</h3>
+<p>现有 Agent Team 几乎没有进度管理机制——Worker 埋头干，Leader 到最后才知道结果。人类组织解决这个问题的成熟工具是 OKR：明确 Objective（做什么、为什么）、拆出几个 Key Result（可量化的验收标准）、执行中定期对齐 KR 完成度。</p>
+<p>具体到 Agent Team，OKR 的运作应当是分层的：Team OKR 由 Leader 和所有 Worker 共同讨论产出，是本次任务的顶层契约；Worker OKR 由每个 Worker 认领自己那部分 KR 并进一步拆解为可执行动作。一个具体例子：某任务的 Team Objective 是「把订单 API 的 P99 延迟从 800ms 降到 200ms」，KR1 = 数据库慢查询占比 &lt; 5%，KR2 = 缓存命中率 &gt; 95%，KR3 = 全链路压测 3000 QPS 下延迟达标。DBA Worker 认领 KR1、缓存 Worker 认领 KR2、压测 Worker 认领 KR3——每个 KR 有明确 owner、明确验收方式、明确完成时点。</p>
+<p>进度管理不需要额外机制，就跑在 OKR 上：里程碑触发（某个 KR 应该达到某阶段值时自动检查）、偏离预警（Worker 上报进度显示达不到 KR 时自动升级到 Leader）、KR 达成即里程碑关闭（避免&quot;完成了再问是否完成&quot;的浪费轮次）。学术上 OKR-Agent 证明了 OKR 用于 Agent 目标分解的可行性，但它是单 Agent 递归分解——Agent Team 需要的是多 Agent 协商式 OKR：Worker 必须参与制定，因为他们才知道执行层的真实约束（&quot;KR2 缓存命中率 95% 做不到，因为业务本身就是长尾访问，最多做到 82%&quot;这种反馈只有执行 Agent 能提供）。</p>
+<h3 class="sub">7.6 岗位要求与团队宗旨：</h3>
+<p>让每个 Agent 知道自己为什么在这里</p>
+<p>现有做法是&quot;根据 Worker 的能力清单分配任务&quot;——Worker 说自己会 X、Y、Z，Leader 就把 X、Y、Z 相关的任务派过去。这是被动匹配。真实团队的做法是反过来的：Leader 根据任务需要，主动对岗位提出要求——「这次任务的架构师岗位，需要熟悉高并发、有大规模系统经验、能读源码」。岗位驱动能力，而不是能力决定岗位。</p>
+<p>Agent Team 应引入显式的岗位定义（Job Description）：每个岗位包含能力要求、可用 Skill 池、质量标准、汇报关系、SLA。Agent 上岗前要通过能力校验（Skill 检查 + 历史绩效审查），上岗后按 JD 履职。这样带来两个好处：一是任务复杂度提升时可以主动&quot;提高门槛&quot;招募更强的 Agent，而不是被现有 Agent 的能力上限锁死；二是同一个 Agent 在不同任务里可以承担不同岗位（同一个模型 + 不同 JD = 不同的 Worker），资源利用更灵活。</p>
+<p>再往上一层，一个 Team 必须有共同目标和宗旨——这不是可有可无的宣言，而是把一群 Agent 凝聚成一个团队而不是一堆功能模块的粘合剂。**Mission 回答&quot;我们为什么存在&quot;（比如「保障线上系统稳定性」「让新入职员工在 3 天内完成环境搭建」）；核心宗旨回答&quot;我们做事的原则是什么&quot;（比如「安全优先于速度」「简单方案优先于复杂方案」）；OKR 才回答&quot;我们本季度具体做什么&quot;**。三者是长期到短期的连续统。</p>
+<p>对 Agent Team 来说，Mission 和宗旨的实际作用是在人类不下场的情况下自主做取舍：遇到多任务并发抢资源、遇到&quot;快但脏&quot;和&quot;慢但净&quot;两种方案的选择、遇到 KR 之间冲突时——如果没有共同目标做锚点，每个 Agent 只会从自己的局部视角推理，结论各不相同、还得回到人类拍板；有了 Mission 和宗旨，团队就能在自己内部自洽地收敛出一致的决策方向。同时，它也是 7.2 说的&quot;启发式管理&quot;的语义基底：Leader 鼓励 Worker &quot;放开尝试&quot;时，让它知道边界在哪、什么值得为之努力、什么必须坚守——这时候 Agent 的能动性才不会变成失控。</p>
+<h3 class="sub">7.7 集体复盘与团队演化：</h3>
+<p>从个体自进化到组织学习</p>
+<p>单 Agent 的自进化机制已经出现（分析自己的执行轨迹、提取捷径经验），但 Team 层面的进化是另一个议题。单 Agent 学到的是「我怎么把某类任务做得更好」，Team 复盘要回答的是「我们这个组合、这套协作方式怎么做得更好」——粒度不同、议题不同、产出也不同。</p>
+<p>Team 复盘应该由 Leader 主持、所有相关 Worker 参与，结构化输出三类资产：方法论（这次成功/失败的关键因素，抽象为下次可复用的原则）；协作模式（哪些 Worker 组合、哪种通信模式在这类任务里效果好，形成 team playbook）；反模式（这次踩的坑、走的弯路，作为下次的 anti-pattern 提前规避）。这些资产存两个层次——团队共享知识库（所有 Worker 都能读）+ 角色专属经验（只对当前岗位有意义的技巧）。</p>
+<p>触发时机上不必等任务全部结束，Meta-Team 的三层设计值得借鉴：任务过程中做微复盘（Agent 层，向队友索取&quot;我的输出对你决策的影响&quot;反馈）；阶段交付后做中盘（交互层，更新对彼此能力和沟通风格的理解）；任务结束或周期性做总复盘（团队层，讨论组成是否合理、规则是否要修订、要不要引入或退休某个角色）。</p>
+<p>这里有一个必须警惕的现象：EvoChamber 的消融实验显示，去掉协作进化机制后，20 个 Agent 的团队跟 1 个 Agent 表现完全一致——多 Agent 的价值 100% 来自协作机制本身，加人不等于加价值。这反过来强化了本节所有设计的必要性：如果没有讨论共识、没有横向通信、没有 OKR 跟进、没有集体复盘，那么&quot;搞个 Team&quot;就是纯粹的资源浪费。</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>与现有框架对比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>对比 CrewAI/AutoGen、Meta-Team 与作者机制：Leader 从分发器变为资深专家兜底。</li><li>任务启动改为讨论后产出 OKR，Worker 执行中 P2P 求助，进度 OKR+里程碑，复盘沉淀团队资产。</li><li>团队目标以 Mission+OKR 锚定，补齐现有框架缺失。</li></ul></div>
+<table><thead><tr><th>维度</th><th>CrewAI / AutoGen</th><th>Meta-Team</th><th>我的 Team 机制</th></tr></thead><tbody><tr><td>Leader</td><td>分发器</td><td>无显式 Leader</td><td>资深专家 + 兜底人</td></tr><tr><td>任务启动</td><td>直接拆分</td><td>手工设计</td><td>讨论后产出 OKR</td></tr><tr><td>Worker 交互</td><td>隔离</td><td>仅演化阶段讨论</td><td>执行中 P2P + 求助</td></tr><tr><td>进度管理</td><td>无</td><td>无</td><td>OKR + 里程碑</td></tr><tr><td>经验沉淀</td><td>无</td><td>三层集体进化</td><td>Leader 驱动复盘 → 团队资产</td></tr><tr><td>团队目标</td><td>无</td><td>无</td><td>Mission + OKR</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>部落到生态的演化类比</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>部落→城邦→企业→生态四阶段，当前 Agent 协作处于部落或城邦早期。</li><li>从简单分工逐步走向 Mission+OKR、集体复盘与多 Team 协作网络。</li></ul></div>
+<p>部落（当前）：简单分工，做完就散，无记忆无沉淀。</p>
+<p>城邦（近期）：明确角色、协作规则、进度跟踪。「讨论 → 共识 → 执行 → 验收」流程。</p>
+<p>企业（中期）：Mission + OKR，集体复盘，人才梯度，Worker 间自由沟通。</p>
+<p>生态（远期）：多 Team 形成协作网络，有契约、竞合、知识交换。</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>Agent 自主性五级分级</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>L1 Copilot 到 L5 Autonomous Organization 五级递进。</li><li>当前处于 L3→L4 之间，Meta-Team/EvoChamber 标志 L4→L5 过渡开始。</li></ul></div>
+<ul><li>L1 - Copilot ：人主导，Agent 辅助。</li><li>L2 - Task Agent ：人给明确指令，Agent 执行单步。</li><li>L3 - ReAct Agent ：人给意图，Agent 自主完成（Blade AI Vibe Chaos）。</li><li>L4 - Team Agent ：多 Agent 协作，有内部协调机制。</li><li>L5 - Autonomous Organization ：自主发现问题、组建团队、协作执行、集体演化。</li></ul>
+<p>当前在 L3→L4 之间。Meta-Team / EvoChamber 标志着 L4→L5 过渡开始。</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>结语</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>ReAct 证明对人类智能抽象建模可行，多 Agent 协作应提取组织经验。</li><li>Agent 消除情绪摩擦和沟通瓶颈，机制以更高频率、更低成本运转。</li><li>学术界 2025 年已回应这些问题，Team 时代正在到来。</li></ul></div>
+<p>ReAct 成功证明了「对人类智能进行抽象建模」可行。多 Agent 协作同样应从人类组织经验中提取模式——角色分工、目标管理、进度跟踪、集体复盘、经验传承——每条都有对应的工程实现。区别在于：Agent 消除了情绪摩擦和沟通瓶颈，让这些机制以更高频率、更低成本运转。</p>
+<p>学术界 2025 年已正式回应这些问题（Meta-Team、EvoChamber、OKR-Agent），说明工程实践中的直觉有学术支撑。一个人的 Agent 时代走通了（L3），一群 Agent 的 Team 时代正在到来。</p>
+<p>参考链接：</p>
+<p>[1]https://github.com/earendil-works/pi?spm=ata.21736010.0.0.1eed75366KLswo</p>
+<p>[2]https://github.com/agentscope-ai/AgentTeams?spm=ata.21736010.0.0.1eed75366KLswo</p>
+<p>参考资料：</p>
+<ul><li>ReAct: Synergizing Reasoning and Acting in Language Models (Yao et al., 2022)</li><li>Multi-Agent Collaboration Mechanisms: A Survey of LLMs (2025)</li><li>A Communication-Centric Survey of LLM-Based MAS (2025)</li><li>MetaGPT (ICLR 2024)</li><li>Agent-Oriented Planning in MAS (ICLR 2025)</li><li>OKR-Agent (2023)</li><li>Experiential Co-Learning (ACL 2024)</li><li>Cross-Team Collaboration (2024)</li><li>Evolve as a Team / Meta-Team (2025)</li><li>EvoChamber (2025)</li><li>Continual Learning in LLMs (2026 Survey)</li><li>pi-agent</li><li>AgentTeams (AgentScope, Alibaba)</li><li>CrewAI Hierarchical Process</li><li>ICLR 2026 Workshop: Memory for Agentic Systems</li><li>Agno Organizational Memory</li></ul>
+<p>千问AI平台-为Agent而生，驱动AI生产力</p>
+<p>点击阅读原文即可体验！</p>
+<p>阅读原文</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>ReAct vs Chain-of-Thought</h4><p>ReAct 在推理外加入外部观察，让推理锚定事实；纯 CoT 无观察接地，幻觉与错误累积更严重。</p><a class="src-link" href="#sec-01">原文 → Agent 本质即 ReAct 循环</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>34 个百分点的动作增益</h4><p>ReAct 论文在 ALFWorld 中显示：加入动作空间后，成功率比纯推理高出 34 个百分点。</p><a class="src-link" href="#sec-02">原文 → 思考、行动、观察三环节</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>人脑学习 vs 大模型无状态</h4><p>人脑学习物理改写突触；大模型跑完参数不变，经验必须外部持久化再通过 context 喂回。</p><a class="src-link" href="#sec-03">原文 → 无状态与上下文即记忆</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>把 Leader 当调度器</h4><p>现有框架 Leader 只做协调、委派、验证，没有方案讨论、共识达成、动态重规划。</p><a class="src-link" href="#sec-05">原文 → Leader-Worker 架构的不足</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>20 个 Agent 与 1 个无差别</h4><p>EvoChamber 消融实验：去掉协作进化机制后，20 个 Agent 团队与 1 个 Agent 表现完全一致。</p><a class="src-link" href="#sec-06">原文 → 业界五阶段探索链</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>MetaGPT vs Agent-Oriented Planning</h4><p>MetaGPT 用固定 SOP 防跑偏；AOP 让 Meta-Agent 动态拆解、Reward Model 打分、不合格重规划。</p><a class="src-link" href="#sec-06">原文 → 业界五阶段探索链</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>命令式沟通只到 60% 能力</h4><p>命令、否定、防御语境激活保守低风险回复；鼓励、探索语境激活高质量产出，只派发验收等于用 60% 能力。</p><a class="src-link" href="#sec-07">原文 → 七机制 Agent Team 设计</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>任务启动三步协议</h4><p>Phase 1 Leader Proposal 出方案；Phase 2 Worker Feedback 提约束；Phase 3 Consensus 修订成 OKR 后执行。</p><a class="src-link" href="#sec-07">原文 → 七机制 Agent Team 设计</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>岗位驱动能力 vs 能力决定岗位</h4><p>现有做法按 Worker 能力清单被动匹配；应反向由岗位要求（JD）驱动，先定义要求再校验招募。</p><a class="src-link" href="#sec-07">原文 → 七机制 Agent Team 设计</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>多 Agent 价值全来自协作机制</h4><p>没有讨论共识、横向通信、OKR 跟进、集体复盘，堆 Agent 数量本身不产生任何价值。</p><a class="src-link" href="#sec-07">原文 → 七机制 Agent Team 设计</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>任务质量 0.43→0.73</h4><p>Experiential Co-Learning 用 RAG 复用历史捷径经验，任务质量从基线 0.43 提升到 0.73。</p><a class="src-link" href="#sec-06">原文 → 业界五阶段探索链</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Leader-Worker 对比现实团队</h4><p>现实团队先方案后讨论、Worker 互助、OKR 里程碑；当前框架直接拆分、Worker 隔离、几乎无进度机制。</p><a class="src-link" href="#sec-05">原文 → Leader-Worker 架构的不足</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>Agent 本质是 ReAct 循环：模型定思考上限，工具与观察是工程可发力处。</li>
+          <li>大模型无状态，经验不落库等于白干；上下文即记忆是当前唯一可靠路径。</li>
+          <li>多 Agent 价值 100% 来自协作机制，堆数量不如建讨论、通信、OKR 与复盘。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247562213&amp;idx=1&amp;sn=b5d701423e4bcb9c5775a7c6af19e234" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247562213&amp;idx=1&amp;sn=b5d701423e4bcb9c5775a7c6af19e234</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">蚂蚁二面被问：上下文压缩会丢失部分工具调用历史，会造成重复工具调用，怎么解决？我说清缓存，他摇了摇头</h1>
+  <p class="lede">解决上下文压缩致重复工具调用：把执行状态与对话叙事拆开，辅以幂等拦截与检索。</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 5 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>为什么会漏</a>
+          <a href="#sec-02"><span class="n">02</span>状态与叙事分开</a>
+          <a href="#sec-03"><span class="n">03</span>压缩提示词保细节</a>
+          <a href="#sec-04"><span class="n">04</span>外部化存储按需检索</a>
+          <a href="#sec-05"><span class="n">05</span>分层滚动摘要</a>
+          <a href="#sec-06"><span class="n">06</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 为什么会漏</a>
+          <a href="#sec-02">02 状态与叙事分开</a>
+          <a href="#sec-03">03 压缩提示词保细节</a>
+          <a href="#sec-04">04 外部化存储按需检索</a>
+          <a href="#sec-05">05 分层滚动摘要</a>
+          <a href="#sec-06">06 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>二面的时候，聊到了 Agent 系统设计这一块。面试官就抛出来一个场景题：</p>
+<p>&quot;你的 Agent 去跑长任务，上下文超了，就要去做压缩。但是压缩之后呢，模型会漏掉一部分工具调用的记录，这样就会导致同一个操作被重复执行——这个问题你怎么去解决？&quot;</p>
+<p>我的第一反应是：&quot;加个缓存呗，把工具调用的结果给存起来，碰到重复调用就直接返回缓存。&quot;</p>
+<p>面试官听了摇了摇头：&quot;你这只是打了个补丁，不算设计。你有没有想过，它为什么会漏？漏掉的到底是什么？又该怎么从根上去让它不漏？&quot;</p>
+<p>我当时愣了一下。说实话，那会儿只想到&quot;打补丁&quot;这一层了，没有往架构设计上去深挖。面完之后，我把这道题彻底地捋了一遍。今天写下来，也算是给自己补的一课。</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>为什么会漏</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>压缩是有损处理，丢信息是必然代价而非 bug。</li><li>漏因分三环：摘要生成丢细节、滑动窗口截断、注意力稀释。</li><li>模型总结习惯保大意丢细节，粗线条描述替代关键参数。</li></ul><div class="pit"><ul><li>只答“加缓存”仅缓解注意力稀释的下游影响，未触及摘要与截断两个漏因。</li></ul></div></div>
+<p>压缩这个东西，本质上是有损处理。会漏东西不是 bug，它是设计上必然要付出的代价。但是漏在哪三个环节，这个值得拆开来看一看：</p>
+<ul><li>1. 摘要生成阶段</li></ul>
+<p>大部分的压缩方案，是拿另外一次模型调用，把历史&quot;总结&quot;一下。如果说 prompt 里面没有明确去要求保留工具调用的细节，那么模型的总结习惯，就是保大意、丢细节。像是&quot;查询了用户订单&quot;这种粗线条的描述，就会替掉&quot;调用了 query_order(order_id=8823)，返回已发货&quot;这种关键信息。</p>
+<ul><li>2. 滑动窗口截断</li></ul>
+<p>还有一种更粗暴的方案，就是直接砍掉最早的 N 轮对话。这种方式是整段整段地丢弃，不是浓缩。模型对被砍掉的那部分，完全没有印象。</p>
+<ul><li>3. 长历史里的&quot;注意力稀释&quot;</li></ul>
+<p>就算技术上信息还留着，但是没有结构化的标记，混在很长的对话里面，模型在决策的时候，也未必能真正&quot;注意到&quot;它。</p>
+<p>我当时只答了一个&quot;加缓存&quot;。其实缓存只是解决了第三个问题的下游影响，前面两个环节的漏因，根本就没有碰到。这就是面试官摇头的原因。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>状态与叙事分开</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>对话历史是给人看的叙事，执行状态是给机器读的结构化数据，不能共用同一套压缩逻辑。</li><li>Action Ledger 记工具名、参数 hash、结果、时间戳、状态，独立于上下文、不参与压缩。</li><li>幂等拦截用函数名加参数 hash 生成签名，命中缓存直接返回，未命中执行并记录。</li></ul><div class="pit"><ul><li>有副作用操作（发邮件/下单/扣款/写库）必须幂等兜底；只读操作重复执行主要浪费资源。</li></ul></div></div>
+<p>后来我想明白了一个关键点。对话历史，是给人看的叙事。Agent 的执行状态呢，应该是给机器读的结构化数据。这两者，不应该被同一套压缩逻辑去处理。</p>
+<p>如果只在缓存这一层去打补丁，压缩逻辑该丢的还是照样丢。真正的解法，是从架构上把这两条线给分开。</p>
+<p>1. 独立维护一份&quot;已执行动作清单&quot;(Action Ledger)</p>
+<p>不要去指望压缩后的摘要，能扛得起&quot;记住做过什么&quot;这个责任。更稳妥的做法，是在对话上下文之外，单独去维护一份结构化的记录。这份记录通常包含：</p>
+<ul><li>◆ 工具名称</li><li>◆ 关键参数（或参数 hash）</li><li>◆ 执行结果要点</li><li>◆ 时间戳</li><li>◆ 执行状态（成功/失败/进行中）</li></ul>
+<p>这份清单不参与压缩。每一轮决策之前，它都作为一个独立的片段注入进去。哪怕对话历史被压得只剩下几句话，这份清单依然还是完整的。这就相当于给 Agent 配了一本独立的&quot;操作日志&quot;，跟&quot;聊天记录&quot;是两本账，谁也不影响谁。</p>
+<p>2. 工具调用的幂等性拦截（我当时说的&quot;缓存&quot;，其实该这么设计）</p>
+<p>这一层是执行层面的兜底。就是说，即便模型真的因为记忆缺失，又发起了重复调用，也不让它造成实际的影响。</p>
+<p>具体的做法，是给每一次调用去生成一个签名，也就是函数名加上参数的 hash。然后维护一个已执行签名的集合：</p>
+<ul><li>◆ 命中缓存 → 直接返回结果，不重复执行；</li><li>◆ 未命中 → 放行执行，执行完记录签名和结果。</li></ul>
+<p>这一层对有副作用的操作来说，是硬性需求。像是发邮件、下单、扣款、写库这些。不管上游的记忆管理出不出问题，下游都得有一个安全网。而对只读操作来说，像是查询、搜索，重复执行主要是浪费资源，加缓存更多是为了省时间和成本。</p>
+<p>我当初的回答只到了这一步。而且&quot;签名怎么设计&quot;、&quot;跟状态清单怎么配合&quot;这些，都没有讲清楚。所以就显得比较单薄。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>压缩提示词保细节</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>必须压缩时，摘要 prompt 明确要求保留每次调用的名称、关键参数与结果要点。</li><li>模型总结很听指令，明确保留清单能大幅降低关键信息被抹掉概率。</li></ul></div>
+<p>如果确实要用摘要压缩的话，那生成摘要的 prompt 里面，就要明确地写清楚：</p>
+<p>&quot;请完整保留每一次工具调用的名称、关键参数和结果要点，不要笼统概括。&quot;</p>
+<p>而不是简单的一句&quot;总结一下对话&quot;就完了。模型的总结行为是很听指令的。你给它一份明确的&quot;保留清单&quot;，就能大幅减少关键信息在压缩里面被抹掉的概率。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>外部化存储按需检索</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>完整记录存数据库/文件/向量库，需要时主动检索而非依赖上下文窗口。</li><li>记忆容量天花板不再是上下文窗口大小，上下文只承载当前相关部分。</li></ul></div>
+<p>更彻底的方案，是不让模型去&quot;记住&quot;工具调用的历史，而是让它&quot;查得到&quot;。把完整的记录存到外部去，数据库、文件、向量库都可以。模型需要判断&quot;我是不是做过这件事&quot;的时候，就主动发起一次检索。而不是去依赖上下文窗口里还剩下多少信息。</p>
+<p>这样一来，记忆容量的天花板，就不再是上下文窗口的大小了。记忆可以无限地增长，上下文只承载&quot;当前相关&quot;的那一小部分。</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>分层滚动摘要</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>滚动摘要逐段浓缩关键动作，再逐层聚合为高层摘要。</li><li>渐进式压缩比一次性砍历史损失更小，关键事实保留概率更高。</li></ul></div>
+<p>长对话的场景，可以考虑&quot;滚动摘要&quot;。每隔一段，就把这一段的关键动作浓缩成几行。然后呢，再把多段小摘要逐层地聚合起来，变成更高层的摘要。相比&quot;攒了很久一次性砍一刀&quot;，这种渐进式的压缩，每一次损失的信息量更小。关键的事实被逐层保留下来的概率，也会更高。</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>重答思路：根源是压缩丢工具调用细节，不能只在执行层打补丁。</li><li>组合方案：独立动作清单加参数签名幂等拦截加提示词保细节加外部化检索。</li></ul></div>
+<p>如果要重新答一遍的话，大概会是这样：</p>
+<p>&quot;重复调用的根源，是压缩丢了工具调用的细节。所以不能只在执行层打补丁，得从架构上把 Agent 的执行状态和对话叙事分开去管理。具体来说，就是去维护一份独立的、不参与压缩的动作清单，把每一次调用的关键信息都记录下来。执行层再加一层基于参数签名的幂等拦截，给有副作用的操作兜个底。如果压缩是不可避免的，那就在摘要的 prompt 里面，明确地要求保留调用的细节，别让模型去笼统地概括。长期来看的话，可以把调用的历史外部化存储，按需去检索，而不是被动地依赖上下文。&quot;</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 9 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>叙事 vs 执行状态</h4><p>对话历史是给人看的叙事，执行状态是给机器读的结构化数据，二者不该用同一套压缩逻辑。</p><a class="src-link" href="#sec-02">原文 → 状态与叙事分开</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>漏因有三处</h4><p>摘要生成保大意丢细节、滑动窗口截断、注意力稀释；加缓存只缓解第三个的下游影响。</p><a class="src-link" href="#sec-01">原文 → 为什么会漏</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>幂等拦截签名</h4><p>签名=函数名加参数 hash；命中已执行集合直接返回结果，未命中放行执行后记录。</p><a class="src-link" href="#sec-02">原文 → 状态与叙事分开</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Action Ledger 字段</h4><p>工具名称、关键参数（或参数 hash）、执行结果要点、时间戳、执行状态，独立于上下文且不参与压缩。</p><a class="src-link" href="#sec-02">原文 → 状态与叙事分开</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>只加缓存不够</h4><p>缓存是执行层补丁，未触及摘要生成与滑动窗口截断两个漏因，面试时显得单薄。</p><a class="src-link" href="#sec-02">原文 → 状态与叙事分开</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>摘要保留提示词</h4><p>请完整保留每一次工具调用的名称、关键参数和结果要点，不要笼统概括。</p><a class="src-link" href="#sec-03">原文 → 压缩提示词保细节</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>副作用操作要兜底</h4><p>发邮件、下单、扣款、写库等有副作用操作必须幂等拦截；只读操作重复执行主要浪费资源。</p><a class="src-link" href="#sec-02">原文 → 状态与叙事分开</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>记忆与上下文解耦</h4><p>完整记录外部化存储、按需检索，记忆可无限增长，上下文只承载当前相关部分。</p><a class="src-link" href="#sec-04">原文 → 外部化存储按需检索</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>硬压缩 vs 分层摘要</h4><p>一次性砍历史的硬压缩损失大；滚动摘要逐层聚合，每次损失更小、保留概率更高。</p><a class="src-link" href="#sec-05">原文 → 分层滚动摘要</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>重复调用的根源是压缩丢了工具调用细节，光加缓存只是执行层补丁，必须回到架构上把状态与叙事拆开。</li>
+          <li>用不参与压缩的 Action Ledger 记全每次调用，再以函数名加参数 hash 做幂等拦截，给副作用操作兜底。</li>
+          <li>压缩不可避免时，在摘要 prompt 里明确要求保留调用事实，长期把历史外部化、按需检索并分层摘要。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5MTIyMjkzMg==&amp;mid=2247496455&amp;idx=1&amp;sn=c4a395801c3a8a92c0e982d3c4c2eab5" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5MTIyMjkzMg==&amp;mid=2247496455&amp;idx=1&amp;sn=c4a395801c3a8a92c0e982d3c4c2eab5</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>

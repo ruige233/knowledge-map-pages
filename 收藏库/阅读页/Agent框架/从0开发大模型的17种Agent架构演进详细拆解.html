@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一个人用AI像开挂，团队协作就打架？问题不在工具，在组织 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+__TPL_HEAD__
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">从0开发大模型的17种Agent架构演进详细拆解</h1>
+  <p class="lede">17种Agent架构的本质是控制流设计，可用agno复现</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台 · 周末程序猿</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 96 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>统一分析框架</a>
+          <a href="#sec-02"><span class="n">02</span>用agno看Agent</a>
+          <a href="#sec-03"><span class="n">03</span>总览表</a>
+          <a href="#sec-04"><span class="n">04</span>Reflection</a>
+          <a href="#sec-05"><span class="n">05</span>Tool Use</a>
+          <a href="#sec-06"><span class="n">06</span>ReAct</a>
+          <a href="#sec-07"><span class="n">07</span>Planning</a>
+          <a href="#sec-08"><span class="n">08</span>PEV</a>
+          <a href="#sec-09"><span class="n">09</span>Multi-Agent</a>
+          <a href="#sec-10"><span class="n">10</span>Blackboard</a>
+          <a href="#sec-11"><span class="n">11</span>Meta-Controller</a>
+          <a href="#sec-12"><span class="n">12</span>Ensemble</a>
+          <a href="#sec-13"><span class="n">13</span>双记忆系统</a>
+          <a href="#sec-14"><span class="n">14</span>Graph Memory</a>
+          <a href="#sec-15"><span class="n">15</span>ToT</a>
+          <a href="#sec-16"><span class="n">16</span>Mental Loop</a>
+          <a href="#sec-17"><span class="n">17</span>Dry-Run</a>
+          <a href="#sec-18"><span class="n">18</span>Metacognitive</a>
+          <a href="#sec-19"><span class="n">19</span>Self-Improvement</a>
+          <a href="#sec-20"><span class="n">20</span>Cellular Automata</a>
+          <a href="#sec-21"><span class="n">21</span>Evaluator</a>
+          <a href="#sec-22"><span class="n">22</span>架构演化表</a>
+          <a href="#sec-23"><span class="n">23</span>如何选型</a>
+          <a href="#sec-24"><span class="n">24</span>最终结论</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 统一分析框架</a>
+          <a href="#sec-02">02 用agno看Agent</a>
+          <a href="#sec-03">03 总览表</a>
+          <a href="#sec-04">04 Reflection</a>
+          <a href="#sec-05">05 Tool Use</a>
+          <a href="#sec-06">06 ReAct</a>
+          <a href="#sec-07">07 Planning</a>
+          <a href="#sec-08">08 PEV</a>
+          <a href="#sec-09">09 Multi-Agent</a>
+          <a href="#sec-10">10 Blackboard</a>
+          <a href="#sec-11">11 Meta-Controller</a>
+          <a href="#sec-12">12 Ensemble</a>
+          <a href="#sec-13">13 双记忆系统</a>
+          <a href="#sec-14">14 Graph Memory</a>
+          <a href="#sec-15">15 ToT</a>
+          <a href="#sec-16">16 Mental Loop</a>
+          <a href="#sec-17">17 Dry-Run</a>
+          <a href="#sec-18">18 Metacognitive</a>
+          <a href="#sec-19">19 Self-Improvement</a>
+          <a href="#sec-20">20 Cellular Automata</a>
+          <a href="#sec-21">21 Evaluator</a>
+          <a href="#sec-22">22 架构演化表</a>
+          <a href="#sec-23">23 如何选型</a>
+          <a href="#sec-24">24 最终结论</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<p>作者：linkxzhou，公众号《周末程序猿》</p>
+<p>在 github 看到一个项目 all-agentic-architectures，实现的是关于 17 种 Agent 模式大全，我把 all-agentic-architectures 这个项目完整过了一遍。 它最有价值的地方，不是列了 17 中 Agent 代码，而是把 17 次系统升级拆解：上一个架构为什么不够、下一个架构到底多了什么控制能力、复杂度又是从哪里开始失控的。 这些信息真正决定一个 agent 系统能不能落地的，通常不是模型回答是不是够好，而是：</p>
+<ul><li>状态有没有被正确建模</li><li>控制流有没有被显式表达</li><li>错误能不能被局部截断</li><li>副作用能不能被关进闸门</li><li>系统知不知道自己什么时候该停</li></ul>
+<p>不过 all-agentic-architectures 是用 langchain 和 langgraph 实现的，但是 agno 框架更加简洁，于是 用 agno 把这 17 种控制流从头写一遍。 为了说明一件事：</p>
+<p>Agent architecture 的本质不是 prompt engineering，也不是某个框架的 DSL，而是控制流设计。 它应该能在任何体面的 agent 框架里复现，以下是 Agent 演化路径：</p>
+<ul><li>从 单次生成 到 反思闭环</li><li>从 反思闭环 到 工具交互</li><li>从 工具交互 到 观察-行动循环</li><li>从 局部决策 到 显式规划</li><li>从 无验证执行 到 验证驱动重规划</li><li>从 单 agent 到 多 agent 编排</li><li>从 短期上下文 到 长期记忆系统</li><li>从 线性推理 到 搜索、模拟与涌现计算</li><li>从 能做事 到 可信任</li></ul>
+<p>总演化图：</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>统一分析框架</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>六问覆盖问题、State、拓扑、Router、失败模式与升级时机</li><li>后续不描述“更聪明”，只描述新增的状态、路由与验证</li></ul></div>
+<p>后面每一种架构，我都会用同一套问题来拆。</p>
+<p>六个固定问题</p>
+<ul><li>它要解决什么问题？  上一代架构哪里不够。</li><li>它的 State 是什么？  新增了哪些字段，为什么必须存在。</li><li>它的拓扑是什么？  线性链、循环、分叉汇聚、共享黑板、树搜索还是网格涌现。</li><li>它的 Router 怎么工作？  固定边、条件边、动态调度、验证回路、人工审批。</li><li>它的失败模式是什么？  架构最容易在哪个环节坏掉。</li><li>什么时候该升级到下一种？  当前模式的能力边界在哪里。</li></ul>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>用agno看Agent</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>response_model定义状态空间，Agent/tools/Step定义状态变换</li><li>steps定义确定性转移，Router定义条件转移，Loop.end_condition定义终止</li><li>跨非相邻步骤用workflow_session_state显式传状态</li></ul><div class="pit"><ul><li>previous_step_output是StepOutput，取.content才是response_model实例</li></ul></div></div>
+<p>这个项目几乎所有架构都能被 agno 的几个抽象表达清楚：</p>
+<ul><li>from agno.agent import Agent</li><li>from agno.models.openai import OpenAIChat</li><li>from agno.workflow.v2 import Workflow, Step, Router, Loop</li><li># 一个最简 Agent = 一次状态变换</li><li>agent = Agent(</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[...],</li><li>instructions=&quot;...&quot;,</li><li>response_model=SomePydanticModel,  # 结构化输出</li><li># 一个 Workflow = 显式控制流</li><li>wf = Workflow(</li><li>name=&quot;my_flow&quot;,</li><li>steps=[</li><li>Step(name=&quot;plan&quot;, agent=planner_agent),</li><li>Loop(</li><li>name=&quot;execute_and_verify&quot;,</li><li>steps=[executor_step, verifier_step],</li><li>end_condition=lambda outputs: outputs[-1].content.is_done,</li><li>Step(name=&quot;synthesize&quot;, agent=synthesizer_agent),</li><li>wf.run(message=&quot;...&quot;)</li></ul>
+<p>这段代码背后已经包含了一个 agent 系统的最小数学结构：</p>
+<ul><li>response_model  定义状态空间</li><li>Agent / tools / Step  函数定义状态变换</li><li>steps  列表定义确定性转移</li><li>Router / Condition  定义条件转移</li><li>Loop.end_condition  定义终止条件</li><li>wf.run()  定义可执行系统</li></ul>
+<p>后面我几乎不把问题描述成&quot;这个架构更聪明&quot;，而描述成：它新增了什么状态字段、什么 agent 或工具、什么路由逻辑、什么验证机制。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>总览表</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>17种架构各自新增一种控制能力，并解决一个老问题</li><li>演化目标不是AGI，而是更复杂环境下可控、可解释、可恢复</li></ul></div>
+<table><thead><tr><th>阶段</th><th>新增能力</th><th>一句话解释</th><th>代表架构</th></tr></thead><tbody><tr><td>单次生成优化</td><td>critique pass</td><td>让模型先出一版，再自己挑毛病改掉，把&quot;生成&quot;拆成 generator + critic + refiner 三步。</td><td>Reflection</td></tr><tr><td>与世界交互</td><td>tool interface</td><td>把外部 API / 函数挂成结构化工具接口，打破参数知识边界和上下文封闭性。</td><td>Tool Use</td></tr><tr><td>基于观察持续行动</td><td>observation loop</td><td>Thought → Action → Observation 滚动循环，上一步的观察决定下一步的动作。</td><td>ReAct</td></tr><tr><td>先生成控制流再执行</td><td>explicit planning</td><td>先让模型产出一份可检视的步骤清单（plan），再按清单逐步执行，把控制流本身做成可审计对象。</td><td>Planning</td></tr><tr><td>把验证接入主回路</td><td>verification loop</td><td>每一步执行完都强制过一次 verifier，失败就回到重规划，而不是把验证当成事后检查。</td><td>PEV</td></tr><tr><td>把认知任务拆成角色</td><td>role decomposition</td><td>不再让一个 agent 什么都干，把研究员 写作 审阅等角色拆开，用流水线或图把它们串起来。</td><td>Multi-Agent</td></tr><tr><td>把中间状态显式共享</td><td>shared workspace</td><td>把中间产物写到一块共享&quot;黑板&quot;上，一个 controller 根据黑板当前状态动态决定下一个该谁上场。</td><td>Blackboard</td></tr><tr><td>把入口做成路由系统</td><td>entry routing</td><td>在请求入口先分类一次，把任务路由到最合适的专家子 agent，避免一个 agent 背所有能力。</td><td>Meta-Controller</td></tr><tr><td>用冗余换可靠性</td><td>parallel redundancy</td><td>同一个问题同时交给多个独立 agent 处理，再由 aggregator 融合/投票，用冗余换稳定性和去偏。</td><td>Ensemble</td></tr><tr><td>把历史状态纳入系统</td><td>long-term memory</td><td>把对话片段放进向量库（episodic），把结构化事实放进图/KV（semantic），让系统记得住、查得到。</td><td>Episodic + Semantic / Graph</td></tr><tr><td>把推理变成搜索</td><td>search tree</td><td>不再是一条思路走到底，而是展开多条思路形成树，边展开边打分、剪枝，把&quot;推理&quot;变成&quot;搜索&quot;。</td><td>ToT</td></tr><tr><td>把行动前评估做成模拟</td><td>counterfactual execution</td><td>真正动手之前，先在内部世界模型里预演一遍，评估风险和收益，再决定是否真执行。</td><td>Mental Loop</td></tr><tr><td>把副作用关进闸门</td><td>side-effect gating</td><td>任何有副作用的动作必须先 dry-run + 审核（人或自动检查）通过后，才允许落到真实环境。</td><td>Dry-Run</td></tr><tr><td>把自我边界建模</td><td>self-boundary reasoning</td><td>系统维护一份自我模型，知道自己&quot;擅长什么、不擅长什么&quot;，据此选择亲自做、调工具，还是交给人。</td><td>Metacognitive</td></tr><tr><td>把质量改进做成循环</td><td>iterative refinement loop</td><td>editor agent 对输出打分并给出修改意见，writer 按意见改稿，高分样本沉淀下来用于持续改进。</td><td>Self-Improve</td></tr><tr><td>去中心化计算</td><td>emergence</td><td>没有中心 LLM 在推理，每个格子/单元只跑简单局部规则，全局行为（寻路、扩散等）从局部交互中涌现出来。</td><td>Cellular Automata</td></tr></tbody></table>
+<p>所谓&quot;agent 架构演化&quot;，不是追求 AGI，而是解决一个老问题：怎样让系统在更复杂的环境里，依然保持可控、可解释、可恢复。</p>
+<p>下面正式开始。为了篇幅，代码里我统一省略 from agno... import 的重复部分。</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>Reflection</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>把单次生成拆成generator+critic+refiner三阶段</li><li>核心state字段是draft/critique/refined_code</li><li>没有router，三步走完直接结束</li></ul><div class="pit"><ul><li>不能验证refiner是否真的修好了critic指出的问题</li></ul></div></div>
+<p>Reflection 的价值不在于&quot;模型会反思&quot;，而在于它第一次把生成过程拆成了两个不同职能的 pass：生成和评估，它是最小质量闭环，但还不是完整控制闭环。</p>
+<p>它要解决什么问题？</p>
+<p>单次 LLM 生成质量不稳定，Reflection 就是最小修复：先生成 → 再评估 → 再根据评估修改。这不是&quot;增加智能&quot;，而是把单步生成改成三阶段控制流。</p>
+<p>它的 State 是什么？</p>
+<p>核心三个字段是 draft / critique / refined_code，在 agno 里直接用 Pydantic 把它们定义成结构化输出：</p>
+<ul><li>from pydantic import BaseModel, Field</li><li>from typing import List</li><li>class DraftCode(BaseModel):</li><li>code: str = Field(description=&quot;Python code to solve the user&#x27;s request.&quot;)</li><li>explanation: str = Field(description=&quot;A brief explanation of how the code works.&quot;)</li><li>class Critique(BaseModel):</li><li>has_errors: bool</li><li>is_efficient: bool</li><li>suggested_improvements: List[str]</li><li>critique_summary: str</li><li>class RefinedCode(BaseModel):</li><li>refined_code: str</li><li>refinement_summary: str</li></ul>
+<p>系统第一次把&quot;中间思考结果&quot;显式写进 state，而不是埋在上下文里，response_model=... 让这件事几乎零成本。</p>
+<p>它的拓扑是什么？</p>
+<p>纯线性：</p>
+<p>用 agno 写出来：</p>
+<ul><li>from agno.agent import Agent</li><li>from agno.models.openai import OpenAIChat</li><li>from agno.workflow.v2 import Workflow, Step</li><li>model = OpenAIChat(id=&quot;gpt-5-mini&quot;)</li><li>generator = Agent(name=&quot;generator&quot;, model=model, response_model=DraftCode,</li><li>instructions=&quot;You are an expert Python programmer. Write code and a brief explanation.&quot;)</li><li>critic = Agent(name=&quot;critic&quot;, model=model, response_model=Critique,</li><li>instructions=&quot;You are a senior code reviewer. Analyze for bugs, inefficiencies and PEP8 issues.&quot;)</li><li>refiner = Agent(name=&quot;refiner&quot;, model=model, response_model=RefinedCode,</li><li>instructions=&quot;Rewrite the code, incorporating every suggestion from the critique.&quot;)</li><li>def generator_step(step_input):</li><li>draft = generator.run(step_input.message).content</li><li>step_input.workflow_session_state[&quot;draft&quot;] = draft</li><li>return draft</li><li>def critic_step(step_input):</li><li>draft: DraftCode = step_input.workflow_session_state[&quot;draft&quot;]</li><li>return critic.run(f&quot;Review this code:\n```python\n{draft.code}\n```&quot;).content</li><li>def refiner_step(step_input):</li><li>draft: DraftCode = step_input.workflow_session_state[&quot;draft&quot;]</li><li>critique: Critique = step_input.previous_step_output.content</li><li>prompt = (f&quot;Original code:\n```python\n{draft.code}\n```\n&quot;</li><li>f&quot;Critique: {critique.model_dump_json(indent=2)}\nProduce the refined code.&quot;)</li><li>return refiner.run(prompt).content</li><li>reflection_wf = Workflow(</li><li>name=&quot;reflection&quot;,</li><li>session_state={&quot;draft&quot;: None},</li><li>steps=[</li><li>Step(name=&quot;generator_step&quot;, executor=generator_step),</li><li>Step(name=&quot;critic_step&quot;, executor=critic_step),</li><li>Step(name=&quot;refiner_step&quot;, executor=refiner_step),</li><li>reflection_wf.run(message=&quot;Write a Python function to find the nth Fibonacci number.&quot;)</li></ul>
+<p>Workflow.steps 列表里的顺序就是确定性边：上一步的输出自动作为下一步的 previous_step_output，每一步的 state 流动由 agno 托管——previous_step_output 是一个 StepOutput，它的 .content 才是上一步 response_model 的实例；跨非相邻步骤的数据用 workflow_session_state 显式传递。</p>
+<p>Router 怎么工作？</p>
+<p>没有 router。 这是 Reflection 很关键的技术边界：没有条件分支，没有失败恢复，系统默认三步走完直接结束。</p>
+<p>它为什么比单次生成强？</p>
+<p>因为它把一个模糊任务拆成了三个更明确的子任务：先尽量生成 → 再专门找问题 → 最后只解决问题。这里的核心经验判断是：LLM 作为 critic 往往比作为 generator 更稳定。</p>
+<p>它的失败模式</p>
+<p>最大的问题是：它不能验证 refiner 是否真的修好了 critic 提到的问题。 它有 critique，但没有闭环。</p>
+<p>什么时候升级？</p>
+<p>当你需要系统根据中间结果继续行动，就必须进入下一代：要么让它接触世界（Tool Use），要么形成持续观察-行动回路（ReAct）。</p>
+<p>📎 参考实现：01_reflection.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>Tool Use</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>state变成框架托管的会话事件日志</li><li>控制流从文本跨越到结构化世界再返回</li><li>底层是内置while循环：有tool_calls就继续</li></ul><div class="pit"><ul><li>失败多来自边界层：工具名幻觉、参数类型错误、返回格式与错误综合</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>Reflection 解决&quot;质量&quot;，但没解决&quot;知识边界&quot;，一个不带工具的 LLM 再会反思也被困在参数里，Tool Use 要让系统突破上下文与知识截止日期的封闭性。</p>
+<p>它的 State 是什么？</p>
+<p>Tool Use 的 state 本质上是一条&quot;事件日志&quot;：用户输入 → 模型输出 → 工具调用 → 工具返回 → 下一轮推理。 在 agno 里，这条日志是 Agent 内部自动维护的——一次 agent.run() 内部就完整地跑完这整个链路。</p>
+<p>state 从&quot;你需要自己维护的数据结构&quot;变成了&quot;框架托管的会话上下文&quot;，这也是 Tool Use 和 Reflection 在工程侧最显眼的差别。</p>
+<p>它的关键代码</p>
+<ul><li>from agno.agent import Agent</li><li>from agno.models.openai import OpenAIChat</li><li>from agno.tools.duckduckgo import DuckDuckGoTools</li><li>def get_stock_price(symbol: str) -&gt; str:</li><li>&quot;&quot;&quot;Return the latest stock price for a given symbol.&quot;&quot;&quot;</li><li>return f&quot;The current price of {symbol.upper()} is $172.35.&quot;</li><li>tool_agent = Agent(</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[get_stock_price, DuckDuckGoTools()],</li><li>instructions=&quot;Use tools to answer questions that need real-time data.&quot;,</li><li>show_tool_calls=True,</li><li>tool_agent.run(&quot;What is Apple&#x27;s current stock price?&quot;)</li></ul>
+<p>底层等价于：</p>
+<ul><li># 概念上 agno 内部循环</li><li>while True:</li><li>response = llm_with_tools.invoke(messages)</li><li>messages.append(response)</li><li>if not response.tool_calls:</li><li>break</li><li>for call in response.tool_calls:</li><li>observation = tool_registry[call.name](**call.args)</li><li>messages.append(ToolMessage(observation, tool_call_id=call.id))</li></ul>
+<p>这个 while 循环是 agno Agent 帮你内置的。</p>
+<p>它真正新增了什么能力？</p>
+<p>不是&quot;会调用函数&quot;，而是：文本控制流可以跨越到结构化世界，再返回文本世界。 这个跨越点是整个 agent engineering 的第一道硬边界。</p>
+<p>失败模式</p>
+<p>失败通常不来自 LLM 本身，而来自&quot;边界层&quot;：工具名幻觉、参数类型错误、工具返回格式不对、工具结果被模型错误综合。Tool Use 的关键难点不是 prompt，而是序列化与反序列化。</p>
+<p>它为什么还不够？</p>
+<p>因为 Tool Use 没有显式规定&quot;一定要循环&quot;，在最原始的实现里，模型可能只调一次工具就收尾，你需要真正的观察-行动闭环——这就是 ReAct。</p>
+<p>📎 参考实现：02_tool_use.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>ReAct</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>消息序列升级为行动轨迹trace，观察驱动下一轮决策</li><li>tool→model回边把单次调用变成持续交互</li><li>覆盖80%任务：先看一眼、做动作、按反馈再决策</li></ul><div class="pit"><ul><li>局部贪心，易重复搜索、陷入局部最优，难安排多步任务</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>Tool Use 的控制流还太浅，ReAct 要让工具结果不只是被消费一次，而是进入下一轮决策。 从这里开始，agent 不再只是&quot;会用工具&quot;，而是&quot;会根据新观察更新计划&quot;。</p>
+<p>State 还是消息序列，为什么语义却变了？</p>
+<p>在 ReAct 里 agent 的消息序列不再只是对话历史，而是行动轨迹（trace）：当前问题 → 上一步推理 → 工具调用 → 工具观测 → 新一轮判断。 你可以把它看成隐式的工作记忆带，在 agno 里，这条 trace 是 Agent 内部自动维护的——一次 agent.run() 内部就包含用户输入、模型输出、工具调用、工具返回、二次推理，你不需要手写任何状态容器。</p>
+<p>它的关键代码</p>
+<p>agno 内置的 reasoning=True 会把 ReAct 的&quot;Thought Action Observation&quot;显式写进 trace：</p>
+<ul><li>from agno.agent import Agent</li><li>from agno.models.openai import OpenAIChat</li><li>from agno.tools.duckduckgo import DuckDuckGoTools</li><li>from agno.tools.yfinance import YFinanceTools</li><li>react_agent = Agent(</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[DuckDuckGoTools(), YFinanceTools(stock_price=True, company_news=True)],</li><li>instructions=[</li><li>&quot;You are a research assistant.&quot;,</li><li>&quot;Think step by step. For each step decide whether to use a tool or answer.&quot;,</li><li>&quot;After each tool observation, re-evaluate what you still need before answering.&quot;,</li><li>reasoning=True,</li><li>markdown=True,</li><li>show_tool_calls=True,</li><li>react_agent.print_response(</li><li>&quot;Based on the latest news, should I be worried about AAPL next quarter?&quot;,</li><li>stream=True,</li></ul>
+<p>关键不是某一行代码，而是 agno 内部那条&quot;回边&quot;：只要 model 回复里还有 tool_calls，就回到 model 再跑一次。 这条 tool → model 的循环边，是整个 agent architecture 里最重要的回边之一——它把&quot;单次调用&quot;变成了&quot;持续交互&quot;。</p>
+<p>拓扑本质</p>
+<p>最小闭环：</p>
+<p>系统终于从&quot;线性流程&quot;进入&quot;持续交互系统&quot;。</p>
+<p>它为什么是 80% 任务的起点？</p>
+<p>因为大多数任务并不需要复杂规划，它们只需要：先看一眼 → 做个动作 → 根据反馈再决定下一步，已足够覆盖多轮搜索、多跳问答、网页研究、工具驱动的数据收集。</p>
+<p>失败模式</p>
+<p>局部贪心。 它每次只基于当前 observation 决策，容易走弯路、重复搜索、陷入局部最优、无法提前安排多步任务。</p>
+<p>什么时候升级？</p>
+<p>当任务需要显式的步骤顺序控制，就该上 Planning。</p>
+<p>📎 参考实现：03_ReAct.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>Planning</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>把未来控制流提前materialize成Plan数据结构</li><li>路由逻辑变成“计划是否还有剩余项”</li><li>计划可可视化、检查、修改、追踪进度</li></ul><div class="pit"><ul><li>计划一旦错了，后面每步都可能错；可预测性增强、适应性下降</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>ReAct 本质是在线贪心策略，对需要顺序约束、步骤依赖和过程可追踪的任务，它开始不够用。Planning 要把原本隐式存在模型脑子里的执行顺序，显式拿出来，写进 state。</p>
+<p>系统第一次把&quot;控制流&quot;对象化了。</p>
+<p>State 新增了什么？</p>
+<ul><li>class Plan(BaseModel):</li><li>steps: List[str] = Field(description=&quot;Ordered list of tool/sub-questions.&quot;)</li></ul>
+<p>workflow 的 session_state 里还要带上中间结果：</p>
+<ul><li>session_state = {&quot;plan&quot;: [], &quot;intermediate&quot;: []}</li></ul>
+<p>在 ReAct 里下一步做什么是临时决定的，在 Planning 里下一步做什么先被生成出来，然后才执行。</p>
+<p>关键代码</p>
+<p>agno 的 Workflow 提供 Loop step，天然表达&quot;循环执行直到 plan 空&quot;：</p>
+<ul><li>from agno.workflow.v2 import Workflow, Step, Loop</li><li>from agno.tools.duckduckgo import DuckDuckGoTools</li><li>planner = Agent(name=&quot;planner&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;), response_model=Plan,</li><li>instructions=&quot;Decompose the user request into a list of atomic tool-queryable steps.&quot;)</li><li>executor = Agent(name=&quot;executor&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[DuckDuckGoTools()],</li><li>instructions=&quot;Answer exactly one sub-question using tools.&quot;)</li><li>synthesizer = Agent(name=&quot;synthesizer&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>instructions=&quot;Combine intermediate findings into a final answer.&quot;)</li><li>def plan_step(step_input):</li><li>plan: Plan = planner.run(step_input.message).content</li><li>step_input.workflow_session_state[&quot;plan&quot;] = list(plan.steps)</li><li>step_input.workflow_session_state[&quot;intermediate&quot;] = []</li><li>return plan</li><li>def execute_step(step_input):</li><li>state = step_input.workflow_session_state</li><li>next_q = state[&quot;plan&quot;].pop(0)</li><li>obs = executor.run(next_q).content</li><li>state[&quot;intermediate&quot;].append(f&quot;Q: {next_q}\nA: {obs}&quot;)</li><li>return obs</li><li>def synth_step(step_input):</li><li>state = step_input.workflow_session_state</li><li>notes = &quot;\n\n&quot;.join(state[&quot;intermediate&quot;])</li><li>return synthesizer.run(</li><li>f&quot;Question: {step_input.message}\nNotes:\n{notes}\nFinal answer:&quot;</li><li>).content</li><li>def plan_is_empty(_outputs) -&gt; bool:</li><li>&quot;&quot;&quot;Loop 终止条件：agno 的 end_condition 只接收一个参数（StepOutput 列表）。&quot;&quot;&quot;</li><li>return len(planning_wf.session_state[&quot;plan&quot;]) == 0</li><li>planning_wf = Workflow(</li><li>name=&quot;planning&quot;,</li><li>session_state={&quot;plan&quot;: [], &quot;intermediate&quot;: []},</li><li>steps=[</li><li>Step(name=&quot;plan&quot;, executor=plan_step),</li><li>Loop(</li><li>name=&quot;execute_all&quot;,</li><li>steps=[Step(name=&quot;execute_one&quot;, executor=execute_step)],</li><li>end_condition=plan_is_empty,</li><li>Step(name=&quot;synthesize&quot;, executor=synth_step),</li><li>planning_wf.run(message=&quot;Compare the latest revenue of AAPL and MSFT and explain the gap.&quot;)</li></ul>
+<p>路由逻辑从&quot;LLM 在 prompt 里决定下一步&quot;变成了&quot;一个数据结构是否还有剩余项&quot;——这才是 Planning 真正的结构变化。</p>
+<p>新增的核心能力</p>
+<p>Planning 新增的不是&quot;更聪明的思考&quot;，而是：把未来控制流提前 materialize 成一个数据结构。 你现在可以可视化计划、检查计划、修改计划、追踪执行进度。</p>
+<p>失败模式</p>
+<p>它过于乐观，一旦 plan 错了，后面每一步都可能是错的。可预测性增强了，适应性下降了。</p>
+<p>什么时候升级？</p>
+<p>当你不再相信工具会稳定成功，就必须上 PEV。</p>
+<p>📎 参考实现：04_planning.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>PEV</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>执行视为生成待验证结果，verifier输出结构化verdict</li><li>失败被局部识别并重定向回re-plan路径</li><li>router在continue/replan/finish间决策</li></ul><div class="pit"><ul><li>额外成本高、verifier可能误判、过度验证拖慢系统</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>Planning 默认世界是稳定的，但真实世界不是：API 会失败、搜索会返回噪音、数据会缺失、工具会超时。</p>
+<p>PEV（Plan → Execute → Verify）解决的是：不要把执行结果默认为真，而要显式验证。 系统现在不再把执行视为&quot;完成了一步&quot;，而是把执行视为&quot;生成了一个待验证结果&quot;。</p>
+<p>State 新增了什么？</p>
+<ul><li>class VerificationResult(BaseModel):</li><li>is_successful: bool = Field(description=&quot;True if the tool execution was successful and the data is valid.&quot;)</li><li>reasoning: str = Field(description=&quot;Reasoning for the verification decision.&quot;)</li></ul>
+<p>verifier 不是随便说一句&quot;好像不对&quot;，而是输出一个结构化 verdict。verification_result 字段一出现，图结构就不再是 plan -&gt; execute -&gt; next step，而是 plan -&gt; execute -&gt; verify -&gt; (continue | replan | finish)。</p>
+<p>关键代码</p>
+<p>为了演示为什么需要验证，故意放了一个会失败的工具：</p>
+<ul><li>def flaky_web_search(query: str) -&gt; str:</li><li>&quot;&quot;&quot;Search the web. This tool is intentionally unreliable.&quot;&quot;&quot;</li><li>if&quot;employee count&quot;in query.lower():</li><li>return&quot;Error: Could not retrieve data. The API endpoint is currently unavailable.&quot;</li><li>return f&quot;Mock search result for: {query}&quot;</li><li>verifier = Agent(</li><li>name=&quot;verifier&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=VerificationResult,</li><li>instructions=(</li><li>&quot;Given a sub-question and the raw tool observation, decide if the &quot;</li><li>&quot;observation actually answers the sub-question. Treat &#x27;Error&#x27;, &quot;</li><li>&quot;&#x27;unavailable&#x27;, empty strings and obviously irrelevant text as failures.&quot;</li><li>pev_executor = Agent(</li><li>name=&quot;pev_executor&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[flaky_web_search],</li><li>instructions=&quot;Answer exactly one sub-question using tools.&quot;,</li><li>def pev_execute(step_input):</li><li>state = step_input.workflow_session_state</li><li>next_q = state[&quot;plan&quot;][0]</li><li>obs = pev_executor.run(next_q).content</li><li>state[&quot;last_obs&quot;] = obs</li><li>state[&quot;last_q&quot;] = next_q</li><li>return obs</li><li>def pev_verify(step_input):</li><li>state = step_input.workflow_session_state</li><li>verdict: VerificationResult = verifier.run(</li><li>f&quot;Sub-question: {state[&#x27;last_q&#x27;]}\nObservation:\n{state[&#x27;last_obs&#x27;]}&quot;</li><li>).content</li><li>if verdict.is_successful:</li><li>state[&quot;plan&quot;].pop(0)</li><li>state[&quot;intermediate&quot;].append(f&quot;Q: {state[&#x27;last_q&#x27;]}\nA: {state[&#x27;last_obs&#x27;]}&quot;)</li><li>state[&quot;retries&quot;] = 0</li><li>else:</li><li>state[&quot;retries&quot;] = state.get(&quot;retries&quot;, 0) + 1</li><li>state[&quot;last_verdict&quot;] = verdict</li><li>return verdict</li><li>from agno.workflow.v2 import Router</li><li># 先把所有可能用到的 Step 物化一次——Router selector 只能返回 workflow 已知的 Step</li><li>replan_step = Step(name=&quot;replan&quot;, executor=plan_step)</li><li>noop_step = Step(name=&quot;noop&quot;, executor=lambda si: &quot;continue&quot;)</li><li>def pev_router(step_input):</li><li>&quot;&quot;&quot;根据本轮 verdict 决定下一轮是否需要重规划；不需要就放 noop，交给 Loop 判断是否再来一轮。&quot;&quot;&quot;</li><li>state = step_input.workflow_session_state</li><li>if not state[&quot;plan&quot;]:</li><li>return [noop_step]  # 外层 Loop 的 end_condition 会看到 plan 空，直接终止</li><li>if not state[&quot;last_verdict&quot;].is_successful and state[&quot;retries&quot;] &gt;= 2:</li><li>state[&quot;retries&quot;] = 0</li><li>return [replan_step]</li><li>return [noop_step]</li><li>def pev_loop_done(_outputs) -&gt; bool:</li><li>&quot;&quot;&quot;所有子任务都通过验证后，退出 Loop。&quot;&quot;&quot;</li><li>return len(pev_wf.session_state[&quot;plan&quot;]) == 0</li><li>pev_wf = Workflow(</li><li>name=&quot;pev&quot;,</li><li>session_state={&quot;plan&quot;: [], &quot;intermediate&quot;: [], &quot;retries&quot;: 0,</li><li>&quot;last_q&quot;: &quot;&quot;, &quot;last_obs&quot;: &quot;&quot;, &quot;last_verdict&quot;: None},</li><li>steps=[</li><li>Step(name=&quot;plan&quot;, executor=plan_step),</li><li>Loop(</li><li>name=&quot;pev_loop&quot;,</li><li>steps=[</li><li>Step(name=&quot;pev_execute&quot;, executor=pev_execute),</li><li>Step(name=&quot;pev_verify&quot;, executor=pev_verify),</li><li>Router(name=&quot;decide_next&quot;, selector=pev_router),</li><li>end_condition=pev_loop_done,</li><li>Step(name=&quot;synthesize&quot;, executor=synth_step),</li></ul>
+<p>拓扑变成：</p>
+<p>它真正带来的系统收益</p>
+<p>PEV 的本质是：让错误不再静默传播。 在普通 Planning 里，一次失败可能污染整个剩余流程；在 PEV 里，失败在局部被识别，并被重定向回 re-plan 路径。</p>
+<p>失败模式</p>
+<ul><li>额外成本高</li><li>verifier 本身可能误判</li><li>过度验证会拖慢系统</li><li>某些任务里&quot;验证&quot;本身比&quot;执行&quot;更难</li></ul>
+<p>什么时候升级？</p>
+<p>如果你接下来的问题不是&quot;执行步骤会不会失败&quot;，而是&quot;一个 agent 根本不该包揽所有认知角色&quot;，那就该进入多 agent 时代。</p>
+<p>📎 参考实现：06_PEV.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>Multi-Agent</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>解决单prompt角色冲突，把认知分工编码到架构</li><li>state按角色分字段，体现角色边界</li><li>可用Workflow或Team(mode=coordinate)实现</li></ul><div class="pit"><ul><li>流程固定，不会自动返回或跳过角色，未解决动态调度</li></ul></div></div>
+<p>多 agent 的核心不是&quot;多个模型一起跑&quot;，而是把认知分工、调度策略和冗余机制显式写进图结构，真正要分清三件事：固定分工、动态调度、并行冗余。</p>
+<p>它要解决什么问题？</p>
+<p>当单个 agent 的 prompt 同时容纳太多角色时，系统就会变形，最典型的问题不是 token 不够，而是角色冲突，Multi-Agent 的核心价值是：把认知分工编码到架构里。</p>
+<p>State 是什么？</p>
+<p>在 agno 里它就是 workflow_session_state 里按角色划分的几块区域：</p>
+<ul><li>wf = Workflow(</li><li>name=&quot;multi_agent&quot;,</li><li>session_state={</li><li>&quot;user_request&quot;: None,</li><li>&quot;news&quot;: None,        # 由 news_analyst 写入</li><li>&quot;tech&quot;: None,        # 由 technical_analyst 写入</li><li>&quot;fin&quot;: None,         # 由 financial_analyst 写入</li><li>&quot;final_report&quot;: None, # 由 report_writer 写入</li><li>steps=[...],</li></ul>
+<p>不同角色写入不同字段——state 不再只是&quot;共享上下文&quot;，而开始体现角色边界。</p>
+<p>关键代码</p>
+<p>agno 表达这种固定流水线，有两条路：用 Workflow 拼，或者用 Team(mode=&quot;coordinate&quot;) 让一个 leader 固定地调度，这里选最直接的做法——Workflow + 多个 Agent：</p>
+<ul><li>news_analyst = Agent(</li><li>name=&quot;news_analyst&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[DuckDuckGoTools()],</li><li>instructions=&quot;You are a financial news analyst. Produce a concise markdown section on recent news.&quot;,</li><li>technical_analyst = Agent(</li><li>name=&quot;technical_analyst&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[YFinanceTools()],</li><li>instructions=&quot;You are a technical analyst. Produce a concise markdown section on price action and indicators.&quot;,</li><li>financial_analyst = Agent(</li><li>name=&quot;financial_analyst&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[YFinanceTools(income_statements=True, key_financial_ratios=True)],</li><li>instructions=&quot;You are a financial analyst. Produce a concise markdown section on fundamentals.&quot;,</li><li>report_writer = Agent(</li><li>name=&quot;report_writer&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>instructions=&quot;Compose a final investment memo from the three sub-reports.&quot;,</li><li>def news_step(si):</li><li>out = news_analyst.run(si.message).content</li><li>si.workflow_session_state[&quot;news&quot;] = out</li><li>return out</li><li>def tech_step(si):</li><li>out = technical_analyst.run(si.message).content</li><li>si.workflow_session_state[&quot;tech&quot;] = out</li><li>return out</li><li>def fin_step(si):</li><li>out = financial_analyst.run(si.message).content</li><li>si.workflow_session_state[&quot;fin&quot;] = out</li><li>return out</li><li>def write_step(si):</li><li>s = si.workflow_session_state</li><li>return report_writer.run(</li><li>f&quot;News:\n{s[&#x27;news&#x27;]}\n\nTechnical:\n{s[&#x27;tech&#x27;]}\n\nFinancial:\n{s[&#x27;fin&#x27;]}&quot;</li><li>).content</li><li>multi_wf = Workflow(</li><li>name=&quot;multi_agent&quot;,</li><li>session_state={},</li><li>steps=[</li><li>Step(name=&quot;news&quot;, executor=news_step),</li><li>Step(name=&quot;tech&quot;, executor=tech_step),</li><li>Step(name=&quot;fin&quot;, executor=fin_step),</li><li>Step(name=&quot;write&quot;, executor=write_step),</li></ul>
+<p>或者，如果你想让&quot;编排也能省掉&quot;，直接用 Team 的 coordinate 模式：</p>
+<ul><li>from agno.team import Team</li><li>analysts_team = Team(</li><li>name=&quot;analysts&quot;,</li><li>mode=&quot;coordinate&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>members=[news_analyst, technical_analyst, financial_analyst],</li><li>instructions=[</li><li>&quot;Route each relevant sub-question to the right analyst.&quot;,</li><li>&quot;Collect their outputs and synthesize a final investment memo.&quot;,</li><li>markdown=True,</li><li>analysts_team.print_response(&quot;Write an investment memo about AAPL.&quot;, stream=True)</li></ul>
+<p>新增的能力</p>
+<p>把一个大 prompt 内部的隐式角色切换，变成多个显式节点。 这带来非常大的工程收益：你可以单独调试某个角色、替换某个角色的 prompt、单独评估某个角色输出、给不同角色不同工具。</p>
+<p>失败模式</p>
+<p>最大问题是：流程固定。 如果执行到一半发现还需要更多新闻背景，固定流水线不会自动返回新闻分析师；如果发现技术分析其实不必要，也不会跳过，解决了&quot;认知拆分&quot;，但没有解决&quot;动态调度&quot;。</p>
+<p>什么时候升级？</p>
+<p>当多个角色之间的先后顺序本身也需要动态决定时，你需要 Blackboard。</p>
+<p>📎 参考实现：05_multi_agent.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>Blackboard</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>共享黑板当前状态决定下一步激活谁</li><li>controller每次看黑板决定next_agent或FINISH</li><li>控制中心从预定义工作流转向共享状态+调度器</li></ul><div class="pit"><ul><li>controller不稳定、黑板变脏信息冲突、专家重复劳动、过度循环</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>Multi-Agent 里角色有了，但顺序还是硬编码的。Blackboard 解决的是：不要预先写死专家的调用顺序，而是让共享工作区的当前状态来决定下一步应该激活谁。</p>
+<p>State 是什么？</p>
+<ul><li>class BlackboardState(BaseModel):</li><li>user_request: str</li><li>blackboard: dict</li><li>next_agent: Optional[str] = None</li><li>is_complete: bool = False</li></ul>
+<p>之前的 state 更像&quot;按字段分区的结果容器&quot;；现在的 state 变成了一个共享工作台。所有专家都围绕这块黑板读写。</p>
+<p>关键代码</p>
+<ul><li>import json</li><li>class ControllerDecision(BaseModel):</li><li>next_agent: str = Field(description=&quot;One of [&#x27;news&#x27;, &#x27;technical&#x27;, &#x27;financial&#x27;, &#x27;writer&#x27;, &#x27;FINISH&#x27;].&quot;)</li><li>reasoning: str = Field(description=&quot;A brief reason for choosing the next agent.&quot;)</li><li>controller = Agent(</li><li>name=&quot;controller&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=ControllerDecision,</li><li>instructions=(</li><li>&quot;You are the controller of a blackboard system. &quot;</li><li>&quot;Inspect what is currently on the blackboard and decide which specialist &quot;</li><li>&quot;should be called next, or FINISH if the report is ready.&quot;</li><li>SPECIALISTS = {</li><li>&quot;news&quot;: news_analyst,</li><li>&quot;technical&quot;: technical_analyst,</li><li>&quot;financial&quot;: financial_analyst,</li><li>&quot;writer&quot;: report_writer,</li><li>def controller_step(si):</li><li>s = si.workflow_session_state</li><li>bb_snapshot = json.dumps(s[&quot;blackboard&quot;], indent=2, ensure_ascii=False)</li><li>decision = controller.run(</li><li>f&quot;Original request: {s[&#x27;user_request&#x27;]}\n\nBlackboard so far:\n{bb_snapshot}&quot;</li><li>).content</li><li>s[&quot;next_agent&quot;] = decision.next_agent</li><li>return decision</li><li>def specialist_step(si):</li><li>s = si.workflow_session_state</li><li>if s[&quot;next_agent&quot;] == &quot;FINISH&quot;:</li><li>return&quot;finished&quot;</li><li>agent = SPECIALISTS[s[&quot;next_agent&quot;]]</li><li>piece = agent.run(</li><li>f&quot;Request: {s[&#x27;user_request&#x27;]}\nBlackboard:\n{json.dumps(s[&#x27;blackboard&#x27;])}&quot;</li><li>).content</li><li>s[&quot;blackboard&quot;][s[&quot;next_agent&quot;]] = piece</li><li>return piece</li><li>def bb_loop_done(_outputs) -&gt; bool:</li><li>&quot;&quot;&quot;controller 选出 FINISH 就终止循环。&quot;&quot;&quot;</li><li>return blackboard_wf.session_state[&quot;next_agent&quot;] == &quot;FINISH&quot;</li><li>blackboard_wf = Workflow(</li><li>name=&quot;blackboard&quot;,</li><li>session_state={&quot;user_request&quot;: &quot;&quot;, &quot;blackboard&quot;: {}, &quot;next_agent&quot;: None},</li><li>steps=[</li><li>Loop(</li><li>name=&quot;bb_loop&quot;,</li><li>steps=[</li><li>Step(name=&quot;controller&quot;, executor=controller_step),</li><li>Step(name=&quot;specialist&quot;, executor=specialist_step),</li><li>end_condition=bb_loop_done,</li></ul>
+<p>拓扑不是固定链，而是一个持续调度回路：</p>
+<p>系统控制中心从 &quot;预定义工作流&quot; 转向 &quot;共享状态 + 调度器&quot;。</p>
+<p>新增的能力</p>
+<p>持续的、基于中间状态的动态编排。</p>
+<p>失败模式</p>
+<ul><li>controller 决策不稳定</li><li>blackboard 结构变脏，信息冲突</li><li>专家之间重复劳动</li><li>系统容易过度循环</li></ul>
+<p>Blackboard 用灵活性换来了调度复杂度。</p>
+<p>什么时候升级/降级？</p>
+<p>如果问题的顺序本来就很固定，用 Blackboard 反而是过度设计，但如果你真正需要的不是持续调度，而只是&quot;请求进来时先分诊一次&quot;，那就该看 Meta-Controller。</p>
+<p>📎 参考实现：07_blackboard.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>Meta-Controller</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>入口分诊，controller只做选择不做任务</li><li>与Blackboard区别：一次性路由vs持续调度</li><li>生产起步架构通常先选Meta-Controller</li></ul><div class="pit"><ul><li>只路由一次，第一跳错了整条路径就错，且常不显式报错</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>很多系统并不需要 Blackboard 那种持续调度，它们的问题更像是：这条请求是研究类，还是编码类，还是通用问答？</p>
+<p>Meta-Controller 解决的是：入口分诊。</p>
+<p>State 是什么？</p>
+<ul><li>class MetaAgentState(BaseModel):</li><li>user_request: str</li><li>selected_agent: Optional[str] = None</li><li>result: Optional[str] = None</li></ul>
+<p>状态最小而明确：请求是什么、被路由给谁、返回了什么。</p>
+<p>关键代码</p>
+<p>agno 里这是 Team(mode=&quot;route&quot;) 的原生场景——leader 只做选择，不做任务：</p>
+<ul><li>from agno.team import Team</li><li>generalist = Agent(</li><li>name=&quot;generalist&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini-mini&quot;),</li><li>role=&quot;Handles general Q&amp;A.&quot;,</li><li>instructions=&quot;Answer general knowledge questions directly.&quot;,</li><li>researcher = Agent(</li><li>name=&quot;researcher&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>role=&quot;Handles research-heavy queries.&quot;,</li><li>tools=[DuckDuckGoTools()],</li><li>instructions=&quot;Do multi-step research using search.&quot;,</li><li>coder = Agent(</li><li>name=&quot;coder&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>role=&quot;Handles Python coding tasks.&quot;,</li><li>instructions=&quot;Write, explain and debug Python code.&quot;,</li><li>meta = Team(</li><li>name=&quot;meta_controller&quot;,</li><li>mode=&quot;route&quot;,                      # 关键：一次性路由</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>members=[generalist, researcher, coder],</li><li>instructions=(</li><li>&quot;Choose exactly one member based on the request type: &quot;</li><li>&quot;generalist for general Q&amp;A, researcher for research-heavy queries, &quot;</li><li>&quot;coder for Python coding tasks. Do not do the work yourself.&quot;</li><li>meta.print_response(&quot;Write a Python function to compute the LCM of two numbers.&quot;)</li></ul>
+<p>mode=&quot;route&quot; 的精髓不在 graph 多复杂，而在于：controller 自己不做任务，只做选择。</p>
+<p>它和 Blackboard 的本质区别</p>
+<ul><li>Meta-Controller ：一次性路由</li><li>Blackboard ：持续调度</li></ul>
+<p>前者像&quot;分诊台&quot;，后者像&quot;总控台&quot;。</p>
+<p>失败模式</p>
+<p>最核心的就是路由错误，因为它只路由一次，所以一旦第一跳错了，整个请求路径就错了，而且这类错误常常不是显式报错，而是&quot;回答得像那么回事，但方向错了&quot;。</p>
+<p>它为什么在生产里特别常见？</p>
+<p>因为它足够简单，也足够有效，如果让我在生产系统里给多 agent 设计一个起步架构，我通常会先选 Meta-Controller，而不是一上来就上 Blackboard。</p>
+<p>📎 参考实现：11_meta_controller.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-12">
+        <h2 class="sec"><span class="n">12</span>Ensemble</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>fan-out/fan-in：多agent并行分析同一问题再由aggregator融合</li><li>用冗余与多视角降低单次推理偏差</li><li>关键不是取平均，而是保留并解释冲突信息</li></ul><div class="pit"><ul><li>成本线性增长、共享偏见、强行合并冲突、掩盖关键分歧</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>前面的多 agent 基本都在解决&quot;分工&quot;问题，Ensemble 解决的是另一类问题：同一个问题，单个 agent 的结论不够可靠。</p>
+<p>你不是担心&quot;一个 agent 做不完&quot;，而是担心&quot;一个 agent 看法太单一、偏差太大、幻觉太重&quot;。</p>
+<p>标准 fan-out / fan-in：</p>
+<p>关键代码</p>
+<p>agno 的 Workflow 支持 Parallel step 做 fan-out，再用一个 aggregator step 做 fan-in：</p>
+<ul><li>from agno.workflow.v2 import Workflow, Step, Parallel</li><li>class FinalRecommendation(BaseModel):</li><li>final_recommendation: str</li><li>confidence_score: float</li><li>synthesis_summary: str</li><li>identified_opportunities: List[str]</li><li>identified_risks: List[str]</li><li>bullish = Agent(name=&quot;bullish&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>instructions=&quot;You are a growth-oriented bullish analyst. Argue why to invest.&quot;)</li><li>value = Agent(name=&quot;value&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>instructions=&quot;You are a value analyst. Focus on margin of safety.&quot;)</li><li>quant = Agent(name=&quot;quant&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>instructions=&quot;You are a quantitative analyst. Focus on ratios and trends.&quot;)</li><li>cio = Agent(name=&quot;cio&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=FinalRecommendation,</li><li>instructions=(&quot;You are the CIO. Synthesize three analyst views into one final &quot;</li><li>&quot;recommendation. Do NOT hide disagreement — explicitly list risks.&quot;))</li><li>def run_one(agent):</li><li>def _step(si):</li><li>out = agent.run(si.message).content</li><li># Parallel 各分支并发写入共享 dict</li><li>si.workflow_session_state.setdefault(&quot;views&quot;, {})[agent.name] = out</li><li>return out</li><li>return _step</li><li>def aggregate_step(si):</li><li>views = si.workflow_session_state.get(&quot;views&quot;, {})</li><li>body = &quot;\n\n&quot;.join(f&quot;[{name}]\n{view}&quot;for name, view in views.items())</li><li>return cio.run(f&quot;Question: {si.message}\nAnalyst views:\n{body}&quot;).content</li><li>ensemble_wf = Workflow(</li><li>name=&quot;ensemble&quot;,</li><li>session_state={&quot;views&quot;: {}},</li><li>steps=[</li><li>Parallel(</li><li>name=&quot;analysts&quot;,</li><li>steps=[</li><li>Step(name=&quot;bullish&quot;, executor=run_one(bullish)),</li><li>Step(name=&quot;value&quot;, executor=run_one(value)),</li><li>Step(name=&quot;quant&quot;, executor=run_one(quant)),</li><li>Step(name=&quot;cio_synth&quot;, executor=aggregate_step),</li><li>ensemble_wf.run(message=&quot;Should I buy AAPL right now?&quot;)</li></ul>
+<p>它和 Multi-Agent 到底差在哪？</p>
+<ul><li>Multi-Agent ：不同 agent 做不同子任务</li><li>Ensemble ：不同 agent 分析同一个问题</li></ul>
+<p>前者是分工，后者是冗余。</p>
+<p>新增的能力</p>
+<p>用多视角和冗余来降低单次推理偏差。 和机器学习里的 ensemble 很像：不是因为单个模型不能输出，而是因为多个模型的误差不完全相关。</p>
+<p>失败模式</p>
+<ul><li>成本线性增长</li><li>多个 agent 可能共享同样的偏见</li><li>aggregator 可能强行合并不该合并的冲突</li><li>最终&quot;综合意见&quot;可能掩盖关键分歧</li></ul>
+<p>所以 ensemble 的关键不是&quot;取平均&quot;，而是保留冲突信息并解释冲突，这就是为什么 FinalRecommendation 里必须有 identified_risks。</p>
+<p>什么时候用？</p>
+<p>高风险判断、事实核查、投资建议、复杂研究结论——凡是你不想把决定押在一次输出上的场景。</p>
+<p>📎 参考实现：13_ensemble.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-13">
+        <h2 class="sec"><span class="n">13</span>双记忆系统</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>state扩展为图内状态+图外可检索历史</li><li>episodic记事件入向量库，semantic记事实入图/结构化存储</li><li>enable_agentic_memory自动接上写回链路</li></ul><div class="pit"><ul><li>错误记忆长期污染、相似但不相关召回、抽取质量差导致记忆脏化</li></ul></div></div>
+<p>记忆系统不是&quot;外挂知识库&quot;，而是 state 的外延扩展，真正重要的不是存了多少，而是系统如何区分事件、事实，以及如何避免错误长期固化。</p>
+<p>它要解决什么问题？</p>
+<p>前面的架构都默认一个前提：当前对话结束后，系统基本失忆，用户要的是：记得我的偏好、记得我们之前讨论过什么、记得哪些事实在长期上是稳定的。</p>
+<p>这里有两种记忆：</p>
+<ul><li>Episodic memory ：记住发生过什么（事件摘要 → 向量库）</li><li>Semantic memory ：记住什么是真的（实体关系 → 图结构/结构化存储）</li></ul>
+<p>关键代码</p>
+<p>agno 的 Memory 负责长期用户偏好/事件，AgentKnowledge 负责向量检索，两者结合可以直接落出一套双记忆系统：</p>
+<ul><li>from agno.agent import Agent</li><li>from agno.memory.v2.memory import Memory</li><li>from agno.memory.v2.db.sqlite import SqliteMemoryDb</li><li>from agno.knowledge.text import TextKnowledgeBase</li><li>from agno.vectordb.lancedb import LanceDb, SearchType</li><li>from agno.embedder.openai import OpenAIEmbedder</li><li>from agno.storage.sqlite import SqliteStorage</li><li># Episodic：用户层长期记忆，自动从对话中抽取</li><li>memory = Memory(</li><li>db=SqliteMemoryDb(table_name=&quot;user_memories&quot;, db_file=&quot;tmp/memory.db&quot;),</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li># Semantic：结构化知识库（这里以文本 + 向量库为例）</li><li>knowledge = TextKnowledgeBase(</li><li>path=&quot;data/facts&quot;,</li><li>vector_db=LanceDb(</li><li>table_name=&quot;facts&quot;,</li><li>uri=&quot;tmp/lancedb&quot;,</li><li>search_type=SearchType.hybrid,</li><li>embedder=OpenAIEmbedder(id=&quot;text-embedding-3-small&quot;),</li><li>knowledge.load(recreate=False)</li><li>mem_agent = Agent(</li><li>name=&quot;memorized&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>memory=memory,</li><li>enable_agentic_memory=True,          # agent 可以主动写入/检索 episodic</li><li>enable_user_memories=True,</li><li>knowledge=knowledge,                 # semantic</li><li>search_knowledge=True,</li><li>add_history_to_messages=True,</li><li>num_history_responses=5,</li><li>storage=SqliteStorage(table_name=&quot;sessions&quot;, db_file=&quot;tmp/sessions.db&quot;),</li><li>markdown=True,</li><li>mem_agent.print_response(</li><li>&quot;I&#x27;m allergic to peanuts and prefer low-carb meals. Remember that.&quot;,</li><li>user_id=&quot;alice&quot;,</li><li># 下一次，即使换了新 session</li><li>mem_agent.print_response(</li><li>&quot;Suggest a dinner plan for me.&quot;,</li><li>user_id=&quot;alice&quot;,</li></ul>
+<p>新增的能力</p>
+<p>系统的 state 从&quot;图内字段&quot;扩展成：图内状态 + 图外可检索历史状态。 agent 的能力不再只依赖当前上下文窗口，而依赖它如何从历史里提取相关信息。</p>
+<p>工作流</p>
+<p>memory 不再是附加模块，而是主控制流的一部分，agno 的 enable_agentic_memory=True 就是把这一整条写回链路自动接上。</p>
+<p>失败模式</p>
+<ul><li>错误记忆被写入，造成长期污染</li><li>episodic recall 召回了相似但不相关的信息</li><li>semantic graph 存入过时事实</li><li>抽取质量差导致记忆结构脏化</li></ul>
+<p>memory 让系统更强，但也让错误变得持久。</p>
+<p>什么时候还不够？</p>
+<p>当你发现向量检索只能&quot;找相似&quot;，却不能做&quot;关系推理&quot;时，就需要 Graph / World-Model Memory。</p>
+<p>📎 参考实现：08_episodic_with_semantic.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-14">
+        <h2 class="sec"><span class="n">14</span>Graph Memory</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>从chunk相似性召回升级到关系结构推理</li><li>链路为Text→KG→Text-to-Cypher→Query→Answer</li><li>适用于企业问答、组织关系、并购链条追踪</li></ul><div class="pit"><ul><li>抽取错误污染图、schema不佳、Cypher生成错误、synthesis误读</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>向量检索能回答&quot;哪段历史最像现在的问题&quot;，但不能天然回答&quot;这个实体和那个实体之间隔了几跳关系&quot;。 Graph Memory 解决的是：把知识从 chunk 组织提升到关系结构。</p>
+<p>技术核心</p>
+<p>两步：</p>
+<ul><li>从非结构化文本里抽实体和关系</li><li>让自然语言问题转成图查询</li><li>Text -&gt; Knowledge Graph -&gt; Text-to-Cypher -&gt; Query -&gt; Answer</li></ul>
+<p>关键代码</p>
+<ul><li>class Node(BaseModel):</li><li>id: str = Field(description=&quot;Unique name or identifier for the entity.&quot;)</li><li>type: str = Field(description=&quot;Entity type, e.g., Person, Company.&quot;)</li><li>class Relationship(BaseModel):</li><li>source: Node</li><li>target: Node</li><li>type: str = Field(description=&quot;Relationship verb in ALL_CAPS, e.g., WORKS_FOR, ACQUIRED.&quot;)</li><li>class KnowledgeGraph(BaseModel):</li><li>relationships: List[Relationship]</li><li>graph_maker = Agent(</li><li>name=&quot;graph_maker&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=KnowledgeGraph,</li><li>instructions=(</li><li>&quot;Extract entities (nodes) and relationships from the given text. &quot;</li><li>&quot;Relationship type should be an ALL_CAPS verb.&quot;</li><li># agno 的 Neo4j 工具可以直接做图查询</li><li>from agno.tools.neo4j import Neo4jTools</li><li>graph_query_agent = Agent(</li><li>name=&quot;graph_query&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[Neo4jTools(url=&quot;bolt://localhost:7687&quot;, user=&quot;neo4j&quot;, password=&quot;...&quot;)],</li><li>instructions=(</li><li>&quot;You answer questions over a Neo4j knowledge graph. &quot;</li><li>&quot;First generate a Cypher query, run it, then synthesize a natural answer. &quot;</li><li>&quot;If the first query returns nothing, rewrite and retry once.&quot;</li><li># 1) 抽取</li><li>kg = graph_maker.run(&quot;Tim Cook is the CEO of Apple. Apple acquired Beats in 2014.&quot;).content</li><li># 2) 写入图库（省略 write_triples），然后查询</li><li>graph_query_agent.print_response(&quot;Which companies did Apple acquire and in which year?&quot;)</li></ul>
+<p>新增的能力</p>
+<p>核心变化是：从&quot;相似性召回&quot;升级到&quot;结构性推理&quot;。 这在企业知识问答、组织关系分析、并购链条追踪这类问题上非常关键。</p>
+<p>失败模式</p>
+<ul><li>抽取错误导致图污染</li><li>schema 设计不佳导致图不可用</li><li>Text-to-Cypher 生成错误查询</li><li>图查询结果正确，但 synthesis 层误读</li></ul>
+<p>Graph Memory 的关键不只是 LLM，而是整个知识建模链条。</p>
+<p>📎 参考实现：12_graph.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-15">
+        <h2 class="sec"><span class="n">15</span>ToT</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>把推理问题转写成候选路径空间的搜索问题</li><li>LLM负责生成候选动作，程序化代码负责搜索与剪枝</li><li>state单位变成多条候选路径active_paths</li></ul><div class="pit"><ul><li>组合爆炸，只用于必须回溯搜索的专用场景</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>真正困难的问题不是&quot;链不够长&quot;，而是&quot;路径会分叉，而且需要回溯&quot;，ToT 解决的是：把推理从单路径生成，升级成对候选路径空间的搜索。</p>
+<p>State 是什么？</p>
+<ul><li>class ToTState(BaseModel):</li><li>problem: str</li><li>active_paths: List[List[&quot;PuzzleState&quot;]]</li><li>solution: Optional[List[&quot;PuzzleState&quot;]] = None</li></ul>
+<p>state 的单位已经不是&quot;一个当前答案&quot;，而是&quot;多条候选路径&quot;。</p>
+<p>关键代码</p>
+<p>经典的 wolf-goat-cabbage 谜题——标准 BFS 回溯场景，在 agno 里，LLM 负责 生成候选动作，程序化代码负责 搜索树的扩展和剪枝。 这是 ToT 里重要的架构判断：不要把搜索控制交给 LLM，交给代码。</p>
+<ul><li>import copy</li><li>class PuzzleState(BaseModel):</li><li>left_bank: frozenset = Field(default_factory=lambda: frozenset({&quot;wolf&quot;, &quot;goat&quot;, &quot;cabbage&quot;}))</li><li>right_bank: frozenset = Field(default_factory=frozenset)</li><li>boat_location: str = &quot;left&quot;</li><li>move_description: str = &quot;Initial state.&quot;</li><li>class Config:</li><li>arbitrary_types_allowed = True</li><li>def is_valid(self) -&gt; bool:</li><li>dangerous = [(&quot;wolf&quot;, &quot;goat&quot;), (&quot;goat&quot;, &quot;cabbage&quot;)]</li><li>unguarded = self.left_bank if self.boat_location == &quot;right&quot;else self.right_bank</li><li>return not any({a, b}.issubset(unguarded) for a, b in dangerous)</li><li>def is_goal(self) -&gt; bool:</li><li>return self.right_bank == frozenset({&quot;wolf&quot;, &quot;goat&quot;, &quot;cabbage&quot;})</li><li>class Proposal(BaseModel):</li><li>moves: List[str] = Field(description=&quot;Candidate next moves.&quot;)</li><li>proposer = Agent(</li><li>name=&quot;proposer&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=Proposal,</li><li>instructions=&quot;Given the current state, propose up to 3 distinct next moves.&quot;,</li><li>def expand(state: PuzzleState) -&gt; List[PuzzleState]:</li><li># 纯程序化展开：LLM 只提供建议，代码保证搜索的正确性</li><li>def tot_solve(initial: PuzzleState, max_depth: int = 10):</li><li>active_paths = [[initial]]</li><li>for _ in range(max_depth):</li><li>new_paths = []</li><li>for path in active_paths:</li><li>for nxt in expand(path[-1]):</li><li>if nxt in path:</li><li>continue</li><li>new_path = path + [nxt]</li><li>if nxt.is_goal():</li><li>return new_path</li><li>new_paths.append(new_path)</li><li>active_paths = new_paths</li><li>return None</li></ul>
+<p>新增的能力</p>
+<p>ToT 新增的是：把推理问题转写成搜索问题。 这和 ReAct、Planning 都不一样。前者做控制流设计，ToT 做搜索空间设计。</p>
+<p>失败模式</p>
+<p>组合爆炸，ToT 不是通用架构，只该用于&quot;必须回溯和搜索&quot;的专用场景。</p>
+<p>📎 参考实现：09_tree_of_thoughts.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-16">
+        <h2 class="sec"><span class="n">16</span>Mental Loop</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>用copy.deepcopy做模拟分叉，预演后再决定是否真执行</li><li>决策agent通过simulate_action/execute_action双工具</li><li>反事实执行：先问“如果我这么做会怎样”</li></ul><div class="pit"><ul><li>simulation-reality gap：模拟器保真度决定架构上限</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>在机器人、交易、生产系统配置变更这类任务里，试错有代价。 Mental Loop 要把试错从真实世界搬进模拟世界。</p>
+<p>关键代码</p>
+<p>模拟器就是一个普通 Python 对象，决策 agent 通过工具把它当成&quot;可以快照 可以推进 可以回滚&quot;的沙箱：</p>
+<ul><li>import copy</li><li>import numpy as np</li><li>class Portfolio(BaseModel):</li><li>cash: float = 10000.0</li><li>shares: int = 0</li><li>def value(self, price: float) -&gt; float:</li><li>return self.cash + self.shares * price</li><li>class MarketSimulator(BaseModel):</li><li>day: int = 0</li><li>price: float = 100.0</li><li>volatility: float = 0.1</li><li>drift: float = 0.01</li><li>portfolio: Portfolio = Field(default_factory=Portfolio)</li><li>class Config:</li><li>arbitrary_types_allowed = True</li><li>def step(self, action: str, amount: float = 0.0):</li><li>if action == &quot;buy&quot;:</li><li>n = int(amount); cost = n * self.price</li><li>if self.portfolio.cash &gt;= cost:</li><li>self.portfolio.shares += n; self.portfolio.cash -= cost</li><li>elif action == &quot;sell&quot;:</li><li>n = min(int(amount), self.portfolio.shares)</li><li>self.portfolio.shares -= n; self.portfolio.cash += n * self.price</li><li>self.price *= 1 + float(np.random.normal(self.drift, self.volatility))</li><li>self.day += 1</li><li>REAL = MarketSimulator()</li><li>def simulate_action(action: str, amount: float, horizon: int = 5) -&gt; str:</li><li>&quot;&quot;&quot;Roll out an action on a forked copy of the market for `horizon` days.&quot;&quot;&quot;</li><li>sim = copy.deepcopy(REAL)</li><li>sim.step(action, amount)</li><li>for _ in range(horizon - 1):</li><li>sim.step(&quot;hold&quot;)</li><li>return f&quot;Simulated value after {horizon} days: ${sim.portfolio.value(sim.price):.2f}&quot;</li><li>def execute_action(action: str, amount: float) -&gt; str:</li><li>&quot;&quot;&quot;Commit the action to the REAL market.&quot;&quot;&quot;</li><li>REAL.step(action, amount)</li><li>return f&quot;Executed: {action} {amount}. Portfolio now ${REAL.portfolio.value(REAL.price):.2f}.&quot;</li><li>trader = Agent(</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[simulate_action, execute_action],</li><li>instructions=[</li><li>&quot;Before committing any action with execute_action, first call simulate_action.&quot;,</li><li>&quot;If the simulated outcome is worse than holding, do not execute.&quot;,</li><li>show_tool_calls=True,</li><li>trader.print_response(&quot;Decide whether to buy AAPL today, and how much.&quot;)</li></ul>
+<p>新增的能力</p>
+<p>反事实执行（counterfactual execution）。 系统不再直接问&quot;下一步做什么&quot;，而是先问：如果我这么做会发生什么？</p>
+<p>失败模式</p>
+<p>simulation-reality gap，模拟器越不真实，agent 越可能做出&quot;模拟里完美，现实里灾难&quot;的决定，这个架构的上限往往不是 LLM，而是 simulator 的保真度。</p>
+<p>📎 参考实现：10_mental_loop.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-17">
+        <h2 class="sec"><span class="n">17</span>Dry-Run</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>工具带dry_run参数，preview与execute两种模式</li><li>Workflow显式插入人工审批step做最后闸门</li><li>让副作用在控制流上变成可审批对象</li></ul><div class="pit"><ul><li>人工审批瓶颈、预演与真实环境不一致、preview过细有信息泄漏风险</li></ul></div></div>
+<p>安全架构的核心，不是让 agent 更保守，而是把&quot;是否允许执行&quot;做成显式控制流。 Dry-Run 解决外部副作用，Metacognitive 解决内部边界感知，它们最好一起出现。</p>
+<p>它要解决什么问题？</p>
+<p>如果一个 agent 会发邮件、发帖、下单、改配置、删数据，核心问题是：它在执行前能不能被拦住。</p>
+<p>Dry-Run Harness 把所有真实动作都拆成两种模式：preview 和 execute。</p>
+<p>关键代码</p>
+<p>agno 里实现 dry-run 有两个关键设计：工具本身带 dry_run 参数；Workflow 里显式插入一个人工审批 step：</p>
+<ul><li>import datetime, hashlib</li><li>def publish_post(content: str, hashtags: List[str], dry_run: bool = True) -&gt; str:</li><li>&quot;&quot;&quot;Publish a social media post. If dry_run=True, only preview; no side effects.&quot;&quot;&quot;</li><li>ts = datetime.datetime.now().isoformat()</li><li>full = f&quot;{content}\n\n&quot; + &quot; &quot;.join(f&quot;#{h}&quot;for h in hashtags)</li><li>if dry_run:</li><li>return f&quot;[DRY RUN @ {ts}] Would publish:\n---\n{full}\n---&quot;</li><li>post_id = hashlib.md5(full.encode()).hexdigest()[:8]</li><li>return f&quot;[LIVE @ {ts}] Published id={post_id}&quot;</li><li>proposer = Agent(</li><li>name=&quot;proposer&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>tools=[publish_post],</li><li>instructions=[</li><li>&quot;When asked to post, FIRST call publish_post with dry_run=True to preview.&quot;,</li><li>&quot;After the preview, stop and wait for human approval. Do NOT call dry_run=False yourself.&quot;,</li><li>show_tool_calls=True,</li><li>def propose_step(si):</li><li>return proposer.run(si.message).content</li><li>def approve_step(si):</li><li>preview = si.previous_step_output</li><li>print(f&quot;\n--- PREVIEW ---\n{preview}\n---&quot;)</li><li>decision = input(&quot;Approve and go live? (y/n): &quot;).strip().lower()</li><li>si.workflow_session_state[&quot;approved&quot;] = (decision == &quot;y&quot;)</li><li>return decision</li><li>def commit_step(si):</li><li>if not si.workflow_session_state.get(&quot;approved&quot;):</li><li>return&quot;Rejected by human reviewer. Nothing was published.&quot;</li><li>return proposer.run(</li><li>&quot;Now actually publish the same post by calling publish_post with dry_run=False.&quot;</li><li>).content</li><li>dryrun_wf = Workflow(</li><li>name=&quot;dryrun&quot;,</li><li>steps=[</li><li>Step(name=&quot;propose&quot;, executor=propose_step),</li><li>Step(name=&quot;approve&quot;, executor=approve_step),</li><li>Step(name=&quot;commit&quot;, executor=commit_step),</li></ul>
+<p>新增的能力</p>
+<p>不是更智能，而是：让副作用在控制流上变成可审批对象。 很多 agent 系统的问题不在 reasoning，而在 side effects。Dry-Run 把它显式纳入架构。</p>
+<p>失败模式</p>
+<ul><li>人工审批瓶颈</li><li>预演和真实执行环境不一致</li><li>preview 足够详细反而带来信息泄漏风险</li></ul>
+<p>但即便如此，这种架构在真实生产系统里几乎是必须的。</p>
+<p>📎 参考实现：14_dry_run.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-18">
+        <h2 class="sec"><span class="n">18</span>Metacognitive</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>维护自我模型，先问“这个任务我该不该做”</li><li>按confidence和策略路由reason_directly/use_tool/escalate</li><li>最强能力不是回答而是拒绝</li></ul><div class="pit"><ul><li>置信度估计不准，低估过度保守、高估危险自信</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>前面的系统都在问&quot;怎么把任务做完&quot;，Metacognitive agent 先问：这个任务我到底该不该做？ 这是更高级的控制流，因为它不再只对外部世界建模，也开始对自身能力边界建模。</p>
+<p>关键代码</p>
+<ul><li>class MetacognitiveAnalysis(BaseModel):</li><li>confidence: float = Field(description=&quot;0.0~1.0, confidence in safely answering.&quot;)</li><li>strategy: str = Field(description=&quot;&#x27;reason_directly&#x27; | &#x27;use_tool&#x27; | &#x27;escalate&#x27;.&quot;)</li><li>reasoning: str</li><li>tool_to_use: Optional[str] = None</li><li>AGENT_SELF_MODEL = {</li><li>&quot;knowledge_domains&quot;: [&quot;general health&quot;, &quot;nutrition&quot;, &quot;exercise&quot;],</li><li>&quot;tools_available&quot;: [&quot;symptom_checker&quot;],</li><li>&quot;confidence_threshold&quot;: 0.7,</li><li>&quot;high_risk_topics&quot;: [&quot;prescription dosage&quot;, &quot;emergency medical advice&quot;],</li><li>self_model_agent = Agent(</li><li>name=&quot;self_model&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=MetacognitiveAnalysis,</li><li>instructions=(</li><li>f&quot;Your self-model is: {AGENT_SELF_MODEL}. &quot;</li><li>&quot;For each user query, estimate confidence and pick a strategy: &quot;</li><li>&quot;&#x27;reason_directly&#x27; if confidence &gt;= threshold and topic is low-risk, &quot;</li><li>&quot;&#x27;use_tool&#x27; if a matching tool exists, &#x27;escalate&#x27; otherwise.&quot;</li><li>def symptom_checker(symptoms: str) -&gt; str:</li><li>return f&quot;Reference info for: {symptoms}&quot;</li><li>responder = Agent(model=OpenAIChat(id=&quot;gpt-5-mini&quot;), tools=[symptom_checker])</li><li>def meta_step(si):</li><li>analysis: MetacognitiveAnalysis = self_model_agent.run(si.message).content</li><li>si.workflow_session_state[&quot;analysis&quot;] = analysis</li><li>return analysis</li><li>def meta_router(si):</li><li>analysis = si.workflow_session_state[&quot;analysis&quot;]</li><li>if analysis.strategy == &quot;reason_directly&quot;:</li><li>return [Step(name=&quot;answer&quot;, executor=lambda s: responder.run(s.message).content)]</li><li>if analysis.strategy == &quot;use_tool&quot;:</li><li>return [Step(name=&quot;tool_answer&quot;,</li><li>executor=lambda s: responder.run(</li><li>f&quot;Use the {analysis.tool_to_use} tool to help answer: {s.message}&quot;</li><li>).content)]</li><li>return [Step(name=&quot;escalate&quot;,</li><li>executor=lambda s: &quot;I&#x27;m not confident or allowed to answer this. Escalating to a human expert.&quot;)]</li><li>metacog_wf = Workflow(</li><li>name=&quot;metacognitive&quot;,</li><li>steps=[</li><li>Step(name=&quot;self_model&quot;, executor=meta_step),</li><li>Router(name=&quot;route_strategy&quot;, selector=meta_router),</li></ul>
+<p>新增的能力</p>
+<p>它新增的是：边界感知。 系统开始知道：我知道什么、不知道什么、需要什么工具、什么时候该把问题交给人类。</p>
+<p>失败模式</p>
+<p>置信度估计不准，低估自己会过度保守，高估自己会在高风险场景下危险地自信。</p>
+<p>它为什么关键？</p>
+<p>在医疗、法律、金融这种领域，agent 最强的能力不是&quot;回答&quot;，而是&quot;拒绝&quot;。</p>
+<p>📎 参考实现：17_reflexive_metacognitive.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-19">
+        <h2 class="sec"><span class="n">19</span>Self-Improvement</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>生成→评估→修订循环，不达标继续，最多修订3次</li><li>GoldStandardMemory把批准样本注入未来生成</li><li>与Reflection区别：跨任务积累高质量样例</li></ul><div class="pit"><ul><li>critic标准不稳、revision收益递减、低质量样本反向污染</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>Reflection 只有一次 critique pass，一个追求高质量输出的系统需要的是：生成 → 评估 → 修订 → 再评估 → 不达标继续，也就是把质量优化做成进化回路。</p>
+<p>关键代码</p>
+<p>最关键的是终止条件，agno 的 Loop.end_condition 天然支持这个：</p>
+<ul><li>class EmailCritique(BaseModel):</li><li>is_approved: bool</li><li>feedback: str</li><li>class MarketingEmail(BaseModel):</li><li>subject: str</li><li>body: str</li><li>generator = Agent(name=&quot;email_gen&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=MarketingEmail,</li><li>instructions=&quot;Write a marketing email. Follow feedback if provided.&quot;)</li><li>critic = Agent(name=&quot;email_critic&quot;, model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>response_model=EmailCritique,</li><li>instructions=&quot;Approve only if subject is compelling AND body has a clear CTA AND tone is on-brand.&quot;)</li><li># 跨任务：高质量样例库</li><li>class GoldStandardMemory:</li><li>def __init__(self):</li><li>self.examples: List[MarketingEmail] = []</li><li>def few_shot_block(self) -&gt; str:</li><li>if not self.examples:</li><li>return&quot;No gold examples yet.&quot;</li><li>return&quot;\n\n---\n\n&quot;.join(</li><li>f&quot;Subject: {e.subject}\nBody:\n{e.body}&quot;for e in self.examples[-3:]</li><li>def add(self, e: MarketingEmail):</li><li>self.examples.append(e)</li><li>GOLD = GoldStandardMemory()</li><li>def gen_step(si):</li><li>state = si.workflow_session_state</li><li>prior = state.get(&quot;last_email&quot;)</li><li>critique = state.get(&quot;last_critique&quot;)</li><li>prompt = f&quot;Task: {si.message}\nGold examples:\n{GOLD.few_shot_block()}\n\n&quot;</li><li>if prior and critique:</li><li>prompt += (f&quot;Previous draft:\nSubject: {prior.subject}\nBody:\n{prior.body}\n&quot;</li><li>f&quot;Critic feedback: {critique.feedback}\nRewrite to address the feedback.&quot;)</li><li>email: MarketingEmail = generator.run(prompt).content</li><li>state[&quot;last_email&quot;] = email</li><li>state[&quot;revision&quot;] = state.get(&quot;revision&quot;, 0) + 1</li><li>return email</li><li>def critic_step(si):</li><li>email = si.workflow_session_state[&quot;last_email&quot;]</li><li>verdict: EmailCritique = critic.run(</li><li>f&quot;Review:\nSubject: {email.subject}\nBody:\n{email.body}&quot;</li><li>).content</li><li>si.workflow_session_state[&quot;last_critique&quot;] = verdict</li><li>if verdict.is_approved:</li><li>GOLD.add(email)</li><li>return verdict</li><li>def should_stop(_outputs) -&gt; bool:</li><li>&quot;&quot;&quot;Loop 终止：critic 批准，或达到最大修订次数。&quot;&quot;&quot;</li><li>state = self_improve_wf.session_state</li><li>last = state.get(&quot;last_critique&quot;)</li><li>if last is not None and last.is_approved:</li><li>return True</li><li>if state.get(&quot;revision&quot;, 0) &gt;= 3:</li><li>return True</li><li>return False</li><li>self_improve_wf = Workflow(</li><li>name=&quot;self_improve&quot;,</li><li>session_state={&quot;revision&quot;: 0},</li><li>steps=[</li><li>Loop(</li><li>name=&quot;refine_loop&quot;,</li><li>steps=[</li><li>Step(name=&quot;gen&quot;, executor=gen_step),</li><li>Step(name=&quot;critic&quot;, executor=critic_step),</li><li>end_condition=should_stop,</li></ul>
+<p>新增的能力</p>
+<p>两层：单次任务内迭代优化 + 跨任务积累高质量样例（GoldStandardMemory 把批准过的结果注入未来生成），这是它和 Reflection 的本质区别。</p>
+<p>失败模式</p>
+<ul><li>critic 标准不稳</li><li>revision 收益递减</li><li>记忆库积累低质量样本会反向污染未来生成</li></ul>
+<p>Self-Improve 不是&quot;会自动越来越好&quot;，而是&quot;有机会在严格约束下越来越好&quot;。</p>
+<p>📎 参考实现：15_RLHF.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-20">
+        <h2 class="sec"><span class="n">20</span>Cellular Automata</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>范式从中心控制转向分布式涌现</li><li>每个格子只跑局部规则，全局行为从局部交互涌现</li><li>LLM退居规则设计者/解释者位置</li></ul><div class="pit"><ul><li>局部规则设计不当、收敛慢、涌现错误全局结构</li></ul></div></div>
+<p>它要解决什么问题？</p>
+<p>前面所有架构都默认存在一个中心 agent、一个主控制流、一个 orchestrator。 Cellular Automata 彻底打破这个前提：有些问题根本不需要中心规划，而适合通过局部规则产生全局行为。</p>
+<p>关键代码</p>
+<ul><li>class CellAgent(BaseModel):</li><li>type: str  # &#x27;EMPTY&#x27; | &#x27;OBSTACLE&#x27; | &#x27;GOAL&#x27;</li><li>pathfinding_value: float = float(&quot;inf&quot;)</li><li>def update(self, neighbors: List[&quot;CellAgent&quot;]):</li><li>if self.type == &quot;OBSTACLE&quot;:</li><li>return</li><li>if self.type == &quot;GOAL&quot;:</li><li>self.pathfinding_value = 0</li><li>return</li><li>m = min((n.pathfinding_value for n in neighbors), default=float(&quot;inf&quot;))</li><li>self.pathfinding_value = min(self.pathfinding_value, m + 1)</li><li>def neighbors_of(snapshot, r, c):</li><li>&quot;&quot;&quot;四邻（上下左右），越界跳过。&quot;&quot;&quot;</li><li>H, W = len(snapshot), len(snapshot[0])</li><li>out = []</li><li>for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:</li><li>nr, nc = r + dr, c + dc</li><li>if0 &lt;= nr &lt; H and 0 &lt;= nc &lt; W:</li><li>out.append(snapshot[nr][nc])</li><li>return out</li><li>def run_ca(grid, steps=50):</li><li>for _ in range(steps):</li><li>snapshot = [[copy.deepcopy(c) for c in row] for row in grid]</li><li>for r in range(len(grid)):</li><li>for c in range(len(grid[0])):</li><li>grid[r][c].update(neighbors_of(snapshot, r, c))</li></ul>
+<p>在 agno 里，LLM 退到了纯&quot;规则设计者/解释者&quot;的位置：</p>
+<ul><li>rule_designer = Agent(</li><li>name=&quot;rule_designer&quot;,</li><li>model=OpenAIChat(id=&quot;gpt-5-mini&quot;),</li><li>instructions=(</li><li>&quot;You design local update rules for a cellular automaton. &quot;</li><li>&quot;Given a high-level objective, propose a minimal Python update function &quot;</li><li>&quot;that each cell will execute based only on its neighbors.&quot;</li><li>rule_designer.print_response(</li><li>&quot;Design a CA rule so that every empty cell eventually stores the shortest &quot;</li><li>&quot;path length to the nearest GOAL, treating OBSTACLE as impassable.&quot;</li></ul>
+<p>新增的能力</p>
+<p>这不是在现有控制流上加一个模块，而是整个范式切换：从中心控制转向分布式涌现。</p>
+<p>它和前面所有架构最大的区别</p>
+<p>LLM 退出了执行主回路，它最多负责规则设计、参数选择、系统解释，真正的求解过程由大量局部节点同步演化完成。</p>
+<p>失败模式</p>
+<ul><li>局部规则设计不当</li><li>系统收敛慢</li><li>涌现出错误的全局结构</li></ul>
+<p>但一旦规则设计得对，它能解决很多用中央 planner 反而很笨重的问题。</p>
+<p>📎 参考实现：16_cellular_automata.ipynb</p>
+      </section>
+
+      <section class="src" id="sec-21">
+        <h2 class="sec"><span class="n">21</span>Evaluator</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>五类评估器：LLM裁判、内置critic、程序化验证、HITL、演示式验证</li><li>闭环系统没有evaluator就不知何时停改拒</li><li>没有evaluator的agent只是会循环的prompt</li></ul></div>
+<p>这个项目反复提醒你：agent 不是只要能跑就行，必须能评估，至少有五类 evaluator：</p>
+<ul><li>LLM-as-a-Judge ：用独立 Agent 打分</li><li>内置 critic ：直接控制循环是否继续（ Loop.end_condition ）</li><li>程序化验证 ：像  is_valid()  /  is_goal()  这种硬约束</li><li>Human-in-the-Loop ：用人工审批做最后闸门（Dry-Run）</li><li>演示式验证 ：用多场景运行验证系统行为</li></ul>
+<p>为什么 evaluator 是核心，不是附属？</p>
+<p>因为一旦系统开始反思、重规划、继续迭代、决定是否执行、决定是否升级人类，你就进入&quot;闭环系统&quot;了。 闭环系统如果没有 evaluator，就不知道何时停、何时改、何时拒绝。</p>
+<p>没有 evaluator 的 agent，大概率只是一个会循环的 prompt，不是一个可靠的系统。</p>
+      </section>
+
+      <section class="src" id="sec-22">
+        <h2 class="sec"><span class="n">22</span>架构演化表</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>一表对照17种架构的新增能力、解决问题与agno对应能力</li></ul></div>
+<table><thead><tr><th>架构</th><th>新增的关键能力</th><th>解决的问题</th><th>agno 对应能力</th></tr></thead><tbody><tr><td>Reflection</td><td>critique pass</td><td>单次生成质量不稳</td><td>3 × Agent 串联成 Workflow</td></tr><tr><td>Tool Use</td><td>world interface</td><td>模型无法触达真实世界</td><td>Agent(tools=[...])</td></tr><tr><td>ReAct</td><td>observation loop</td><td>工具结果不能驱动下一步</td><td>Agent(tools=..., reasoning=True)</td></tr><tr><td>Planning</td><td>explicit plan state</td><td>缺少全局步骤控制</td><td>Agent(response_model=Plan) + Loop</td></tr><tr><td>PEV</td><td>verification loop</td><td>执行失败会静默传播</td><td>Router + verifier Agent</td></tr><tr><td>Multi-Agent</td><td>role decomposition</td><td>单 prompt 角色冲突</td><td>多 Agent 或 Team(mode=&quot;coordinate&quot;)</td></tr><tr><td>Blackboard</td><td>shared workspace + dynamic controller</td><td>固定流水线不够灵活</td><td>workflow_session_state + controller Router</td></tr><tr><td>Meta-Controller</td><td>entry routing</td><td>请求类型不同需要分诊</td><td>Team(mode=&quot;route&quot;)</td></tr><tr><td>Ensemble</td><td>parallel redundancy</td><td>单一答案不够可靠</td><td>Workflow(Parallel(...)) + aggregator</td></tr><tr><td>Episodic/Semantic Memory</td><td>long-term recall</td><td>系统跨轮失忆</td><td>Memory + AgentKnowledge</td></tr><tr><td>Graph Memory</td><td>relational reasoning</td><td>相似召回不能做关系推理</td><td>Neo4jTools + Cypher agent</td></tr><tr><td>ToT</td><td>search tree</td><td>线性推理无法回溯</td><td>程序化搜索 + proposer Agent</td></tr><tr><td>Mental Loop</td><td>counterfactual execution</td><td>真实试错成本太高</td><td>双工具 simulate_action / execute_action</td></tr><tr><td>Dry-Run</td><td>side-effect gating</td><td>副作用动作不能直接执行</td><td>工具带 dry_run 参数 + approval Step</td></tr><tr><td>Metacognitive</td><td>self-boundary reasoning</td><td>系统不知道自己不会什么</td><td>response_model=MetacognitiveAnalysis + Router</td></tr><tr><td>Self-Improvement</td><td>iterative quality loop</td><td>一次优化不足</td><td>Loop(end_condition=...) + gold memory</td></tr><tr><td>Cellular Automata</td><td>decentralized emergence</td><td>中央控制不适合某些问题</td><td>LLM 只设计规则，程序化并行更新</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-23">
+        <h2 class="sec"><span class="n">23</span>如何选型</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>选型看缺哪种控制能力，不看哪个架构好</li><li>按质量、交互、步骤控制、分工、长期状态、求解范式、安全边界七类对照</li></ul></div>
+<table><thead><tr><th>你缺的能力</th><th>优先架构</th><th>为什么</th></tr></thead><tbody><tr><td>输出质量不稳</td><td>Reflection</td><td>最小质量闭环</td></tr><tr><td>多步工具推理</td><td>ReAct</td><td>观察-行动循环最实用</td></tr><tr><td>全局步骤控制</td><td>Planning</td><td>把控制流显式化</td></tr><tr><td>工具容错</td><td>PEV</td><td>把验证接进主回路</td></tr><tr><td>角色分工</td><td>Multi-Agent</td><td>把认知拆开</td></tr><tr><td>动态编排</td><td>Blackboard</td><td>基于共享状态调度</td></tr><tr><td>请求分诊</td><td>Meta-Controller</td><td>一次路由最省复杂度</td></tr><tr><td>高可靠结论</td><td>Ensemble</td><td>用冗余降低偏差</td></tr><tr><td>跨轮记忆</td><td>Episodic / Semantic Memory</td><td>把历史纳入系统</td></tr><tr><td>关系推理</td><td>Graph Memory</td><td>支持多跳查询</td></tr><tr><td>回溯搜索</td><td>ToT</td><td>适合分支型解空间</td></tr><tr><td>行动前模拟</td><td>Mental Loop</td><td>降低真实试错成本</td></tr><tr><td>副作用审批</td><td>Dry-Run</td><td>先预演再执行</td></tr><tr><td>边界感知</td><td>Metacognitive</td><td>先判断能不能做</td></tr><tr><td>长期自我改进</td><td>Self-Improvement</td><td>质量循环 + 样例积累</td></tr><tr><td>去中心化求解</td><td>Cellular Automata</td><td>用局部规则换全局行为</td></tr></tbody></table>
+<p>如果你缺的是输出质量</p>
+<ul><li>先上  Reflection ；需要多轮逼近和长期改进，上  Self-Improvement</li></ul>
+<p>如果你缺的是与世界交互</p>
+<ul><li>简单任务上  Tool Use ；多步动态任务上  ReAct</li></ul>
+<p>如果你缺的是显式步骤控制</p>
+<ul><li>上  Planning ；工具不可靠，再升级到  PEV</li></ul>
+<p>如果你缺的是角色分工</p>
+<ul><li>固定分工： Multi-Agent ；动态持续调度： Blackboard ；入口分诊： Meta-Controller ；同题多视角冗余： Ensemble</li></ul>
+<p>如果你缺的是长期状态</p>
+<ul><li>记历史事件： Episodic Memory ；做关系推理： Graph / World-Model Memory</li></ul>
+<p>如果你缺的是求解范式</p>
+<ul><li>需要回溯搜索： Tree-of-Thoughts ；需要先模拟后执行： Mental Loop ；需要去中心化求解： Cellular Automata</li></ul>
+<p>如果你缺的是安全边界</p>
+<ul><li>需要副作用审批： Dry-Run Harness ；需要知道自己不能做什么： Metacognitive Agent</li></ul>
+      </section>
+
+      <section class="src" id="sec-24">
+        <h2 class="sec"><span class="n">24</span>最终结论</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>agent architecture是控制流设计史，不依赖某一框架</li><li>真实系统会长出Workflow/Router/Loop等同一组抽象</li><li>新架构名词三问：新增什么state/router/evaluator</li></ul></div>
+<p>看完整个项目并用 agno 重写一遍后，我最大的感受不是&quot;agent 真多&quot;，而是一个更朴素的判断：</p>
+<p>所谓 agent architecture，不是模型能力表，而是控制流设计史。</p>
+<p>它在不断回答同一组问题：什么时候该停？什么时候该继续？什么时候该重试？什么时候该换角色？什么时候该查工具？什么时候该调用历史？什么时候该先模拟？什么时候该拒绝？什么时候该让人类接管？</p>
+<p>这些问题不依赖某一个框架。无论你底层用什么 DSL，只要开始做真实的 agent 系统，就一定会亲手长出同一组抽象： Workflow.steps 表达确定性边 Router 表达条件路由 Loop 表达循环与终止条件 Parallel 表达并行冗余 workflow_session_state 表达显式共享状态 Agent(tools=...) 内置 tool loop Team(mode=&quot;route&quot;) 把一整段分诊逻辑改为一个 Team 组合</p>
+<p>但控制流本身没有变。这恰恰说明这些问题不是某个框架发明出来的，而是真实系统演化过程中必然会长出来的。</p>
+<p>从这个角度看，这 17 种架构并不神秘。它们只是对同一个系统问题的 17 种不同回答。</p>
+<p>如果让我把整篇文章压缩成三句话：</p>
+<ul><li>先别迷信&quot;万能 agent&quot;，先把状态和控制流画清楚。</li><li>大多数系统从 ReAct 起步，但可靠系统一定会引入验证、记忆和边界控制。</li><li>真正高级的 agent，不是更敢做事，而是更知道什么时候不该做。</li></ul>
+<p>一旦你看懂这条路径，后面再看到任何新的&quot;agent 架构名词&quot;，你都可以先问它三个问题：</p>
+<ul><li>它新增了什么 state？</li><li>它新增了什么 router？</li><li>它新增了什么 evaluator？</li></ul>
+<p>只要这三个问题答不出来，它大概率就不是一种新架构，只是旧架构换了个名字。</p>
+<p>1、https://github.com/FareedKhan-dev/all-agentic-architectures</p>
+<p>2、https://github.com/agno-agi/agno</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 12 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-结论">结论</span><h4>架构本质是控制流设计</h4><p>Agent architecture 的本质不是 prompt engineering，也不是框架 DSL，而是控制流设计。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>系统落地的五个关键</h4><p>决定 agent 能否落地：状态建模、显式控制流、错误局部截断、副作用闸门、知道何时停。</p><a class="src-link" href="#sec-01">原文 → 开头</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>17种架构一次拆解</h4><p>all-agentic-architectures 列 17 种 Agent 模式，作者用 agno 从头重写一遍。</p><a class="src-link" href="#sec-03">原文 → 总览表</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Workflow=显式控制流</h4><p>Workflow 用 steps 定义确定性转移、Loop 定义循环与终止条件、Router 定义条件转移。</p><a class="src-link" href="#sec-02">原文 → 用agno看Agent</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>previous_step_output 取值</h4><p>previous_step_output 是 StepOutput，.content 才是上一步 response_model 的实例。</p><a class="src-link" href="#sec-04">原文 → Reflection</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Planning vs ReAct</h4><p>ReAct 下一步临时决定（在线贪心）；Planning 先产出计划再执行，把控制流对象化。</p><a class="src-link" href="#sec-07">原文 → Planning</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>PEV 验证闭环</h4><p>execute→verify→Router 在 continue/replan/finish 间决策，失败局部重定向回 re-plan。</p><a class="src-link" href="#sec-08">原文 → PEV</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Meta-Controller vs Blackboard</h4><p>Meta-Controller 一次性路由，像分诊台；Blackboard 持续调度，像总控台。</p><a class="src-link" href="#sec-11">原文 → Meta-Controller</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Multi-Agent vs Ensemble</h4><p>Multi-Agent 是不同 agent 做不同子任务（分工）；Ensemble 是不同 agent 分析同一问题（冗余）。</p><a class="src-link" href="#sec-12">原文 → Ensemble</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>ToT 搜索控制交给代码</h4><p>不要把搜索树扩展与剪枝交给 LLM，应由程序化代码保证搜索正确性。</p><a class="src-link" href="#sec-15">原文 → ToT</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Reflection vs Self-Improve</h4><p>Reflection 只有一次 critique pass；Self-Improve 做迭代质量循环并跨任务积累高质量样例。</p><a class="src-link" href="#sec-19">原文 → Self-Improvement</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>新架构三问</h4><p>看到新架构名词先问：新增什么 state、什么 router、什么 evaluator；答不出就不是新架构。</p><a class="src-link" href="#sec-24">原文 → 最终结论</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>先别迷信万能 agent，先把状态和控制流画清楚。</li>
+          <li>大多数系统从 ReAct 起步，但可靠系统一定引入验证、记忆和边界控制。</li>
+          <li>真正高级的 agent 不是更敢做事，而是更知道什么时候不该做。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801545&amp;idx=1&amp;sn=b2d15c583715f519cbec484e8b10abdf" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&amp;mid=2649801545&amp;idx=1&amp;sn=b2d15c583715f519cbec484e8b10abdf</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+__TPL_TAIL__
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
