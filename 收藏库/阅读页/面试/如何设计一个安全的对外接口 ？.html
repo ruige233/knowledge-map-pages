@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>如何设计一个安全的对外接口 ？ · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>面试 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">如何设计一个安全的对外接口 ？</h1>
+  <p class="lede">七类措施设计安全对外接口：加密加签、鉴权限流、黑名单与校验</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>面试</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 9 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>数据加密</a>
+          <a href="#sec-02"><span class="n">02</span>数据加签</a>
+          <a href="#sec-03"><span class="n">03</span>时间戳机制</a>
+          <a href="#sec-04"><span class="n">04</span>AppId 机制</a>
+          <a href="#sec-05"><span class="n">05</span>限流机制</a>
+          <a href="#sec-06"><span class="n">06</span>令牌桶限流</a>
+          <a href="#sec-07"><span class="n">07</span>漏桶限流</a>
+          <a href="#sec-08"><span class="n">08</span>计数器限流</a>
+          <a href="#sec-09"><span class="n">09</span>黑名单机制</a>
+          <a href="#sec-10"><span class="n">10</span>数据合法性校验</a>
+          <a href="#sec-11"><span class="n">11</span>总结</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 数据加密</a>
+          <a href="#sec-02">02 数据加签</a>
+          <a href="#sec-03">03 时间戳机制</a>
+          <a href="#sec-04">04 AppId 机制</a>
+          <a href="#sec-05">05 限流机制</a>
+          <a href="#sec-06">06 令牌桶限流</a>
+          <a href="#sec-07">07 漏桶限流</a>
+          <a href="#sec-08">08 计数器限流</a>
+          <a href="#sec-09">09 黑名单机制</a>
+          <a href="#sec-10">10 数据合法性校验</a>
+          <a href="#sec-11">11 总结</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<table><thead><tr><th>数据加密 数据加签 数据签名使用比较多的是 md5 算法，将需要提交的数据通过某种方式组合和一个字符串，然后通过 md5 生成一段加密字符串，这段加密字符串就是数据包的签名，可以看一个简单的例子： str：参数1={参数1}&amp;参数2={参数2}&amp;……&amp;参数n={参数n}$key={用户密钥}; MD5.encrypt(str); 时间戳机制 AppId 机制 生成一个唯一的 AppId 即可，密钥使用字母、数字等特殊字符随机生成即可；生成唯一 AppId 根据实际情况看是否需要全局唯一；但是不管是否全局唯一最好让生成的 Id 有如下属性： 趋势递增：这样在保存数据库的时候，使用索引性能更好； 信息安全：尽量不要连续的，容易发现规律； 限流机制：令牌桶限流，漏桶限流，计数器限流； 令牌桶算法的原理是系统以一定速率向桶中放入令牌，填满了就丢弃令牌；请求来时会先从桶中取出令牌，如果能取到令牌，则可以继续完成请求，否则等待或者拒绝服务；令牌桶允许一定程度突发流量，只要有令牌就可以处理，支持一次拿多个令牌； 漏桶算法的原理是按照固定常量速率流出请求，流入请求速率任意，当请求数超过桶的容量时，新的请求等待或者拒绝服务；可以看出漏桶算法可以强制限制数据的传输速度； 计数器是一种比较简单粗暴的算法，主要用来限制总并发数，比如数据库连接池、线程池、秒杀的并发数；计数器限流只要一定时间内的总请求数超过设定的阀值则进行限流； 黑名单机制 我们可以给每个用户设置一个状态比如包括：初始化状态，正常状态，中黑状态，关闭状态等等；或者我们直接通过分布式配置中心，直接保存黑名单列表，每次检查是否在列表中即可； 数据合法性校验 合法性校验包括：常规性校验以及业务校验 常规性校验：包括签名校验，必填校验，长度校验，类型校验，格式校验等； 业务校验：根据实际业务而定，比如订单金额不能小于 0 等；</th></tr></thead><tbody></tbody></table>
+<p>最近有个项目需要对外提供一个接口，提供公网域名进行访问，而且接口和交易订单有关，所以安全性很重要；这里整理了一下常用的一些安全措施以及具体如何去实现。</p>
+<p>安全措施</p>
+<p>个人觉得安全措施大体来看主要在两个方面，一方面就是如何保证数据在传输过程中的安全性，另一个方面是数据已经到达服务器端，服务器端如何识别数据，如何不被攻击；下面具体看看都有哪些安全措施。</p>
+<ul><li>数据加密</li></ul>
+<p>我们知道数据在传输过程中是很容易被抓包的，如果直接传输比如通过 http 协议，那么用户传输的数据可以被任何人获取；所以必须对数据加密，常见的做法对关键字段加密比如用户密码直接通过 md5 加密；现在主流的做法是使用 https 协议，在 http 和 tcp 之间添加一层加密层 (SSL 层)，这一层负责数据的加密和解密；</p>
+<ul><li>数据加签</li></ul>
+<p>数据加签就是由发送者产生一段无法伪造的一段数字串，来保证数据在传输过程中不被篡改；你可能会问数据如果已经通过 https 加密了，还有必要进行加签吗？数据在传输过程中经过加密，理论上就算被抓包，也无法对数据进行篡改；但是我们要知道加密的部分其实只是在外网，现在很多服务在内网中都需要经过很多服务跳转，所以这里的加签可以防止内网中数据被篡改；</p>
+<ul><li>时间戳机制</li></ul>
+<p>数据是很容易被抓包的，但是经过如上的加密，加签处理，就算拿到数据也不能看到真实的数据；但是有不法者不关心真实的数据，而是直接拿到抓取的数据包进行恶意请求；这时候可以使用时间戳机制，在每次请求中加入当前的时间，服务器端会拿到当前时间和消息中的时间相减，看看是否在一个固定的时间范围内比如 5 分钟内；这样恶意请求的数据包是无法更改里面时间的，所以 5 分钟后就视为非法请求了；</p>
+<ul><li>AppId 机制</li></ul>
+<p>大部分网站基本都需要用户名和密码才能登录，并不是谁来能使用我的网站，这其实也是一种安全机制；对应的对外提供的接口其实也需要这么一种机制，并不是谁都可以调用，需要使用接口的用户需要在后台开通 appid，提供给用户相关的密钥；在调用的接口中需要提供 appid + 密钥，服务器端会进行相关的验证；</p>
+<ul><li>限流机制</li></ul>
+<p>本来就是真实的用户，并且开通了 appid，但是出现频繁调用接口的情况；这种情况需要给相关 appid 限流处理，常用的限流算法有令牌桶和漏桶算法；</p>
+<ul><li>黑名单机制</li></ul>
+<p>如果此 appid 进行过很多非法操作，或者说专门有一个中黑系统，经过分析之后直接将此 appid 列入黑名单，所有请求直接返回错误码；</p>
+<ul><li>数据合法性校验</li></ul>
+<p>这个可以说是每个系统都会有的处理机制，只有在数据是合法的情况下才会进行数据处理；每个系统都有自己的验证规则，当然也可能有一些常规性的规则，比如身份证长度和组成，电话号码长度和组成等等；</p>
+<p>如何实现</p>
+<p>以上大体介绍了一下常用的一些接口安全措施，当然可能还有其他我不知道的方式，希望大家补充，下面看看以上这些方法措施，具体如何实现；</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>数据加密</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>对称加密加解密用同一密钥，速度快，但密钥分发与保管是弱点，常见 DES、AES。</li><li>非对称加密公钥可公开、私钥留服务端，更安全但速度慢，广泛使用 RSA。</li><li>HTTPS 结合两种加密兼顾安全与性能，实现可直接用 jdk 工具类。</li></ul><div class="pit"><ul><li>对称加密密钥一旦泄露，加密信息就不安全了。</li></ul></div></div>
+<p>现在主流的加密方式有对称加密和非对称加密；</p>
+<p>对称加密：对称密钥在加密和解密的过程中使用的密钥是相同的，常见的对称加密算法有 DES，AES；优点是计算速度快，缺点是在数据传送前，发送方和接收方必须商定好秘钥，然后使双方都能保存好秘钥，如果一方的秘钥被泄露，那么加密信息也就不安全了；</p>
+<p>非对称加密：服务端会生成一对密钥，私钥存放在服务器端，公钥可以发布给任何人使用；优点就是比起对称加密更加安全，但是加解密的速度比对称加密慢太多了；广泛使用的是 RSA 算法；</p>
+<p>两种方式各有优缺点，而 https 的实现方式正好是结合了两种加密方式，整合了双方的优点，在安全和性能方面都比较好；</p>
+<p>对称加密和非对称加密代码实现，jdk 提供了相关的工具类可以直接使用，此处不过多介绍；</p>
+<p>关于 https 如何配置使用相对来说复杂一些，可以参考本人的之前的文章 HTTPS 分析与实战</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>数据加签</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>加签是发送者产生的无法伪造的数字串，保证数据在传输过程中不被篡改。</li><li>常用 MD5：对参数拼接串加用户密钥后取 MD5 作为数据包签名。</li><li>HTTPS 只加密外网，内网多服务跳转仍可能被篡改，故仍需加签。</li></ul><div class="pit"><ul><li>加签最后的用户密钥客户端和服务端都要保存一份，才更安全。</li></ul></div></div>
+<p>数据签名使用比较多的是 md5 算法，将需要提交的数据通过某种方式组合和一个字符串，然后通过 md5 生成一段加密字符串，这段加密字符串就是数据包的签名，可以看一个简单的例子：</p>
+<ul><li>str：参数1={参数1}&amp;参数2={参数2}&amp;……&amp;参数n={参数n}$key={用户密钥};</li><li>MD5.encrypt(str);</li></ul>
+<p>注意最后的用户密钥，客户端和服务端都有一份，这样会更加安全；</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>时间戳机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>请求中携带客户端时间戳，服务器用当前时间与消息时间相减判断是否超时。</li><li>超出固定窗口（如 5 分钟）即视为非法请求，防原样重放。</li><li>伪代码：interval=5*60*1000，serverTime-clientTime&gt;interval 则拒绝。</li></ul><div class="pit"><ul><li>加密加签后的数据包仍可能被原样重放，需时间戳窗口兜底。</li></ul></div></div>
+<p>解密后的数据，经过签名认证后，我们拿到数据包中的客户端时间戳字段，然后用服务器当前时间去减客户端时间，看结果是否在一个区间内，伪代码如下：</p>
+<ul><li>long interval=5*60*1000；//超时时间</li><li>long clientTime=request.getparameter(&quot;clientTime&quot;);</li><li>long serverTime=System.currentTimeMillis();</li><li>if(serverTime-clientTime&gt;interval){</li><li>return new Response(&quot;超过处理时长&quot;)</li></ul>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>AppId 机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>对外接口如同登录，需在后台开通 AppId 并向用户下发密钥。</li><li>调用接口时携带 appid+密钥，服务器端进行验证。</li><li>AppId 建议趋势递增（利索引）且不连续（防猜规律），可用类 snowflake 方式生成。</li></ul><div class="pit"><ul><li>AppId 尽量不要连续，连续容易被发现规律。</li></ul></div></div>
+<p>生成一个唯一的 AppId 即可，密钥使用字母、数字等特殊字符随机生成即可；生成唯一 AppId 根据实际情况看是否需要全局唯一；但是不管是否全局唯一最好让生成的 Id 有如下属性：</p>
+<p>趋势递增：这样在保存数据库的时候，使用索引性能更好；</p>
+<p>信息安全：尽量不要连续的，容易发现规律；</p>
+<p>关于全局唯一 Id 生成的方式常见的有类 snowflake 方式等；</p>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>限流机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>真实用户频繁调用接口时，需要对相关 AppId 做限流处理。</li><li>常用限流算法有令牌桶和漏桶算法，也可用计数器。</li></ul></div>
+<p>常用的限流算法包括：令牌桶限流，漏桶限流，计数器限流；</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>令牌桶限流</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>系统以一定速率向桶中放令牌，满了就丢弃；请求先取令牌，取到才放行。</li><li>允许一定程度突发流量，只要有令牌即可处理，支持一次拿多个令牌。</li></ul></div>
+<p>令牌桶算法的原理是系统以一定速率向桶中放入令牌，填满了就丢弃令牌；请求来时会先从桶中取出令牌，如果能取到令牌，则可以继续完成请求，否则等待或者拒绝服务；令牌桶允许一定程度突发流量，只要有令牌就可以处理，支持一次拿多个令牌；</p>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>漏桶限流</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>按固定常量速率流出请求，流入速率任意，超出容量则等待或拒绝。</li><li>可强制限制数据传输速度。</li></ul></div>
+<p>漏桶算法的原理是按照固定常量速率流出请求，流入请求速率任意，当请求数超过桶的容量时，新的请求等待或者拒绝服务；可以看出漏桶算法可以强制限制数据的传输速度；</p>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>计数器限流</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>简单粗暴，限制一定时间内的总请求数，超阈值即限流。</li><li>主要用于数据库连接池、线程池、秒杀等总并发数控制。</li><li>Guava RateLimiter 基于令牌桶实现；单机用它，全局需 redis+lua。</li></ul><div class="pit"><ul><li>RateLimiter 只能单应用请求限流，不能进行全局限流。</li></ul></div></div>
+<p>计数器是一种比较简单粗暴的算法，主要用来限制总并发数，比如数据库连接池、线程池、秒杀的并发数；计数器限流只要一定时间内的总请求数超过设定的阀值则进行限流；</p>
+<p>具体基于以上算法如何实现，Guava 提供了 RateLimiter 工具类基于基于令牌桶算法：</p>
+<ul><li>RateLimiter rateLimiter = RateLimiter.create(5);</li></ul>
+<p>以上代码表示一秒钟只允许处理五个并发请求，以上方式只能用在单应用的请求限流，不能进行全局限流；这个时候就需要分布式限流，可以基于 redis+lua 来实现；</p>
+      </section>
+
+      <section class="src" id="sec-09">
+        <h2 class="sec"><span class="n">09</span>黑名单机制</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>对多次非法操作的 AppId 列入黑名单，所有请求直接返回错误码。</li><li>实现：给用户设状态（初始化/正常/中黑/关闭），或用分布式配置中心保存黑名单列表。</li></ul></div>
+<p>如何为什么中黑我们这边不讨论，我们可以给每个用户设置一个状态比如包括：初始化状态，正常状态，中黑状态，关闭状态等等；或者我们直接通过分布式配置中心，直接保存黑名单列表，每次检查是否在列表中即可；</p>
+      </section>
+
+      <section class="src" id="sec-10">
+        <h2 class="sec"><span class="n">10</span>数据合法性校验</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>只有数据合法才会进行数据处理。</li><li>常规性校验：签名校验、必填校验、长度校验、类型校验、格式校验。</li><li>业务校验按实际业务而定，如订单金额不能小于 0。</li></ul><div class="pit"><ul><li>业务校验需结合实际业务规则，例如订单金额不能小于 0。</li></ul></div></div>
+<p>合法性校验包括：常规性校验以及业务校验；</p>
+<p>常规性校验：包括签名校验，必填校验，长度校验，类型校验，格式校验等；</p>
+<p>业务校验：根据实际业务而定，比如订单金额不能小于 0 等；</p>
+      </section>
+
+      <section class="src" id="sec-11">
+        <h2 class="sec"><span class="n">11</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>回顾七种措施：数据加密、数据加签、时间戳机制、AppId 机制、限流机制、黑名单机制、数据合法性校验。</li><li>作者表示还有其他方式，欢迎补充。</li></ul></div>
+<p>本文大致列举了几种常见的安全措施机制包括：数据加密、数据加签、时间戳机制、AppId 机制、限流机制、黑名单机制以及数据合法性校验；当然肯定有其他方式，欢迎补充。</p>
+<p>-End-</p>
+<p>读到这里说明你喜欢本公众号的文章，欢迎 置顶（标星）本公众号 Linux技术迷，这样就可以第一时间获取推送了~</p>
+<h3 class="sub">1. Linux 中 find 命令的 35 个实际例子</h3>
+<h3 class="sub">2. 运维必备的《网络端口大全》，看这一份就够了</h3>
+<h3 class="sub">3. Linux 学习指南 （收藏篇）</h3>
+<h3 class="sub">4. 2万字系统总结，带你实现Linux命令自由</h3>
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 01" width="1080" height="358" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 01</figcaption></figure>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>对称加密 vs 非对称加密</h4><p>对称：同密钥，DES/AES，快但密钥分发风险高；非对称：公钥/私钥，RSA，更安全但慢。HTTPS 结合两者。</p><a class="src-link" href="#sec-01">原文 → 数据加密</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>令牌桶 vs 漏桶 vs 计数器</h4><p>令牌桶按速率放令牌，可突发、可一次取多令牌；漏桶恒定速率流出，强制限速；计数器限总并发数。</p><a class="src-link" href="#sec-05">原文 → 限流机制</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>MD5 签名拼接</h4><p>str：参数1={参数1}&amp;…&amp;参数n={参数n}$key={用户密钥}; MD5.encrypt(str); 密钥两端各存一份。</p><a class="src-link" href="#sec-02">原文 → 数据加签</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>时间戳超时判断</h4><p>long interval=5*60*1000; serverTime-clientTime&gt;interval 则返回&quot;超过处理时长&quot;。</p><a class="src-link" href="#sec-03">原文 → 时间戳机制</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>RateLimiter 单机限流</h4><p>RateLimiter rateLimiter = RateLimiter.create(5); 表示一秒最多处理 5 个并发请求。</p><a class="src-link" href="#sec-08">原文 → 计数器限流</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>七类安全措施清单</h4><p>对外接口安全措施：数据加密、数据加签、时间戳机制、AppId 机制、限流机制、黑名单机制、数据合法性校验。</p><a class="src-link" href="#sec-11">原文 → 总结</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>AppId 设计误区</h4><p>AppId 若连续容易被发现规律；应趋势递增（利索引）且不连续（信息安全），可用类 snowflake 生成。</p><a class="src-link" href="#sec-04">原文 → AppId 机制</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>内网也要加签</h4><p>HTTPS 只加密外网，内网多服务跳转仍可能被篡改，因此加密之外还需数据加签。</p><a class="src-link" href="#sec-02">原文 → 数据加签</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>5 分钟时间窗口</h4><p>时间戳机制示例窗口为 5 分钟，interval=5*60*1000 毫秒，超时即视为非法请求。</p><a class="src-link" href="#sec-03">原文 → 时间戳机制</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>RateLimiter 仅单机</h4><p>Guava RateLimiter 只能单应用限流，不能全局限流；分布式限流需基于 redis+lua 实现。</p><a class="src-link" href="#sec-08">原文 → 计数器限流</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把加密、加签、时间戳、AppId、限流、黑名单、合法性校验七类措施组合落地。</li>
+          <li>HTTPS 只保护外网，内网多跳仍可能被篡改，加签不可省。</li>
+          <li>限流按场景选：突发用令牌桶，恒定流速用漏桶，单机用 RateLimiter，全局上 Redis+Lua。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247486095&amp;idx=1&amp;sn=bf68aad713fc2dc35a856971b362bd70" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg3MzY2OTcyMQ==&amp;mid=2247486095&amp;idx=1&amp;sn=bf68aad713fc2dc35a856971b362bd70</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：面试 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
