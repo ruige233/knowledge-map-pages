@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习笔记：从 Agent 到 Skills — AI 智能体架构的范式转变 · 阅读页</title>
+<style>
+  :root{
+    --paper:#f4f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef3f6;
+    --ink:#16232e;
+    --ink-2:#4a5b68;
+    --ink-3:#7b8a96;
+    --line:#d8e0e6;
+    --accent:#0f5da8;
+    --accent-soft:#e3eef8;
+    --signal:#c94f1f;
+    --signal-soft:#fbeae1;
+    --good:#1f6f57;
+    --good-soft:#e3f1eb;
+    --code:#0e4c8f;
+    --grid:rgba(15,93,168,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#0d1319;
+      --surface:#141c24;
+      --surface-2:#1a242e;
+      --ink:#e7edf2;
+      --ink-2:#9fafba;
+      --ink-3:#6d7e8a;
+      --line:#26323d;
+      --accent:#6ea9dc;
+      --accent-soft:#17283a;
+      --signal:#e8834f;
+      --signal-soft:#332016;
+      --good:#58b195;
+      --good-soft:#122b23;
+      --code:#8ab8e6;
+      --grid:rgba(110,169,220,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f7f9; --surface:#ffffff; --surface-2:#eef3f6;
+    --ink:#16232e; --ink-2:#4a5b68; --ink-3:#7b8a96; --line:#d8e0e6;
+    --accent:#0f5da8; --accent-soft:#e3eef8; --signal:#c94f1f; --signal-soft:#fbeae1;
+    --good:#1f6f57; --good-soft:#e3f1eb; --code:#0e4c8f; --grid:rgba(15,93,168,.10);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d1319; --surface:#141c24; --surface-2:#1a242e;
+    --ink:#e7edf2; --ink-2:#9fafba; --ink-3:#6d7e8a; --line:#26323d;
+    --accent:#6ea9dc; --accent-soft:#17283a; --signal:#e8834f; --signal-soft:#332016;
+    --good:#58b195; --good-soft:#122b23; --code:#8ab8e6; --grid:rgba(110,169,220,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important; animation:none!important}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    line-height:1.78;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* 蓝图标尺线 */
+  .ruler{
+    height:6px;
+    background-image:repeating-linear-gradient(90deg,var(--grid) 0 10px,transparent 10px 20px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px 72px;
+  }
+
+  /* header */
+  header.mast{
+    padding:56px 24px 0;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .mast-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-2);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  .theme-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.08em;
+    padding:7px 12px; border-radius:6px; cursor:pointer;
+  }
+  .theme-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  h1.title{
+    margin:0 0 14px;
+    font-size:clamp(26px,4.4vw,40px);
+    line-height:1.28;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:760px;
+    font-size:17.5px;
+    color:var(--ink-2);
+    margin:0 0 18px;
+  }
+  .lede::before{
+    content:"一句话定位  ";
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; letter-spacing:.14em; color:var(--accent);
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:12.5px; color:var(--ink-2);
+  }
+  .meta b{color:var(--ink); font-weight:600}
+
+  /* layout */
+  .layout{
+    display:grid;
+    grid-template-columns:252px minmax(0,1fr);
+    gap:48px;
+    margin-top:40px;
+  }
+  aside.map{
+    position:sticky; top:24px; align-self:start;
+  }
+  .map-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-card .hd{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .map-card nav{padding:10px}
+  .map-card a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:9px 10px; border-radius:7px;
+    color:var(--ink-2); font-size:14px; line-height:1.5;
+    border-left:2px solid transparent;
+  }
+  .map-card a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
+  .map-card a.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent)}
+  .map-card a .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11px; color:var(--accent); min-width:18px;
+  }
+  details.map-toggle{
+    display:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    border-radius:10px;
+    margin-top:24px;
+  }
+  details.map-toggle summary{
+    padding:12px 16px; cursor:pointer; font-weight:600;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.1em; color:var(--ink-2);
+  }
+  details.map-toggle nav{padding:10px; display:flex; flex-wrap:wrap; gap:6px}
+  details.map-toggle a{
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+    color:var(--ink-2); font-size:13px;
+  }
+  details.map-toggle a:hover{background:var(--accent-soft); color:var(--ink); text-decoration:none}
+
+  main{min-width:0}
+
+  /* sections */
+  section.src{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px 34px 34px;
+    margin-bottom:20px;
+  }
+  h2.sec{
+    display:flex; align-items:baseline; gap:14px;
+    font-size:23px; font-weight:800; line-height:1.3;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  h2.sec .n{
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px; letter-spacing:.12em; color:var(--accent);
+    border-bottom:2px solid var(--accent); padding-bottom:2px;
+  }
+  h3.sub{
+    font-size:17.5px; font-weight:700; margin:26px 0 8px;
+    padding-left:12px; border-left:3px solid var(--line); line-height:1.4;
+  }
+  .src p{margin:0 0 14px; color:var(--ink)}
+  .src p:last-child{margin-bottom:0}
+  .src .pull{
+    color:var(--ink-2);
+  }
+  .src figure{margin:22px 0}
+  .src figure img{
+    width:100%; height:auto; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface-2);
+  }
+  .src figcaption{
+    margin-top:8px; font-size:13px; color:var(--ink-2);
+    display:flex; gap:8px;
+  }
+  .src figcaption::before{content:"▲"; color:var(--accent); font-size:11px; margin-top:2px}
+  .src blockquote{
+    margin:18px 0; padding:14px 18px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; color:var(--ink-2); font-size:15.5px;
+  }
+
+  /* 本节提炼 */
+  .digest{
+    margin:18px 0 8px;
+    background:linear-gradient(180deg,var(--accent-soft),transparent 120%);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .digest ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .digest li{
+    position:relative; padding-left:20px; margin:6px 0;
+    font-size:15px; color:var(--ink);
+  }
+  .digest li::before{
+    content:"—"; position:absolute; left:0; color:var(--accent);
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .digest .pit{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line)}
+  .digest .pit li{color:var(--signal)}
+  .digest .pit li::before{content:"!"; color:var(--signal); font-weight:700}
+
+  /* cards wall */
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:14px;
+    margin:16px 0 8px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .chip{
+    align-self:flex-start;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; font-weight:600;
+  }
+  .chip.k-概念对比{background:var(--accent-soft); color:var(--accent)}
+  .chip.k-结论{background:var(--good-soft); color:var(--good)}
+  .chip.k-数据{background:var(--surface-2); color:var(--ink-2)}
+  .chip.k-易错点{background:var(--signal-soft); color:var(--signal)}
+  .chip.k-代码模式{background:var(--surface-2); color:var(--code); font-family:ui-monospace,Menlo,monospace}
+  .card h4{margin:0; font-size:15.5px; font-weight:700; line-height:1.4}
+  .card p{margin:0; font-size:13.8px; color:var(--ink-2); line-height:1.6}
+  .card .src-link{
+    margin-top:auto; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace; color:var(--accent);
+  }
+
+  /* bring away */
+  .bring{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:12px;
+    padding:26px 30px;
+    margin-top:8px;
+  }
+  .bring .eyebrow{color:#8ab8e6}
+  .bring ol{margin:14px 0 0; padding-left:0; list-style:none; counter-reset:ba}
+  .bring li{
+    counter-increment:ba;
+    position:relative;
+    padding:12px 0 12px 46px;
+    font-size:16.5px; line-height:1.6; font-weight:600;
+  }
+  .bring li::before{
+    content:counter(ba,decimal-leading-zero);
+    position:absolute; left:0; top:14px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:14px; color:#8ab8e6;
+  }
+  .bring li+li{border-top:1px solid rgba(255,255,255,.14)}
+
+  footer.src{
+    font-size:13px; color:var(--ink-3);
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  footer.src a{color:var(--accent)}
+  footer.src p{margin:0 0 6px}
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr; gap:0}
+    aside.map{display:none}
+    details.map-toggle{display:block}
+    section.src{padding:22px 18px 24px}
+    header.mast{padding-top:36px}
+  }
+
+  /* migration additions: tables / code / lists */
+  .src table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; background:var(--surface); border:1px solid var(--line)}
+  .src th,.src td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .src th{background:var(--surface-2); font-weight:600}
+  .src pre{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13.5px; line-height:1.6; margin:12px 0}
+  .src pre code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; color:var(--code)}
+  .src ul{margin:10px 0; padding-left:22px}
+  .src ul li{margin:4px 0}
+</style>
+</head>
+
+<body>
+<div class="ruler" aria-hidden="true"></div>
+
+<header class="mast">
+  <div class="mast-top">
+    <span class="badge"><span class="dot"></span>Agent框架 · 阅读页</span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
+  </div>
+  <h1 class="title">学习笔记：从 Agent 到 Skills — AI 智能体架构的范式转变</h1>
+  <p class="lede">相册自动化项目拆解 Agent、Skills、MCP、OpenClaw 分层协作</p>
+  <div class="meta">
+    <span>来源 <b>微信公众平台</b></span>
+    <span>分类 <b>Agent框架</b></span>
+    <span>收录日期 <b>2026-11-01</b></span>
+    <span>阅读时长 <b>约 78 分钟</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="map" aria-label="本文地图">
+      <div class="map-card">
+        <div class="hd"><span class="eyebrow">本文地图</span></div>
+        <nav>
+<a href="#sec-01"><span class="n">01</span>起源与行业响应</a>
+          <a href="#sec-02"><span class="n">02</span>相册自动化项目</a>
+          <a href="#sec-03"><span class="n">03</span>四个核心概念</a>
+          <a href="#sec-04"><span class="n">04</span>对比总结</a>
+          <a href="#sec-05"><span class="n">05</span>实验验证</a>
+          <a href="#sec-06"><span class="n">06</span>趋势与展望</a>
+          <a href="#sec-07"><span class="n">07</span>总结</a>
+          <a href="#sec-08"><span class="n">08</span>写在最后</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <details class="map-toggle">
+        <summary>本文地图 · 跳转章节</summary>
+        <nav>
+<a href="#sec-01">01 起源与行业响应</a>
+          <a href="#sec-02">02 相册自动化项目</a>
+          <a href="#sec-03">03 四个核心概念</a>
+          <a href="#sec-04">04 对比总结</a>
+          <a href="#sec-05">05 实验验证</a>
+          <a href="#sec-06">06 趋势与展望</a>
+          <a href="#sec-07">07 总结</a>
+          <a href="#sec-08">08 写在最后</a>
+        </nav>
+      </details>
+
+      <!-- ============ 原文区 ============ -->
+
+      <section class="src" id="intro">
+        <h2 class="sec"><span class="n"></span>引言</h2>
+        
+<figure style="margin:1.5rem 0;text-align:center"><img loading="lazy" src="data:image/webp;base64,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" alt="图 01" width="1024" height="640" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)"><figcaption style="font-size:12px;color:#8a97a3;margin-top:6px">图 01</figcaption></figure>
+<p>报告日期：2026-02-28 关键词： Agent Skills, MCP, OpenClaw, A2A, Agentic AI, 模块化架构</p>
+      </section>
+
+      <section class="src" id="sec-01">
+        <h2 class="sec"><span class="n">01</span>起源与行业响应</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>MCP 解决外部工具/数据连接，Skills 解决领域专业知识加载</li><li>Skills 2025-12-18 发布，48 小时内被 Microsoft、OpenAI 采纳</li><li>Gartner 预测 2026 年 75% AI 项目聚焦可组合 Skills</li></ul></div>
+<h3 class="sub">1.1 起源：Anthropic 的两步棋</h3>
+<p>Anthropic 在不到 14 个月内连续发布了两个开放标准：</p>
+<table><thead><tr><th>时间</th><th>事件</th><th>意义</th></tr></thead><tbody><tr><td>2024年11月</td><td>Anthropic 开源 MCP（Model Context Protocol）</td><td>解决 AI 模型与外部工具/数据的连接问题</td></tr><tr><td>2025年10月</td><td>Anthropic 在 Claude Code 中推出 Agent Skills</td><td>解决 AI 模型的领域专业知识加载问题</td></tr><tr><td>2025年12月18日</td><td>Anthropic 将 Agent Skills 作为开放标准发布</td><td>48小时内被 Microsoft、OpenAI 采纳</td></tr><tr><td>2025年12月</td><td>MCP 捐赠给 Linux 基金会（Agentic AI Foundation）</td><td>从公司项目升级为行业标准</td></tr></tbody></table>
+<p>Anthropic 工程博客原文：</p>
+<p>&quot;Building a skill for an agent is like putting together an onboarding guide for a new hire. Instead of building fragmented, custom-designed agents for each use case, anyone can now specialize their agents with composable capabilities.&quot;</p>
+<h3 class="sub">1.2 行业响应</h3>
+<p>Agent Skills 开放标准发布后，各家跟进很快：</p>
+<ul><li>Microsoft： 48小时内宣布支持</li><li>OpenAI Codex： 迅速集成 Skills 格式</li><li>Cursor、Codebuddy： 原生支持</li><li>OpenClaw： 成为 Skills 生态最大的消费者之一，拥有 3000+ 社区 Skills</li><li>Spring AI： 2026年1月发布 Agent Skills 集成模式</li></ul>
+<p>Gartner 2024年的预测已经应验：到2026年，75% 的 AI 项目聚焦于可组合的 Skills 而非单体 Agent。</p>
+      </section>
+
+      <section class="src" id="sec-02">
+        <h2 class="sec"><span class="n">02</span>相册自动化项目</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Ming-flash-omni-2.0 + Zenmux + OpenClaw</li><li>filesystem MCP 经 npx 安装，14 个 Tools 全部可用</li><li>wechat-mcp v2 协议层可通但实际操作不可用，改用键盘模拟</li><li>MCP Server、注册、Skill 说明书、业务脚本是分层引用关系</li></ul><div class="pit"><ul><li>wechat-mcp v2 协议可通，WeChat 4.x 屏蔽 AX/AppleScript</li></ul></div></div>
+<p>后续所有概念都将围绕这个项目展开，让读者在具体场景中理解抽象概念。项目所涉及的skills和代码均已开源，开源地址见文章最后。</p>
+<p>业务目标</p>
+<p>将旅行手机照片自动处理为社交媒体发布内容：</p>
+<ul><li>手机原图</li><li>AI去杂物</li><li>AI风格化(3种)</li><li>拼接对比图</li><li>生成GIF</li><li>AI写推文</li><li>待发布</li></ul>
+<p>技术栈</p>
+<table><thead><tr><th>组件</th><th>技术选型</th></tr></thead><tbody><tr><td>AI 模型</td><td>Ming-flash-omni-2.0（多模态图文生成）</td></tr><tr><td>API 网关</td><td>Zenmux（Vertex AI 兼容接口）</td></tr><tr><td>Agent 运行环境</td><td>OpenClaw（本地自主代理框架）/ Claude Code（对比方案，详见第五章）</td></tr><tr><td>Agent 推理模型</td><td>Kimi K2.5 (OpenClaw) / Claude Opus 4.6 (Claude Code，仅编写时)</td></tr><tr><td>Skill 载体</td><td>auto-twitter-campaign Skill</td></tr><tr><td>文件系统 MCP</td><td>@modelcontextprotocol/server-filesystem （stdio，已验证 14 个 Tools 全部可用）</td></tr><tr><td>微信消息通道</td><td>键盘模拟直接控制（wechat-mcp v2 协议层可通但实际操作不可用，详见第五章）</td></tr></tbody></table>
+<p>实际目录布局</p>
+<ul><li># === 独立工程（各有各的 Git 仓库）===</li><li># Filesystem MCP Server（Anthropic 官方维护，已验证可用）</li><li># 安装方式：npx -y @modelcontextprotocol/server-filesystem &lt;允许目录&gt;</li><li># 提供 14 个 Tools：read_file, write_file, edit_file,</li><li>#   list_directory, search_files, get_file_info, ...</li><li># 传输方式：stdio（标准输入输出）</li><li># === OpenClaw Skills — 两个目录，不同用途 ===</li><li>~/.openclaw/workspace/skills/             ← &quot;重型&quot; Skills（带脚本的业务流水线）</li><li>├── auto-twitter-campaign/                ← 本文主角：图片处理 + 文案生成</li><li>│   ├── SKILL.md</li><li>│   └── scripts/</li><li>│       ├── campaign.py                   ← 编排器</li><li>│       └── batch_compare.py              ← 图像处理流水线</li><li>├── ming-flash-omni/                      ← 单图交互 Skill</li><li>├── stock-analysis/                       ← 股票分析</li><li>└── x-trends-nvdfx/                       ← Twitter 趋势</li><li>~/.openclaw/skills/                       ← &quot;轻型&quot; Skills（MCP 的使用说明书）</li><li>├── filesystem/                           ← 教 Agent 怎么用 Filesystem MCP</li><li>│   ├── skill.json</li><li>│   └── prompt.md</li><li>└── wechat/                               ← 教 Agent 怎么用微信键盘模拟</li><li>├── skill.json</li><li>├── prompt.md</li><li>└── scripts/send_message.sh 等</li><li># === MCP 注册配置 ===</li><li>~/.claude.json → mcpServers               ← 告诉 Agent 每个 MCP Server 怎么启动</li><li># === 业务数据 ===</li><li>~/campaign_images/</li><li>├── images/new/                           ← 待处理原图（输入）</li><li>├── candidates/                           ← 中间产物</li><li>└── results/                              ← 最终产出（对比图/GIF/推文）</li><li>注意：它们是&quot;分层引用&quot;关系，不是&quot;包含&quot;关系。</li></ul>
+<table><thead><tr><th>层</th><th>位置</th><th>角色</th></tr></thead><tbody><tr><td>MCP Server</td><td>@modelcontextprotocol/server-filesystem</td><td>Anthropic 官方 Node.js 包（npx 直接运行）</td></tr><tr><td>MCP 注册</td><td>~/.claude.json 的 mcpServers</td><td>告诉 Agent &quot;Server 怎么启动&quot;</td></tr><tr><td>Skill 说明书</td><td>~/.openclaw/skills/filesystem/</td><td>教 Agent &quot;MCP Tools 怎么用&quot;</td></tr><tr><td>Skill 业务脚本</td><td>~/.openclaw/workspace/skills/auto-twitter-campaign/</td><td>自包含流水线，不依赖 MCP</td></tr></tbody></table>
+<p>auto-twitter-campaign 里不需要放文件系统操作或消息通道的代码。它只负责图片处理和文案。需要读取文件时 Agent 会通过 Filesystem MCP Server 操作。</p>
+      </section>
+
+      <section class="src" id="sec-03">
+        <h2 class="sec"><span class="n">03</span>四个核心概念</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>单体 Agent 把所有知识塞进 System Prompt，不可复用难维护</li><li>Skills 用 SKILL.md 三层渐进式披露，按需加载省上下文</li><li>Director-Creator-Critic 是同一 LLM 不同 Prompt 的角色编排</li><li>能写成脚本跑完用 Skill，需持续连接外部服务用 MCP</li></ul><div class="pit"><ul><li>把静态知识做成 MCP Server 传递，应该改用 Skills</li></ul></div></div>
+<h3 class="sub">3.1 Agent：如果把一切塞进 Prompt</h3>
+<p>传统 AI Agent 是一个单体式的自主推理实体，将所有能力内嵌于一个大型系统提示或模型权重中。</p>
+<ul><li>┌─────────────────────────────────┐</li><li>│           Monolithic Agent       │</li><li>│                                 │</li><li>│  ┌───────────────────────────┐  │</li><li>│  │   巨大的 System Prompt     │  │</li><li>│  │   (所有知识 + 所有指令)     │  │</li><li>│  └───────────────────────────┘  │</li><li>│  ┌───────────────────────────┐  │</li><li>│  │   硬编码的工具调用逻辑      │  │</li><li>│  └───────────────────────────┘  │</li><li>│  ┌───────────────────────────┐  │</li><li>│  │   自定义 API 集成          │  │</li><li>│  └───────────────────────────┘  │</li><li>└─────────────────────────────────┘</li><li>痛点：</li><li>上下文窗口浪费（加载大量无关指令）</li><li>不可复用（每个 Agent 重复造轮子）</li><li>难以维护（修改一处可能影响全局）</li><li>不可组合（无法在 Agent 之间共享能力）</li></ul>
+<p>反模式示例：如果用纯 Agent 实现这个项目</p>
+<p>如果没有 Skill、没有 MCP，所有知识和工具调用都硬编码在一个巨大的系统提示和脚本中，代码会变成这样：</p>
+<ul><li># ❌ 单体 Agent 方案 — 反模式示例</li><li># 一个 3000 行的 monolithic_agent.py</li><li>SYSTEM_PROMPT = &quot;&quot;&quot;</li><li>你是一个图片编辑助手。你需要：</li><li>1. 扫描图片中的游客、车辆、栏杆等杂物</li><li>2. 用 Ming-flash-omni-2.0 模型进行 inpainting 去除</li><li>3. 生成3种风格变体：氛围/戏剧/艺术</li><li>4. 用 Pillow 拼接对比图</li><li>5. 生成 GIF 动画</li><li>6. 写 Twitter 推文（格式：📍地点 📅时间 🏔️场景...）</li><li>7. 写小红书文案（格式：标题+正文+标签）</li><li>8. 通过 Zenmux API 发送请求，endpoint 是 https://zenmux.ai/api/vertex-ai</li><li>9. 图片压缩到 2MB 以内，最大边 2048px</li><li>10. 评分标准：结构保持30分 + 清理质量25分 + 无幻觉25分 + 视觉质量20分</li><li>... (还有 200 行指令)</li><li>&quot;&quot;&quot;</li><li># 所有函数都在一个文件里</li><li>defanalyze_cleanup(image): ...</li><li>defedit_image(image, instruction): ...</li><li>defscore_image(orig, edited): ...</li><li>defanalyze_styles(image): ...</li><li>defmake_comparison(orig, edited): ...</li><li>defmake_gif(images): ...</li><li>defgenerate_tweet(images, desc): ...</li><li>defpost_to_twitter(tweet, media): ...      # 直接硬编码 Twitter API</li><li>defpost_to_xiaohongshu(text, images): ...  # 直接硬编码小红书 API</li><li>defsend_wechat_notification(msg): ...      # 直接硬编码微信 API</li><li>defmain():</li><li># 一个 main 函数串联所有逻辑，无法复用</li><li>images = scan_pending()</li><li>for img in images:</li><li>cleaned = cleanup(img)</li><li>styles = stylize(cleaned)</li><li>comparison = stitch(img, styles)</li><li>gif = animate(comparison)</li><li>tweet = write_tweet(comparison)</li><li>post_to_twitter(tweet, gif)         # 紧耦合</li><li>post_to_xiaohongshu(tweet, gif)     # 紧耦合</li><li>send_wechat_notification(&quot;Done!&quot;)   # 紧耦合</li><li>问题：</li><li>3000 行代码全部加载到上下文，浪费 token</li><li>Twitter/小红书/微信 API 硬编码，改一个平台要改整个文件</li><li>无法在其他项目中复用图片处理能力</li><li>无法让不同 Agent 共享这套流水线</li></ul>
+<h3 class="sub">3.2 Skills：模块化知识包</h3>
+<p>Skills 是 Anthropic 提出的模块化、文件系统驱动的能力包。思路是把专业知识从 Agent 中拆出来，变成可以发现、加载、共享的独立模块。</p>
+<ul><li>my-skill/</li><li>├── SKILL.md          ← 主文件：YAML 元数据 + Markdown 指令</li><li>├── scripts/</li><li>│   ├── deploy.sh     ← 可执行脚本</li><li>│   └── validate.py</li><li>├── templates/</li><li>│   └── config.yaml   ← 模板资源</li><li>└── docs/</li><li>└── reference.md  ← 参考文档</li><li>SKILL.md 的三层渐进式披露（Progressive Disclosure）：</li></ul>
+<table><thead><tr><th>层级</th><th>内容</th><th>何时加载</th></tr></thead><tbody><tr><td>Level 1：元数据</td><td>YAML frontmatter（名称、描述、触发条件）</td><td>Agent 启动时预加载到系统提示</td></tr><tr><td>Level 2：指令</td><td>Markdown 正文（步骤、规则、约束）</td><td>匹配到相关任务时按需加载</td></tr><tr><td>Level 3：资源</td><td>脚本、模板、文档</td><td>执行阶段才访问</td></tr></tbody></table>
+<p>好处在于：Agent 不用一次性吞下所有知识，按需加载，省上下文窗口。</p>
+<p>实战：auto-twitter-campaign Skill 的三层披露</p>
+<p>Level 1：元数据 — Agent 启动时预加载（仅 30 字）</p>
+<ul><li>---</li><li>name: auto-twitter-campaign</li><li>description: Autonomous AI image campaign content generator. Processes pending</li><li>photos via Ming-flash-omni-2.0 (cleanup + style editing), creates side-by-side</li><li>comparison images and GIF showcases, then auto-generates tweet text using AI.</li><li>---</li><li>当用户对 OpenClaw 说&quot;帮我处理照片&quot;，Agent 扫描所有 Skill 的元数据，仅凭 description 这 30 个字就知道该加载这个 Skill，而不需要加载全部代码。</li></ul>
+<p>Level 2：指令 — 匹配后按需加载</p>
+<ul><li>## Quick Start</li><li>python3 {baseDir}/scripts/campaign.py run</li><li>python3 {baseDir}/scripts/campaign.py process</li><li>python3 {baseDir}/scripts/campaign.py showcase --description &quot;大年初四唐乾陵&quot;</li><li>## Pipeline</li><li>1. Cleanup Director → 2. Cleanup Creator → 3. Style Director</li><li>→ 4. Style Creator → 5. Showcase → 6. Tweet Writer</li><li>Agent 读到这里就知道该调用哪个命令、传什么参数。</li></ul>
+<p>Level 3：资源 — 执行阶段才访问</p>
+<ul><li># scripts/batch_compare.py 中的具体实现代码</li><li># Agent 直接执行 python3 命令，不需要理解内部逻辑</li></ul>
+<p>Director-Creator-Critic 模式 — Skill 内部的多角色编排</p>
+<p>batch_compare.py 实际上实现了一个微型多 Agent 系统，但它被封装在单个 Skill 内部：</p>
+<ul><li># === Director（导演）：决定做什么 ===</li><li>defanalyze_cleanup(client, image_data):</li><li>&quot;&quot;&quot;扫描图片，识别杂物，输出一条清理指令&quot;&quot;&quot;</li><li>prompt = (</li><li>&quot;You are an expert photo retoucher. Your job is to find EVERY &quot;</li><li>&quot;non-natural element... Look for: People, vehicles, barriers...&quot;</li><li># 返回: &quot;Repaint the silver car on the right with clean ground&quot;</li><li># 或:   &quot;NONE&quot;</li><li># === Creator（执行者）：生成候选方案 ===</li><li>defedit_image(client, image_data, instruction, is_cleanup=False):</li><li>&quot;&quot;&quot;根据指令生成编辑后的图片&quot;&quot;&quot;</li><li># cleanup 模式: inpainting 去杂物</li><li># style 模式: 风格迁移</li><li># 每次调用生成 1 张，循环 3 次生成 3 个候选</li><li># === Critic（评审员）：打分选优 ===</li><li>defscore_image(client, orig_data, edit_data, instruction):</li><li>&quot;&quot;&quot;对比原图和编辑图，按 4 个维度打分 0-100&quot;&quot;&quot;</li><li># 结构保持 (30分) + 清理质量 (25分)</li><li># + 无幻觉 (25分) + 视觉质量 (20分)</li></ul>
+<p>值得注意的是：这三个&quot;角色&quot;都是同一个 LLM 模型（Ming-flash-omni-2.0）在不同 Prompt 下的表现，而不是三个独立的 Agent。用 Prompt 编排代替 Agent 编排。</p>
+<ul><li>Director (分析 Prompt)  →  &quot;去除右侧三个游客&quot;</li><li>Creator ×3 (编辑 Prompt)  →  3 个候选图</li><li>Critic (评分 Prompt)  →  &quot;候选2最佳，85分&quot;</li></ul>
+<p>不需要部署多个 Agent 就能实现多角色协作。同一个 LLM 在不同 Prompt 下扮演不同角色，全部封装在一个 Skill 的脚本中。这比部署 3 个独立 Agent + A2A 协议要轻量得多。</p>
+<p>编排层 — campaign.py 的实际代码结构</p>
+<ul><li># campaign.py — 薄编排层，不包含业务逻辑</li><li>defcmd_process(args):</li><li>&quot;&quot;&quot;动态导入 batch_compare.py 并执行&quot;&quot;&quot;</li><li>spec = importlib.util.spec_from_file_location(</li><li>&quot;batch_compare&quot;, SCRIPT_DIR / &quot;batch_compare.py&quot;</li><li>mod = importlib.util.module_from_spec(spec)</li><li>spec.loader.exec_module(mod)</li><li>mod.main()  # 全部业务逻辑在 Skill 的脚本中</li><li>defcmd_showcase(args):</li><li>&quot;&quot;&quot;GIF 生成 + AI 写推文&quot;&quot;&quot;</li><li>generate_gifs(results_dir)       # Pillow 处理</li><li>generate_tweet_text(results_dir)  # Ming API 调用</li><li>defcmd_run(args):</li><li>&quot;&quot;&quot;完整流水线 = process + showcase&quot;&quot;&quot;</li><li>cmd_process(args)   # Stage 1: 图片处理</li><li>cmd_showcase(args)  # Stage 2: 展示 + 文案</li></ul>
+<h3 class="sub">3.3 MCP：标准化工具连接</h3>
+<p>MCP 是 Anthropic 于 2024年11月开源的 AI 模型与外部工具/数据源的连接协议，基于 JSON-RPC 2.0。有人叫它&quot;AI 的 USB-C&quot;。</p>
+<ul><li>┌──────────────┐     JSON-RPC2.0      ┌──────────────┐</li><li>│  MCPClient  │ ◄──────────────────► │  MCPServer  │</li><li>│  (AI 应用)    │   StreamableHTTP     │  (外部服务)   │</li><li>└──────────────┘                       └──────────────┘</li><li>│                                      │</li><li>Claude/GPT/                           GitHubAPI</li><li>Gemini 等                             数据库/</li><li>文件系统等</li></ul>
+<p>MCP 提供三类能力：</p>
+<h3 class="sub">1. Tools — 外部函数（查询数据库、发送消息）</h3>
+<p>2. Resources — 数据源（文件内容、API 响应）</p>
+<h3 class="sub">3. Prompts — 提示模板</h3>
+<p>时间线：</p>
+<ul><li>2024年11月：Anthropic 开源 MCP</li><li>2025年3月：发布 spec 2025-03-26，Streamable HTTP 取代 SSE 成为推荐传输方式</li><li>2025年12月：捐赠给 Linux 基金会 Agentic AI Foundation</li><li>截至2026年初：9700万+ 月 SDK 下载量，10000+ 活跃 MCP Server</li></ul>
+<p>实战：Filesystem MCP Server 验证</p>
+<ul><li>// ~/.claude.json 中的 MCP 配置</li><li>&quot;mcpServers&quot;:{</li><li>&quot;filesystem&quot;:{</li><li>&quot;command&quot;:&quot;npx&quot;,</li><li>&quot;args&quot;:[&quot;-y&quot;,&quot;@modelcontextprotocol/server-filesystem&quot;,&quot;~/campaign_images&quot;],</li><li>&quot;type&quot;:&quot;stdio&quot;</li></ul>
+<p>@modelcontextprotocol/server-filesystem 是 Anthropic 官方维护的 MCP Server，用 Node.js 实现，通过 stdio 传输与 Agent 通信。</p>
+<p>实测验证过程（2026-02-26）：</p>
+<ul><li># 1. MCP 握手 — 成功</li><li>$ echo&#x27;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,...}&#x27; \</li><li>| npx -y @modelcontextprotocol/server-filesystem ~/campaign_images</li><li>→ {&quot;serverInfo&quot;:{&quot;name&quot;:&quot;secure-filesystem-server&quot;,&quot;version&quot;:&quot;0.2.0&quot;}}</li><li># 2. 工具发现 — 14 个 Tools</li><li>→ read_file, read_text_file, read_media_file, read_multiple_files,</li><li>write_file, edit_file, create_directory, list_directory,</li><li>list_directory_with_sizes, directory_tree, move_file,</li><li>search_files, get_file_info, list_allowed_directories</li><li># 3. list_directory — 列出 pose 编辑结果</li><li>$ tools/call list_directory {&quot;path&quot;:&quot;~/campaign_images/results/pose&quot;}</li><li>→ [FILE] pose_微信图片_20260226155545_1_248_rank1.jpg</li><li>[FILE] pose_微信图片_20260226155545_1_248_rank2.jpg</li><li>[FILE] pose_微信图片_20260226155545_1_248_grid.jpg</li><li># 4. get_file_info — 查询文件元数据</li><li>$ tools/call get_file_info {&quot;path&quot;:&quot;...rank1.jpg&quot;}</li><li>→ size: 218451, permissions: 644, isFile: true</li><li># 5. search_files — 搜索所有 prompts 文件</li><li>$ tools/call search_files {&quot;path&quot;:&quot;...results/pose&quot;,&quot;pattern&quot;:&quot;*prompts*&quot;}</li><li>→ pose_IMG_6382_prompts.txt</li><li>pose_微信图片_20260226155545_1_248_prompts.txt</li></ul>
+<p>Agent 不需要知道文件系统的具体实现（本地磁盘、NFS、云存储），只通过标准化的 list_directory、search_files、read_file 等 Tools 交互。换底层存储时，换 MCP Server 就行，Agent 代码不用动。</p>
+<p>Skill 与 MCP 的精确分界线</p>
+<p>在这个项目中，~/.openclaw/skills/ 下实际有两类 Skill：原生 Skill 和 MCP 封装 Skill。</p>
+<p>原生 Skill（代码即能力）：</p>
+<ul><li>auto-twitter-campaign/</li><li>├── SKILL.md          ← Agent 接口</li><li>└── scripts/</li><li>├── campaign.py   ← 自包含的 Python 脚本</li><li>└── batch_compare.py</li></ul>
+<p>Skill 内部直接调用 Zenmux API（genai.Client），不依赖任何 MCP Server。Agent 只需要执行 python3 scripts/campaign.py run，脚本自带一切。</p>
+<p>MCP 封装 Skill（Skill 是 MCP 的&quot;使用说明书&quot;）：</p>
+<ul><li>filesystem/</li><li>├── skill.json        ← Skill 元数据（触发条件）</li><li>└── prompt.md         ← &quot;怎么使用 Filesystem MCP&quot;的说明</li><li>wechat/</li><li>├── skill.json</li><li>├── prompt.md         ← &quot;怎么使用微信键盘模拟&quot;的说明</li><li>└── scripts/</li><li>├── send_message.sh   ← 简单的 shell 包装</li><li>├── read_chat.sh</li><li>└── list_contacts.sh</li></ul>
+<p>MCP 封装 Skill 本身不含核心逻辑，就是一本&quot;使用手册&quot;，教 Agent 怎么调用已经运行的 MCP Server。</p>
+<p>MCP 是&quot;递给你一把锤子&quot;，Skill 是&quot;教你怎么用这把锤子&quot;。</p>
+<p>两者的协作关系：</p>
+<ul><li>Skill: filesystem/prompt.md</li><li>&quot;当用户想查看处理结果时，先通过 MCP 的 list_directory 列出文件，</li><li>然后用 search_files 搜索特定模式的文件，</li><li>再用 get_file_info 获取文件大小和修改时间...&quot;</li><li>▼ Agent 按照 Skill 指令行动</li><li>MCP Server: filesystem (stdio)</li><li>server.tool(&quot;list_directory&quot;, {path})</li><li>server.tool(&quot;search_files&quot;, {path, pattern})</li></ul>
+<p>简单说：能写成脚本跑完的，用 Skill；需要跟外部服务保持连接的，用 MCP。</p>
+<table><thead><tr><th>场景</th><th>正确方案</th><th>原因</th></tr></thead><tbody><tr><td>图片清理 + 风格化</td><td>Skill（batch_compare.py）</td><td>一次性批处理，无需持续连接</td></tr><tr><td>读取/搜索文件</td><td>MCP（filesystem）</td><td>需要运行时动态查询，数据随时变化</td></tr><tr><td>写推文文案</td><td>Skill（campaign.py）</td><td>确定性的 Prompt + 模板，无需外部服务</td></tr></tbody></table>
+<h3 class="sub">3.4 OpenClaw：Agent 运行环境</h3>
+<p>OpenClaw 是奥地利开发者 Peter Steinberger（PSPDFKit/Nutrient 创始人）做的开源 AI 代理框架，目前是 Skills 生态里最活跃的平台。</p>
+<p>改名历史：</p>
+<ul><li>最初命名 Clawdbot（Claude 的谐音梗）</li><li>2026年1月27日：因 Anthropic 商标问题更名为 Moltbot（龙虾蜕壳之意）</li><li>3天后再次更名为 OpenClaw（强调开源 + 保留甲壳类品牌）</li><li>从 9000 星到 180,000+ GitHub Stars 仅用数天</li></ul>
+<p>核心架构：</p>
+<ul><li>┌─────────────────────────────────────────┐</li><li>│              OpenClaw 架构               │</li><li>│                                         │</li><li>│  Gateway─── 消息平台连接层              │</li><li>│    │         (WhatsApp/Telegram/Discord  │</li><li>│    │          + 可桥接扩展其他平台)       │</li><li>│    ▼                                    │</li><li>│  Agent──── 推理引擎（理解用户意图）      │</li><li>│    │                                    │</li><li>│    ▼                                    │</li><li>│  Skills─── 模块化能力扩展               │</li><li>│    │         (3000+ 社区 Skills)         │</li><li>│    ▼                                    │</li><li>│  Memory─── 持久化存储层                 │</li><li>│              (上下文 + 偏好)              │</li><li>└─────────────────────────────────────────┘</li></ul>
+<p>特点：</p>
+<ul><li>本地运行，数据不离开设备</li><li>后台守护进程，监听文件变更、聊天消息、社交动态</li><li>3000+ 社区 Skills，53+ 官方集成</li><li>通过 MCP Server 连接外部服务</li></ul>
+<p>实战：完整生产架构</p>
+<ul><li>┌─────────────────────────────────────────────────────────┐</li><li>│              完整生产架构                                  │</li><li>│                                                         │</li><li>│  用户入口：                                              │</li><li>│  ┌──────┐  ┌──────────┐  ┌───────┐  ┌──────┐          │</li><li>│  │ 微信  │  │微信(桥接) │  │Telegram│  │CLI  │          │</li><li>│  └──┬───┘  └──┬───────┘  └───┬───┘  └──┬───┘          │</li><li>│     │      bridge_openclaw.py │         │               │</li><li>│     │      (轮询+转发)        │         │               │</li><li>│     └─────────┴──────────────┴─────────┘                │</li><li>│                    │                                    │</li><li>│              OpenClawGateway                           │</li><li>│              (localhost:18789)                           │</li><li>│                    │                                    │</li><li>│              OpenClawAgent                             │</li><li>│              (KimiK2.5 推理引擎)                       │</li><li>│                    │                                    │</li><li>│     ┌──────────────┼──────────────┐                     │</li><li>│     ▼              ▼              ▼                     │</li><li>│  ┌────────┐  ┌──────────┐  ┌──────────┐               │</li><li>│  │Skills│  │   MCP    │  │  Memory  │               │</li><li>│  └────┬───┘  └────┬─────┘  └──────────┘               │</li><li>│       │           │                                    │</li><li>│  ┌────┴────────────┴────────────────┐                  │</li><li>│  │                                  │                  │</li><li>│  │  Skill: auto-twitter-campaign    │                  │</li><li>│  │  ├ campaign.py (编排)            │                  │</li><li>│  │  └ batch_compare.py (处理)       │                  │</li><li>│  │                                  │                  │</li><li>│  │  Skill: ming-flash-omni          │                  │</li><li>│  │  └ ming_image.py (单图交互)      │                  │</li><li>│  │                                  │                  │</li><li>│  │  MCP: filesystem                   │                  │</li><li>│  │  └ stdio → 文件读写/搜索/列表     │                  │</li><li>│  │                                  │                  │</li><li>│  │  Skill: wechat-bridge              │                  │</li></ul>
+<p>注意：OpenClaw 原生支持 Slack、WhatsApp、Telegram、Discord 等渠道，但不包含微信。微信接入需要通过自定义桥接脚本 bridge_openclaw.py（轮询微信消息 + 转发给 openclaw agent），详见第五章。</p>
+<p>一次完整的端到端执行流</p>
+<p>用户在 微信 发送：&quot;帮我处理今天的唐乾陵照片，生成推文&quot;</p>
+<ul><li>1. Gateway 收到 微信 消息</li><li>└→ Agent 推理引擎解析意图: &quot;处理照片 + 生成文案&quot;</li><li>2. Agent 扫描 Skill 元数据</li><li>└→ 匹配 auto-twitter-campaign（description 包含 &quot;process pending images&quot;）</li><li>3. Agent 加载 SKILL.md Level 2 指令</li><li>└→ 发现命令: python3 scripts/campaign.py run --description &quot;大年初四唐乾陵&quot;</li><li>4. Agent 执行 Skill 脚本</li><li>└→ batch_compare.py Stage 1: 清理</li><li>├→ Director: analyze_cleanup() → &quot;去除前景三个游客和右侧金属栏杆&quot;</li><li>├→ Creator ×3: edit_image() → 3个清理候选</li><li>└→ Critic: score_image() → 选出 85 分的最佳候选</li><li>└→ batch_compare.py Stage 2: 风格化</li><li>├→ Style Director: analyze_3styles() → 秋日暖色/夕阳/水墨</li><li>└→ Creator ×3: 每种风格各生成 1 张</li><li>└→ campaign.py showcase:</li><li>├→ 拼接 compare_*.jpg → make_comparison()</li><li>├→ 生成 showcase_all.gif → make_gif()</li><li>└→ AI 写推文 → generate_tweet_text()</li><li>5. Agent 通过 MCP:filesystem 读取 results/ 目录</li><li>└→ 列出新生成的对比图和 GIF 文件</li><li>6. Agent 通过微信桥接脚本发通知</li><li>└→ &quot;唐乾陵照片处理完成 ✓&quot;</li></ul>
+<p>上述流程中的微信通道在实际部署时需要通过桥接脚本接入（OpenClaw 不原生支持微信渠道）。Slack 通道可直接由 Gateway 处理。详见第五章中 bridge_openclaw.py 的实现。</p>
+<p>OpenClaw 本身不做图片处理，也不做社交发布。它提供 Gateway（多通道接入）、Agent 推理（意图理解）、Skill 发现（按需加载）、MCP 编排（统一管理）和 Memory（跨会话记忆）。打个比方：它是操作系统，Skills 是应用程序，MCP 是驱动程序。</p>
+<p>3.5 A2A &amp; Agent Teams：Agent 间协作</p>
+<p>Google 于 2025 年推出 A2A（Agent-to-Agent）协议，解决多个独立 Agent 之间的发现、认证和协作。</p>
+<p>与 MCP 的关系：</p>
+<ul><li>MCP =  纵向集成：AI 模型 ↔ 工具/数据（一个 Agent 连接多个工具）</li><li>A2A =  横向协作：Agent ↔ Agent（多个 Agent 之间互相发现、委派任务）</li><li>A2A（横向：Agent 间协作）</li><li>Agent A ◄─────────────────────► Agent B</li><li>│                                │</li><li>│ MCP（纵向：连接工具）           │ MCP</li><li>▼                                ▼</li><li>Tools/Data                    Tools/Data</li></ul>
+<p>有人将 MCP + A2A 的组合比作 AI 领域的 TCP/IP 时刻——一个处理数据传输，一个处理节点通信。</p>
+<p>在本项目中，A2A 暂未使用——Director-Creator-Critic 的多角色协作被封装在单个 Skill 内部（见 3.2），无需跨 Agent 通信。但当任务复杂到需要独立 Agent 各自负责不同领域时（如代码审查 Agent + 部署 Agent），A2A 就是必要的协作层。</p>
+<p>但是，A2A在coding agent领域并没有被广泛采用，感觉是“一个月前的工具已经落伍”了。目前Claude Code Agent Teams正在流行中，节前Claude使用16个agent通过Agent Teams在无人干预的情况下，2周实现了一个基于Rust的C编译器；</p>
+      </section>
+
+      <section class="src" id="sec-04">
+        <h2 class="sec"><span class="n">04</span>对比总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Agent/Skills/MCP/OpenClaw 分别回答谁做、怎么做、用什么、在哪做</li><li>MCP 有状态动态连接，Skills 无状态静态加载</li><li>协议栈分层：知识层 Skills、工具层 MCP、协作层 A2A、运行层 OpenClaw</li></ul></div>
+<h3 class="sub">4.1 定位对比</h3>
+<table><thead><tr><th>维度</th><th>Agent</th><th>Skills</th><th>MCP</th><th>OpenClaw</th></tr></thead><tbody><tr><td>本质</td><td>自主推理实体</td><td>模块化知识包</td><td>工具连接协议</td><td>Agent 运行框架</td></tr><tr><td>类比</td><td>一个全能员工</td><td>员工的培训手册</td><td>员工的工具箱接口</td><td>员工的办公室</td></tr><tr><td>解决的问题</td><td>&quot;谁来做事&quot;</td><td>&quot;怎么做事&quot;</td><td>&quot;用什么做事&quot;</td><td>&quot;在哪里做事&quot;</td></tr><tr><td>粒度</td><td>粗（整个系统）</td><td>细（单个能力）</td><td>细（单个连接）</td><td>粗（整个平台）</td></tr><tr><td>可复用性</td><td>低</td><td>高</td><td>高</td><td>中</td></tr><tr><td>标准化程度</td><td>无统一标准</td><td>开放标准</td><td>开放标准</td><td>开源框架</td></tr></tbody></table>
+<h3 class="sub">4.2 技术架构对比</h3>
+<p>MCP vs Skills 的常见比喻：</p>
+<p>MCP 是&quot;递给你一把锤子&quot;，Skills 是&quot;教你怎么用这把锤子钉钉子&quot;。 — dante.company</p>
+<table><thead><tr><th>维度</th><th>MCP</th><th>Skills</th></tr></thead><tbody><tr><td>连接方式</td><td>运行时动态连接（客户端-服务器）</td><td>静态文件系统加载</td></tr><tr><td>内容类型</td><td>API 调用、数据查询、工具执行</td><td>文档、指令、脚本、模板</td></tr><tr><td>协议</td><td>JSON-RPC 2.0 over Streamable HTTP</td><td>文件目录 + YAML + Markdown</td></tr><tr><td>状态</td><td>有状态（会话连接）</td><td>无状态（按需读取）</td></tr><tr><td>适用场景</td><td>连接 GitHub、数据库、Slack 等外部服务</td><td>教 Agent 如何做部署、写代码、处理数据</td></tr><tr><td>开发成本</td><td>需要写 Server 代码</td><td>只需写 Markdown 文件</td></tr></tbody></table>
+<p>实际上，Skills 并没有取代 MCP，而是取代了那些本不该用 MCP 实现的场景。之前很多开发者用 MCP Server 传递静态知识（编码规范、部署流程），这些事 Skills 更合适。MCP 该做的是动态数据和工具连接。</p>
+<h3 class="sub">4.3 协议栈全景：它们如何协同工作</h3>
+<ul><li>┌─────────────────────────────────────────────────────┐</li><li>│                  2026 Agentic AI 协议栈               │</li><li>│                                                     │</li><li>│  ┌───────────────────────────────────────────────┐  │</li><li>│  │  应用层：OpenClaw / Claude Code / Cursor       │  │</li><li>│  │         (Agent 运行环境)                       │  │</li><li>│  └───────────────────┬───────────────────────────┘  │</li><li>│                      │                              │</li><li>│  ┌──────────┐  ┌─────┴─────┐  ┌──────────────────┐ │</li><li>│  │  Skills   │  │   Agent   │  │      A2A         │ │</li><li>│  │ (知识层)  │  │  (推理层)  │  │ (Agent间协作层)  │ │</li><li>│  │ 教怎么做  │  │  决定做什么 │  │  跨Agent委派     │ │</li><li>│  └──────────┘  └─────┬─────┘  └──────────────────┘ │</li><li>│                      │                              │</li><li>│  ┌───────────────────┴───────────────────────────┐  │</li><li>│  │              MCP (工具连接层)                    │  │</li><li>│  │         连接数据库/API/文件系统/SaaS             │  │</li><li>│  └───────────────────────────────────────────────┘  │</li><li>│                                                     │</li><li>│  ┌───────────────────────────────────────────────┐  │</li><li>│  │           基础设施：LLM API / 本地模型           │  │</li><li>│  └───────────────────────────────────────────────┘  │</li><li>└─────────────────────────────────────────────────────┘</li></ul>
+<p>一个完整的工作流示例：</p>
+<ul><li>用户通过 OpenClaw（WhatsApp）发送：&quot;帮我部署最新代码到生产环境&quot;</li><li>OpenClaw 的 Agent 推理引擎理解意图</li><li>Agent 加载  deploy-to-production  Skill（包含部署流程、检查清单、回滚策略）</li><li>Skill 指导 Agent 通过 MCP 连接 GitHub（拉取代码）、AWS（执行部署）、微信（发送通知）、Slack（发送通知）</li><li>如果需要代码审查，通过 A2A 协议委派给另一个专门的审查 Agent</li></ul>
+<h3 class="sub">4.4 同一需求，四种实现</h3>
+<p>以&quot;处理一张照片并查看结果文件&quot;为例：</p>
+<table><thead><tr><th>维度</th><th>纯 Agent</th><th>Skill</th><th>MCP</th><th>OpenClaw 全栈</th></tr></thead><tbody><tr><td>代码组织</td><td>1 个 3000 行文件</td><td>SKILL.md + 2 个 Python 脚本</td><td>3 个独立 MCP Server</td><td>Skill + MCP 分层组合</td></tr><tr><td>上下文消耗</td><td>全部加载（~4000 token）</td><td>按需加载（~200 token 元数据）</td><td>工具列表（~500 token）</td><td>元数据 + 工具列表（~700 token）</td></tr><tr><td>图片处理</td><td>内嵌在 Agent 代码中</td><td>batch_compare.py 脚本</td><td>ming-image-mcp Server</td><td>Skill 封装脚本</td></tr><tr><td>查看结果</td><td>硬编码 API 调用</td><td>不负责（不属于此 Skill）</td><td>filesystem MCP Server</td><td>MCP + Skill 说明</td></tr><tr><td>发微信通知</td><td>硬编码 API 调用</td><td>不负责</td><td>键盘模拟脚本</td><td>桥接脚本 + Skill 说明</td></tr><tr><td>可复用性</td><td>❌ 无</td><td>✅ 其他 Agent 可安装同一 Skill</td><td>✅ 其他 Agent 可连接同一 MCP</td><td>✅✅ 两者兼得</td></tr><tr><td>新增平台</td><td>改代码</td><td>写新 Skill / 不需要改</td><td>写新 MCP Server</td><td>装新 Skill + 连新 MCP</td></tr><tr><td>团队协作</td><td>1人维护全部</td><td>图片处理/文案/分发 各自独立</td><td>每个 Server 独立开发</td><td>完全解耦</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-05">
+        <h2 class="sec"><span class="n">05</span>实验验证</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>Claude 方案是硬编码脚本，编写时智能、运行时确定</li><li>OpenClaw 方案是薄桥接 + Agent 推理，运行时 AI 决策</li><li>OpenClaw 每次请求约 15K token，首次响应约 20 秒</li><li>固定流水线选 Claude 方案，多任务自然语言入口选 OpenClaw</li></ul><div class="pit"><ul><li>微信 GUI 自动化不适合 MCP，WeChat 4.x 屏蔽注入导致协议层不可用</li></ul></div></div>
+<p>这个实验跑了同一个任务的两种实现，对比 Claude Code 和 OpenClaw 在架构、代码、行为上的差异。</p>
+<p>实验任务</p>
+<p>微信驱动的图片营销闭环</p>
+<ul><li>用户在微信发送&quot;处理照片 xxx.jpg&quot;</li><li>→ AI 处理图片（清理+风格编辑+对比图+GIF）</li><li>→ AI 生成推文文案</li><li>→ 将结果汇报回微信</li></ul>
+<p>实验环境</p>
+<table><thead><tr><th>组件</th><th>配置</th></tr></thead><tbody><tr><td>硬件</td><td>macOS Darwin 22.6.0</td></tr><tr><td>Claude Code</td><td>Claude Opus 4.6，Shell 直接运行</td></tr><tr><td>OpenClaw</td><td>v2026.1.30，Gateway 守护进程 (port 18789)</td></tr><tr><td>OpenClaw Agent 模型</td><td>Kimi K2.5 (Moonshot)</td></tr><tr><td>图片处理模型</td><td>Ming-flash-omni-2.0 (Zenmux)</td></tr><tr><td>微信控制</td><td>wechat_mcp 键盘模拟模块（wechat-mcp v2 的 MCP 协议层可通，但 WeChat 4.x 屏蔽了 AX API 和 AppleScript 键盘事件，所有实际操作均不可用，因此直接使用其内部的键盘模拟函数）</td></tr></tbody></table>
+<h3 class="sub">5.1 方案 A：Claude Code 硬编码方案</h3>
+<p>文件：~/.openclaw/skills/wechat-bridge/scripts/demo_case1.py</p>
+<p>核心设计： 一个 Python 脚本硬编码全部流程，直接 subprocess 调用 campaign.py。运行时没有 AI 参与决策，所有逻辑在编写代码时由 Claude Code 确定。</p>
+<p>执行链路</p>
+<ul><li>demo_case1.py (Python 硬编码)</li><li>├── open_chat_once(&quot;dandan&quot;)          ← wechat_mcp 键盘模拟打开聊天</li><li>├── send_in_current_chat(&quot;收到...&quot;)    ← 剪贴板粘贴+回车</li><li>├── subprocess: campaign.py run       ← 子进程执行图片处理</li><li>├── count 新增 compare_* 文件         ← 修改时间差集</li><li>├── send_in_current_chat(&quot;完成...&quot;)    ← 固定模板回复</li><li>└── send_in_current_chat(&quot;推文:...&quot;)   ← 读取 tweet.txt 回复</li></ul>
+<p>关键代码</p>
+<p>微信消息发送 — 避免重复搜索聊天窗口</p>
+<ul><li># 问题：每次 send() 都重新搜索 &quot;dandan&quot;，导致消息发到错误窗口</li><li># 解决：open_chat_once() 只在首次打开，后续复用已打开的窗口</li><li>_chat_opened = False</li><li>defopen_chat_once():</li><li>&quot;&quot;&quot;只在第一次打开聊天窗口，之后复用&quot;&quot;&quot;</li><li>global _chat_opened</li><li>ifnot _chat_opened:</li><li>from wechat_mcp.wechat_keyboard import open_chat_via_keyboard</li><li>open_chat_via_keyboard(CHAT_NAME)</li><li>time.sleep(0.5)</li><li># Escape 确保焦点离开搜索框</li><li>subprocess.run([&quot;osascript&quot;, &quot;-e&quot;,</li><li>&#x27;tell application &quot;System Events&quot; to key code 53&#x27;], timeout=5)</li><li>time.sleep(0.3)</li><li>_chat_opened = True</li><li>defsend_in_current_chat(msg: str):</li><li>&quot;&quot;&quot;在已打开的聊天窗口中直接发送消息（不重新搜索）&quot;&quot;&quot;</li><li>from wechat_mcp.wechat_keyboard import _activate_wechat, _set_clipboard, _run_applescript</li><li>_activate_wechat()</li><li>time.sleep(0.2)</li><li>_set_clipboard(msg)</li><li>_run_applescript(</li><li>&#x27;tell application &quot;System Events&quot; to tell process &quot;WeChat&quot; &#x27;</li><li>&#x27;to keystroke &quot;v&quot; using command down&#x27;</li><li>time.sleep(0.3)</li><li>_run_applescript(</li><li>&#x27;tell application &quot;System Events&quot; to tell process &quot;WeChat&quot; &#x27;</li><li>&#x27;to key code 36&#x27;</li><li>time.sleep(0.3)</li></ul>
+<p>新增对比图计数 — 基于修改时间的差集</p>
+<ul><li># 问题：同名文件被覆盖时，Path 集合差集为空，显示&quot;新增 0 张&quot;</li><li># 解决：记录处理前每个文件的 mtime，处理后比对</li><li># 处理前</li><li>existing_results = {p: p.stat().st_mtime for p in RESULTS_DIR.glob(&quot;compare_*&quot;)}</li><li># 处理后</li><li>new_results = sum(1 for p in RESULTS_DIR.glob(&quot;compare_*&quot;)</li><li>if p not in existing_results or p.stat().st_mtime &gt; existing_results[p])</li></ul>
+<p>固定模板回复</p>
+<ul><li># 回复内容是硬编码的格式化字符串，无 AI 参与</li><li>send(f&quot;图片处理完成！新增 {new_results} 张对比图&quot;)</li><li>send(f&quot;处理完成！结果汇总:\n- 对比图: {len(compares)}张\n- GIF展示: {len(gifs)}个&quot;)</li><li>tweet_preview = tweet_text[:300] + (&quot;...&quot;iflen(tweet_text) &gt; 300else&quot;&quot;)</li><li>send(f&quot;推文文案:\n{tweet_preview}&quot;)</li></ul>
+<h3 class="sub">5.2 方案 B：OpenClaw Agent 调度方案</h3>
+<p>文件：~/.openclaw/skills/wechat-bridge/scripts/bridge_openclaw.py</p>
+<p>核心设计： 一个轻薄的桥接脚本，只负责微信消息的收发，所有智能决策都交给 OpenClaw Agent（Kimi K2.5）。Agent 自主理解意图、匹配 Skill、执行命令、组织回复。</p>
+<p>执行链路</p>
+<ul><li>bridge_openclaw.py (轮询 + 转发)</li><li>├── read_chat(&quot;dandan&quot;)                ← 截图OCR读取微信消息</li><li>├── is_actionable(msg)?                ← 简单噪音过滤（长度、黑名单）</li><li>├── send_wechat(&quot;收到，正在处理...&quot;)     ← 确认回复</li><li>├── openclaw agent --message &quot;处理照片 xxx.jpg&quot; --json</li><li>│     │</li><li>│     └── Kimi K2.5 推理引擎</li><li>│           ├── 扫描 12 个 Skill 的元数据</li><li>│           ├── 匹配 auto-twitter-campaign（语义理解）</li><li>│           ├── 读取 SKILL.md Level 2 指令</li><li>│           ├── 执行: python3 campaign.py run --image xxx.jpg</li><li>│           └── 组织回复（Markdown 表格 + emoji + 文件列表）</li><li>└── send_wechat(agent_reply)           ← 转发 Agent 回复</li></ul>
+<p>关键代码</p>
+<p>Agent 调用 — 单个函数替代整个编排逻辑</p>
+<ul><li>defcall_openclaw_agent(message: str, timeout: int = 600) -&gt; str | None:</li><li>&quot;&quot;&quot;调用 OpenClaw Agent 处理消息，返回 agent 的回复文本。&quot;&quot;&quot;</li><li>env = os.environ.copy()  # 传递 ZENMUX_API_KEY 等环境变量</li><li>result = subprocess.run(</li><li>[&quot;openclaw&quot;, &quot;agent&quot;, &quot;--agent&quot;, &quot;main&quot;,</li><li>&quot;--message&quot;, message,</li><li>&quot;--json&quot;, &quot;--timeout&quot;, str(timeout)],</li><li>capture_output=True, text=True, timeout=timeout + 30,</li><li>env=env</li><li>data = json.loads(result.stdout)</li><li># gateway 模式: result.payloads[].text</li><li>payloads = data.get(&quot;result&quot;, data).get(&quot;payloads&quot;, [])</li><li>texts = [p[&quot;text&quot;] for p in payloads if p.get(&quot;text&quot;)]</li><li>return&quot;\n&quot;.join(texts) if texts elseNone</li></ul>
+<p>消息过滤 — 替代硬编码的 parse_command()</p>
+<ul><li>defis_actionable(msg: str) -&gt; bool:</li><li>&quot;&quot;&quot;判断消息是否值得交给 Agent 处理（过滤噪音）。&quot;&quot;&quot;</li><li>msg = msg.strip()</li><li>iflen(msg) &lt; 2:</li><li>returnFalse</li><li>noise = {&quot;你好&quot;, &quot;好的&quot;, &quot;谢谢&quot;, &quot;ok&quot;, &quot;OK&quot;, &quot;嗯&quot;, &quot;哦&quot;, &quot;收到&quot;}</li><li>if msg in noise:</li><li>returnFalse</li><li># 过滤 agent 自己的回复（避免循环）</li><li>if msg.startswith((&quot;Agent &quot;, &quot;[OpenClaw]&quot;, &quot;收到指令&quot;, &quot;执行完成&quot;)):</li><li>returnFalse</li><li>returnTrue</li><li># 注意：不需要 parse_command()，Agent 自己理解意图</li></ul>
+<p>轮询主循环 — 检测→转发→回复</p>
+<ul><li>def poll_loop(chat_name: str, interval: int, once: bool = False):</li><li>state = load_state()</li><li>while True:</li><li>messages = read_chat(chat_name)</li><li>current_hash = messages_hash(messages)</li><li>if current_hash != state[&quot;last_hash&quot;] and messages:</li><li>latest = messages[-1]</li><li>if is_actionable(latest) and latest not in state[&quot;processed&quot;]:</li><li>send_wechat(chat_name, f&quot;收到，正在处理: {latest[:50]}...&quot;)</li><li>reply = call_openclaw_agent(latest)  # ← 核心：交给 Agent</li><li>if reply:</li><li>for chunk in split_message(reply, max_len=500):</li><li>send_wechat(chat_name, chunk)</li><li>state[&quot;processed&quot;].append(latest)</li><li>state[&quot;last_hash&quot;] = current_hash</li><li>save_state(state)</li><li>if once:</li><li>break</li><li>time.sleep(interval)</li></ul>
+<h3 class="sub">5.3 实验结果对比</h3>
+<p>运行记录</p>
+<p>Claude 方案（2026-02-26 14:50）：</p>
+<ul><li>============================================================</li><li>Case 1 Demo: 微信驱动的图片营销闭环</li><li>============================================================</li><li>[状态] pending/ 待处理: 15 张</li><li>[状态] results/ 已有对比图: 24 张</li><li>[微信] 发送: 收到指令：处理照片 正在处理: 20260219085128_1_14.jpg 请稍候...</li><li>[Step 3+4] 处理图片 + 生成展示和推文...</li><li>[微信] 发送: 图片处理完成！新增 9 张对比图...</li><li>[微信] 发送: 处理完成！结果汇总: - 对比图: 24张 - GIF展示: 7个 ...</li><li>[微信] 发送: 推文文案: 📍 Mount Hua (华山) — The Perilous Plank Walk...</li></ul>
+<p>OpenClaw 方案（2026-02-26 15:20）：</p>
+<ul><li>[15:20:33] [微信→] 收到，正在处理: 处理照片 20260219085132_2_14.jpg...</li><li>[15:20:41] [OpenClaw] 发送给 Agent: 处理照片 20260219085132_2_14.jpg...</li><li>[15:21:02] [OpenClaw] Agent 回复: 照片 `20260219085132_2_14.jpg` **已处理完成** ✅</li><li>**生成的文件：**</li><li>| 文件 | 大小 | 说明 |</li><li>|------|------|------|</li><li>| compare_20260219085132_2_14_v1.jpg | ... | 原图 vs AI编辑对比 |</li><li>⚙️ Engine: Ming-flash-omni-2.0</li><li>On the first day of the lunar new year...</li><li>[15:21:05] [微信→] 照片 `20260219085132_2_14.jpg` **已处理完成** ✅ ...</li></ul>
+<p>行为差异对比</p>
+<table><thead><tr><th>维度</th><th>Claude 方案</th><th>OpenClaw 方案</th></tr></thead><tbody><tr><td>指令理解</td><td>parse_command() 硬编码匹配，只认&quot;处理图片&quot;等固定前缀</td><td>Kimi K2.5 语义理解，&quot;帮我修一下这张照片&quot;也能识别</td></tr><tr><td>Skill 匹配</td><td>硬编码 subprocess 调用 campaign.py</td><td>Agent 扫描 12 个 Skill 元数据，自动匹配 auto-twitter-campaign</td></tr><tr><td>回复格式</td><td>固定模板字符串（f&quot;新增 {n} 张对比图&quot;）</td><td>AI 自由组织（Markdown 表格 + emoji + 文件大小 + 引擎信息）</td></tr><tr><td>错误处理</td><td>固定错误文本（f&quot;处理失败:\n{output[-200:]}&quot;）</td><td>Agent 解释原因并建议修复（如&quot;需要设置 ZENMUX_API_KEY&quot;）</td></tr><tr><td>加新 Skill</td><td>修改 Python 代码，加 elif 分支</td><td>注册 skill.json + SKILL.md，Agent 自动发现</td></tr><tr><td>运行时 AI</td><td>无（纯脚本执行）</td><td>Kimi K2.5 每次请求消耗 ~15K token</td></tr><tr><td>首次响应延迟</td><td>&lt; 1 秒（直接执行 Python）</td><td>~20 秒（Agent 推理 + Skill 匹配）</td></tr><tr><td>可预测性</td><td>完全确定性，输出可预测</td><td>依赖 AI 理解准确性，偶有偏差</td></tr></tbody></table>
+<h3 class="sub">5.4 架构抽象对比</h3>
+<p>Claude 方案的抽象层次</p>
+<ul><li>┌──────────────────────────────────────┐</li><li>│         demo_case1.py                │</li><li>│                                      │</li><li>│  1. open_chat_once()      ← 微信 IO │</li><li>│  2. send_in_current_chat() ← 微信 IO │</li><li>│  3. subprocess(campaign.py) ← 业务  │</li><li>│  4. count_files()          ← 业务    │</li><li>│  5. send_in_current_chat() ← 微信 IO │</li><li>│                                      │</li><li>│  所有逻辑在一个脚本中，              │</li><li>│  编写时确定，运行时不变              │</li><li>└──────────────────────────────────────┘</li></ul>
+<p>说白了，这就是个自动化脚本，不是 Agent。Claude Code 在写代码的时候提供了 AI 能力，但跑起来就是纯 Python。</p>
+<p>OpenClaw 方案的抽象层次</p>
+<ul><li>┌──────────────────────────────────────┐</li><li>│       bridge_openclaw.py             │</li><li>│       (轻薄桥接层，~150 行)           │</li><li>│                                      │</li><li>│  1. read_chat()      ← 微信输入      │</li><li>│  2. is_actionable()  ← 噪音过滤      │</li><li>│  3. openclaw agent   ← 交给 Agent    │</li><li>│  4. send_wechat()    ← 微信输出      │</li><li>│                                      │</li><li>│  不包含任何业务逻辑                   │</li><li>└───────────┬──────────────────────────┘</li><li>┌──────────────────────────────────────┐</li><li>│       OpenClaw Agent(Kimi K2.5)     │</li><li>│                                      │</li><li>│  1. 理解自然语言意图                  │</li><li>│  2. 扫描 Skill 元数据（12个）         │</li><li>│  3. 匹配 auto-twitter-campaign       │</li><li>│  4. 读取 SKILL.md 指令               │</li><li>│  5. 执行 campaign.py                 │</li><li>│  6. 组织回复文本                      │</li><li>│                                      │</li><li>│  运行时 AI 决策，行为可变             │</li><li>└──────────────────────────────────────┘</li></ul>
+<p>桥接层就是个 IO 适配器（WeChat ↔ OpenClaw），Agent 才是推理引擎。业务逻辑通过 Skill 注入，不在桥接层。</p>
+<h3 class="sub">5.5 设计启示</h3>
+<p>启示一：Agent 运行环境决定了&quot;智能&quot;在哪一层</p>
+<table><thead><tr><th></th><th>Claude Code 方案</th><th>OpenClaw 方案</th></tr></thead><tbody><tr><td>编写时的智能</td><td>Claude Opus 4.6（写代码、调试）</td><td>人工编写桥接脚本</td></tr><tr><td>运行时的智能</td><td>无（纯脚本）</td><td>Kimi K2.5（理解意图、匹配 Skill）</td></tr><tr><td>智能的载体</td><td>代码（demo_case1.py）</td><td>Agent 推理 + Skill 元数据</td></tr></tbody></table>
+<p>Claude Code 将 AI 能力&quot;固化&quot;为代码——编写时聪明，运行时确定。OpenClaw 将 AI 能力保持在运行时——每次执行都有推理，灵活但不确定。</p>
+<p>启示二：桥接层的薄厚反映架构成熟度</p>
+<ul><li>Claude 方案:  demo_case1.py = 微信IO + 业务编排 + 结果格式化 (170行，厚桥接)</li><li>OpenClaw 方案: bridge_openclaw.py = 微信IO + 转发 (160行，薄桥接)</li></ul>
+<p>当 Agent 运行环境足够成熟时，桥接层应该趋向于纯 IO 适配器——只做消息的收发，不做业务判断。OpenClaw 方案中，bridge_openclaw.py 不需要知道&quot;处理照片&quot;应该调用哪个脚本、传什么参数，这些决策完全由 Agent 在运行时做出。</p>
+<p>启示三：两种方案并非互斥</p>
+<p>在实际生产中，两种方案可以并存：</p>
+<ul><li>~/.openclaw/skills/wechat-bridge/scripts/</li><li>├── demo_case1.py           ←Claude 方案：确定性高、延迟低、适合关键路径</li><li>├── bridge_openclaw.py      ←OpenClaw 方案：灵活性高、可扩展、适合通用入口</li><li>└── bridge.py               ← 原始版本：硬编码流程（已被上述两者取代）</li></ul>
+<p>选择建议：</p>
+<table><thead><tr><th>场景</th><th>推荐方案</th><th>原因</th></tr></thead><tbody><tr><td>固定流水线、高频执行</td><td>Claude 方案</td><td>确定性高，无 AI 推理开销</td></tr><tr><td>多种任务、自然语言触发</td><td>OpenClaw 方案</td><td>一个入口支持所有 Skill</td></tr><tr><td>新增功能时</td><td>OpenClaw 方案</td><td>注册 Skill 即可，无需改桥接代码</td></tr><tr><td>关键业务、不容出错</td><td>Claude 方案</td><td>行为完全可预测</td></tr></tbody></table>
+<p>这正是第四章&quot;协议分层&quot;的实践验证：Agent 运行环境可以替换，而 Skills 和 MCP 保持不变。无论用 Claude Code 还是 OpenClaw 执行，底层的 campaign.py（Skill）代码完全相同。</p>
+<p>关于微信通道的技术选型说明： 两种方案中的微信消息收发均直接调用 wechat_mcp.wechat_keyboard 模块的键盘模拟函数，而非通过 MCP 协议调用 wechat-mcp Server。原因是：wechat-mcp v2 的 MCP 协议层（JSON-RPC 握手、工具发现）在测试中均能正常运行，但 WeChat 4.x 屏蔽了 macOS Accessibility API 和 AppleScript 键盘事件注入，导致所有实际操作（发消息、读聊天）均不可用。因此我们绕过 MCP 协议层，直接使用其底层的键盘模拟函数（剪贴板粘贴 + 回车发送）来实现微信消息通道。这也从反面说明了 MCP 适合连接真正可编程的外部服务（文件系统、数据库、API），不适合 GUI 自动化。</p>
+<h3 class="sub">5.6 实际效果</h3>
+<p>Day1:华山</p>
+<p>xhs：https://www.xiaohongshu.com/explore/6999c776000000002801faaf?xsec_token=YBDUH1xCPKcylkIiTLq7OAQC5wpVvpcXVzSmWyYid52mo%3D&amp;xsec_source=pc_creatormng</p>
+<p>twitter：https://x.com/forde450/status/2025106664245133472?s=20</p>
+<p>Day2:西安城墙&amp;西安博物院</p>
+<p>xhs：https://www.xiaohongshu.com/explore/699a70d6000000001a027efa?xsec_token=YBpaxmbaaPPgR9AeWuzHkxq5ZNFKpgUHMKaQkcOEBYdSE%3D&amp;xsec_source=pc_creatormng</p>
+<p>twitter：https://x.com/forde450/status/2025374927520759975?s=20</p>
+<p>Day3:咸阳宫&amp;陕历博秦汉馆</p>
+<p>xhs：https://www.xiaohongshu.com/explore/699bdccd000000000a02b5e9?xsec_token=ABxfcEwhgaucdP_6iZCL0j1Hwik8JJMwVQAP2hAJHhAf0=&amp;xsec_source=pc_user</p>
+<p>twitter：https://x.com/forde450/status/2025799759794257962?s=20</p>
+<p>Day4:唐乾陵</p>
+<p>xhs：http://xhslink.com/o/7DEM8jXVvGE</p>
+<p>twitter：https://x.com/forde450/status/2026133151228272699?s=20</p>
+      </section>
+
+      <section class="src" id="sec-06">
+        <h2 class="sec"><span class="n">06</span>趋势与展望</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>口号：Stop Building Agents, Start Building Skills</li><li>Skills 天然适合 Git 分发，装一个像装 npm 包</li><li>安全风险：Skill 注入、MCP 信任、Agent 越权、供应链攻击</li></ul><div class="pit"><ul><li>恶意 Skill 可在 SKILL.md 嵌入提示注入，需审核与沙箱</li></ul></div></div>
+<h3 class="sub">6.1 别造 Agent 了，写 Skill 吧</h3>
+<p>2026 年初流行的一个口号是 &quot;Stop Building Agents, Start Building Skills&quot;。论点很直接：</p>
+<p>旧范式：为每个用例构建一个定制 Agent</p>
+<ul><li>用例A → Agent A（包含所有知识和工具）</li><li>用例B → Agent B（重复造轮子）</li><li>用例C → Agent C（又一个单体）</li></ul>
+<p>新范式：构建一个薄 Agent + 可组合的 Skills 库</p>
+<ul><li>┌── Skill: 部署</li><li>通用 Agent 引擎 ────┼── Skill: 代码审查</li><li>├── Skill: 数据分析</li><li>└── Skill: 客户支持</li></ul>
+<p>Skills 相比单体 Agent 的优势：</p>
+<table><thead><tr><th>维度</th><th>单体 Agent</th><th>Skills 架构</th></tr></thead><tbody><tr><td>知识更新</td><td>重新部署整个 Agent</td><td>更新一个 Skill 文件夹</td></tr><tr><td>团队协作</td><td>一个人维护整个 Prompt</td><td>不同团队维护各自的 Skill</td></tr><tr><td>版本控制</td><td>难以追踪变更</td><td>Git 原生支持</td></tr><tr><td>测试</td><td>端到端测试，成本高</td><td>单个 Skill 独立测试</td></tr><tr><td>共享</td><td>无法跨组织复用</td><td>npm/pip 式安装分发</td></tr></tbody></table>
+<h3 class="sub">6.2 环境智能（Ambient Intelligence）</h3>
+<p>OpenClaw 在做一件有意思的事——把 Agent 变成后台守护进程。不用主动打开什么应用，它就一直在那儿：</p>
+<ul><li>后台运行，监听文件变更、聊天消息、社交动态</li><li>主动发现问题并提供建议，而不是等你提问</li><li>同时连接 WhatsApp、Telegram、Discord、iMessage</li><li>非原生平台（比如微信）通过轻量桥接脚本接入，桥接层只做 IO 适配</li></ul>
+<p>有人说这才是&quot;Siri 本应成为的样子&quot;。</p>
+<h3 class="sub">6.3 协议分层与标准化</h3>
+<p>2026年的 Agentic AI 生态在形成协议分层：</p>
+<table><thead><tr><th>层级</th><th>协议/标准</th><th>功能</th><th>类比</th></tr></thead><tbody><tr><td>知识层</td><td>Agent Skills</td><td>教 Agent 怎么做</td><td>操作手册</td></tr><tr><td>工具层</td><td>MCP</td><td>连接外部工具和数据</td><td>USB-C 接口</td></tr><tr><td>协作层</td><td>A2A</td><td>Agent 间发现和委派</td><td>HTTP 协议</td></tr><tr><td>运行层</td><td>OpenClaw / Claude Code</td><td>Agent 执行环境</td><td>操作系统</td></tr></tbody></table>
+<p>分层的好处是每层独立演进。你可以把 Agent 运行环境从 Claude Code 换成 OpenClaw，Skills 和 MCP Server 不用改。第五章的实验已经验证了这一点。</p>
+<h3 class="sub">6.4 Skills 市场化与安全</h3>
+<p>Skills 用文件夹分发，天然适合 Git，生态长得很快：</p>
+<table><thead><tr><th>平台</th><th>Skills 数量</th><th>特点</th></tr></thead><tbody><tr><td>OpenClaw 社区</td><td>3000+</td><td>最大的 Skills 消费者，涵盖日常自动化</td></tr><tr><td>GitHub</td><td>18000+ Stars 的 Skills 仓库</td><td>开发者主导，代码质量高</td></tr><tr><td>Superpowers</td><td>-</td><td>专注开发工作流</td></tr><tr><td>Spring AI</td><td>-</td><td>企业级 Skills 模式</td></tr></tbody></table>
+<p>装一个 Skill 跟装一个 npm 包差不多，门槛很低。</p>
+<p>但 Agent 的自主权越大，安全问题越突出：</p>
+<table><thead><tr><th>风险</th><th>具体表现</th><th>应对</th></tr></thead><tbody><tr><td>Skill 注入攻击</td><td>恶意 Skill 在 SKILL.md 中嵌入提示注入</td><td>Skills 审核机制、沙箱执行</td></tr><tr><td>MCP Server 信任</td><td>第三方 MCP Server 可能泄露数据</td><td>OAuth 2.1 认证、权限最小化</td></tr><tr><td>Agent 越权</td><td>Agent 自主执行破坏性操作</td><td>人机协作确认、操作审计日志</td></tr><tr><td>供应链攻击</td><td>社区 Skills 被篡改</td><td>签名验证、VirusTotal 集成（OpenClaw v2026.2.6）</td></tr></tbody></table>
+<p>OpenClaw 在 2026年初曝出一个严重 CVE，整个社区因此重新审视安全问题，Skills 签名验证和沙箱执行加速落地。</p>
+<h3 class="sub">6.5 从&quot;造人&quot;到&quot;写手册&quot;</h3>
+<p>以前做 Agent 开发，相当于培养一个全能员工——什么都塞进一个系统提示。Skills 的做法不同：只需要一个聪明的通才（LLM），然后给不同的操作手册（Skills）。做部署就翻部署手册，做分析就翻分析手册。</p>
+<p>说到底就是把知识从模型里拆出来，变成可以单独管理的文件。</p>
+<h3 class="sub">6.6 软件工程的历史回响</h3>
+<p>这个转变在软件工程里反复出现过：</p>
+<table><thead><tr><th>时代</th><th>旧范式</th><th>新范式</th><th>核心思想</th></tr></thead><tbody><tr><td>1990s</td><td>单体应用</td><td>组件化（COM/CORBA）</td><td>能力解耦为可复用组件</td></tr><tr><td>2010s</td><td>单体服务</td><td>微服务</td><td>服务拆分为独立部署单元</td></tr><tr><td>2020s</td><td>单体 Prompt</td><td>RAG / Function Calling</td><td>知识和工具从提示中分离</td></tr><tr><td>2025-2026</td><td>单体 Agent</td><td>Skills + MCP + A2A</td><td>能力、连接、协作三层解耦</td></tr></tbody></table>
+<p>规律都一样：从一个大东西做所有事，变成很多小东西各司其职。</p>
+<h3 class="sub">6.7 未来展望</h3>
+<table><thead><tr><th>方向</th><th>预测</th><th>时间线</th></tr></thead><tbody><tr><td>Skills 标准统一</td><td>Anthropic Skills 规范成为事实标准，类似 OpenAPI 对 REST 的意义</td><td>2026 H1</td></tr><tr><td>Skills 市场</td><td>出现类似 npm/PyPI 的 Skills 注册中心，支持付费 Skills</td><td>2026 H2</td></tr><tr><td>Agent 编排层</td><td>基于 A2A 的多 Agent 编排框架成熟，企业级部署</td><td>2026-2027</td></tr><tr><td>安全治理</td><td>Skills 签名、沙箱执行、审计日志成为标配</td><td>2026</td></tr><tr><td>垂直行业 Skills</td><td>医疗、法律、金融等行业出现专业 Skills 生态</td><td>2026-2027</td></tr></tbody></table>
+      </section>
+
+      <section class="src" id="sec-07">
+        <h2 class="sec"><span class="n">07</span>总结</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>范式本质：把知识从模型拆出，变成可单独管理的文件</li><li>换运行环境时 Skills 与 MCP 代码不用改，已被实验验证</li></ul></div>
+<p>一句话概括</p>
+<p>Anthropic 在 14 个月内先后推出 MCP（2024.11）和 Agent Skills（2025.12）两个开放标准，把 AI 智能体架构从单体 Agent 推向&quot;薄 Agent + 可组合 Skills + 标准化工具连接&quot;的分层结构。OpenClaw 作为最大的开源实践者跑通了这条路线，Google A2A 补上了 Agent 间协作这一块。</p>
+<p>核心要点</p>
+<p>1. 谁提出的：Anthropic，2025年12月18日开放标准发布，48小时内 Microsoft 和 OpenAI 跟进</p>
+<h3 class="sub">2. 四者关系：</h3>
+<ul><li>Skills = 知识层（教 Agent 怎么做）</li><li>MCP = 工具层（连接外部数据和服务）</li><li>OpenClaw = 运行层（Agent 的执行环境和生态）</li><li>A2A = 协作层（Agent 间的发现和委派）</li></ul>
+<p>3. 范式本质：从&quot;造一个全能 Agent&quot;到&quot;写可复用的操作手册&quot;，跟软件工程从单体到微服务的演进类似</p>
+<p>4. 2026 趋势：Skills 市场化、环境智能、协议分层标准化、安全治理</p>
+<p>5. 实验验证（第五章）：同一个任务（微信→图片处理→推文→微信回复）分别在 Claude Code 和 OpenClaw 两种环境中跑通，换运行环境时 Skills 和 MCP 代码不用改。Claude Code 方案确定性高、延迟低，适合固定流水线；OpenClaw 方案灵活，适合多任务自然语言入口</p>
+<p>参考资料</p>
+<p>官方资源</p>
+<ul><li>Anthropic: Equipping agents for the real world with Agent Skills： https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</li><li>Anthropic: Introducing Agent Skills： https://www.anthropic.com/news/skills</li><li>Model Context Protocol Specification (2025-03-26)： https://modelcontextprotocol.io/specification/2025-03-26</li></ul>
+<p>技术分析</p>
+<ul><li>Claude Skills: A Technical Deep Dive into Agentic Orchestration： https://avasdream.com/blog/claude-skills-technical-guide</li><li>Agent Skills vs MCP - How do you choose?： https://ravichaganti.com/blog/agent-skills-vs-model-context-protocol-how-do-you-choose/</li><li>Skills vs MCP: Understanding Two Layers of the Same Stack： https://www.getmaxim.ai/blog/the-skills-vs-mcp-debate-understanding-two-layers-of-the-same-stack/</li><li>Claude Skills vs MCP - What&#x27;s the Difference： https://blog.dante.company/en/articles/claude-skills-vs-mcp-comparison</li><li>Stop Building Agents, Start Building Skills： https://www.brgr.one/blog/stop-building-agents-build-skills</li></ul>
+<p>OpenClaw</p>
+<ul><li>OpenClaw Architecture, Explained： https://ppaolo.substack.com/p/openclaw-system-architecture-overview</li><li>OpenClaw: A Deep Dive into the Architecture： https://rajvijayaraj.substack.com/p/openclaw-architecture-a-deep-dive</li><li>OpenClaw: 180K GitHub Stars and Agentic AI&#x27;s Security Wake-Up Call： https://learndevrel.com/blog/openclaw-ai-agent-phenomenon</li><li>OpenClaw Security Analysis： https://agenteer.com/blog/security-analysis-of-openclaw-and-the-ai-agent-era</li></ul>
+<p>行业趋势</p>
+<ul><li>The Rise of Skills: Why 2026 Is the Year of Specialized AI Agents： https://midokura.com/the-rise-of-skills-why-2026-is-the-year-of-specialized-ai-agents/</li><li>The Hard Truth About Agent Skills： https://www.teamday.ai/blog/agent-skills-hard-truth</li><li>MCP vs A2A: The Complete Guide to AI Agent Protocols in 2026： https://learndevrel.com/blog/mcp-vs-a2a</li><li>The Agent Protocol Stack: MCP + A2A + A2UI： https://subhadipmitra.com/blog/2026/agent-protocol-stack/</li><li>A Year of MCP: From Internal Experiment to Industry Standard： https://www.pento.ai/blog/a-year-of-mcp-2025-review</li></ul>
+<p>学术论文</p>
+<ul><li>Agentic AI: Architecture, Acquisition, Security, and the Path Forward (arXiv:2602.12430)： https://arxiv.org/html/2602.12430v1</li><li>A Survey of the Model Context Protocol (MCP)： https://www.preprints.org/manuscript/202504.0245/v1</li></ul>
+      </section>
+
+      <section class="src" id="sec-08">
+        <h2 class="sec"><span class="n">08</span>写在最后</h2>
+        <div class="digest"><span class="eyebrow">本节提炼</span><ul><li>代码开源在 github.com/forde450/agent-skills-report</li><li>作者为百灵多模态算法工程师</li></ul></div>
+<p>我的本职工作是百灵的多模态算法工程师。为了让自己开发的模型真正落地，我做了一些应用尝试，并把这过程中学到的东西写下来，与大家分享。若文中有不完善或不够准确的地方，欢迎大家批评指正。</p>
+<p>文中提到的自动美化相册、微信消息自动发送、推文自动生成等相关 Skills 的代码，已开源在：👉 https://github.com/forde450/agent-skills-report</p>
+<p>百灵 InclusionAI 团队一直以来都坚守开源的理念，我们深知每一次对开源社区的贡献，都是推动大模型技术进步的点滴努力。这其中的不易，或许只有亲历者才懂。我真诚地希望大家能够 支持开源，支持百灵大模型。如果您觉得我们的工作有价值，请不吝点赞、关注，并亲自试用我们的模型，您的每一次反馈，都是我们前进的最大动力。</p>
+<p>我们最新的 Ming-flash-omni-2.0 模型 的权重和推理代码也已经开源，欢迎大家前往：</p>
+<ul><li>Huggingface: https://huggingface.co/inclusionAI/Ming-flash-omni-2.0</li><li>ModelScope: https://www.modelscope.cn/models/inclusionAI/Ming-flash-omni-2.0</li><li>Github: https://github.com/inclusionAI/Ming</li></ul>
+<p>非常欢迎大家下载试用，踊跃反馈！您也可以在 zenmux.ai 和 tbox.cn 上体验。让我们携手，共同推动开源全模态模型的发展，一起探索 AI 的无限可能。</p>
+<p>阿里云开发者</p>
+      </section>
+
+
+      <!-- ============ 知识卡 ============ -->
+      <div class="eyebrow" style="margin:36px 0 2px">知识卡 · 跨全文 10 张</div>
+      <div class="cards-grid">
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>MCP vs Skills</h4><p>MCP 递给你一把锤子，Skills 教你怎么用锤子钉钉子；前者动态连接，后者静态知识。</p><a class="src-link" href="#sec-04">原文 → 对比总结</a></div>
+<div class="card"><span class="chip k-概念对比">概念对比</span><h4>Agent vs Skills</h4><p>单体 Agent 把知识塞进 Prompt，Skills 把知识拆成可加载、可共享的模块化文件包。</p><a class="src-link" href="#sec-03">原文 → 四个核心概念</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>薄 Agent + Skills 库</h4><p>新范式是薄 Agent 引擎加可组合 Skills 库，每个用例配一个 Skill 而非重建 Agent。</p><a class="src-link" href="#sec-06">原文 → 趋势与展望</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>Skills 采用速度</h4><p>Agent Skills 发布 48 小时内被 Microsoft、OpenAI 采纳；OpenClaw 拥有 3000+ 社区 Skills。</p><a class="src-link" href="#sec-01">原文 → 起源与行业响应</a></div>
+<div class="card"><span class="chip k-数据">数据</span><h4>MCP 生态规模</h4><p>截至 2026 年初 MCP 月 SDK 下载量 9700 万+，活跃 MCP Server 10000+。</p><a class="src-link" href="#sec-03">原文 → 四个核心概念</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>SKILL.md 三层披露</h4><p>Level1 元数据预加载、Level2 指令按需加载、Level3 资源执行时访问，节省上下文窗口。</p><a class="src-link" href="#sec-03">原文 → 四个核心概念</a></div>
+<div class="card"><span class="chip k-代码模式">代码模式</span><h4>Director-Creator-Critic</h4><p>同一 LLM 用分析/编辑/评分三种 Prompt 编排，不部署多个 Agent 即实现多角色协作。</p><a class="src-link" href="#sec-03">原文 → 四个核心概念</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>微信 GUI 自动化</h4><p>WeChat 4.x 屏蔽 AX API 与 AppleScript 注入，wechat-mcp v2 协议层可用但操作不可用，只能键盘模拟。</p><a class="src-link" href="#sec-05">原文 → 实验验证</a></div>
+<div class="card"><span class="chip k-结论">结论</span><h4>运行环境可替换</h4><p>换运行环境时 Skills 与 MCP 代码不用改，Agent 运行层可以独立演进。</p><a class="src-link" href="#sec-05">原文 → 实验验证</a></div>
+<div class="card"><span class="chip k-易错点">易错点</span><h4>Skill 注入攻击</h4><p>恶意 Skill 可在 SKILL.md 嵌入提示注入，需审核机制与沙箱执行应对。</p><a class="src-link" href="#sec-06">原文 → 趋势与展望</a></div>
+
+      </div>
+
+      <!-- ============ 带走三句话 ============ -->
+      <div class="bring">
+        <span class="eyebrow">带走三句话</span>
+        <ol>
+          <li>把知识写成 Skills，动态连接交给 MCP，运行交给 OpenClaw，三层解耦、独立演进。</li>
+          <li>Claude Code 方案确定性高、延迟低；OpenClaw 方案灵活，固定流水线选前者，多任务入口选后者。</li>
+          <li>Skills 生态爆发的同时，注入攻击、越权与供应链风险要求审核、沙箱与签名验证。</li>
+        </ol>
+      </div>
+
+      <!-- ============ 出处 ============ -->
+      <footer class="src">
+        <p>原文出处：<a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559249&amp;idx=1&amp;sn=7cda1453a5f7f51c39f43b76027696a1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247559249&amp;idx=1&amp;sn=7cda1453a5f7f51c39f43b76027696a1</a>（新窗口打开）</p>
+        <p>收录时间：2026-11-01 ｜ 收录分类：Agent框架 ｜ 由 article-digest 生成 ｜ 配图未迁移（以 WPS 导出正文为准）</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var saved;
+    try{ saved = localStorage.getItem('article-digest-theme'); }catch(e){}
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+    btn.addEventListener('click', function(){
+      var cur = root.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('article-digest-theme', next); }catch(e){}
+    });
+
+    // scrollspy
+    var links = Array.prototype.slice.call(document.querySelectorAll('aside.map nav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section.src[id]'));
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id];
+            if(a){ a.classList.add('active'); }
+          }
+        });
+      }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+      sections.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
