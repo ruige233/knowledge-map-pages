@@ -114,13 +114,21 @@ async function load() {
     const res = await fetch(p);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-    const { meta, body } = parseFrontmatter(text);
+    const { meta, body: rawBody } = parseFrontmatter(text);
+    let body = rawBody;
+    if (!meta.title) {
+      // 无 frontmatter 的文件（如微信读书周报）：取首个一级标题当标题，并从正文里去掉，避免重复。
+      const h = /^[ \t]*#\s+(.+?)[ \t]*\r?\n/.exec(rawBody);
+      if (h) { meta.title = h[1].trim(); body = rawBody.slice(h[0].length); }
+    }
+    const chips = metaChips(meta);
+    const lines = metaLines(meta);
     document.title = (meta.title || '条目') + ' · 收藏库';
     shell.innerHTML =
       `<div class="meta-card">
-        <div class="chips">${metaChips(meta)}</div>
+        ${chips ? `<div class="chips">${chips}</div>` : ''}
         <h1 class="title">${esc(meta.title || '未命名条目')}</h1>
-        <div class="meta-lines">${metaLines(meta)}</div>
+        ${lines ? `<div class="meta-lines">${lines}</div>` : ''}
       </div>
       <article>${marked.parse(body)}</article>`;
   } catch (e) {
