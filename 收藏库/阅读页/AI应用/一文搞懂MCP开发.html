@@ -90,6 +90,14 @@
     padding:6px 12px; border-radius:999px;
   }
   .badge .dot{width:8px; height:8px; border-radius:50%; background:var(--good)}
+  .back{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; font-weight:600; text-decoration:none;
+    color:var(--ink-2); background:var(--surface); border:1px solid var(--line);
+    padding:6px 12px; border-radius:999px;
+  }
+  .back:hover{color:var(--accent); border-color:var(--accent)}
+  header.mast .back{margin-bottom:14px}
   .theme-btn{
     font:inherit; font-size:12.5px; font-weight:600;
     color:var(--ink-2); background:var(--surface); border:1px solid var(--line);
@@ -271,6 +279,7 @@
 <div class="ruler" aria-hidden="true"></div>
 
 <header class="mast">
+  <a class="back" href="../../../index.html">← 返回总览页</a>
   <div class="mast-top">
     <span class="badge"><span class="dot"></span>AI应用 · 阅读页</span>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深浅主题">主题</button>
@@ -810,6 +819,7 @@ const result = await searchDocs(JSON.parse(res.function_call.arguments));</code>
         <p>出处：<a href="https://mp.weixin.qq.com/s/8qB8xcp8d3yYXnGZNlutEA" rel="noopener" target="_blank">一文搞懂MCP开发 · 腾讯云开发者（微信公众平台）</a></p>
         <p>收录日期：2026-11-03 · 抓取时间：2026-11-03</p>
         <p class="gen">由 article-digest 生成 · 已剥离公众号顶部关注引导与底部推广内容</p>
+        <p><a class="back" href="../../../index.html">← 返回总览页</a></p>
       </footer>
     </main>
   </div>
