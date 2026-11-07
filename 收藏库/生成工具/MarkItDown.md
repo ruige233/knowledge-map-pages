@@ -5,7 +5,7 @@ source: "GitHub / microsoft"
 published: "2024-11-13"
 archived: "2026-10-02"
 category: "生成工具"
-tags: [Markdown, 文档转换, Python, LLM, OCR]
+tags: [大模型, Python, Markdown, OCR, 文档转换]
 lang: en
 status: ok
 ---

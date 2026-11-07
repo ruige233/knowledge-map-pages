@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [AI应用, LLM]
+tags: [大模型, Transformer, RLHF, 微调]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/3万字长文！深度解析大语言模型LLM原理.html"

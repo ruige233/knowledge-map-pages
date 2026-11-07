@@ -5,7 +5,7 @@ source: "微信公众平台 · 腾讯云开发者"
 published: "2026-11-06"
 archived: "2026-11-06"
 category: "教程"
-tags: [提示词工程, Prompt Engineering, LLM, 提示词技巧, AI 应用]
+tags: [提示工程, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/教程/为什么AI干得总是差点意思：教你怎么把需求一次说清楚.html"

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [其他]
+tags: [Agent, Harness, MCP, CI/CD, 自动化]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/从提需求到部署发布，全AI全自动化后，研发效能全面跃升.html"

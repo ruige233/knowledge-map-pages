@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent框架, Agent, Prompt]
+tags: [Agent, 提示工程]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/删掉80%的Prompt规则，Agent交付成功率反而更高了.html"

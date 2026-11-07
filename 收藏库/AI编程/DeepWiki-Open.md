@@ -5,7 +5,7 @@ source: "GitHub / AsyncFuncAI"
 published: "2025-04-30"
 archived: "2026-10-02"
 category: "AI编程"
-tags: [RAG, Mermaid, Next.js, 文档生成, 代码分析]
+tags: [RAG, Next.js, Mermaid, 代码分析, 文档生成]
 lang: en
 status: ok
 ---

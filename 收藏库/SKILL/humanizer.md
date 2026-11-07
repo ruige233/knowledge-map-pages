@@ -5,7 +5,7 @@ source: "GitHub · blader"
 published: "2026-01-18"
 archived: "2026-11-03"
 category: "SKILL"
-tags: [Humanizer, AI写作, Agent Skills, Claude Code, Codex]
+tags: [Claude Code, Codex, Agent Skills, AI写作, Humanizer]
 lang: en
 status: ok
 ---

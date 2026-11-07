@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [其他, 性能优化]
+tags: [性能优化, 教程, 前端]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/Web 性能优化｜了解 HTTP 协议后才能理解的预加载.html"

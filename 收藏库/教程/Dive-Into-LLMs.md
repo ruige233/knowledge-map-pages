@@ -5,7 +5,7 @@ source: "GitHub / lordog"
 published: "2024-04-08"
 archived: "2026-10-02"
 category: "教程"
-tags: [大模型, LLM, RLHF, 越狱攻击, 上海交通大学]
+tags: [大模型, RLHF, 越狱攻击, 上海交通大学]
 lang: zh
 status: ok
 ---

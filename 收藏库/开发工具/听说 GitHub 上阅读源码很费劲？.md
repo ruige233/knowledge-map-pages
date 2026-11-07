@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "开发工具"
-tags: [开发工具]
+tags: [HTML, 阅读]
 lang: zh
 status: ok
 阅读页: "阅读页/开发工具/听说 GitHub 上阅读源码很费劲？.html"

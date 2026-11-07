@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程]
+tags: [Agent, Vibe Coding]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/赛博鸡生蛋，7小时用Claude Vibe Coding一个Mini-Claude.html"

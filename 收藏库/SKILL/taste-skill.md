@@ -5,7 +5,7 @@ source: "GitHub · Leonxlnx"
 published: "2026-02-19"
 archived: "2026-11-03"
 category: "SKILL"
-tags: [Agent Skills, 前端设计, UI 设计, Claude Code, 设计品味]
+tags: [Claude Code, Agent Skills, UI 设计, 设计品味]
 lang: en
 status: ok
 ---

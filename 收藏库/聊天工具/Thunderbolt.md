@@ -5,7 +5,7 @@ source: "GitHub / thunderbird"
 published: "2025-07-23"
 archived: "2026-10-02"
 category: "聊天工具"
-tags: [Tauri, Ollama, 私有化部署, MCP, 端到端加密]
+tags: [MCP, Ollama, Tauri, 私有化部署, 端到端加密]
 lang: en
 status: ok
 ---

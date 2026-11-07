@@ -5,7 +5,7 @@ source: "GitHub / harry0703"
 published: "2024-03-11"
 archived: "2026-10-02"
 category: "生成工具"
-tags: [短视频生成, Python, 文本转语音, 字幕, 自动化]
+tags: [Python, 自动化, 视频生成, 文本转语音, 字幕]
 lang: en
 status: ok
 ---

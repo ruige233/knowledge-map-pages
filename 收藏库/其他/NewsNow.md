@@ -5,7 +5,7 @@ source: "GitHub / ourongxing"
 published: "2024-09-23"
 archived: "2026-10-02"
 category: "其他"
-tags: [新闻聚合, Next.js, MCP, 自托管]
+tags: [MCP, Next.js, 自托管, 内容聚合]
 lang: en
 status: ok
 ---

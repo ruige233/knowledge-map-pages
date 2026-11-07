@@ -5,7 +5,7 @@ source: "GitHub / SimoneAvogadro"
 published: "2026-02-02"
 archived: "2026-10-02"
 category: "安全工具"
-tags: [Android, 逆向工程, Claude Code, Agent Skill, jadx]
+tags: [Claude Code, Agent Skills, Android, 逆向工程]
 lang: en
 status: ok
 ---

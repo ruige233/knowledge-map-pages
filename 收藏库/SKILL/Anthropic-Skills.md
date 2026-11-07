@@ -5,7 +5,7 @@ source: "GitHub / anthropics"
 published: "2025-09-22"
 archived: "2026-10-18"
 category: "SKILL"
-tags: [Claude Skills, Agent Skills, SKILL.md, MCP, Anthropic]
+tags: [MCP, Agent Skills, Anthropic]
 lang: en
 status: ok
 ---

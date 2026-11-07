@@ -5,7 +5,7 @@ source: "GitHub / zarazhangrui"
 published: "2026-01-28"
 archived: "2026-10-02"
 category: "SKILL"
-tags: [Claude Code, Agent Skill, HTML 演示文稿, PPT 转换, 渐进式披露]
+tags: [渐进式披露, Claude Code, Agent Skills, 幻灯片]
 lang: en
 status: ok
 ---

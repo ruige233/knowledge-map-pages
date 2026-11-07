@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [AI应用]
+tags: [Agent 编排, 上下文工程, 工具调用, Harness]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/真正烧Token的不是代码，而是模型反复看同一份上下文.html"

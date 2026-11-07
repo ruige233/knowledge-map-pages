@@ -5,7 +5,7 @@ source: "awesome-selfhosted (GitHub)"
 published: "2015-06-01"
 archived: "2026-10-15"
 category: "开发工具"
-tags: [自托管, Self-hosted, 开源软件, Awesome List, DevOps]
+tags: [DevOps, 自托管, Awesome List, 开源软件]
 lang: en
 status: ok
 ---

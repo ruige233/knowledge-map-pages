@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [其他]
+tags: [Java, Spring, 面试, 后端]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/腾讯二面：如何保证MQ消息不丢失？重复消费如何保证幂等？.html"

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Skill]
+tags: [上下文工程, Agent Skills]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/打造高可靠 AI 助手：Skill 编排、Workflow 设计与 Spec Coding 的深度实践.html"

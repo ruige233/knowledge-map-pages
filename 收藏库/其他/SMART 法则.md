@@ -5,7 +5,7 @@ source: "知乎"
 published: "2024-06-26"
 archived: "2026-11-01"
 category: "其他"
-tags: [其他]
+tags: [沟通, 管理, 思维模型]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/SMART 法则.html"

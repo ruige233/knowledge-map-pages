@@ -5,7 +5,7 @@ source: "GitHub / mem0ai"
 published: "2023-06-20"
 archived: "2026-10-02"
 category: "Agent框架"
-tags: [记忆层, Agent 记忆, 多信号检索, 实体链接, Python]
+tags: [Agent 记忆, 混合检索, Python, 实体链接]
 lang: en
 status: ok
 ---

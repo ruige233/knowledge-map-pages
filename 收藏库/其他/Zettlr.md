@@ -5,7 +5,7 @@ source: "GitHub / Zettlr"
 published: "2017-12-26"
 archived: "2026-10-02"
 category: "其他"
-tags: [Markdown, Zettelkasten, 学术写作, 知识管理, 引用管理]
+tags: [Markdown, 知识管理, 学术写作]
 lang: en
 status: ok
 ---

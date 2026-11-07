@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [RAG, 面试]
+tags: [RAG, 混合检索, 可观测性, 性能优化]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/【RAG面试系列】工程落地.html"

@@ -5,7 +5,7 @@ source: "GitHub / mksglu"
 published: "2026-02-23"
 archived: "2026-10-02"
 category: "AI编程"
-tags: [上下文压缩, MCP, SQLite, FTS5, Claude Code]
+tags: [上下文工程, 全文检索, Claude Code, MCP, SQLite]
 lang: en
 status: ok
 ---

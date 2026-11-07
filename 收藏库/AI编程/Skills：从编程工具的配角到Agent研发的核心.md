@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Agent, Skill, 工具]
+tags: [Agent, Agent Skills]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Skills：从编程工具的配角到Agent研发的核心.html"

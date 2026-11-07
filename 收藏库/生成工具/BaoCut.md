@@ -5,7 +5,7 @@ source: "JimLiu (GitHub)"
 published: "2026-07-13"
 archived: "2026-10-25"
 category: "生成工具"
-tags: [AI视频, 视频剪辑, MCP, Claude Code, 智能体]
+tags: [Agent, Claude Code, MCP, 视频生成]
 lang: en
 status: ok
 ---

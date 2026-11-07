@@ -5,7 +5,7 @@ source: "GitHub / deepseek-ai"
 published: "2025-02-13"
 archived: "2026-10-02"
 category: "开发工具"
-tags: [CUDA, FP8, MoE, JIT 编译, GPU 优化]
+tags: [MoE, 推理优化, CUDA, 编译原理]
 lang: en
 status: ok
 ---

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [其他]
+tags: [职业发展, 技术成长]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/我永远都不是一个“高级”工程师nnnnn自己面对的困境被夸大，最基础的事被低估，为什么没有技术含量的工作能让人成长得最快.html"

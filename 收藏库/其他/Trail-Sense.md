@@ -5,7 +5,7 @@ source: "GitHub / kylecorry31"
 published: "2019-10-14"
 archived: "2026-10-02"
 category: "其他"
-tags: [Android, Kotlin, 离线应用, 户外导航, 传感器]
+tags: [Kotlin, Android, 离线应用, 户外导航, 传感器]
 lang: en
 status: ok
 ---

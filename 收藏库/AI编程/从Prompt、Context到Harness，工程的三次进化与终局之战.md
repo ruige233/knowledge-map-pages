@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Harness, Prompt]
+tags: [提示工程, Harness]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/从Prompt、Context到Harness，工程的三次进化与终局之战.html"

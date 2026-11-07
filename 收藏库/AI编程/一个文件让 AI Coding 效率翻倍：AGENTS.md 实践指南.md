@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Agent]
+tags: [Agent, 上下文工程, 渐进式披露, Harness, CI/CD]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/一个文件让 AI Coding 效率翻倍：AGENTS.md 实践指南.html"

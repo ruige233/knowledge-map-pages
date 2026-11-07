@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent框架, Agent, AI应用, 工具]
+tags: [Agent, 多智能体, Agent 编排, 工具调用, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/【智造】AI应用实战：6个agent搞定复杂指令和工具膨胀.html"

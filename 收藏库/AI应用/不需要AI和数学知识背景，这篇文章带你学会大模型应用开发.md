@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [AI应用, 大模型]
+tags: [提示工程, RAG, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/不需要AI和数学知识背景，这篇文章带你学会大模型应用开发.html"

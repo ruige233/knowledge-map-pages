@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [其他]
+tags: [编码智能体, MCP, Agent Skills, Spec-Driven Development]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/当整个团队开始 0 人工Coding：一份万字AI Native研发实战手册.html"

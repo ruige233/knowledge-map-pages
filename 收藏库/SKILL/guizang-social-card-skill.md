@@ -5,7 +5,7 @@ source: "GitHub · op7418（归藏）"
 published: "2026-05-27"
 archived: "2026-11-01"
 category: "SKILL"
-tags: [Claude Code, Codex, 小红书, 图文卡片, Live Photo]
+tags: [Claude Code, Codex, 图文卡片, 小红书, Live Photo]
 lang: zh
 status: ok
 ---

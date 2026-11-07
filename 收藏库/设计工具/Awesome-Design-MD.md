@@ -5,7 +5,7 @@ source: "GitHub / VoltAgent"
 published: "2026-03-31"
 archived: "2026-10-02"
 category: "设计工具"
-tags: [DESIGN.md, 设计系统, Google Stitch, 设计令牌, 编码智能体]
+tags: [编码智能体, Google Stitch, 设计系统, 设计令牌]
 lang: en
 status: ok
 ---

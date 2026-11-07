@@ -5,7 +5,7 @@ source: "GitHub / xianyu110"
 published: "2026-02-10"
 archived: "2026-10-02"
 category: "教程"
-tags: [OpenClaw, 中文教程, 部署, Skills, 自动化]
+tags: [OpenClaw, Agent Skills, 自动化, 部署运维]
 lang: zh
 status: ok
 ---

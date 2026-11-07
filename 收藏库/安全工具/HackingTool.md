@@ -5,7 +5,7 @@ source: "GitHub / Z4nzu"
 published: "2020-04-11"
 archived: "2026-10-02"
 category: "安全工具"
-tags: [渗透测试, 安全工具, Python, Docker]
+tags: [Docker, Python, 渗透测试]
 lang: en
 status: ok
 ---

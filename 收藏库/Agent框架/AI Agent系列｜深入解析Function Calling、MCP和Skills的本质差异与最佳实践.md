@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent框架, Agent, MCP, Skill]
+tags: [Agent, 工具调用, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/AI Agent系列｜深入解析Function Calling、MCP和Skills的本质差异与最佳实践.html"

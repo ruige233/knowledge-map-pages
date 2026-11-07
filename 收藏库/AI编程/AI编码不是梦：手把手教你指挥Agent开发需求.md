@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Agent]
+tags: [Agent, 提示工程, 后端]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/AI编码不是梦：手把手教你指挥Agent开发需求.html"

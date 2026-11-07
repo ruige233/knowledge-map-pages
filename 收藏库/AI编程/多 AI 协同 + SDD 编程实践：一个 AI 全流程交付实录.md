@@ -5,7 +5,7 @@ source: "微信公众平台 · 阿里云开发者"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程]
+tags: [Codex, Spec-Driven Development]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/多 AI 协同 + SDD 编程实践：一个 AI 全流程交付实录.html"

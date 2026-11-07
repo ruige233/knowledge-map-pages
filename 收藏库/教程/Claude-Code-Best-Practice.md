@@ -5,7 +5,7 @@ source: "GitHub / shanraisshan"
 published: "2025-10-31"
 archived: "2026-10-02"
 category: "教程"
-tags: [Claude Code, Agentic Engineering, Subagents, MCP, 上下文工程]
+tags: [Agent, 上下文工程, Claude Code, MCP]
 lang: en
 status: ok
 ---

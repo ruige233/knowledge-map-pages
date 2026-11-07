@@ -5,7 +5,7 @@ source: "腾讯云开发者"
 published: "2026-11-03"
 archived: "2026-11-03"
 category: "AI应用"
-tags: [MCP, Model Context Protocol, AI应用, 工具调用]
+tags: [工具调用, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/一文搞懂MCP开发.html"

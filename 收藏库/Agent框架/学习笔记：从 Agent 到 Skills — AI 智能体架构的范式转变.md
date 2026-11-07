@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent框架, Agent, Skill, 智能体]
+tags: [Agent, OpenClaw, Agent Skills]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/学习笔记：从 Agent 到 Skills — AI 智能体架构的范式转变.html"

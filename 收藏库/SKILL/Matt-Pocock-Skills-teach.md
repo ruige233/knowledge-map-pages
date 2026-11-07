@@ -5,7 +5,7 @@ source: "GitHub / mattpocock/skills"
 published: "2026-05-27"
 archived: "2026-10-07"
 category: "SKILL"
-tags: [Agent Skills, SKILL.md, 教学, 学习方法, Claude Code]
+tags: [Claude Code, Agent Skills, 学习方法, 教程]
 lang: en
 status: ok
 ---

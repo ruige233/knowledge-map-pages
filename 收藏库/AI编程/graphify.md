@@ -5,7 +5,7 @@ source: "GitHub · Graphify Labs"
 published: "2026-04-03"
 archived: "2026-11-03"
 category: "AI编程"
-tags: [知识图谱, 代码分析, Claude Code, tree-sitter, MCP]
+tags: [知识图谱, Claude Code, MCP, tree-sitter, 代码分析]
 lang: en
 status: ok
 ---

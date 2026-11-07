@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Harness]
+tags: [Harness, 自动化]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/3 个月用Harness重构90万行旧项目：实战经验与踩坑总结.html"

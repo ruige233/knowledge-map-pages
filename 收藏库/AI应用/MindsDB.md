@@ -5,7 +5,7 @@ source: "GitHub / mindsdb"
 published: "2018-08-02"
 archived: "2026-10-02"
 category: "AI应用"
-tags: [SQL, 语义搜索, MCP, 数据平台, AI代理]
+tags: [Agent, 语义搜索, MCP, SQL, 数据平台]
 lang: en
 status: ok
 ---

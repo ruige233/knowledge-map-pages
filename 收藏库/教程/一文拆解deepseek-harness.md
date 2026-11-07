@@ -5,7 +5,7 @@ source: "微信公众平台 · 腾讯云开发者"
 published: "2026-11-05"
 archived: "2026-11-05"
 category: "教程"
-tags: [DeepSeek Harness, Super-agent, Agent 架构, Router, 上下文管理]
+tags: [Agent, Agent 编排, 上下文工程, 多模型路由, Harness]
 lang: zh
 status: ok
 阅读页: "阅读页/教程/一文拆解deepseek-harness.html"

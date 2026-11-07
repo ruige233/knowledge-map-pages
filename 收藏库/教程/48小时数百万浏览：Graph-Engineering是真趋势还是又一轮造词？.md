@@ -5,7 +5,7 @@ source: "微信公众平台 · 腾讯云开发者"
 published: "2026-09-10"
 archived: "2026-11-05"
 category: "教程"
-tags: [Graph Engineering, 多智能体, Agent 编排, Harness, 图谱]
+tags: [多智能体, Agent 编排, 知识图谱, Harness]
 lang: zh
 status: ok
 阅读页: "阅读页/教程/48小时数百万浏览：Graph-Engineering是真趋势还是又一轮造词？.html"

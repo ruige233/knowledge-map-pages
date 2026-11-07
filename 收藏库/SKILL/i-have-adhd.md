@@ -5,7 +5,7 @@ source: "ayghri (GitHub)"
 published: "2026-05-13"
 archived: "2026-10-18"
 category: "SKILL"
-tags: [Claude Code, ADHD, 编码智能体, 提示词, 工作流]
+tags: [编码智能体, 提示工程, Claude Code, 自动化, ADHD]
 lang: en
 status: ok
 ---

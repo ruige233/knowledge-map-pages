@@ -5,7 +5,7 @@ source: "GitHub / zarazhangrui"
 published: "2026-06-01"
 archived: "2026-10-07"
 category: "SKILL"
-tags: [Agent Skills, Claude Code, Zara Zhang, 飞书 Lark, Chrome 扩展]
+tags: [Claude Code, Agent Skills, Chrome 扩展, 飞书, Zara Zhang]
 lang: zh
 status: ok
 ---

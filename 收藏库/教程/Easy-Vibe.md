@@ -5,7 +5,7 @@ source: "GitHub / datawhalechina"
 published: "2025-12-28"
 archived: "2026-10-02"
 category: "教程"
-tags: [Vibe Coding, Datawhale, Claude Code, MCP, 全栈开发]
+tags: [Claude Code, MCP, Datawhale, Vibe Coding, 全栈开发]
 lang: zh
 status: ok
 ---

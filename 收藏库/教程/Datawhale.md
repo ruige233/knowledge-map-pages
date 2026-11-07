@@ -5,7 +5,7 @@ source: "GitHub / datawhalechina"
 published: ""
 archived: "2026-10-11"
 category: "教程"
-tags: [Datawhale, AI 开源社区, 大模型教程, 智能体, 具身智能]
+tags: [Agent, 具身智能, Datawhale]
 lang: zh
 status: ok
 ---

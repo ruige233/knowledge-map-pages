@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程]
+tags: [编码智能体, MCP, 知识管理, 团队协作]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/天猫新品团队AI编码实战指南（下）.html"

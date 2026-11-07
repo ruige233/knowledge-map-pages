@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent框架, Agent]
+tags: [Agent, 教程]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/Hermes Agent 保姆级教程.html"

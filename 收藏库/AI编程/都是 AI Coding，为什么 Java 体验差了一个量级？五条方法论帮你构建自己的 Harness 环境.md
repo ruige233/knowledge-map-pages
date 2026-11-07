@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Java, Harness]
+tags: [Harness, Java]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/都是 AI Coding，为什么 Java 体验差了一个量级？五条方法论帮你构建自己的 Harness 环境.html"

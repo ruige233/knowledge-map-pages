@@ -5,7 +5,7 @@ source: "GitHub / hesamsheikh"
 published: "2026-02-08"
 archived: "2026-10-02"
 category: "教程"
-tags: [OpenClaw, 用例集合, 多代理, 工作流自动化, 自托管]
+tags: [多智能体, OpenClaw, 自动化, 自托管, 测试数据]
 lang: en
 status: ok
 ---

@@ -5,7 +5,7 @@ source: "GitHub / multica-ai"
 published: "2026-01-27"
 archived: "2026-10-02"
 category: "AI编程"
-tags: [Claude Code, CLAUDE.md, 提示工程, 编码智能体, 编码指南]
+tags: [编码智能体, 提示工程, Claude Code, 教程]
 lang: en
 status: ok
 ---

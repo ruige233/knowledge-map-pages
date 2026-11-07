@@ -5,7 +5,7 @@ source: "微信公众平台 · 腾讯云开发者"
 published: "2026-10-29"
 archived: "2026-10-29"
 category: "AI编程"
-tags: [AI编程, 研发体系, 组织变革, 企业本体, Agent]
+tags: [Agent, 软件开发, 组织变革, 企业本体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/一个人用AI像开挂，团队协作就打架？问题不在工具，在组织.html"

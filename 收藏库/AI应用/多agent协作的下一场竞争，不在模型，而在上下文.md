@@ -5,7 +5,7 @@ source: "微信公众平台 · 腾讯技术工程"
 published: "2026-11-06"
 archived: "2026-11-06"
 category: "AI应用"
-tags: [多Agent协作, 上下文管理, Agent, 协作产品, Siboot]
+tags: [Agent, 多智能体, 上下文工程, 协作产品, Siboot]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/多agent协作的下一场竞争，不在模型，而在上下文.html"

@@ -5,7 +5,7 @@ source: "GitHub / codexu"
 published: "2024-08-06"
 archived: "2026-10-02"
 category: "AI应用"
-tags: [Markdown, 知识管理, RAG, Tauri, MCP]
+tags: [RAG, MCP, Tauri, Markdown, 知识管理]
 lang: en
 status: ok
 ---

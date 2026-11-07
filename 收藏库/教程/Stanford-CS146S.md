@@ -5,7 +5,7 @@ source: "Stanford University / CS146S"
 published: ""
 archived: "2026-10-02"
 category: "教程"
-tags: [斯坦福大学, CS146S, AI 编程, 软件开发, 课程]
+tags: [软件开发, CS146S, 斯坦福大学]
 lang: en
 status: ok
 ---

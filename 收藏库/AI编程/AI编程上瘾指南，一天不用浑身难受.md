@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程]
+tags: [编码智能体, 上下文工程, 提示工程, Spec-Driven Development]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/AI编程上瘾指南，一天不用浑身难受.html"

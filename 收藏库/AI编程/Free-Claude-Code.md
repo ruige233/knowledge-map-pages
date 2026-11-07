@@ -5,7 +5,7 @@ source: "GitHub / Alishahryar1"
 published: "2026-01-28"
 archived: "2026-10-02"
 category: "AI编程"
-tags: [Claude Code, 代理服务器, 多模型路由, NVIDIA NIM, OpenCode]
+tags: [多模型路由, Claude Code, OpenCode, NVIDIA NIM, 代理服务器]
 lang: en
 status: ok
 ---

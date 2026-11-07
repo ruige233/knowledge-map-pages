@@ -5,7 +5,7 @@ source: "GitHub / wchao6891"
 published: "2026-07-19"
 archived: "2026-10-25"
 category: "AI应用"
-tags: [Chrome扩展, 提示词管理, MCP, 本地优先, 创意参考库]
+tags: [提示工程, MCP, Chrome 扩展, 本地优先, 创意参考库]
 lang: en
 status: ok
 ---

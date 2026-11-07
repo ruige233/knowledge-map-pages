@@ -5,7 +5,7 @@ source: "GitHub / linshenkx"
 published: "2025-02-12"
 archived: "2026-10-02"
 category: "AI应用"
-tags: [提示工程, 提示词优化, 多模型, MCP, 自我托管]
+tags: [提示工程, 多模型路由, MCP, 自托管]
 lang: en
 status: ok
 ---

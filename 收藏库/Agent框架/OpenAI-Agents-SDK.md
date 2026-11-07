@@ -5,7 +5,7 @@ source: "GitHub / openai"
 published: "2025-03-11"
 archived: "2026-10-02"
 category: "Agent框架"
-tags: [OpenAI Agents SDK, 多 Agent 协作, Handoff, Guardrails, Python]
+tags: [多智能体, Agent 编排, Guardrails, Python]
 lang: en
 status: ok
 ---

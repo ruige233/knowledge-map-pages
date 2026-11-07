@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [其他]
+tags: [Agent, 大模型, Transformer, RLHF, 职业发展]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/AI+时代工程师的空间在哪儿——从范式演进看技术机会.html"

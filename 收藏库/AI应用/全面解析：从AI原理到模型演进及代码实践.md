@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [AI应用]
+tags: [大模型, Transformer, 微调, Python]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/全面解析：从AI原理到模型演进及代码实践.html"

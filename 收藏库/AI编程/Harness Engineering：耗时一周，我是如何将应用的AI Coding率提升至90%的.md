@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Harness]
+tags: [Agent, Harness, 从零构建]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Harness Engineering：耗时一周，我是如何将应用的AI Coding率提升至90%的.html"

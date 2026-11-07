@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent框架, Java, Agent]
+tags: [Agent, Java]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/我们做了比你更懂 Java 的 AI-Agent - Arthas Agent.html"

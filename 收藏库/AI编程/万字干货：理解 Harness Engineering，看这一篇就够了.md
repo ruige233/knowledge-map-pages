@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Harness]
+tags: [Agent, Harness]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/万字干货：理解 Harness Engineering，看这一篇就够了.html"

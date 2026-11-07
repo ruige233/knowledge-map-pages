@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Agent, Harness]
+tags: [Agent, 大模型, Harness]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/从玩具到生产力：用真实项目讲透 AI Agent 的 Harness Engineering.html"

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [AI编程, Claude Code, DeepSeek]
+tags: [Claude Code, DeepSeek]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/DeepSeek V4+Claude Code一手实战！夯爆了还是拉完了？.html"

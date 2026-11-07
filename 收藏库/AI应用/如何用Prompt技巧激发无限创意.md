@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2024-08-23"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [AI应用, Prompt]
+tags: [提示工程, Anthropic, OpenAI]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/如何用Prompt技巧激发无限创意.html"

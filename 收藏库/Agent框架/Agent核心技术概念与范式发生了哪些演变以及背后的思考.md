@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent框架, Agent]
+tags: [Agent, Agent 记忆, 自我进化, 渐进式披露]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/Agent核心技术概念与范式发生了哪些演变以及背后的思考.html"
