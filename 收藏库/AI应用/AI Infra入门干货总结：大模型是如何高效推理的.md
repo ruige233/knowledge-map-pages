@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [大模型, 推理优化, 性能优化]
+tags: [模型与训练, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/AI Infra入门干货总结：大模型是如何高效推理的.html"

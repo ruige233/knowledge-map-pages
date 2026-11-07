@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent 编排, 上下文工程, Spec-Driven Development, 软件开发]
+tags: [编码开发, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/2026 年 AI 编码的“渐进式 Spec”实战指南.html"

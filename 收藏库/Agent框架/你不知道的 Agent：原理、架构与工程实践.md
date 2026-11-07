@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, Harness]
+tags: [Agent 研发, Agent, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/你不知道的 Agent：原理、架构与工程实践.html"

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, MCP, Agent Skills]
+tags: [Agent 研发, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/Agent、MCP、Skill、Cli、Model 一次讲透：老系统接入 AI 的概念地图与三条路径.html"

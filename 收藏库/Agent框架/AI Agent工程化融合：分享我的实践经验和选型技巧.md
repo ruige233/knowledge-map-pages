@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, 工具调用, RAG, MCP, 自动化]
+tags: [Agent 研发, 自动化与集成, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/AI Agent工程化融合：分享我的实践经验和选型技巧.html"

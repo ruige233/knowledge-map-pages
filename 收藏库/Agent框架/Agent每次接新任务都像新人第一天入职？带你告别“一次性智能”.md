@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, 编码智能体, Agent 记忆, 上下文工程, 知识管理]
+tags: [Agent 研发, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/Agent每次接新任务都像新人第一天入职？带你告别“一次性智能”.html"

@@ -5,7 +5,7 @@ source: "GitHub / Anil-matcha"
 published: "2023-05-09"
 archived: "2026-10-02"
 category: "生成工具"
-tags: [推理优化, 图像生成, 视频生成, 唇形同步]
+tags: [内容生产]
 lang: en
 status: ok
 ---

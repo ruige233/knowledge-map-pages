@@ -5,7 +5,7 @@ source: "GitHub / anthropics"
 published: "2025-09-22"
 archived: "2026-10-18"
 category: "SKILL"
-tags: [MCP, Agent Skills, Anthropic]
+tags: [Agent 研发, Agent Skills]
 lang: en
 status: ok
 ---

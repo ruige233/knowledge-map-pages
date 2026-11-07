@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent, Claude Code, Vibe Coding]
+tags: [编码开发, MCP, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/从Vibe Coding到Agentic Engineering：重构后台开发全流程.html"

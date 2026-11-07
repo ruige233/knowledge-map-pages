@@ -5,7 +5,7 @@ source: "Plannotator"
 published: "2026-06-09"
 archived: "2026-10-18"
 category: "SKILL"
-tags: [Claude Code, Agent Skills, HTML, 原型, 线框图]
+tags: [内容生产, 设计与人机交互, Agent Skills]
 lang: en
 status: ok
 ---

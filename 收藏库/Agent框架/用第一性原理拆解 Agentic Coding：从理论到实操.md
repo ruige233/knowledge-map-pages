@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, 大模型]
+tags: [编码开发, 上下文工程, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/用第一性原理拆解 Agentic Coding：从理论到实操.html"

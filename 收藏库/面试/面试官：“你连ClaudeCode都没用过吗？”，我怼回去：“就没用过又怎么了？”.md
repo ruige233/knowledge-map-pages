@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [Agent Skills, 后端]
+tags: [编码开发, 求职与成长, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/面试官：“你连ClaudeCode都没用过吗？”，我怼回去：“就没用过又怎么了？”.html"

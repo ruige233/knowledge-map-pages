@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Vibe Coding, Spec-Driven Development]
+tags: [编码开发, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/AI编码实践：从Vibe Coding到SDD.html"

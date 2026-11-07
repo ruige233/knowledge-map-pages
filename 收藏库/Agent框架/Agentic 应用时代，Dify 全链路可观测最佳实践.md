@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, Agent 编排, 可观测性, 性能优化, 根因分析]
+tags: [Agent 研发, 自动化与集成]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/Agentic 应用时代，Dify 全链路可观测最佳实践.html"

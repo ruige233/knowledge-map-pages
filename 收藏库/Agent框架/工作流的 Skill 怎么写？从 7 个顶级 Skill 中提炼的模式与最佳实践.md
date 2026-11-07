@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent Skills, 自动化, 写作]
+tags: [Agent 研发, Agent 编排, Agent Skills]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/工作流的 Skill 怎么写？从 7 个顶级 Skill 中提炼的模式与最佳实践.html"

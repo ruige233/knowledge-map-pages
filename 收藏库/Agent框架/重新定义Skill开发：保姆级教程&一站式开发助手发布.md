@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent Skills, 教程, 管理]
+tags: [Agent 研发, Agent Skills]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/重新定义Skill开发：保姆级教程&一站式开发助手发布.html"

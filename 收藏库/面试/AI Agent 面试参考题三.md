@@ -5,7 +5,7 @@ source: "微信公众平台 · 调得通"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [Agent, MCP, Agent Skills]
+tags: [Agent 研发, 求职与成长, Agent Skills, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/AI Agent 面试参考题三.html"

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, 多智能体, 可观测性, 事故响应, 根因分析]
+tags: [Agent 研发, 多智能体, Agent 编排]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/给270万行代码开“上帝视角”：Agent 自主定位根因实践.html"

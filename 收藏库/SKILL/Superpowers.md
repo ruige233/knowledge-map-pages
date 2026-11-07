@@ -5,7 +5,7 @@ source: "GitHub / obra"
 published: "2025-10-09"
 archived: "2026-10-02"
 category: "SKILL"
-tags: [Agent, Claude Code, Agent Skills, TDD, 软件开发]
+tags: [编码开发, Agent 编排, Agent Skills]
 lang: en
 status: ok
 ---

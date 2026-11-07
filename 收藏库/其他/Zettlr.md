@@ -5,7 +5,7 @@ source: "GitHub / Zettlr"
 published: "2017-12-26"
 archived: "2026-10-02"
 category: "其他"
-tags: [Markdown, 知识管理, 学术写作]
+tags: [知识管理与检索, 内容生产]
 lang: en
 status: ok
 ---

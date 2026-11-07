@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent 评测, 提示工程, 渐进式披露, Agent Skills]
+tags: [Agent 研发, Agent Skills, 提示工程]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/如何写好 Skill：一份终极实战经验手册.html"

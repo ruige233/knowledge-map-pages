@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [上下文工程, 渐进式披露, Harness, Agent Skills]
+tags: [Agent 研发, 提示与上下文, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/模型越来越强， harness该留下什么？.html"

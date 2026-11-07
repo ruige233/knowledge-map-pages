@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [工具调用, Claude Code]
+tags: [编码开发, Agent Skills, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/揭秘 Claude Code 前沿技巧与 Qoder CLI 日常开发实战.html"

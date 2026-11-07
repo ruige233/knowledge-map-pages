@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent 评测, Harness, 可观测性, 组织变革]
+tags: [Agent 研发, Agent 编排]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/换模型效果归零？一文扒透Harness落地11个坑.html"

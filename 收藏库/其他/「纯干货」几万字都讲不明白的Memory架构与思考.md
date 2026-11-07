@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [Agent, Agent 记忆]
+tags: [Agent 研发, Agent, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/「纯干货」几万字都讲不明白的Memory架构与思考.html"

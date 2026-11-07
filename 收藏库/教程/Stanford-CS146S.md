@@ -5,7 +5,7 @@ source: "Stanford University / CS146S"
 published: ""
 archived: "2026-10-02"
 category: "教程"
-tags: [软件开发, CS146S, 斯坦福大学]
+tags: [编码开发, 编码智能体]
 lang: en
 status: ok
 ---

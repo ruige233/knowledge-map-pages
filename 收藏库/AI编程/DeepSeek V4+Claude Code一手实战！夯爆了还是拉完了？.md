@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Claude Code, DeepSeek]
+tags: [编码开发, 模型与训练, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/DeepSeek V4+Claude Code一手实战！夯爆了还是拉完了？.html"

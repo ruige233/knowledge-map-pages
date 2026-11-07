@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [提示工程, 大模型, MCP]
+tags: [知识管理与检索, MCP, RAG]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/MCP 实践：基于 MCP 架构实现知识库答疑系统.html"

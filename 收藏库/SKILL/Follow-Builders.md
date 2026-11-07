@@ -5,7 +5,7 @@ source: "GitHub / zarazhangrui"
 published: "2026-03-14"
 archived: "2026-10-07"
 category: "SKILL"
-tags: [Claude Code, OpenClaw, Agent Skills, AI 资讯, 内容聚合]
+tags: [个人效率, Agent Skills]
 lang: en
 status: ok
 ---

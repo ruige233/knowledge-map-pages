@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [Agent, 大模型, DeepSeek]
+tags: [自动化与集成, 求职与成长, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/面试官惊了：“你的 Agent 调用的都是 Claude Opus 5？DeepSeek V4 Flash 不香吗？”，.html"

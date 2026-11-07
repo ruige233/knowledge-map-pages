@@ -5,7 +5,7 @@ source: "GitHub / datawhalechina"
 published: ""
 archived: "2026-10-11"
 category: "教程"
-tags: [Agent, 具身智能, Datawhale]
+tags: [模型与训练, 求职与成长, 大模型]
 lang: zh
 status: ok
 ---

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [提示工程, Claude Code, 管理]
+tags: [编码开发, 提示与上下文, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/35个 Claude Code 实用技巧！每条都有具体命令或可直接复制的 prompt.html"

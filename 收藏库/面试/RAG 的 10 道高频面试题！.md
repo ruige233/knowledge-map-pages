@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [RAG, 混合检索, 知识图谱, 微调]
+tags: [知识管理与检索, 求职与成长, RAG]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/RAG 的 10 道高频面试题！.html"

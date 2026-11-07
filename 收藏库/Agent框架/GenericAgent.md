@@ -5,7 +5,7 @@ source: "GitHub / lsdefine"
 published: "2026-01-16"
 archived: "2026-10-02"
 category: "Agent框架"
-tags: [Agent 记忆, 自我进化, 计算机控制, 技能树, TMWebdriver]
+tags: [Agent 研发, Agent, Agent Skills]
 lang: en
 status: ok
 ---

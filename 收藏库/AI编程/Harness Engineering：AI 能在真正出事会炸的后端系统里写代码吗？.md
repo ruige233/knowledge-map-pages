@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Harness, 后端]
+tags: [编码开发, 多智能体, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Harness Engineering：AI 能在真正出事会炸的后端系统里写代码吗？.html"

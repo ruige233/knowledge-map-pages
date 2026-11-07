@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [Agent, 多智能体, Agent 记忆, MCP]
+tags: [Agent 研发, 求职与成长, Agent]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/【Agent六层修炼】AI Agent面试30问：从基础概念到生产踩坑，面试官最爱问的30道题（附标准答案）.html"

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [阿里云, Spec-Driven Development, 软件开发, 组织变革, 管理]
+tags: [编码开发, 团队与组织]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/代码一旦生产出来，首先是负债 —— 一个CIO 的AI效能实践复盘.html"

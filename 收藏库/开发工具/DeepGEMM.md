@@ -5,7 +5,7 @@ source: "GitHub / deepseek-ai"
 published: "2025-02-13"
 archived: "2026-10-02"
 category: "开发工具"
-tags: [MoE, 推理优化, CUDA, 编译原理]
+tags: [模型与训练, 大模型]
 lang: en
 status: ok
 ---

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [提示工程, RAG]
+tags: [知识管理与检索, 求职与成长, RAG]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/面试官：“RAG 不就是调一下 API 吗？”，我怼回去：“20万字全塞进 Prompt，你确定？”.html"

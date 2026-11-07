@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent, Harness]
+tags: [Agent 研发, 多智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/让 AI 自己做增长：基于OPC和Harness思想的自主增长系统探索.html"

@@ -5,7 +5,7 @@ source: "GitHub / shanraisshan"
 published: "2025-10-31"
 archived: "2026-10-02"
 category: "教程"
-tags: [Agent, 上下文工程, Claude Code, MCP]
+tags: [编码开发, Agent Skills, 编码智能体]
 lang: en
 status: ok
 ---

@@ -5,7 +5,7 @@ source: "GitHub · op7418（归藏）"
 published: "2026-05-27"
 archived: "2026-11-01"
 category: "SKILL"
-tags: [Claude Code, Codex, 图文卡片, 小红书, Live Photo]
+tags: [内容生产, 设计与人机交互, Agent Skills]
 lang: zh
 status: ok
 ---

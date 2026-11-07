@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [大模型, Transformer]
+tags: [模型与训练, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/从 BERT、GPT 到 Jev：一文看懂大模型架构的演进与分化.html"

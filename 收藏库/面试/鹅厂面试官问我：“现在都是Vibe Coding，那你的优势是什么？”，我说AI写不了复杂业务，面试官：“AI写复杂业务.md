@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [上下文工程, 提示工程, 多模型路由, Vibe Coding]
+tags: [编码开发, 求职与成长]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/鹅厂面试官问我：“现在都是Vibe Coding，那你的优势是什么？”，我说AI写不了复杂业务，面试官：“AI写复杂业务.html"

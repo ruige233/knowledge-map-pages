@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [提示工程, RAG]
+tags: [提示与上下文, 求职与成长, RAG, 提示工程]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/京东面试官问：你的 RAG 系统检索结果很准，但最终答案还是有幻觉，Prompt 怎么写的？System Prompt .html"

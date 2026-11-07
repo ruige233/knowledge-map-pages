@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent, Claude Code, 管理]
+tags: [Agent 研发, Agent, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Claude Code 架构解析：从源码看 AI Agent 工程实践.html"

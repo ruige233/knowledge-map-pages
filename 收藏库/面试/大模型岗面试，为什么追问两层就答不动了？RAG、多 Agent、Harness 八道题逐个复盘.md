@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "面试"
-tags: [Agent, RAG, 大模型, Harness]
+tags: [Agent 研发, 求职与成长, RAG]
 lang: zh
 status: ok
 阅读页: "阅读页/面试/大模型岗面试，为什么追问两层就答不动了？RAG、多 Agent、Harness 八道题逐个复盘.html"

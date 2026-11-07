@@ -5,7 +5,7 @@ source: "微信公众平台 · 一包惆怅的辣条"
 published: "2026-10-24"
 archived: "2026-11-07"
 category: "教程"
-tags: [Agent 评测, 阿里云, CI/CD, 评测平台, 淘宝, 货拉拉]
+tags: [Agent 研发, Agent]
 lang: zh
 status: ok
 阅读页: "阅读页/教程/agent评测具体怎么做？学习淘宝、货拉拉和阿里云的实践（万字）.html"

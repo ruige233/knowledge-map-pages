@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent, Claude Code, Harness]
+tags: [Agent 研发, Agent 编排, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/深入浅出Harness Engineerring之核心模式与理念.html"

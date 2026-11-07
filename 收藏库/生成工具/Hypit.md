@@ -5,7 +5,7 @@ source: "GitHub / hypit-ai"
 published: "2026-07-29"
 archived: "2026-10-15"
 category: "生成工具"
-tags: [Claude Code, Agent Skills, 视频生成, SVML]
+tags: [内容生产, Agent Skills]
 lang: en
 status: ok
 ---

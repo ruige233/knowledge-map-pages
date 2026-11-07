@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI应用"
-tags: [Agent, 提示工程, 大模型]
+tags: [模型与训练, 提示与上下文, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/AI应用/迈向可信AI：LLM幻觉的分析与优化.html"

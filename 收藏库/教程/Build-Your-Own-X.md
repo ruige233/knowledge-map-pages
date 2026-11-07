@@ -5,7 +5,7 @@ source: "GitHub / codecrafters-io"
 published: "2018-05-09"
 archived: "2026-10-02"
 category: "教程"
-tags: [操作系统, 数据库, 编译原理, 从零构建]
+tags: [编码开发, 求职与成长]
 lang: en
 status: ok
 ---

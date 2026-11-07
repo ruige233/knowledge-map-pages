@@ -5,7 +5,7 @@ source: "ayghri (GitHub)"
 published: "2026-05-13"
 archived: "2026-10-18"
 category: "SKILL"
-tags: [编码智能体, 提示工程, Claude Code, 自动化, ADHD]
+tags: [提示与上下文, Agent Skills, 提示工程]
 lang: en
 status: ok
 ---

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [Agent Skills, 自动化, 幻灯片]
+tags: [内容生产, Agent Skills]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/用AI写PPT，没想到效果这么好啊.html"

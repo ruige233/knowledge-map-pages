@@ -5,7 +5,7 @@ source: "GitHub / VoltAgent"
 published: "2026-03-31"
 archived: "2026-10-02"
 category: "设计工具"
-tags: [编码智能体, Google Stitch, 设计系统, 设计令牌]
+tags: [编码开发, 设计与人机交互, 编码智能体]
 lang: en
 status: ok
 ---

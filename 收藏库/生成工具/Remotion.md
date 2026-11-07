@@ -5,7 +5,7 @@ source: "GitHub / remotion-dev"
 published: ""
 archived: "2026-10-30"
 category: "生成工具"
-tags: [Agent Skills, React, 视频生成]
+tags: [编码开发, 内容生产]
 lang: en
 status: ok
 ---

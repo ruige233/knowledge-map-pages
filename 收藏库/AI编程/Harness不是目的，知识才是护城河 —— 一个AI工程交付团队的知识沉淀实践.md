@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Harness, 自动化]
+tags: [编码开发, 知识管理与检索, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Harness不是目的，知识才是护城河 —— 一个AI工程交付团队的知识沉淀实践.html"

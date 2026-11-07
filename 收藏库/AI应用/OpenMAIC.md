@@ -5,7 +5,7 @@ source: "GitHub / THU-MAIC"
 published: "2026-03-11"
 archived: "2026-10-02"
 category: "AI应用"
-tags: [多智能体, OpenClaw, 幻灯片, 教程, AI教育]
+tags: [Agent 研发, 内容生产, 多智能体]
 lang: en
 status: ok
 ---

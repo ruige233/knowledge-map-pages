@@ -5,7 +5,7 @@ source: "GitHub / jakezp"
 published: "2026-01-30"
 archived: "2026-10-02"
 category: "AI编程"
-tags: [Agent, OpenCode, Agent Skills, LSP, TDD]
+tags: [编码开发, Agent Skills, 编码智能体]
 lang: en
 status: ok
 ---

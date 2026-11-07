@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, 多智能体, Agent 编排]
+tags: [Agent 研发, 多智能体, Agent 编排]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/Loop Engineering就凉了？一文看懂Graph Engineering的“新范式”.html"

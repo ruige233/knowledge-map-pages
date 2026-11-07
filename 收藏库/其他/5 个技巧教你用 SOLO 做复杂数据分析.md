@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "其他"
-tags: [Agent, 多智能体, Agent Skills]
+tags: [数据与分析, Agent, 多智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/5 个技巧教你用 SOLO 做复杂数据分析.html"

@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent, Claude Code, Agent Skills]
+tags: [编码开发, Agent Skills, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Claude Code神级技巧：让AI编程更省心.html"

@@ -5,7 +5,7 @@ source: "GitHub / ourongxing"
 published: "2024-09-23"
 archived: "2026-10-02"
 category: "其他"
-tags: [MCP, Next.js, 自托管, 内容聚合]
+tags: [自动化与集成, 个人效率, MCP]
 lang: en
 status: ok
 ---

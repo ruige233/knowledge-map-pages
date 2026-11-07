@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2025-01-11"
 archived: "2026-11-01"
 category: "其他"
-tags: [可观测性, 软件开发, 书单, 职业发展, 阅读]
+tags: [编码开发, 求职与成长]
 lang: zh
 status: ok
 阅读页: "阅读页/其他/读书笔记｜程序员的README.html"

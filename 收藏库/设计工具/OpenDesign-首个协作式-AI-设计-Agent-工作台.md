@@ -5,7 +5,7 @@ source: "GitHub / nexu-io"
 published: ""
 archived: "2026-10-29"
 category: "设计工具"
-tags: [Agent, MCP, OpenDesign, 设计系统, UI 设计]
+tags: [内容生产, 设计与人机交互, Agent]
 lang: zh
 status: ok
 ---

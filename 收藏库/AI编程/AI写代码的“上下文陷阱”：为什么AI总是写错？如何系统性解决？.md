@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent 记忆, 上下文工程, 提示工程, Claude Code]
+tags: [编码开发, 提示与上下文, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/AI写代码的“上下文陷阱”：为什么AI总是写错？如何系统性解决？.html"

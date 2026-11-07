@@ -5,7 +5,7 @@ source: "GitHub · JuliusBrussee"
 published: "2026-04-04"
 archived: "2026-11-03"
 category: "AI编程"
-tags: [提示工程, 推理优化, Claude Code, Agent Skills, Caveman]
+tags: [编码开发, 提示与上下文, 编码智能体]
 lang: en
 status: ok
 ---

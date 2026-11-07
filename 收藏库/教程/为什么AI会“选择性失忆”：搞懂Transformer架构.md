@@ -5,7 +5,7 @@ source: "微信公众平台 · 腾讯云开发者"
 published: "2026-11-04"
 archived: "2026-11-04"
 category: "教程"
-tags: [上下文窗口, RAG, Transformer]
+tags: [提示与上下文, 上下文工程, 大模型]
 lang: zh
 status: ok
 阅读页: "阅读页/教程/为什么AI会“选择性失忆”：搞懂Transformer架构.html"

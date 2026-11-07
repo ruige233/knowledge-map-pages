@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [多智能体, Agent 评测, 上下文工程, Harness]
+tags: [Agent 研发, Agent 编排, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/一文读懂Harness Engineering：从14篇工程文章中，寻找那个让AI不再离经叛道的壳｜Hao好聊趋势.html"

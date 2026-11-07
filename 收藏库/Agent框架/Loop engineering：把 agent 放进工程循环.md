@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, Agent 编排, Agent Loop, Agent 记忆, Harness]
+tags: [Agent 研发, Agent 编排]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/Loop engineering：把 agent 放进工程循环.html"

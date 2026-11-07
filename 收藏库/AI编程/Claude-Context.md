@@ -5,7 +5,7 @@ source: "GitHub / zilliztech"
 published: "2025-06-06"
 archived: "2026-10-02"
 category: "AI编程"
-tags: [混合检索, 语义搜索, 全文检索, Claude Code, MCP]
+tags: [编码开发, MCP, RAG]
 lang: en
 status: ok
 ---

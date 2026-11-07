@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Harness, Vibe Coding, Spec-Driven Development, TDD]
+tags: [编码开发, 编码智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/5 人 7 天干完 20 人数周的活：Spec-Driven Development 如何重新定义 AI 编程.html"

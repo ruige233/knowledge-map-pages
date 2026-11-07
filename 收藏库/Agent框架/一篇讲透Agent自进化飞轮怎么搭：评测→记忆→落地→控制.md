@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [Agent, Agent 记忆, Agent 评测, 自我进化, Agent Skills]
+tags: [Agent 研发, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/一篇讲透Agent自进化飞轮怎么搭：评测→记忆→落地→控制.html"

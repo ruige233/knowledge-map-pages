@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [多智能体, Agent 编排, Guardrails, Harness]
+tags: [Agent 研发, 内容生产, 多智能体]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Harness Engineering C 端 AIGC 内容生产自优化实践.html"

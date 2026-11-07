@@ -5,7 +5,7 @@ source: "GitHub / shareAI-lab"
 published: "2025-06-29"
 archived: "2026-10-02"
 category: "教程"
-tags: [Agent Loop, 上下文工程, Claude Code, Harness, Python]
+tags: [Agent 研发, Agent 编排, 上下文工程]
 lang: zh
 status: ok
 ---

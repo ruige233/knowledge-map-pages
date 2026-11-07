@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Agent, 提示工程, Harness]
+tags: [Agent 研发, Agent Skills, 上下文工程]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/深度解析 Hermes Agent 如何实现“自进化”及其 Prompt Context Harness 的设计实践.html"

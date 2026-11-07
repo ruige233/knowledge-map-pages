@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "Agent框架"
-tags: [MCP, 小红书]
+tags: [内容生产, 自动化与集成, MCP]
 lang: zh
 status: ok
 阅读页: "阅读页/Agent框架/自媒体创作场景实践｜通义千问3 + MCP=一切皆有可能.html"

@@ -5,7 +5,7 @@ source: "GitHub / f"
 published: "2022-12-05"
 archived: "2026-10-02"
 category: "AI应用"
-tags: [提示工程, MCP, 自托管, 开源]
+tags: [提示与上下文, 提示工程]
 lang: en
 status: ok
 ---

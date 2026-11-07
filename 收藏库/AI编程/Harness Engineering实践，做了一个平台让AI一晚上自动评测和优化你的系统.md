@@ -5,7 +5,7 @@ source: "微信公众平台"
 published: "2026-11-01"
 archived: "2026-11-01"
 category: "AI编程"
-tags: [Harness, 评测平台]
+tags: [Agent 研发, Agent]
 lang: zh
 status: ok
 阅读页: "阅读页/AI编程/Harness Engineering实践，做了一个平台让AI一晚上自动评测和优化你的系统.html"

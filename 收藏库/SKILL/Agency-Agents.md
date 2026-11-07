@@ -5,7 +5,7 @@ source: "GitHub / msitarzewski"
 published: "2025-10-13"
 archived: "2026-10-25"
 category: "SKILL"
-tags: [Agent, Agent 编排, 提示工程, 工具调用, Claude Code]
+tags: [Agent 研发, Agent, 编码智能体]
 lang: en
 status: ok
 ---
