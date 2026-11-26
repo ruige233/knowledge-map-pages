@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>换模型效果归零？一文扒透 Harness 落地 11 个坑</title>
+<style>
+/* ============ Harness 落地 11 个坑 ============ */
+:root{
+  --paper:#f4f1ea;
+  --paper-2:#e9e5da;
+  --card:#fbf9f4;
+  --ink:#1a1c1e;
+  --ink-2:#3c4044;
+  --ink-3:#6f7478;
+  --line:#d3cec1;
+  --line-soft:#e3dfd3;
+  --hazard:#c2642b;      /* 警示橙 */
+  --hazard-soft:#f6e3d5;
+  --teal:#2f6b63;        /* 正解 / 冷静 */
+  --teal-soft:#dce9e5;
+  --dark:#2b2f33;
+  --dark-soft:#e6e6e2;
+  --gold:#8a6a1f;
+  --gold-soft:#f1e7cd;
+  --font-sans:"Noto Sans SC","PingFang SC","Hiragino Sans GB",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-serif:"Noto Serif SC","Songti SC","Source Han Serif SC",Georgia,serif;
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --radius:3px;
+}
+:root[data-theme="dark"]{
+  --paper:#15171a;
+  --paper-2:#1c1f22;
+  --card:#1f2226;
+  --ink:#e9e7e2;
+  --ink-2:#c3c4c0;
+  --ink-3:#8c9089;
+  --line:#34383c;
+  --line-soft:#292d31;
+  --hazard:#e08a52;
+  --hazard-soft:#3a2a1f;
+  --teal:#7fb3a8;
+  --teal-soft:#1f302e;
+  --dark:#d8d9d5;
+  --dark-soft:#26292c;
+  --gold:#d0ae68;
+  --gold-soft:#312a1b;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#15171a;--paper-2:#1c1f22;--card:#1f2226;--ink:#e9e7e2;--ink-2:#c3c4c0;--ink-3:#8c9089;
+    --line:#34383c;--line-soft:#292d31;--hazard:#e08a52;--hazard-soft:#3a2a1f;--teal:#7fb3a8;
+    --teal-soft:#1f302e;--dark:#d8d9d5;--dark-soft:#26292c;--gold:#d0ae68;--gold-soft:#312a1b;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--font-sans);font-size:16.5px;line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--teal) 35%,transparent)}
+a:hover{border-bottom-color:var(--teal)}
+code,kbd,pre,.mono{font-family:var(--font-mono)}
+
+/* 顶栏 */
+.topbar{
+  position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:10px 24px;max-width:1280px;margin:0 auto;
+  background:color-mix(in srgb,var(--paper) 90%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft);
+}
+.topbar a{font-size:13px;border:0;color:var(--ink-2)}
+.topbar a:hover{color:var(--hazard)}
+.topbar .tb-right{display:flex;align-items:center;gap:14px}
+.topbar .mark{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+#themeBtn{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:transparent;color:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);
+  padding:5px 10px;cursor:pointer;
+}
+#themeBtn:hover{border-color:var(--hazard);color:var(--hazard)}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:48px;align-items:start;padding:40px 0 80px}
+
+/* HERO */
+.hero{
+  position:relative;overflow:hidden;border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(1200px 380px at 88% -10%,color-mix(in srgb,var(--hazard) 12%,transparent),transparent 70%),
+    var(--paper);
+}
+.hero::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:6px;
+  background:repeating-linear-gradient(45deg,var(--hazard) 0 12px,transparent 12px 24px);
+  opacity:.5;
+}
+.hero .wrap{padding:52px 24px 46px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.92fr);gap:52px;align-items:end}
+.eyebrow{
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--hazard);margin:0 0 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+}
+.eyebrow .pill{
+  border:1px solid color-mix(in srgb,var(--hazard) 45%,transparent);border-radius:999px;
+  padding:2px 9px;font-size:10px;letter-spacing:.14em;
+}
+h1{font-family:var(--font-serif);font-weight:700;font-size:clamp(30px,3.5vw,45px);line-height:1.26;letter-spacing:-.01em;margin:0 0 18px}
+h1 em{font-style:normal;color:var(--hazard)}
+.meta-row{display:flex;flex-wrap:wrap;font-size:13px;color:var(--ink-3);margin:0 0 24px}
+.meta-row span{display:inline-flex;align-items:center}
+.meta-row span+span::before{content:"";display:inline-block;width:1px;height:10px;background:var(--line);margin:0 12px}
+.oneliner{font-size:18px;line-height:1.72;color:var(--ink-2);margin:0;padding-left:18px;border-left:2px solid var(--hazard)}
+
+/* hero 坑位卡 */
+.kit{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);overflow:hidden}
+.kit-h{
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  padding:11px 16px;border-bottom:1px solid var(--line);
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+.kit-h b{color:var(--hazard);letter-spacing:.1em}
+.kit-body{padding:14px 16px}
+.pit-row{display:grid;grid-template-columns:74px 1fr 30px;gap:10px;align-items:center;margin-bottom:12px}
+.pit-row:last-child{margin-bottom:0}
+.pit-row b{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:var(--ink-2);font-weight:600}
+.pit-row span{font-size:12px;color:var(--ink-3)}
+.depth{height:9px;background:var(--paper-2);border-radius:2px;overflow:hidden}
+.depth i{display:block;height:100%;background:var(--hazard);border-radius:2px}
+.pit-row em{font-family:var(--font-mono);font-style:normal;font-size:12px;color:var(--hazard);text-align:right}
+.kit-f{padding:11px 16px;border-top:1px solid var(--line);background:var(--paper-2);font-size:12px;color:var(--ink-3);line-height:1.6}
+.kit-f b{font-family:var(--font-mono);font-size:11.5px;color:var(--ink);letter-spacing:.02em}
+
+/* 导轨 */
+.rail{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 100px);overflow:auto}
+.rail-t{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.rail nav{display:flex;flex-direction:column;gap:1px}
+.rail a{display:block;border:0;color:var(--ink-2);font-size:13.5px;line-height:1.45;padding:7px 10px 7px 12px;border-left:2px solid transparent}
+.rail a:hover{background:var(--paper-2);color:var(--ink)}
+.rail a.active{background:var(--hazard-soft);border-left-color:var(--hazard);color:var(--hazard);font-weight:600}
+.rail a.sub{font-size:12.5px;padding-left:20px;color:var(--ink-3)}
+.rail a.sub.active{color:var(--hazard)}
+
+/* 正文 */
+main{min-width:0;max-width:920px}
+.part{padding:6px 0 36px;border-bottom:1px solid var(--line-soft)}
+.part:last-of-type{border-bottom:0}
+.part-no{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--hazard);text-transform:uppercase;display:block;margin:34px 0 8px}
+h2{font-family:var(--font-serif);font-weight:700;font-size:clamp(23px,2.4vw,30px);line-height:1.36;margin:0 0 18px;scroll-margin-top:80px}
+h3{font-family:var(--font-sans);font-weight:700;font-size:19px;line-height:1.5;margin:36px 0 12px;scroll-margin-top:80px;display:flex;gap:12px;align-items:baseline}
+h3 .num{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--hazard);
+  border:1px solid color-mix(in srgb,var(--hazard) 45%,transparent);border-radius:2px;
+  padding:2px 7px;flex:none;transform:translateY(-2px);
+}
+h4{font-family:var(--font-mono);font-weight:600;font-size:14px;letter-spacing:.03em;margin:22px 0 8px;color:var(--teal)}
+p{margin:0 0 16px;color:var(--ink-2)}
+strong{color:var(--ink);font-weight:700}
+ul,ol{margin:0 0 18px;padding-left:22px;color:var(--ink-2)}
+li{margin:0 0 7px}
+li::marker{color:var(--hazard)}
+
+/* 提炼卡 */
+.gist{border:1px solid var(--line);border-left:3px solid var(--teal);background:var(--card);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:0 0 24px}
+.gist-h{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
+.gist ul{margin:0;padding-left:18px;font-size:14.5px;line-height:1.66}
+.gist li{margin:0 0 5px;color:var(--ink-2)}
+.gist .pit{margin:10px 0 0;padding:9px 12px;background:var(--hazard-soft);border-radius:var(--radius);font-size:13.5px;color:var(--ink-2);line-height:1.62}
+.gist .pit b{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--hazard);display:block;margin-bottom:3px}
+
+/* 公式 */
+.formula{
+  border:1px solid var(--line);background:var(--card);border-radius:var(--radius);
+  padding:18px 20px;margin:0 0 24px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:15px;letter-spacing:.02em;
+}
+.formula .f-h{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);width:100%;margin-bottom:2px}
+.formula .k{padding:3px 9px;border:1px solid var(--line);border-radius:2px;background:var(--paper-2);color:var(--ink)}
+.formula .k.model{border-color:color-mix(in srgb,var(--teal) 45%,transparent);color:var(--teal)}
+.formula .k.harness{border-color:color-mix(in srgb,var(--hazard) 55%,transparent);color:var(--hazard)}
+.formula .op{color:var(--ink-3)}
+.formula .tail{margin-left:auto;font-family:var(--font-sans);font-size:12.5px;color:var(--ink-3);letter-spacing:0}
+
+/* 两栏对比 */
+.cmp{
+  border:1px solid var(--line);background:var(--card);border-radius:var(--radius);
+  margin:0 0 24px;overflow:hidden;
+}
+.cmp-h{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);padding:11px 16px;border-bottom:1px solid var(--line);background:var(--paper-2)}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr}
+.cmp-col{padding:14px 16px}
+.cmp-col+.cmp-col{border-left:1px solid var(--line)}
+.cmp-col h6{margin:0 0 8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.cmp-col.bad h6{color:var(--hazard)}
+.cmp-col.good h6{color:var(--teal)}
+.cmp-col p{margin:0 0 8px;font-size:13.5px;line-height:1.66;color:var(--ink-2)}
+.cmp-col p:last-child{margin-bottom:0}
+.cmp-col p b{color:var(--ink)}
+
+/* 大数字 */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 24px}
+.stat{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);padding:14px 16px}
+.stat .sl{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:8px}
+.stat .nums{display:flex;align-items:baseline;gap:8px;font-family:var(--font-mono);flex-wrap:wrap}
+.stat .from{font-size:16px;color:var(--ink-3);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--hazard) 60%,transparent)}
+.stat .arrow{color:var(--hazard);font-size:13px}
+.stat .to{font-size:26px;font-weight:700;color:var(--hazard);letter-spacing:-.01em;line-height:1.1}
+.stat .note{margin:8px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.55}
+
+/* 三种失败模式 / 企业约束 */
+.list3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 24px}
+.l3{border:1px solid var(--line);border-top:2px solid var(--hazard);background:var(--card);border-radius:0 0 var(--radius) var(--radius);padding:13px 15px}
+.l3 b{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--hazard);margin-bottom:6px}
+.l3 p{margin:0;font-size:13px;line-height:1.6;color:var(--ink-3)}
+
+/* 记忆三层 */
+.mem{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);padding:18px 20px;margin:0 0 24px}
+.mem-t{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.mem-l{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:baseline;padding:9px 0;border-top:1px dashed var(--line-soft)}
+.mem-l:first-of-type{border-top:0}
+.mem-l b{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;color:var(--teal);font-weight:600}
+.mem-l span{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.mem-bad{margin-top:14px;padding:10px 14px;border:1px dashed var(--hazard);border-radius:2px;background:var(--hazard-soft);font-size:13px;line-height:1.62;color:var(--ink-2)}
+.mem-bad b{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--hazard);display:block;margin-bottom:4px}
+
+/* 引言 */
+.quote{
+  margin:0 0 24px;padding:18px 22px;border:0;border-left:3px solid var(--gold);
+  background:var(--gold-soft);border-radius:0 var(--radius) var(--radius) 0;
+  font-family:var(--font-serif);font-size:17px;line-height:1.72;color:var(--ink);
+}
+.quote footer{margin-top:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+
+/* callout */
+.callout{border:1px solid var(--line);background:var(--paper-2);border-radius:var(--radius);padding:14px 18px;margin:0 0 20px;font-size:15px;line-height:1.72;color:var(--ink-2)}
+.callout b{color:var(--hazard);font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
+
+/* 尾声镜子 */
+.mirror{
+  border:1px solid var(--line);background:
+    linear-gradient(180deg,color-mix(in srgb,var(--card) 100%,transparent),color-mix(in srgb,var(--teal-soft) 60%,var(--card)));
+  border-radius:var(--radius);padding:24px;margin:0 0 24px;
+}
+.mirror .mh{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.mirror p{font-family:var(--font-serif);font-size:17px;line-height:1.78;color:var(--ink)}
+.mirror p:last-child{margin-bottom:0}
+
+/* 知识卡 */
+.cards-sec{padding:44px 0 10px;border-top:2px solid var(--line)}
+.cards-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 6px}
+.cards-head h2{margin:0}
+.cards-head span{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.cards-sub{font-size:14.5px;color:var(--ink-3);margin:0 0 24px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.kcard{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.kcard .kh{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.kcard .kh .badge{padding:2px 7px;border-radius:2px;font-size:9.5px}
+.kcard .kh .ref{color:var(--ink-3);border:0;margin-left:auto;font-size:10px}
+.kcard h5{margin:0;font-size:15.5px;font-weight:700;line-height:1.5;color:var(--ink)}
+.kcard p{margin:0;font-size:13.5px;line-height:1.65;color:var(--ink-2)}
+.badge.cmp{background:var(--teal-soft);color:var(--teal)}
+.badge.concl{background:var(--dark-soft);color:var(--dark)}
+.badge.data{background:var(--gold-soft);color:var(--gold)}
+.badge.code{background:var(--paper-2);color:var(--ink-2);border:1px solid var(--line)}
+.badge.trap{background:var(--hazard-soft);color:var(--hazard)}
+.kcard.cmp{border-left:3px solid var(--teal)}
+.kcard.concl{border-left:3px solid var(--dark)}
+.kcard.data{border-left:3px solid var(--gold)}
+.kcard.code{border-left:3px solid var(--ink-3)}
+.kcard.trap{border-left:3px solid var(--hazard)}
+
+/* 带走三句话 */
+.take{padding:46px 0 10px}
+.take-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin:0 0 18px}
+.take ol{list-style:none;margin:0;padding:0;counter-reset:t}
+.take li{
+  counter-increment:t;position:relative;padding:18px 20px 18px 62px;
+  border:1px solid var(--line);background:var(--card);border-radius:var(--radius);
+  font-family:var(--font-serif);font-size:18px;line-height:1.72;color:var(--ink);margin:0 0 12px;
+}
+.take li::before{content:counter(t,decimal-leading-zero);position:absolute;left:20px;top:18px;font-family:var(--font-mono);font-size:13px;color:var(--hazard)}
+
+/* 出处 */
+.src{margin:40px 0 0;padding:22px 0 0;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3);line-height:1.8}
+.src .sl{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:8px}
+.src a{word-break:break-all}
+.src .gen{margin-top:12px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;opacity:.85}
+
+.footer{border-top:1px solid var(--line);background:var(--paper-2)}
+.footer .wrap{padding:22px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);font-family:var(--font-mono);letter-spacing:.04em}
+
+@media (max-width:1080px){
+  .layout{grid-template-columns:1fr;gap:0}
+  .rail{position:static;max-height:none;margin-bottom:8px;border-bottom:1px solid var(--line);padding-bottom:14px}
+  .rail nav{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .rail a{border-left:0;border:1px solid var(--line);border-radius:2px;padding:5px 9px;font-size:12.5px}
+  .rail a.sub{display:none}
+  main{max-width:none}
+  .hero-grid{grid-template-columns:1fr;gap:30px}
+  .list3{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  body{font-size:16px}
+  .layout{padding:24px 0 56px}
+  .cards,.stats,.cmp-grid{grid-template-columns:1fr}
+  .cmp-col+.cmp-col{border-left:0;border-top:1px solid var(--line)}
+  .take li{font-size:16.5px}
+  .pit-row{grid-template-columns:64px 1fr 26px}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="../../../index.html">← 返回总览页</a>
+  <div class="tb-right">
+    <span class="mark">Knowledge Map · Agent框架</span>
+    <button id="themeBtn" type="button">Dark / Light</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow"><span class="pill">HARNESS ENGINEERING</span>腾讯云开发者 · 2026-10-23 · 13 MIN</p>
+        <h1>换模型效果归零？<br>一文扒透 Harness 落地 <em>11 个坑</em></h1>
+        <div class="meta-row"><span>腾讯云开发者</span><span>Agent框架</span><span>原文约 5,100 字</span><span>反讽式踩坑清单</span></div>
+        <p class="oneliner">Harness 落地的 11 个误区：认知、实践、组织三层的反向警示录</p>
+      </div>
+      
+<div class="kit">
+  <div class="kit-h"><span>坑位表 / Pit Map</span><b>11 PITS</b></div>
+  <div class="kit-body">
+    <div class="pit-row"><b>认知层面</b><div class="depth"><i style="width:27%"></i></div><em>3</em></div>
+    <div class="pit-row"><b>实践层面</b><div class="depth"><i style="width:55%"></i></div><em>6</em></div>
+    <div class="pit-row"><b>组织层面</b><div class="depth"><i style="width:18%"></i></div><em>2</em></div>
+  </div>
+  <div class="kit-f"><b>Agent = Model + Harness</b><br>公式一夜之间成了圣经；而马具，既能驾驭马，也能勒死马。</div>
+</div>
+
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <aside class="rail">
+      <p class="rail-t">坑位地图</p>
+      <nav>
+<a href="#intro">序 · 马具也能勒死马</a>
+<a class="top" href="#s01">认知层面 · 3 个坑</a>
+<a class="sub" href="#pit01">坑 01 · 高级 Prompt</a>
+<a class="sub" href="#pit02">坑 02 · SDK / 框架</a>
+<a class="sub" href="#pit03">坑 03 · 记忆不保鲜</a>
+<a class="top" href="#s02">实践层面 · 6 个坑</a>
+<a class="sub" href="#pit04">坑 04 · 迷信模型</a>
+<a class="sub" href="#pit05">坑 05 · 没有可观测性</a>
+<a class="sub" href="#pit06">坑 06 · AI 自评</a>
+<a class="sub" href="#pit07">坑 07 · 只看二元结果</a>
+<a class="sub" href="#pit08">坑 08 · 照抄别家</a>
+<a class="sub" href="#pit09">坑 09 · 一次设计到位</a>
+<a class="top" href="#s03">组织层面 · 2 个坑</a>
+<a class="sub" href="#pit10">坑 10 · 只管 AI 不管人</a>
+<a class="sub" href="#pit11">坑 11 · 忽视企业约束</a>
+<a class="top" href="#s04">尾声 · 一面镜子</a>
+      </nav>
+    </aside>
+    <main>
+
+<section class="part" id="intro">
+  <span class="part-no">Prologue · 马具也能勒死马</span>
+  <p>谈到 Harness Engineering，我们有着自己的独到见解。我们看到的现象是：只要努力搞，没有折腾不垮的团队。虽然硅谷大厂在这个领域的实践堪称教科书，但更多团队正在「全面 Harness 化」的光环下，以惊人的速度走向瓦解。</p>
+<p>2026 年初，Harness Engineering 取代 Prompt Engineering 和 Context Engineering 成为硅谷最流行的 AI 工程化范式。Agent = Model + Harness 这个公式一夜之间成了 CTO 们挂在嘴边的圣经。</p>
+  
+<div class="formula">
+  <span class="f-h">全文唯一的公式</span>
+  <span class="k">Agent</span><span class="op">=</span><span class="k model">Model</span>
+  <span class="op">+</span><span class="k harness">Harness</span>
+  <span class="tail">模型提供智能，Harness 让智能变得有用</span>
+</div>
+  <div class="callout"><b>一句话</b>模型提供智能，Harness 让智能变得有用。但问题恰恰出在：太多团队把 Harness 当成了一根救命稻草，却忘了它本质上是一套马具，而马具，既能驾驭马，也能勒死马。</div>
+</section>
+<section class="part" id="s01">
+  <span class="part-no">Step 01 · 认知层面</span>
+  <h2>第一步：在认知层面精准埋雷</h2>
+<div class="gist"><p class="gist-h">本节提炼</p><ul><li>提示词解决这一次怎么让 AI 做事，Harness 解决每一次的边界，不在一个层级。</li><li>把 Harness 当高级 Prompt，是用战术勤奋掩盖战略懒惰，陷入调优死循环。</li><li>SDK/框架回答「怎么造 Agent」，Harness 回答「Agent 运行时世界如何与它交互」。</li><li>记忆要保鲜、要标置信度、要分层归属，否则 Agent 在失忆与乱记间摇摆。</li><li>LangChain 可实现 Harness 的某个模块，但框架本身不是 Harness。</li></ul><p class="pit"><b>最致命</b>花十倍时间调 Prompt，却不花时间设计约束环境。</p></div>
+<h3 id="pit01"><span class="num">坑 01</span><span>把 Harness Engineering 当成「高级 Prompt」</span></h3>
+<p>这是最普遍也最致命的认知错误。很多人第一次听 Harness Engineering，会以为它是「高级提示词」。提示词解决的是「这次你怎么告诉 AI 做事」，Harness 解决的是「以后每一次 AI 都要在什么边界里做事」。这两件事不是一个层级。</p>
+<p>如果只靠提示词，你会进入一种经典状态：这次写得不错，下次换个需求又飘了；这次 Agent 很听话，下次上下文一长就忘了；这次你盯得紧，下次你没盯它就开始自由发挥。</p>
+<p>把 Harness 当成高级 Prompt 来搞，本质上是用战术勤奋掩盖战略懒惰。你花了十倍的时间调 Prompt，却没有多花点时间来设计约束环境。这个误区一旦踩实，团队就会陷入「Prompt 调优 → 效果波动 → 再调优」的死循环，所有人的精力被耗尽在毫无产出的 Loop 游戏里。</p>
+
+<div class="cmp">
+  <div class="cmp-h">提示词 vs Harness —— 不是一个层级</div>
+  <div class="cmp-grid">
+    <div class="cmp-col bad"><h6>提示词</h6><p>解决「这次你怎么告诉 AI 做事」</p><p>一次性的说服：这次写得不错，下次换个需求又飘了</p></div>
+    <div class="cmp-col good"><h6>Harness</h6><p>解决「以后每一次 AI 都要在什么边界里做事」</p><p>结构性的约束：不依赖你有没有盯着</p></div>
+  </div>
+</div>
+<h3 id="pit02"><span class="num">坑 02</span><span>把 SDK / 框架当成 Harness</span></h3>
+<p>LangChain、LangGraph、CrewAI 这些工具经常被误认为是 Harness。但二者解决的根本不是同一个问题：SDK / 框架回答的是「怎么造 AI Agent」，Harness 回答的是「AI Agent 运行时，世界如何与它交互」。</p>
+<p>你可以用 LangChain 实现 Harness 的某个模块，但 LangChain 本身不是 Harness。把框架当 Harness 来用，就像买了把锤子就以为自己是建筑师。你有工具，但没有设计图、没有施工规范、没有验收标准。结果就是 Agent 跑起来了，但跑得乱七八糟。</p>
+
+<div class="cmp">
+  <div class="cmp-h">框架 vs Harness —— 换了个问题</div>
+  <div class="cmp-grid">
+    <div class="cmp-col bad"><h6>SDK / 框架</h6><p>回答：怎么造 AI Agent</p><p>给你锤子</p></div>
+    <div class="cmp-col good"><h6>Harness</h6><p>回答：Agent 运行时，世界如何与它交互</p><p>给你设计图、施工规范与验收标准</p></div>
+  </div>
+</div>
+<h3 id="pit03"><span class="num">坑 03</span><span>忽视记忆管理的「保鲜」和「置信度」</span></h3>
+<p>这是最容易被忽视但极其重要的一环。如果把 Agent 当成真员工来管理，记忆就是员工的工作日志和经验库。短期记忆（当前任务上下文）、长期记忆（历史决策和经验沉淀）、以及记忆的检索、更新和遗忘机制都是需要被管理的。</p>
+<p>很多团队搭了记忆系统，但管得一塌糊涂。记忆没有「保鲜」机制，三个月前的决策被当成今天的真理，Agent 在过时的信息上做决策；记忆没有「置信度」标签，来自用户确认的信息和来自模型猜测的信息混在一起，Agent 分不清哪个可靠。</p>
+
+<div class="mem">
+  <p class="mem-t">记忆要分层，而不是堆在一起</p>
+  <div class="mem-l"><b>短期记忆</b><span>当前任务的上下文，随会话推进实时更新。</span></div>
+  <div class="mem-l"><b>长期记忆</b><span>历史决策与经验沉淀，需要检索、更新与遗忘机制。</span></div>
+  <div class="mem-l"><b>分层归属</b><span>哪些是个人偏好，哪些是团队约定，哪些是项目级业务知识——检索时应返回泛化后的当前偏好主张，而非原始事实的堆砌。</span></div>
+  <div class="mem-bad"><b>三个错误叠在一起</b>记忆不保鲜（三个月前的决策被当成今天的真理）、不标置信度（用户确认的与模型猜测的混在一起）、不归属项目（绑在会话上，新会话一来就失忆）——Agent 就成了永远在「失忆」和「乱记」之间摇摆的精神分裂患者。</div>
+</div>
+</section>
+
+<section class="part" id="s02">
+  <span class="part-no">Step 02 · 实践层面</span>
+  <h2>第二步：在实践层面层层加码</h2>
+<div class="gist"><p class="gist-h">本节提炼</p><ul><li>同一模型只改 Harness 设计，编码基准分数可从 6.7% 跃升至 68.3%。</li><li>换 Harness 后 Terminal Bench 2.0 通过率 52.8%→66.5%。</li><li>没有可观测性与持续评估流水线，Agent 退化完全不可见。</li><li>让 AI 评估自己永远得到「很不错」，生成与评估必须拆成两个 AI。</li><li>只看通过/失败会与真实场景错位，最强模型也有 2/3 任务过程是错的。</li><li>Harness 无标准定义、不能照抄，也不是能一次设计到位的项目。</li></ul><p class="pit"><b>最致命</b>照抄 AGENTS.md、CLAUDE.md 全面溃败；花三个月搭一套完美 Harness。；只问测试通过没有，不看 Agent 在沙盒里的过程是否守规矩。</p></div>
+<h3 id="pit04"><span class="num">坑 04</span><span>迷信模型，忽视 Harness</span></h3>
+<p>OpenAI 的实验给出了一个震撼的数据：同一模型，仅改变 Harness 设计，编码基准测试分数可以从 6.7% 跃升至 68.3%。LangChain 的实验也印证了这一点，同一个模型换上一套更精巧的 Harness 架构，Terminal Bench 2.0 的通过率直接从 52.8% 拉升到 66.5%。换句话说，模型能力固然重要，但是 Harness 的设计质量也是重要的决定性因素。</p>
+<p>但绝大多数团队的做法恰恰相反。Agent 表现不好，第一反应是「换更强的模型」。于是半年换了五个模型，每次迁移都让团队加班加点，开销巨大，效果为零，甚至为负。</p>
+
+<div class="stats">
+<div class="stat"><span class="sl">OpenAI · 同一模型只改 Harness 设计</span><div class="nums"><span class="from">6.7%</span><span class="arrow">→</span><span class="to">68.3%</span></div><p class="note">编码基准测试分数；模型没变，Harness 变了。</p></div>
+<div class="stat"><span class="sl">LangChain · 同一模型换 Harness 架构</span><div class="nums"><span class="from">52.8%</span><span class="arrow">→</span><span class="to">66.5%</span></div><p class="note">Terminal Bench 2.0 通过率。</p></div>
+</div>
+<div class="callout"><b>换个比喻</b>真正的瓶颈不在马的肌肉，而在你手上的缰绳。Harness 之于 Model，如同操作系统之于 CPU——无论 CPU 多强大，如果操作系统频繁崩溃，实际体验依然很差。</div>
+<h3 id="pit05"><span class="num">坑 05</span><span>没有可观测性的 Harness</span></h3>
+<p>很多团队搭了 Harness：文件系统、沙箱、工具调用、编排逻辑，该有的都有。但唯独缺少了可观测性层。</p>
+<p>没有持续评估流水线的 Harness，Agent 的表现退化是完全不可见的，直到有人恰好注意到，或者已经退化到无法接受的程度。</p>
+<p>试想：你的 Agent 每天都在生产代码，但你根本不知道它的质量是在提升还是在下降。你有了一个会自己写代码的黑盒，而这个黑盒正在悄悄地把技术债务堆成一座山。等到你发现问题的时候，已经没有人能说清楚这座山是怎么堆起来的。</p>
+<h3 id="pit06"><span class="num">坑 06</span><span>让 AI 自己评估自己</span></h3>
+<p>Anthropic 的工程师发现了一个有趣的问题：AI 评估自己的工作完全不靠谱。不管做得好不好，AI 给自己的评价永远是「很不错」。</p>
+<p>很多团队的做法是：让 Agent 写完代码，再问它「做得怎么样？」Agent 回答「很好」，然后就直接上线了。这是把质量门禁交给了世界上最不可靠的质检员：它自己。</p>
+
+<div class="cmp">
+  <div class="cmp-h">质量门禁交给谁</div>
+  <div class="cmp-grid">
+    <div class="cmp-col bad"><h6>选手兼裁判</h6><p>生成之后问它「做得怎么样？」</p><p>答案永远是「很不错」</p></div>
+    <div class="cmp-col good"><h6>生成与评估拆开</h6><p>生成器负责做；评估器拿着工具实际操作、截图、检查功能，对照标准打分</p><p>选手和裁判不能是同一个人</p></div>
+  </div>
+</div>
+<h3 id="pit07"><span class="num">坑 07</span><span>评测只看二元结果（通过 / 失败），不看过程</span></h3>
+<p>当前主流评测体系，不管是 SWE-bench verified 还是各类基于 terminal 环境的测试，核心理念几乎都是结果导向指标。只问两个问题：测试通过了吗？Bug 修复了吗？</p>
+<p>这种评估方式，不看模型在沙盒里的输出过程，也不看真实场景的交互体验。最后的结果是：评估和真实使用场景，完全错位。</p>
+<p>MiniMax 开源了 OctoCodingBench，专门评测 Coding Agent 在完成任务的过程中有没有遵守规矩。结果令人震惊：即便是最强的模型，在 2/3 的任务中，代码可能是对的，但过程是错的。</p>
+<p>过程错在哪里？系统提示里明确要求「不要使用 emoji」，Agent 却在代码注释里加上笑脸；用户要求「先备份再修改」，Agent 上手就是一键 rm -rf 删除文件。任务最终可能完成了，但过程违反了规范。用户要的不只是「能跑的代码」，还有「符合团队协作规范的代码」。</p>
+
+<div class="cmp">
+  <div class="cmp-h">评测看什么</div>
+  <div class="cmp-grid">
+    <div class="cmp-col bad"><h6>二元结果</h6><p>只问：测试通过了吗？Bug 修复了吗？</p><p>像只问学生「考没及格」却不看卷面过程</p></div>
+    <div class="cmp-col good"><h6>过程合规</h6><p>看它有没有遵守不许用 emoji、先备份再修改这类规矩</p><p>OctoCodingBench：最强模型也有 2/3 的任务「代码对、过程错」</p></div>
+  </div>
+</div>
+<h3 id="pit08"><span class="num">坑 08</span><span>想抄袭别家的 Harness 实践</span></h3>
+<p>很多团队的做法是：看到 OpenAI 发了 AGENTS.md 的实验报告，立刻照抄一份放到自己仓库根目录；看到 Anthropic 的 CLAUDE.md 火了，马上复制粘贴。但 Context Engineering 的最佳实践也照做了，实际跑起来，全面溃败。</p>
+<p>为什么？你的项目、你的问题、你的技术栈、你的失败模式，跟别人完全不一样。别人的 Harness 是为百万行代码的长期项目设计的，你只有几千行；别人的 Harness 是为多 Agent 协作设计的，你只有一个 Agent 在跑；别人的 Harness 是为生产环境设计的，你还在做概念验证。</p>
+<p>Harness Engineering 没有标准定义。它不是一套可以「一键复制」的配置，而是一套需要根据你自己的失败模式量身定制的工程体系。</p>
+<div class="list3"><div class="l3"><b>过早宣布胜利</b><p>没有强制反馈循环，判定来自自我感觉而非机器可验证的事实。</p></div><div class="l3"><b>上下文焦虑</b><p>长任务做到 70%，Token 快撑满窗口，Agent 开始赶进度。</p></div><div class="l3"><b>越权操作</b><p>Agent 调用被禁止的命令。</p></div></div><div class="callout"><b>自检</b>你的团队的失败模式是哪几种？清楚吗？不清楚就照抄，等于在别人的地基上盖自己的房子，塌了都不知道为什么。</div>
+<h3 id="pit09"><span class="num">坑 09</span><span>认为 Harness 能「一次设计到位」</span></h3>
+<p>很多团队的做法是：花三个月搭一套「完美的 Harness」，然后宣布「Harness 工程化完成」。但 Harness Engineering 从来不是「一次设计到位」，而是跑一段、撞墙、补洞、再跑一段、再升级。</p>
+<p>Harness 是被 Bug 硬生生逼出来的。它不是设计出来的，是迭代出来的。把它当成一次性项目来做，就等于宣告了它的死亡。</p>
+<p>更有趣的是，就在全行业拼命往 Harness 上砌砖的时候，Anthropic 已经在默默地拆墙了。随着模型迭代，当年费尽心力的控制组件正在被果断拆除。一边在疯狂加盖，一边在果断拆除，这场充满割裂感的行业狂热，本质上是因为绝大多数人并没有真正理解工程的本质。</p>
+
+<blockquote class="quote">
+  「每当 Agent 犯了一个错误，你就花时间设计一个解决方案，使得 Agent 在未来不会再犯同样的错误。」
+  <footer>Mitchell Hashimoto —— 全文关于 Harness 最精准的一句定义</footer>
+</blockquote>
+</section>
+
+<section class="part" id="s03">
+  <span class="part-no">Step 03 · 组织层面</span>
+  <h2>第三步：在组织层面全面崩坏</h2>
+<div class="gist"><p class="gist-h">本节提炼</p><ul><li>Harness 本意也包含约束人：流程规范、编码标准、测试纪律。</li><li>AI 提效打折扣主因在人侧掉链子：需求不清、不写测试、自检靠感觉。</li><li>Harness 首先是「挽人」而非「挽 AI」，人的工程纪律是前提。</li><li>企业场景多出权限控制、长周期交互、行业合规三重约束。</li><li>学术 benchmark 预设无限制理想环境，进真实业务适用性存疑。</li></ul><p class="pit"><b>最致命</b>只想着约束 AI，团队自己连 TDD 和代码审查都走过场。；用学术思维做企业级 Harness，等于在实验室造一艘船就开进海里。</p></div>
+<h3 id="pit10"><span class="num">坑 10</span><span>Harness 只管 AI，不管人</span></h3>
+<p>这是最容易被忽视但破坏力最大的误区。</p>
+<p>「Harness」的本意是控制马的方向和力道，在软件工程中指流程规范、编码标准、测试纪律。但很多人只看到了「约束 AI」这一层，完全忽略了另一层：约束 AI 容易，约束人按流程干活才是组织难题。</p>
+<p>AI 编程提效打折扣的主因是人侧「掉链子」：需求不清晰、测试不写、自检靠感觉，导致返工和缺陷累积。</p>
+<p>Harness 首先是「挽人」而非「挽 AI」。如果你的人连基本的测试驱动开发都不做，连基本的代码审查都走过场，那 Harness 搭得再好也是白搭。AI 不缺智商，缺的是被工程机制约束后的稳定执行力。而人的工程纪律，是这种约束能够成立的前提。</p>
+<h3 id="pit11"><span class="num">坑 11</span><span>忽视企业级场景的特殊约束</span></h3>
+<p>学术 benchmark 几乎都预设了无限制的理想环境，但真实企业场景完全不同。</p>
+<div class="list3"><div class="l3"><b>权限控制</b><p>企业里不同用户能访问的数据和功能各不相同，Agent 必须遵守同样的边界。同一个 Agent 面对不同用户时可行动空间完全不一样，现有 benchmark 压根没考虑过这一层。</p></div><div class="l3"><b>长周期交互</b><p>企业任务经常跨越数天甚至数周，Agent 需要在如此之长的时间跨度中保持上下文连贯。</p></div><div class="l3"><b>行业合规</b><p>金融领域的反洗钱、医疗领域的数据隐私，这些约束在学术 benchmark 里几乎完全缺位。</p></div></div><p>学术研究与产业实践之间存在可观的差异。现有评估体系大量建立在理想化假设上，一旦进入真实业务环境，适用性存疑。用学术思维做企业级 Harness，就像在实验室里造了一艘船，开到海里才发现它根本浮不起来。</p>
+</section>
+
+<section class="part" id="s04">
+  <span class="part-no">Coda · 尾声</span>
+  <h2>尾声：Harness 是一面镜子</h2>
+<div class="gist"><p class="gist-h">本节提炼</p><ul><li>本质不是给 AI 套枷锁，而是搭一个可持续、可靠、可验证的工作环境。</li><li>核心公式 Agent = Model + Harness，不是 Model + 一堆复杂工具。</li><li>Harness 是镜子，照出工程纪律、组织能力和对「质量」的真实理解。</li><li>模型不是壁垒，能把 AI 放进可持续运转工程系统的能力才是。</li><li>对照 11 个误区逐一排查并避开，就已赢过 80% 的团队。</li></ul><p class="pit"><b>最致命</b>疯狂堆砌工具、搭建环境、配置规则，却忘了问到底在解决什么问题。</p></div>
+<p>Harness Engineering 的本质，不是给 AI 套上枷锁，而是给 AI 搭建一个能持续、可靠、可验证地工作的环境。它的核心公式很简单：Agent = Model + Harness。</p>
+<p>但太多团队把这个公式理解成了：Agent = Model + 一堆复杂工具。于是他们疯狂地堆砌工具、搭建环境、配置规则，却忘了问一个最基本的问题：我们到底在解决什么问题？</p>
+
+<div class="mirror">
+  <p class="mh">尾声 · 它照的不是 AI</p>
+  <p>Harness 是一面镜子。它照出的不是 AI 的能力，而是你的工程纪律、你的组织能力、你对「质量」二字的真实理解。</p>
+  <p>如果你的团队本身就没有工程纪律，Harness 只会让混乱以更快的速度蔓延；如果你的组织本身就没有质量意识，Harness 只会让缺陷以更大的规模堆积。</p>
+</div>
+<div class="callout"><b>最后一句</b>模型不是壁垒，Harness 也不是。真正的壁垒，是你有没有能力把 AI 放进一套可持续运转的工程系统里。而这件事，AI 帮不了你。</div><p>本文纯属反向警示。如果你正在带领团队落地 Harness Engineering，请对照上述「误区」逐一排查，并避开它们，你就已经赢过了 80% 的团队。</p>
+</section>
+
+<section class="cards-sec" id="cards">
+  <div class="cards-head"><h2>知识卡</h2><span>15 CARDS</span></div>
+  <p class="cards-sub">把 11 个坑里的数字、对比与结论单独拎出来，方便回头对照自己的 Harness。</p>
+  <div class="cards">
+<article class="kcard data"><div class="kh"><span class="badge data">数字</span><a class="ref" href="#s02">原文 ↗</a></div><h5>6.7% → 68.3%</h5><p>OpenAI 的实验：同一模型，仅改变 Harness 设计，编码基准测试分数从 6.7% 跃升至 68.3%。</p></article>
+<article class="kcard data"><div class="kh"><span class="badge data">数字</span><a class="ref" href="#s02">原文 ↗</a></div><h5>52.8% → 66.5%</h5><p>LangChain 实验：同一模型换上更精巧的 Harness 架构，Terminal Bench 2.0 通过率从 52.8% 拉升到 66.5%。</p></article>
+<article class="kcard data"><div class="kh"><span class="badge data">数字</span><a class="ref" href="#s02">原文 ↗</a></div><h5>半年换 5 个模型，效果为零</h5><p>Agent 表现不好就换更强模型：半年换了五个，每次迁移让团队加班加点，开销巨大、效果为零甚至为负。</p></article>
+<article class="kcard data"><div class="kh"><span class="badge data">数字</span><a class="ref" href="#s02">原文 ↗</a></div><h5>2/3 的任务：代码对、过程错</h5><p>MiniMax 开源的 OctoCodingBench 专测 Coding Agent 是否守规矩：即便最强模型，2/3 任务过程也是错的。</p></article>
+<article class="kcard cmp"><div class="kh"><span class="badge cmp">对比</span><a class="ref" href="#s01">原文 ↗</a></div><h5>Prompt Engineering vs Harness Engineering</h5><p>提示词是一次性的说服，解决「这次你怎么告诉 AI 做事」；Harness 是结构性的约束，解决「以后每一次在什么边界里做事」。</p></article>
+<article class="kcard cmp"><div class="kh"><span class="badge cmp">对比</span><a class="ref" href="#s01">原文 ↗</a></div><h5>SDK/框架 vs Harness</h5><p>LangChain、LangGraph、CrewAI 回答「怎么造 AI Agent」；Harness 回答「Agent 运行时，世界如何与它交互」。</p></article>
+<article class="kcard concl"><div class="kh"><span class="badge concl">结论</span><a class="ref" href="#s02">原文 ↗</a></div><h5>AI 评估自己完全不靠谱</h5><p>Anthropic 工程师发现 AI 给自己永远打「很不错」；解法是把生成与评估拆成两个 AI，选手和裁判不能是同一人。</p></article>
+<article class="kcard concl"><div class="kh"><span class="badge concl">结论</span><a class="ref" href="#s02">原文 ↗</a></div><h5>Harness 是 Bug 逼出来的</h5><p>Mitchell Hashimoto：每当 Agent 犯了一个错误，就花时间设计一个解决方案，使它在未来不会再犯同样的错误。</p></article>
+<article class="kcard concl"><div class="kh"><span class="badge concl">结论</span><a class="ref" href="#s02">原文 ↗</a></div><h5>三种致命失败模式</h5><p>OpenAI 与 Anthropic 的实验共同指向：过早宣布胜利、上下文焦虑（长任务做到 70% 就赶进度）、越权操作。</p></article>
+<article class="kcard trap"><div class="kh"><span class="badge trap">易错</span><a class="ref" href="#s02">原文 ↗</a></div><h5>只看二元结果（通过/失败）</h5><p>SWE-bench verified 等只看测试过没过、Bug 修没修，不看沙盒输出过程与真实交互，评估与使用场景完全错位。</p></article>
+<article class="kcard trap"><div class="kh"><span class="badge trap">易错</span><a class="ref" href="#s02">原文 ↗</a></div><h5>照抄别家的 Harness 实践</h5><p>照搬 AGENTS.md、CLAUDE.md 后全面溃败：项目规模、技术栈、失败模式都不同，Harness 没有可一键复制的标准定义。</p></article>
+<article class="kcard trap"><div class="kh"><span class="badge trap">易错</span><a class="ref" href="#s01">原文 ↗</a></div><h5>记忆不保鲜、不标置信度</h5><p>三个月前的决策被当今天的真理；用户确认的信息与模型猜测混在一起；记忆绑在会话上，新会话一来就失忆。</p></article>
+<article class="kcard trap"><div class="kh"><span class="badge trap">易错</span><a class="ref" href="#s03">原文 ↗</a></div><h5>Harness 只管 AI 不管人</h5><p>AI 编程提效打折的主因在人侧：需求不清晰、测试不写、自检靠感觉，导致返工和缺陷累积。</p></article>
+<article class="kcard concl"><div class="kh"><span class="badge concl">结论</span><a class="ref" href="#s04">原文 ↗</a></div><h5>Harness 是一面镜子</h5><p>它照出的不是 AI 的能力，而是你的工程纪律、组织能力与对「质量」的理解；团队本就没纪律，它只会加速混乱。</p></article>
+<article class="kcard data"><div class="kh"><span class="badge data">数字</span><a class="ref" href="#s04">原文 ↗</a></div><h5>避开 11 个坑，赢过 80% 团队</h5><p>作者称本文纯属反向警示：对照这 11 个误区逐一排查并避开，你就已经赢过了 80% 的团队。</p></article>
+  </div>
+</section>
+
+<section class="take">
+  <p class="take-h">带走三句话</p>
+  <ol>
+<li>提示词是一次性说服，Harness 是结构性约束，两者不是一个层级。</li>
+<li>同一模型从 6.7% 到 68.3%，瓶颈常在缰绳而不在马。</li>
+<li>Harness 照出的是团队工程纪律，人没纪律只会更快制造混乱。</li>
+  </ol>
+</section>
+
+<div class="src">
+  <span class="sl">出处</span>
+  原文：<a href="https://mp.weixin.qq.com/s/dGYCOViTXOj5jy1QmZvR1Q" target="_blank" rel="noopener">换模型效果归零？一文扒透Harness落地11个坑 · 腾讯云开发者</a><br>
+  发布：2026-10-23 ｜ 抓取：2026-11-26 ｜ 已剥离顶部公众号推广（图 1–3 与关注语）与文末 9 张推广图（图 4–12）<br>
+  <span class="gen">由 article-digest 生成 · 单文件离线可读</span>
+</div>
+    </main>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>Knowledge Map · 收藏库</span>
+    <a href="../../../index.html">← 返回总览页</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='harness-pits-theme';
+  var root=document.documentElement;
+  try{var s=localStorage.getItem(KEY);if(s){root.setAttribute('data-theme',s);}}catch(e){}
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){cur=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem(KEY,next);}catch(e){}
+  });
+  var links=[].slice.call(document.querySelectorAll('.rail a'));
+  var targets=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+  if('IntersectionObserver' in window && targets.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){l.classList.toggle('active', l.getAttribute('href')==='#'+e.target.id);});
+        }
+      });
+    },{rootMargin:'-12% 0px -72% 0px',threshold:0});
+    targets.forEach(function(t){io.observe(t);});
+  }
+})();
+</script>
+</body>
+</html>
